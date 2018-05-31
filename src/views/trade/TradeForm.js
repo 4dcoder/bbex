@@ -59,6 +59,7 @@ class TradeForm extends Component {
       .then(json => {
         if (json.code === 10000000) {
           message.success(`挂单成功！`);
+          this.setState({ price: '', volume: '' });
         } else {
           message.error(json.msg);
         }
