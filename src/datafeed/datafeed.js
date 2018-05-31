@@ -79,44 +79,13 @@ const datafeeds = symbol => {
   Datafeeds.UDFCompatibleDatafeed.prototype._logMessage = function(message) {
     if (this._enableLogging) {
       var now = new Date();
-      // console.log(now.toLocaleTimeString() + "." + now.getMilliseconds() + "> " + message);
+      console.log(now.toLocaleTimeString() + "." + now.getMilliseconds() + "> " + message);
     }
-  };
-
-  Datafeeds.UDFCompatibleDatafeed.prototype._send = function(url, params) {
-    if (params) {
-      for (var i = 0; i < Object.keys(params).length; ++i) {
-        var key = Object.keys(params)[i];
-        var value = encodeURIComponent(params[key]);
-        url += (i === 0 ? '?' : '&') + key + '=' + value;
-      }
-    }
-
-    this._logMessage('New request: ' + url);
-    return request(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'text/explain'
-      }
-    }).then(json => {
-      console.log('===============Fetch: ', json);
-    });
   };
 
   // 初始化 获取配置文件
   Datafeeds.UDFCompatibleDatafeed.prototype._initialize = function() {
-    // console.log('_initialize');
-    var that = this;
-    that._setupWithConfiguration(configJSON);
-
-    /*   this._send(this._datafeedURL + "/config")
-      .done(function (response) {
-        var configurationData = JSON.parse(response);
-        that._setupWithConfiguration(configurationData);
-      })
-      .fail(function (reason) {
-        that._setupWithConfiguration(that.defaultConfiguration());
-      }); */
+    this._setupWithConfiguration(configJSON);
   };
 
   // 此方法旨在提供填充配置数据的对象
@@ -170,128 +139,6 @@ const datafeeds = symbol => {
     this._logMessage('Initialized with ' + JSON.stringify(configurationData));
   };
 
-  // 图书馆调用这个函数来获得可见的K线范围的标记。 图表预期每调用一次getMarks就会调用一次onDataCallback。
-  Datafeeds.UDFCompatibleDatafeed.prototype.getMarks = function(
-    symbolInfo,
-    rangeStart,
-    rangeEnd,
-    onDataCallback,
-    resolution
-  ) {
-    // console.log('getMarks rangeStart ->', rangeStart);
-    // console.log('getMarks rangeEnd ->', rangeEnd);
-    onDataCallback([]);
-    /*   if (this._configuration.supports_marks) {
-      this._send(this._datafeedURL + "/marks", {
-        symbol: symbolInfo.ticker.toUpperCase(),
-        from: rangeStart,
-        to: rangeEnd,
-        resolution: resolution
-      })
-        .done(function (response) {
-          // console.log('getMarks ->', response);
-          onDataCallback(JSON.parse(response));
-        })
-        .fail(function () {
-          onDataCallback([]);
-        });
-    } */
-  };
-
-  // 图表库调用此函数获取可见K线范围的时间刻度标记。图表预期您每个调用getTimescaleMarks会调用一次onDataCallback。
-  Datafeeds.UDFCompatibleDatafeed.prototype.getTimescaleMarks = function(
-    symbolInfo,
-    rangeStart,
-    rangeEnd,
-    onDataCallback,
-    resolution
-  ) {
-    // console.log('getTimescaleMarks rangeStart->', rangeStart);
-    // console.log('getTimescaleMarks rangeEnd->', rangeEnd);
-    onDataCallback([]);
-
-    /*   if (this._configuration.supports_timescale_marks) {
-      this._send(this._datafeedURL + "/timescale_marks", {
-        symbol: symbolInfo.ticker.toUpperCase(),
-        from: rangeStart,
-        to: rangeEnd,
-        resolution: resolution
-      })
-        .done(function (response) {
-          // console.log('getTimescaleMarks response ->', response);
-          onDataCallback(JSON.parse(response));
-        })
-        .fail(function () {
-          onDataCallback([]);
-        });
-    } */
-  };
-
-  // 提供一个匹配用户搜索的商品列表
-  Datafeeds.UDFCompatibleDatafeed.prototype.searchSymbolsByName = function(
-    ticker,
-    exchange,
-    type,
-    onResultReadyCallback
-  ) {
-    var MAX_SEARCH_RESULTS = 30;
-
-    if (!this._configuration) {
-      onResultReadyCallback([]);
-      return;
-    }
-
-    if (this._configuration.supports_search) {
-      this._send(this._datafeedURL + '/search', {
-        limit: MAX_SEARCH_RESULTS,
-        query: ticker.toUpperCase(),
-        type: type,
-        exchange: exchange
-      })
-        .done(function(response) {
-          var data = JSON.parse(response);
-
-          for (var i = 0; i < data.length; ++i) {
-            if (!data[i].params) {
-              data[i].params = [];
-            }
-          }
-
-          if (typeof data.s == 'undefined' || data.s != 'error') {
-            onResultReadyCallback(data);
-          } else {
-            onResultReadyCallback([]);
-          }
-        })
-        .fail(function(reason) {
-          onResultReadyCallback([]);
-        });
-    } else {
-      if (!this._symbolSearch) {
-        throw 'Datafeed error: inconsistent configuration (symbol search)';
-      }
-
-      var searchArgument = {
-        ticker: ticker,
-        exchange: exchange,
-        type: type,
-        onResultReadyCallback: onResultReadyCallback
-      };
-
-      if (this._initializationFinished) {
-        this._symbolSearch.searchSymbolsByName(searchArgument, MAX_SEARCH_RESULTS);
-      } else {
-        var that = this;
-
-        this.on('initialized', function() {
-          that._symbolSearch.searchSymbolsByName(searchArgument, MAX_SEARCH_RESULTS);
-        });
-      }
-    }
-  };
-
-  Datafeeds.UDFCompatibleDatafeed.prototype._symbolResolveURL = '/symbols';
-
   //通过商品名称解析商品信息
   Datafeeds.UDFCompatibleDatafeed.prototype.resolveSymbol = function(
     symbolName,
@@ -323,27 +170,7 @@ const datafeeds = symbol => {
     }
 
     if (!this._configuration.supports_group_request) {
-      // console.log('symbolResolveJSON ->', symbolResolveJSON);
       onResultReady(symbolResolveJSON);
-
-      /*     this._send(this._datafeedURL + this._symbolResolveURL, {
-          symbol: symbolName ? symbolName.toUpperCase() : ""
-        })
-          .done(function (response) {
-            var data = JSON.parse(response);
-            console.log('_symbolResolveURL data ->', data);
-            if (data.s && data.s != "ok") {
-              onResolveErrorCallback("unknown_symbol");
-            }
-            else {
-              onResultReady(data);
-            }
-          })
-          .fail(function (reason) {
-            that._logMessage("Error resolving symbol: " + JSON.stringify([reason]));
-            onResolveErrorCallback("unknown_symbol");
-          });
-     */
     } else {
       if (this._initializationFinished) {
         this._symbolsStorage.resolveSymbol(symbolName, onResultReady, onResolveErrorCallback);
@@ -354,8 +181,6 @@ const datafeeds = symbol => {
       }
     }
   };
-
-  Datafeeds.UDFCompatibleDatafeed.prototype._historyURL = '/history';
 
   // 通过日期范围获取历史K线数据。图表库希望通过onDataCallback仅一次调用，接收所有的请求历史。而不是被多次调用。
   Datafeeds.UDFCompatibleDatafeed.prototype.getBars = function(
@@ -383,29 +208,15 @@ const datafeeds = symbol => {
         targetCurrencyId: 2 //目标货币主键
       };
       
-      /*
-      window.ws.onopen = function(e) { 
-        console.log('Kline Connection open ...');
-        let t = setInterval(() => {
-          if(!window.ws) {
-            clearInterval(t);
-            return;
-          }
-          window.ws.send('ping');
-        }, 1000 * 3);
-
-        if (!window.hasWsMessage) {
-          // console.log('get kline data.....')
-          window.ws.send("LOOM_USDT");
-          window.hasWsMessage = true;
-        }
-      }*/
 
       try {
         if (!window.hasWsMessage) {
-          // console.log('get kline data.....')
-          window.ws.send("LOOM_USDT");
           window.hasWsMessage = true;
+          if (symbolInfo && symbolInfo.name) {
+            const symbolName = symbolInfo.name.replace(/\//g, '_')
+            that._logMessage(`send ${symbolName} get bars...`);
+            window.ws.send(symbolName);
+          }
         }
       } catch(e){
         console.log('send error: ',e)
@@ -516,71 +327,11 @@ const datafeeds = symbol => {
     this._barsPulseUpdater.unsubscribeDataListener(listenerGUID);
   };
 
-  // 图表库在它要请求一些历史数据的时候会调用这个函数，让你能够覆盖所需的历史深度。
-  Datafeeds.UDFCompatibleDatafeed.prototype.calculateHistoryDepth = function(
-    period,
-    resolutionBack,
-    intervalBack
-  ) {};
-
-  // -------------------- 交易终端专属-----------------------------
-
-  // 当图表需要报价数据时，将调用此函数。图表库预期在收到所有请求数据时调用onDataCallback。
-  Datafeeds.UDFCompatibleDatafeed.prototype.getQuotes = function(
-    symbols,
-    onDataCallback,
-    onErrorCallback
-  ) {
-    this._send(this._datafeedURL + '/quotes', { symbols: symbols })
-      .then(function(response) {
-        var data = JSON.parse(response);
-        if (data.s == 'ok') {
-          //	JSON format is {s: "status", [{s: "symbol_status", n: "symbol_name", v: {"field1": "value1", "field2": "value2", ..., "fieldN": "valueN"}}]}
-          if (onDataCallback) {
-            onDataCallback(data.d);
-          }
-        } else {
-          if (onErrorCallback) {
-            onErrorCallback(data.errmsg);
-          }
-        }
-      })
-      .catch(function(arg) {
-        if (onErrorCallback) {
-          onErrorCallback('network error: ' + arg);
-        }
-      });
-  };
-
-  // 交易终端当需要接收商品的实时报价时调用此功能。图表预期您每次要更新报价时都会调用onRealtimeCallback。
-  Datafeeds.UDFCompatibleDatafeed.prototype.subscribeQuotes = function(
-    symbols,
-    fastSymbols,
-    onRealtimeCallback,
-    listenerGUID
-  ) {
-    this._quotesPulseUpdater.subscribeDataListener(
-      symbols,
-      fastSymbols,
-      onRealtimeCallback,
-      listenerGUID
-    );
-  };
-
-  // 交易终端当不需要再接收商品的实时报价时调用此函数。当图表库遇到listenerGUID相同的对象会跳过subscribeQuotes方法。
-  Datafeeds.UDFCompatibleDatafeed.prototype.unsubscribeQuotes = function(listenerGUID) {
-    this._quotesPulseUpdater.unsubscribeDataListener(listenerGUID);
-  };
-
-  //	==================================================================================================================================================
-  //	==================================================================================================================================================
-  //	==================================================================================================================================================
-
   /*
 	It's a symbol storage component for ExternalDatafeed. This component can
 	  * interact to UDF-compatible datafeed which supports whole group info requesting
 	  * do symbol resolving -- return symbol info by its name
-*/
+  */
   Datafeeds.SymbolsStorage = function(datafeed) {
     this._datafeed = datafeed;
 
