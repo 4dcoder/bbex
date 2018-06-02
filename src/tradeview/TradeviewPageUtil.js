@@ -86,7 +86,6 @@ const datafeedConfig = params => {
             "mainSeriesProperties.hollowCandleStyle.borderDownColor": "#ae4e54",
             "mainSeriesProperties.haStyle.upColor": "#589065",
             "mainSeriesProperties.haStyle.downColor": "#ae4e54",
-            "mainSeriesProperties.haStyle.drawvertGridPropertiesWick": true,
             "mainSeriesProperties.haStyle.drawBorder": true,
             "mainSeriesProperties.haStyle.borderColor": "#4e5b85",
             "mainSeriesProperties.haStyle.borderUpColor": "#589065",

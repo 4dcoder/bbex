@@ -515,6 +515,11 @@ class Trade extends Component {
         coinName: coin.coinOther
       });
     }
+    // TradingView切换商品
+    var symbol = coin.coinOther + '/' + coin.coinMain;
+    if (window.tvWidget) {
+      window.tvWidget.chart().setSymbol(symbol);
+    }
   };
 
   // 按小数位数合并列表
