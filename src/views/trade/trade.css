@@ -130,6 +130,11 @@
     flex-basis: 48%;
     border: #F00;
 }
+.trade-plate-list-wrap:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
 .trade-plate-container tr,
 .trade-plate-list tr {
     display: flex;
