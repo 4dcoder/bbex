@@ -199,6 +199,10 @@ const chartReady = (widget) => {
         btn[0].innerHTML = v.text;
         btn[0].title = v.text;
     });
+    widget.chart().createStudy('Moving Average', false, false, [5], null, {'Plot.color' : '#965FC4'})
+    widget.chart().createStudy('Moving Average', false, false, [10], null, {'Plot.color' : '#84aad5'})
+    widget.chart().createStudy('Moving Average', false, false, [30], null, {'Plot.color' : '#55b263'})
+    widget.chart().createStudy('Moving Average', false, false, [60], null, {'Plot.color' : '#b7248a'})
 };
 
 export default {
