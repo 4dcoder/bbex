@@ -18,13 +18,15 @@ const config = symbol => {
     pointvalue: 1,
     session: '0930-1600',
     has_intraday: true,
-    has_daily: true,
+    intraday_multipliers: ['1'],
+    has_daily: false,
+    has_weekly_and_monthly: false,
     has_empty_bars: false,
     has_no_volume: false,
     description: '',
     type: 'Index',
     supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M'],
-    pricescale: 1000,
+    pricescale: 10**8,
     ticker: symbol
   };
 

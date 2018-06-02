@@ -170,7 +170,15 @@ const datafeeds = symbol => {
     }
 
     if (!this._configuration.supports_group_request) {
-      onResultReady(symbolResolveJSON);
+      var symbolInfo = Object.assign({}, symbolResolveJSON, {
+        name: symbolName,
+        base_name: [symbolName],
+        full_name: symbolName,
+        legs: [symbolName],
+        pro_name: symbolName,
+        ticker: symbolName,
+      });
+      onResultReady(symbolInfo);
     } else {
       if (this._initializationFinished) {
         this._symbolsStorage.resolveSymbol(symbolName, onResultReady, onResolveErrorCallback);
@@ -199,49 +207,43 @@ const datafeeds = symbol => {
     var that = this;
 
     var websocketGetData = function() {
-      let config = {
-        type: 'kline',
-        period,
-        from, //开始时间戳
-        to, //结束时间戳
-        baseCurrencyId: 1, //基准货币主键
-        targetCurrencyId: 2 //目标货币主键
-      };
       
-
-      try {
-        if (!window.hasWsMessage) {
-          window.hasWsMessage = true;
-          if (symbolInfo && symbolInfo.name) {
-            const symbolName = symbolInfo.name.replace(/\//g, '_')
-            that._logMessage(`send ${symbolName} get bars...`);
-            window.ws.send(symbolName);
-          }
+      if (!window.hasWsMessage) {
+        try {
+            window.hasWsMessage = true;
+            if (symbolInfo && symbolInfo.name) {
+              const symbolName = symbolInfo.name.replace(/\//g, '_')
+              that._logMessage(`send ${symbolName} get bars...`);
+              window.ws.send(symbolName);
+            }
+        } catch(e){
+          console.log('send error: ',e)
         }
-      } catch(e){
-        console.log('send error: ',e)
-      }
 
-      window.ws.onmessage = function(e) {
-        if(e.data === 'pong') {
-          console.log('kline: ', e.data);
-          return;
-        }
-        const record = JSON.parse(e.data);
-        console.log('Kline recevied record: ', record);
-        // JSON格式
-        let websocketParams = {
-          data: e.data,
-          resolutionTime,
-          callback: data => {
-            dealSuccess(data);
+        window.ws.onmessage = function(e) {
+          if(e.data === 'pong') {
+            console.log('kline: ', e.data);
+            return;
           }
+          const record = JSON.parse(e.data);
+          console.log('Kline recevied record: ', record);
+          // JSON格式
+          let websocketParams = {
+            data: e.data,
+            resolutionTime,
+            callback: data => {
+              dealSuccess(data);
+            }
+          };
+          datafeedUtil.dealWebsocket(websocketParams);
         };
-        datafeedUtil.dealWebsocket(websocketParams);
-      };
+      } else {
+        dealSuccess(JSON.stringify({
+          s: 'no_data'
+        }));
+      }
     };
 
-    websocketGetData();
 
     var dealSuccess = function(data) {
       if (!data) {
@@ -266,7 +268,7 @@ const datafeeds = symbol => {
 
       for (var i = 0; i < barsCount; ++i) {
         var barValue = {
-          time: data.t[i] * 1000,
+          time: data.t[i],
           close: data.c[i]
         };
 
@@ -301,6 +303,9 @@ const datafeeds = symbol => {
       // 只会执行一次
       onDataCallback(bars, meta);
     };
+
+    // 获取数据
+    websocketGetData();
   };
 
   // 订阅K线数据。图表库将调用onRealtimeCallback方法以更新实时数据。
