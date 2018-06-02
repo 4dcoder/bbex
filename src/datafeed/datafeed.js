@@ -1,4 +1,3 @@
-'use strict';
 /*
 	This class implements interaction with UDF-compatible datafeed.
 
@@ -10,8 +9,8 @@
 
 import datafeedConfig from './datafeedConfig';
 import datafeedUtil from './datafeedUtil';
-import request from '../utils/request';
-import { stampToDate } from '../utils';
+// import request from '../utils/request';
+// import { stampToDate } from '../utils';
 
 const datafeeds = symbol => {
   var Datafeeds = {};
@@ -79,7 +78,7 @@ const datafeeds = symbol => {
   Datafeeds.UDFCompatibleDatafeed.prototype._logMessage = function(message) {
     if (this._enableLogging) {
       var now = new Date();
-      console.log(now.toLocaleTimeString() + "." + now.getMilliseconds() + "> " + message);
+      console.log(now.toLocaleTimeString() + '.' + now.getMilliseconds() + '> ' + message);
     }
   };
 
@@ -176,7 +175,7 @@ const datafeeds = symbol => {
         full_name: symbolName,
         legs: [symbolName],
         pro_name: symbolName,
-        ticker: symbolName,
+        ticker: symbolName
       });
       onResultReady(symbolInfo);
     } else {
@@ -207,21 +206,24 @@ const datafeeds = symbol => {
     var that = this;
 
     var websocketGetData = function() {
-      
       if (!window.hasWsMessage) {
         try {
-            window.hasWsMessage = true;
-            if (symbolInfo && symbolInfo.name) {
-              const symbolName = symbolInfo.name.replace(/\//g, '_')
-              that._logMessage(`send ${symbolName} get bars...`);
+          window.hasWsMessage = true;
+          if (symbolInfo && symbolInfo.name) {
+            const symbolName = symbolInfo.name.replace(/\//g, '_');
+            that._logMessage(`send ${symbolName} get bars...`);
+
+            if (window.ws.readyState === 1) {
               window.ws.send(symbolName);
             }
-        } catch(e){
-          console.log('send error: ',e)
+            
+          }
+        } catch (e) {
+          console.log('send error: ', e);
         }
 
         window.ws.onmessage = function(e) {
-          if(e.data === 'pong') {
+          if (e.data === 'pong') {
             console.log('kline: ', e.data);
             return;
           }
@@ -238,12 +240,13 @@ const datafeeds = symbol => {
           datafeedUtil.dealWebsocket(websocketParams);
         };
       } else {
-        dealSuccess(JSON.stringify({
-          s: 'no_data'
-        }));
+        dealSuccess(
+          JSON.stringify({
+            s: 'no_data'
+          })
+        );
       }
     };
-
 
     var dealSuccess = function(data) {
       if (!data) {
@@ -285,12 +288,13 @@ const datafeeds = symbol => {
         }
         bars.push(barValue);
       }
-      bars = bars.sort((a, b) => {
-        return a.time - b.time;
-      })
-      .filter((item, index, array) => {
-        return (!index || item.time !== array[index - 1].time) && item.close;
-      });
+      bars = bars
+        .sort((a, b) => {
+          return a.time - b.time;
+        })
+        .filter((item, index, array) => {
+          return (!index || item.time !== array[index - 1].time) && item.close;
+        });
 
       let meta = {
         version: that._protocolVersion,

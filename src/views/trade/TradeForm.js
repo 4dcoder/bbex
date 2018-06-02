@@ -21,6 +21,14 @@ class TradeForm extends Component {
     this.setState({ [key]: value });
   };
 
+  handleSlideInput = value => {
+    const { type, mainVolume, coinVolume } = this.props;
+    const { price } = this.state;
+    const assetVolume = type === 'buy' ? mainVolume : coinVolume;
+    const volume = assetVolume / price * (value / 100);
+    this.setState({ volume });
+  };
+
   // 获取订单号
   getOrderNo = () => {
     this.setState({ pending: true });
@@ -79,7 +87,7 @@ class TradeForm extends Component {
       100: ''
     };
 
-    const { type, tradeType, marketName, coinName } = this.props;
+    const { type, tradeType, marketName, coinName, mainVolume, coinVolume } = this.props;
 
     const { triggerPrice, price, volume, totalPrice, pending } = this.state;
 
@@ -119,7 +127,7 @@ class TradeForm extends Component {
                 this.handleValue(value, 'price');
               }}
             />
-            <div className="toCNY">&asymp;￥57555.50</div>
+            {false && <div className="toCNY">&asymp;￥57555.50</div>}
             <span className="trade-form-marketName">{marketName}</span>
           </li>
         )}
@@ -150,7 +158,15 @@ class TradeForm extends Component {
               placeholder={`${typeToText[type]}量`}
               onChange={this.handleInput}
             />
-            <Slider marks={marks} defaultValue={0} />
+            <Slider
+              marks={marks}
+              defaultValue={0}
+              onChange={this.handleSlideInput}
+              disabled={
+                (type === 'buy' && (!mainVolume || !price)) ||
+                (type === 'sell' && (!coinVolume || !price))
+              }
+            />
             <span
               className={classnames({
                 'trade-form-coinName': true,

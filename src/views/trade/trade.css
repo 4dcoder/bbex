@@ -243,7 +243,8 @@
     padding-right: 10px;
 }
 .latest-price span:last-child .iconfont {
-    font-size: 32px;
+    font-size: 20px;
+    vertical-align: baseline;
 }
 /* 最新价 */
 

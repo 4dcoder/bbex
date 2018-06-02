@@ -122,7 +122,7 @@ class Register extends Component {
                         </li>
                         <li>
                             <input type="checkbox" className="checkbox" id="agree" checked={agree} onChange={() => { this.setState({ agree: !agree }) }} />
-                            <label htmlFor="agree">我已阅读并同意<Link to="javascript:void(0)"> 服务条款</Link></label>
+                            <label htmlFor="agree">我已阅读并同意<a href="javascript:;"> 服务条款</a></label>
                         </li>
                         <li>
                             <Button type="primary" htmlType="submit" size='large' disabled={!ok} onClick={this.submit} className="button">注册</Button>

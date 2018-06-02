@@ -174,7 +174,7 @@ class Home extends Component {
         </div>
         <div className="content-inner">
           <div className="coins-market">
-            <Tabs tabBarExtraContent={searchBar} onChange={this.handleSwitchTabs}>
+            <Tabs tabBarExtraContent={searchBar} defaultActiveKey={'USDT'} onChange={this.handleSwitchTabs}>
               {['optional', 'USDT', 'ETH', 'BTC'].map(market => (
                 <TabPane
                   tab={market === 'optional' ? (

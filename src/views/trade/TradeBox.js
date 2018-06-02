@@ -34,6 +34,23 @@ class TradeBox extends Component {
       });
     }
   }
+
+  componentWillUpdate(nextProps, nextState) {
+    const { marketName, coinName } = this.props;
+    if (nextProps.marketName !== marketName) {
+      this.getCoinVolume({
+        coinType: 'mainVolume',
+        symbol: nextProps.marketName
+      });
+    }
+    if (nextProps.coinName !== coinName) {
+      this.getCoinVolume({
+        coinType: 'coinVolume',
+        symbol: nextProps.coinName
+      });
+    }
+  }
+
   // 根据币种名称获取资产
   getCoinVolume = ({ coinType, symbol }) => {
     request(`/coin/volume/symbol/${symbol}`, {
@@ -54,7 +71,7 @@ class TradeBox extends Component {
     return [
       <div key="info" className="property-info">
         <span>
-          {marketName} 可用 {mainVolume}
+          {marketName} 可用 {mainVolume.toFixed(8)}
           {false && (
             <Link className="recharge-link" to="#">
               充币
@@ -62,7 +79,7 @@ class TradeBox extends Component {
           )}
         </span>
         <span>
-          {coinName} 可用 {coinVolume}
+          {coinName} 可用 {coinVolume.toFixed(8)}
           {false && (
             <Link className="recharge-link" to="#">
               充币
@@ -76,6 +93,7 @@ class TradeBox extends Component {
         tradeType={tradeType}
         marketName={marketName}
         coinName={coinName}
+        mainVolume={mainVolume}
       />,
       <TradeForm
         key="sell"
@@ -83,6 +101,7 @@ class TradeBox extends Component {
         tradeType={tradeType}
         marketName={marketName}
         coinName={coinName}
+        coinVolume={coinVolume}
       />
     ];
   }
