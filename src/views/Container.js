@@ -13,6 +13,7 @@ class Container extends Component {
       return new Promise((resolve, reject) => {
         props.request(url, options).then(json => {
           if (json.code === -5) {
+            //登录失效
             this.setState({ isLogin: false });
             sessionStorage.clear();
             props.history.push('/signin');
@@ -25,8 +26,36 @@ class Container extends Component {
   }
 
   state = {
-    isLogin: false
+    isLogin: false,
+    language: {
+      value: 'zh',
+      name: '中文'
+    },
+    localization: {}
   };
+
+  componentWillMount() {
+    this.getLanguage(this.state.language);
+  }
+
+  switchLanguage(language) {
+    this.getLanguage(language);
+    this.setState({ language });
+  }
+
+  getLanguage(language) {
+    fetch(`language/${language.value}.json`, {
+      method: 'GET'
+    })
+      .then(response => {
+        if (response.status === 200) {
+          return response.json();
+        }
+      })
+      .then(json => {
+        this.setState({ localization: json });
+      });
+  }
 
   componentDidMount() {
     const isLogin = !!sessionStorage.getItem('account');
@@ -52,7 +81,7 @@ class Container extends Component {
   };
 
   render() {
-    const { isLogin } = this.state;
+    const { isLogin, language, localization } = this.state;
     return (
       <div className="container">
         <header className="header">
@@ -61,7 +90,7 @@ class Container extends Component {
           </Link>
           <ul className="nav-bar">
             <li>
-              <Link to="/trade">交易中心</Link>
+              <Link to="/trade">{localization['交易中心']}</Link>
             </li>
             <li>
               <Link to="/c2c">C2C</Link>
@@ -93,10 +122,15 @@ class Container extends Component {
           <div className="select-bar language">
             <i className="iconfont icon-diqiu" />
             <i className="iconfont icon-jiantou_down" />
-            <span>中文</span>
+            <span>{language.name}</span>
             <ul className="select-list">
-              <li>中文</li>
-              <li>英文</li>
+              {[{ name: '中文', value: 'zh' }, { name: '英文', value: 'en' }].map(language => {
+                return (
+                  <li key={language.value} onClick={this.switchLanguage.bind(this, language)}>
+                    {language.name}
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </header>

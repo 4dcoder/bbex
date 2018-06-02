@@ -33,7 +33,7 @@ class Trade extends Component {
     listType: -1,
     mergeNumber: 8,
     orderStatus: 0,
-    coinDetail: '',
+    coinDetail: ''
   };
 
   request = window.request;
@@ -92,7 +92,7 @@ class Trade extends Component {
   };
 
   // 获取币种详情
-  getCoinDetail = (coinName) => {
+  getCoinDetail = coinName => {
     this.request(`/coin/detail/${coinName}`, {
       method: 'GET'
     }).then(json => {
@@ -157,7 +157,7 @@ class Trade extends Component {
     streamWS.onopen = evt => {
       console.log('stream Websocket Connection open ...');
       let t = setInterval(() => {
-        if(!streamWS) {
+        if (!streamWS) {
           clearInterval(t);
           return;
         }
@@ -230,12 +230,14 @@ class Trade extends Component {
     buyandsellWS.onopen = evt => {
       console.log('buyandsell Websocket Connection open ...');
       let t = setInterval(() => {
-        if(!buyandsellWS) {
+        if (!buyandsellWS) {
           clearInterval(t);
           return;
         }
         buyandsellWS.send('ping');
       }, 1000 * 3);
+      // 给 buyandsell websocket 发消息 切换交易对
+      buyandsellWS.send(`${coinName}_${marketName}`);
     };
 
     buyandsellWS.onmessage = evt => {
@@ -303,7 +305,7 @@ class Trade extends Component {
     userWS.onopen = evt => {
       console.log('user Websocket Connection open ...');
       let t = setInterval(() => {
-        if(!userWS) {
+        if (!userWS) {
           clearInterval(t);
           return;
         }
@@ -371,7 +373,7 @@ class Trade extends Component {
       this.state.marketName !== nextState.marketName ||
       this.state.coinName !== nextState.coinName
     ) {
-      const { marketName, coinName } = nextState;
+      const { buyandsellWS, marketName, coinName } = nextState;
       this.getStream({
         coinMain: marketName,
         coinOther: coinName
@@ -381,9 +383,8 @@ class Trade extends Component {
         coinOther: coinName
       });
 
-      // 重新建 buyandsell websocket
-      this.state.buyandsellWS.close();
-      this.openBuyAndSellWebsocket();
+      // 给 buyandsell websocket 发消息 切换交易对
+      buyandsellWS.send(`${coinName}_${marketName}`);
     }
   }
 
@@ -835,10 +836,7 @@ class Trade extends Component {
                   }}
                 />
                 <div className="trade-plate-header-right">
-                  <Tooltip
-                    placement="rightTop"
-                    title={coinDetail}
-                  >
+                  <Tooltip placement="rightTop" title={coinDetail}>
                     <Button type="introduction">币种介绍</Button>
                   </Tooltip>
                 </div>
@@ -965,11 +963,15 @@ class Trade extends Component {
                       <tbody>
                         {tradeList &&
                           tradeList.sellOrderVOList.map((record, index, arr) => {
-                            const length = arr.length < 15 ? arr.length : 15;
+                            console.log('11111111111111: ', arr.length);
+                            const visibleLength = arr.length < 15 ? arr.length : 15;
+                            const startIndex = arr.length - visibleLength;
                             return (
-                              index < length && (
+                              index > startIndex && (
                                 <tr key={index}>
-                                  <td className="font-color-red">卖出{length - index}</td>
+                                  <td className="font-color-red">
+                                    卖出{visibleLength - index + startIndex}
+                                  </td>
                                   <td>{record.price}</td>
                                   <td>{record.volume}</td>
                                   {false && <td className="font-color-red">{record.sumTotal}</td>}
