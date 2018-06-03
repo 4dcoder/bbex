@@ -11,14 +11,14 @@ const datafeedConfig = params => {
 
     return {
         symbol,
-        debug: true,
+        debug: false,
         fullscreen: false,
         interval: resolution,
         container_id: 'tv_chart_container',
         datafeed: new Datafeeds.UDFCompatibleDatafeed(serverUrl, pushInterval),
         width: '100%',
         height: '380',
-        library_path: "charting_library/",
+        library_path: "./charting_library/",
         locale: 'zh',
         drawings_access: {
             type: 'black',

@@ -6,3 +6,4 @@ import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
+//  "proxy":"https://api.bbex.one"

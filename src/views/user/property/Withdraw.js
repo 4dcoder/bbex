@@ -111,7 +111,7 @@ class Withdraw extends Component {
   }
 
   render(){
-    const { id, name, volume, withdrawFee, withdrawFeeType, withdrawMaxVolume } = this.props;
+    const { id, name, volume, withdrawFee, withdrawFeeType, withdrawMaxVolume, withdrawMinVolume } = this.props;
     let { addressHistory, myCoinCount, address, fee } = this.state;
 
     return <div className="withdraw_content">
@@ -125,7 +125,7 @@ class Withdraw extends Component {
       </div>
       <ul className="count_top">
         <li className="title">数量</li>
-        <li className="title">可用限额 {volume}  限额: {withdrawMaxVolume}</li>
+        <li className="title">可用余额 {volume}  限额: {withdrawMaxVolume}</li>
       </ul>
       <Input placeholder="请输入数量" onChange={this.countChange} value={myCoinCount} size="large" />
          
@@ -153,7 +153,7 @@ class Withdraw extends Component {
             温馨提示
           </List.Item>
           <List.Item>
-            .最小提币数量为：300USDT
+            .最小提币数量为：{withdrawMinVolume}{name}
           </List.Item>
           <List.Item>
             .为保障资金安全，当您账户安全策略变更，密码修改，使用新地址提币。我们会对你提笔币进行人工审核，请耐心等待工作人员电话或邮件联系。

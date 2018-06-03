@@ -203,14 +203,23 @@ class Property extends Component {
             title: '可用资金',
             dataIndex: 'volume',
             key: 'volume',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '挂单金额',
             dataIndex: 'lockVolume',
             key: 'lockVolume',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '总计',
             dataIndex: 'totalPrice',
             key: 'totalPrice',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '操作',
             dataIndex: 'action',
