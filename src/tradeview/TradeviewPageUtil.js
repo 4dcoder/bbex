@@ -18,7 +18,7 @@ const datafeedConfig = params => {
         datafeed: new Datafeeds.UDFCompatibleDatafeed(serverUrl, pushInterval),
         width: '100%',
         height: '380',
-        library_path: "charting_library/",
+        library_path: "/charting_library/",
         locale: 'zh',
         drawings_access: {
             type: 'black',

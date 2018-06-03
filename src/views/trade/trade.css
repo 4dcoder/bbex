@@ -390,6 +390,13 @@
     margin-top: 10px;
 }
 
+.trade-form .ant-btn:disabled,
+.trade-form .ant-btn:disabled:hover {
+    color: #999;
+    background-color: #474747;
+    border-color: #5d5d5d;
+}
+
 /* 下拉菜单 */
 .content.trade .ant-dropdown {
     border: 1px solid #6e6e6e;
