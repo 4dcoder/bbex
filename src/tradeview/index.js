@@ -51,10 +51,10 @@ class TradeviewPage extends Component {
     const TradingView = window.TradingView;
     TradingView.onready(
       (() => {
-        const widget = window.tvWidget = new TradingView.widget(tradeviewPageUtil.datafeedConfig(params));
+        window.widget = window.tvWidget = new TradingView.widget(tradeviewPageUtil.datafeedConfig(params));
 
-        widget.onChartReady(() => {
-          tradeviewPageUtil.chartReady(widget);
+        window.widget.onChartReady(() => {
+          tradeviewPageUtil.chartReady(window.widget);
         });
       })()
     );
