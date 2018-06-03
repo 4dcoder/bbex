@@ -490,3 +490,7 @@ a:hover {
 .change_pwd_modal .ant-form-item{
     margin-bottom: 16px;
 }
+
+.property-modal .line_li{
+    margin-top: 10px;
+}

@@ -191,6 +191,9 @@ class Finance extends Component {
         title: '数量',
         dataIndex: 'volume',
         key: 'volume',
+        render: (text)=>{
+          return <div>{Number(text).toFixed(8)}</div>
+        }
       },
       {
         title: '状态',
@@ -241,6 +244,9 @@ class Finance extends Component {
         title: '数量',
         dataIndex: 'volume',
         key: 'volume',
+        render: (text)=>{
+          return <div>{Number(text).toFixed(8)}</div>
+        }
       },
       {
         title: '状态',
@@ -312,6 +318,9 @@ class Finance extends Component {
         title: '数量',
         dataIndex: 'volume',
         key: 'volume',
+        render: (text)=>{
+          return <div>{Number(text).toFixed(8)}</div>
+        }
       },
       {
         title: '状态',

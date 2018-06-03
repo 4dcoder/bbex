@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Input, Select, Button, Table, message } from 'antd';
+import { Tabs, Input, Select, Button, Table, message, List } from 'antd';
 import request from '../../../utils/request';
 import { stampToDate } from '../../../utils/index';
 import './transaction.css';
@@ -134,6 +134,7 @@ class Transaction extends Component {
   }
 
   currencyChange = (e) =>{
+    
     this.setState({currency: e.target.value});
   }
 
@@ -152,6 +153,7 @@ class Transaction extends Component {
 
   searchClick = () =>{
     let { currentTab, currency, coin } = this.state;
+    currency = currency.toUpperCase();
     if(currentTab=="current"){
       this.getCurrentTrade(1,currency,coin)
     } else if(currentTab=="record"){
@@ -163,8 +165,14 @@ class Transaction extends Component {
   }
 
   detailClick = (record) => {
-    this.setState({expendRecordKey: record.id});
-    this.getDetailList(record.id);
+    let { recordAllDetail, expendRecordKey } = this.state;
+    if(recordAllDetail.length>0&&expendRecordKey==record.id){
+      this.setState({expendRecordKey: ""});
+    } else{
+      this.setState({expendRecordKey: record.id});
+      this.getDetailList(record.id);
+    }
+    
   }
 
   getDetailList = (id)=>{
@@ -172,7 +180,8 @@ class Transaction extends Component {
       method: 'GET',
     }).then(json => {
         if (json.code === 10000000) {
-          this.setState({recordAllDetail: json.data.list})
+          
+          this.setState({recordAllDetail: json.data})
         } else {
             message.error(json.msg);
         }
@@ -211,13 +220,20 @@ class Transaction extends Component {
         title: '方向',
         dataIndex: 'exType',
         key: 'exType',
+        render: (text)=>{
+          if(text==0){
+            return <div>买入</div>
+          }else{
+            return <div>卖出</div>
+          }
+        }
       }, 
       {
         title: '价格',
         dataIndex: 'price',
         key: 'price',
         render: (text)=>{
-          return <div>{(text*1).toFixed(2)}</div>
+          return <div>{(Number(text*1)).toFixed(8)}</div>
         }
       }, 
       {
@@ -230,7 +246,7 @@ class Transaction extends Component {
         dataIndex: 'all',
         key: 'all',
         render: (text, record)=>{
-          return <div>{(record.price*record.askVolume).toFixed(4)}</div>
+          return <div>{(record.price*record.askVolume).toFixed(8)}</div>
         }
       }, 
       {
@@ -284,13 +300,20 @@ class Transaction extends Component {
         title: '方向',
         dataIndex: 'exType',
         key: 'exType',
+        render: (text)=>{
+          if(text==0){
+            return <div>买入</div>
+          }else{
+            return <div>卖出</div>
+          }
+        }
       }, 
       {
         title: '价格',
         dataIndex: 'price',
         key: 'price',
         render: (text)=>{
-          return <div>{(text*1).toFixed(2)}</div>
+          return <div>{(Number(text*1)).toFixed(8)}</div>
         }
       }, 
       {
@@ -302,6 +325,9 @@ class Transaction extends Component {
         title: '已成交',
         dataIndex: 'successVolume',
         key: 'successVolume',
+        render: (text)=>{
+          return <div>{Number(text).toFixed(8)}</div>
+        }
       }, 
       {
         title: '状态',
@@ -367,35 +393,48 @@ class Transaction extends Component {
         title: '方向',
         dataIndex: 'exType',
         key: 'exType',
+        render: (text)=>{
+          if(text==0){
+            return <div>买入</div>
+          }else{
+            return <div>卖出</div>
+          }
+        }
       }, 
       {
         title: '价格',
         dataIndex: 'price',
         key: 'price',
         render: (text)=>{
-          return <div>{(text*1).toFixed(2)}</div>
+          return <div>{(Number(text*1)).toFixed(8)}</div>
         }
       }, 
       {
         title: '数量',
         dataIndex: 'successVolume',
         key: 'successVolume',
+        render: (text)=>{
+          return <div>{(Number(text*1)).toFixed(8)}</div>
+        }
       }, 
       {
         title: '成交量额',
         dataIndex: 'toCoinVolume',
         key: 'toCoinVolume',
         render: (text, record)=>{
-          return <div>{(record.price*record.successVolume).toFixed(4)}</div>
+          return <div>{(record.price*record.successVolume).toFixed(8)}</div>
         }
       }, 
       {
         title: '手续费',
         dataIndex: 'exFee',
         key: 'exFee',
+        render: (text)=>{
+          return <div>{Number(text*1).toFixed(8)}</div>
+        }
       }, 
     ]
-    const { currency, expendRecordKey,currentTotal,recordTotal, currentList,recordList, detailList, detailTotal, coinList, coin } = this.state
+    const { currency, expendRecordKey,currentTotal,recordTotal, currentList,recordList, detailList, detailTotal, coinList, coin, recordAllDetail } = this.state
     return <div className="transation_content user-cont">
       <div className="search">
         <Input value={currency} onChange={this.currencyChange} placeholder='币种' style={{width: 80, borderRadius: 4}}/>
@@ -435,7 +474,30 @@ class Transaction extends Component {
                 }
               }}
               expandedRowRender={(record)=>{ 
-                return <p>1111</p>
+                return <div className="expend_content">
+                <List
+                  size="small"
+                  header={<ul className="expent_title">
+                    <li>时间</li>
+                    <li>价格</li>
+                    <li>数量</li>
+                    <li>成交额</li>
+                    <li>手续费</li>
+                  </ul>}
+                  dataSource={recordAllDetail}
+                  renderItem={item => (
+                    <List.Item className="list_lis">
+                      <ul className="list_item">
+                        <li>{stampToDate(item.createDate*1)}</li>
+                        <li>{Number(item.price).toFixed(8)}</li>
+                        <li>{Number(item.successVolume).toFixed(8)}</li>
+                        <li>{Number(item.price*item.successVolume).toFixed(8)}</li>
+                        <li>{Number(item.exFee).toFixed(8)}</li>
+                      </ul>
+                    </List.Item>
+                  )}
+                />
+                </div>
               }}
               expandedRowKeys={[expendRecordKey]}
             />

@@ -203,14 +203,23 @@ class Property extends Component {
             title: '可用资金',
             dataIndex: 'volume',
             key: 'volume',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '挂单金额',
             dataIndex: 'lockVolume',
             key: 'lockVolume',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '总计',
             dataIndex: 'totalPrice',
             key: 'totalPrice',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '操作',
             dataIndex: 'action',
@@ -249,21 +258,30 @@ class Property extends Component {
             key: 'volume',
             render: (text, record) => {
                 return <div className="available-col">
-                    <i className="iconfont icon-qianbao"></i> {text}
+                    <i className="iconfont icon-qianbao"></i> {Number(text).toFixed(8)}
                 </div>
             }
         }, {
             title: '广告冻结',
             dataIndex: 'advertVolume',
             key: 'advertVolume',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '交易冻结',
             dataIndex: 'lockVolume',
             key: 'lockVolume',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '总计',
             dataIndex: 'totalPrice',
             key: 'totalPrice',
+            render: (text)=>{
+                return <div>{Number(text).toFixed(8)}</div>
+            }
         }, {
             title: '操作',
             dataIndex: 'action',
@@ -332,7 +350,7 @@ class Property extends Component {
                             </h2>
                             <ul className="pull-right">
                                 <li>&nbsp;</li>
-                                <li className="assets-estimate">資產估算：0.000000 BTC</li>
+                                <li className="assets-estimate">资产估算：0.000000 BTC</li>
                             </ul>
                         </header>
                         <Table
@@ -361,7 +379,7 @@ class Property extends Component {
                                         disabled
                                     />
                                 </li>
-                                <li>
+                                <li className="line_li">
                                     <Input
                                         addonBefore='输入划转数量'
                                         size="large"

@@ -11,7 +11,7 @@ const datafeedConfig = params => {
 
     return {
         symbol,
-        debug: true,
+        debug: false,
         fullscreen: false,
         interval: resolution,
         container_id: 'tv_chart_container',
