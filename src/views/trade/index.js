@@ -9,6 +9,7 @@ import TradeBox from './TradeBox';
 import Tradeview from '../../tradeview';
 
 import './trade.css';
+import Detail from '../notice/Detail';
 
 const Search = Input.Search;
 const TabPane = Tabs.TabPane;
@@ -330,19 +331,17 @@ class Trade extends Component {
       const pendingList = pendingOrderList.filter(order => {
         if (order.orderNo === orderVo.orderNo) {
           isNewRecord = false;
-          order = orderVo;
-          order.price = order.price.toFixed(8);
-          order.volume = order.volume.toFixed(8);
-          order.successVolume = order.successVolume.toFixed(8);
+          order.status = orderVo.status;
+          order.exType = order.exType;
         }
         return order.status !== 2;
       });
 
       if (isNewRecord) {
         orderVo.key = orderVo.orderNo;
-        orderVo.price = orderVo.price.toFixed(8);
-        orderVo.volume = orderVo.volume.toFixed(8);
-        orderVo.successVolume = orderVo.successVolume.toFixed(8);
+        orderVo.price = orderVo.price && orderVo.price.toFixed(8);
+        orderVo.volume = orderVo.volume && orderVo.volume.toFixed(8);
+        orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
         pendingList.unshift(orderVo);
       }
 
@@ -1117,8 +1116,35 @@ class Trade extends Component {
                 <Scrollbars>
                   <Table
                     columns={orderColumns}
+                    onExpand={this.handleExpand}
                     dataSource={completedOrderList}
                     pagination={false}
+                    expandedRowRender={record =>
+                      record.orderDetail && (
+                        <ul className="order-detail">
+                          <li>
+                            <span>数量</span>
+                            <span>成交额</span>
+                            <span>手续费</span>
+                          </li>
+                          <li>
+                            <span>3.12345674</span>
+                            <span>234.89056432</span>
+                            <span>5.40957673</span>
+                          </li>
+                          <li>
+                            <span>3.12345674</span>
+                            <span>234.89056432</span>
+                            <span>5.40957673</span>
+                          </li>
+                          <li>
+                            <span>3.12345674</span>
+                            <span>234.89056432</span>
+                            <span>5.40957673</span>
+                          </li>
+                        </ul>
+                      )
+                    }
                   />
                 </Scrollbars>
               </TabPane>

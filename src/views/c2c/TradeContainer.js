@@ -300,15 +300,15 @@ class TradeContainer extends Component {
     if (JSON.parse(sessionStorage.getItem('account'))) {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
       var ws = new window.ReconnectingWebSocket(`${WS_ADDRESS}/bbex/bbusersocket?${userId}`);
+
+      setInterval(() => {
+        if (ws.readyState === 1) {
+          ws.send('ping');
+        }
+      }, 1000 * 3);
+
       ws.onopen = evt => {
         console.log('Connection open ...');
-        let t = setInterval(() => {
-          if(!ws) {
-            clearInterval(t);
-            return;
-          }
-          ws.send('ping');
-        }, 1000 * 3);
       };
 
       ws.onmessage = evt => {
