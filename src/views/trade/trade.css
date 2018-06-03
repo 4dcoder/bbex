@@ -339,6 +339,7 @@
 }
 .trade-form .ant-input-number-handler-wrap {
     width: 30px;
+    opacity: 1;
     background-color: #343c4c;
 }
 .trade-form .ant-input-number-handler {

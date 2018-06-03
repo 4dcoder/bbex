@@ -152,12 +152,6 @@ class Trade extends Component {
     if (sessionStorage.getItem('account')) {
       this.openUserWebsocket();
     }
-
-    window.onbeforeunload = function(event) {
-      console.log('关闭WebSocket连接！');
-      debugger;
-      // webSocket.close();
-    };
   }
 
   openStreamWebsocket = () => {
@@ -337,12 +331,18 @@ class Trade extends Component {
         if (order.orderNo === orderVo.orderNo) {
           isNewRecord = false;
           order = orderVo;
+          order.price = order.price.toFixed(8);
+          order.volume = order.volume.toFixed(8);
+          order.successVolume = order.successVolume.toFixed(8);
         }
         return order.status !== 2;
       });
 
       if (isNewRecord) {
         orderVo.key = orderVo.orderNo;
+        orderVo.price = orderVo.price.toFixed(8);
+        orderVo.volume = orderVo.volume.toFixed(8);
+        orderVo.successVolume = orderVo.successVolume.toFixed(8);
         pendingList.unshift(orderVo);
       }
 
@@ -422,7 +422,7 @@ class Trade extends Component {
           if (key === this.state.market && !getQueryString('coin')) {
             this.setState({
               coinName: json.data[key][0].coinOther,
-              coinPrice: json.data[key][0].latestPrice || 0,
+              coinPrice: json.data[key][0].latestPrice || 0
             });
           }
           const coins = json.data[key].map(coin => {
@@ -503,7 +503,7 @@ class Trade extends Component {
     this.setState({
       marketName: market,
       coinName: coin.coinOther,
-      coinPrice: coin.latestPrice || 0,
+      coinPrice: coin.latestPrice || 0
     });
     //重新获取币种详情
     this.getCoinDetail(coin.coinOther);
@@ -684,7 +684,7 @@ class Trade extends Component {
           currentCoin = {
             highestPrice: coin.highestPrice || 0,
             lowerPrice: coin.lowerPrice || 0,
-            dayCount: coin.dayCount || 0,
+            dayCount: coin.dayCount || 0
           };
           currentCoin.change = (coin.latestPrice - coin.firstPrice) / coin.firstPrice || 0;
           currentCoin.trend = currentCoin.change > 0 ? 'green' : 'red';
@@ -900,15 +900,17 @@ class Trade extends Component {
                     tradeType="limit"
                   />
                 </TabPane>
-                <TabPane tab="市价交易" key="2">
-                  <TradeBox
-                    marketName={marketName}
-                    coinName={coinName}
-                    mainVolume={mainVolume}
-                    coinVolume={coinVolume}
-                    tradeType="market"
-                  />
-                </TabPane>
+                {false && (
+                  <TabPane tab="市价交易" key="2">
+                    <TradeBox
+                      marketName={marketName}
+                      coinName={coinName}
+                      mainVolume={mainVolume}
+                      coinVolume={coinVolume}
+                      tradeType="market"
+                    />
+                  </TabPane>
+                )}
                 {false && (
                   <TabPane
                     tab={
@@ -1022,7 +1024,10 @@ class Trade extends Component {
                           : 'font-color-green'
                       }
                     >
-                      {streamList && streamList.length > 0 && streamList[0].price.toFixed(8)}
+                      {(streamList && streamList.length > 0 && streamList[0].price
+                        ? streamList[0].price
+                        : 0
+                      ).toFixed(8)}
                       <i
                         className={classnames({
                           iconfont: true,

@@ -28,7 +28,7 @@ class Container extends Component {
   state = {
     isLogin: false,
     language: {
-      value: 'zh',
+      value: 'zh_CN',
       name: '中文'
     },
     localization: {}
@@ -90,7 +90,7 @@ class Container extends Component {
           </Link>
           <ul className="nav-bar">
             <li>
-              <Link to="/trade">{localization['交易中心']}</Link>
+              <Link to="/trade">{localization['exchange']}</Link>
             </li>
             <li>
               <Link to="/c2c">C2C</Link>
@@ -124,7 +124,7 @@ class Container extends Component {
             <i className="iconfont icon-jiantou_down" />
             <span>{language.name}</span>
             <ul className="select-list">
-              {[{ name: '中文', value: 'zh' }, { name: '英文', value: 'en' }].map(language => {
+              {[{ name: '中文', value: 'zh_CN' }, { name: '英文', value: 'en' }].map(language => {
                 return (
                   <li key={language.value} onClick={this.switchLanguage.bind(this, language)}>
                     {language.name}

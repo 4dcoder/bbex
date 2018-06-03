@@ -425,6 +425,12 @@ a:hover {
     border-color: #f50!important;
     background-color: #f50!important;
 }
+.ant-btn:disabled,
+.ant-btn:disabled:hover {
+    color: #999;
+    background-color: #474747;
+    border-color: #5d5d5d;
+}
 
 
 /* 广告条 */
