@@ -88,7 +88,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const App = () => (
   <Router>
-    <Container request={request}>
+      <Container request={request}>
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/trade" component={Trade} />
@@ -103,7 +103,7 @@ const App = () => (
           <Route path="/notice/:id" component={Detail} />
           <Route path="*" component={NotFound} />
         </Switch>
-    </Container>
+      </Container>
   </Router>
 );
 

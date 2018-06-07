@@ -7,9 +7,7 @@ import { stampToDate, getQueryString } from '../../utils';
 import { WS_ADDRESS } from '../../utils/constants';
 import TradeBox from './TradeBox';
 import Tradeview from '../../tradeview';
-
 import './trade.css';
-import Detail from '../notice/Detail';
 
 const Search = Input.Search;
 const TabPane = Tabs.TabPane;
@@ -497,10 +495,10 @@ class Trade extends Component {
 
   // 选择币种
   selectCoin = coin => {
-    const { market, orderStatus } = this.state;
-    this.props.history.push(`/trade?market=${market}&coin=${coin.coinOther}`);
+    const { orderStatus } = this.state;
+    this.props.history.push(`/trade?market=${coin.coinMain}&coin=${coin.coinOther}`);
     this.setState({
-      marketName: market,
+      marketName: coin.coinMain,
       coinName: coin.coinOther,
       coinPrice: coin.latestPrice || 0
     });
@@ -510,7 +508,7 @@ class Trade extends Component {
     if (sessionStorage.getItem('account')) {
       this.findOrderList({
         status: orderStatus,
-        marketName: market,
+        marketName: coin.coinMain,
         coinName: coin.coinOther
       });
     }
@@ -599,7 +597,7 @@ class Trade extends Component {
       if (market === 'optional') {
         Object.values(coinList).forEach(coins => {
           coins = coins.filter(coin => coin.favorite);
-          Object.assign(pairList, coins);
+          pairList = [...pairList, ...coins];
         });
       } else {
         pairList = coinList[market] || [];
@@ -790,7 +788,9 @@ class Trade extends Component {
                 <span className="trade-plate-header-text">最新成交</span>
               </header>
               <div className="trade-plate-tit cell-3">
-                <div className="trade-plate-tit-cell">成交时间</div>
+                <div className="trade-plate-tit-cell" style={{ paddingLeft: 25 }}>
+                  成交时间
+                </div>
                 <div className="trade-plate-tit-cell">成交价格</div>
                 <div className="trade-plate-tit-cell">成交量</div>
               </div>
@@ -803,7 +803,9 @@ class Trade extends Component {
                           const trend = stream.type === 0 ? 'green' : 'red';
                           return (
                             <tr key={stream.date} className={`font-color-${trend}`}>
-                              <td>{stampToDate(Number(stream.date), 'hh:mm:ss')}</td>
+                              <td style={{ paddingLeft: 25 }}>
+                                {stampToDate(Number(stream.date), 'hh:mm:ss')}
+                              </td>
                               <td>{stream.price.toFixed(8)}</td>
                               <td>{stream.volume.toFixed(8)}</td>
                             </tr>
@@ -1084,7 +1086,9 @@ class Trade extends Component {
                                 </td>
                                 <td>{record.price.toFixed(8)}</td>
                                 <td>{record.volume.toFixed(8)}</td>
-                                <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
+                                {false && (
+                                  <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
+                                )}
                               </tr>
                             );
                           })}

@@ -62,6 +62,10 @@ class Home extends Component {
         Object.keys(json.data).forEach(key => {
           tradeExpair[key] = json.data[key].map(coin => {
             coin.key = coin.coinOther;
+            coin.latestPrice = (coin.latestPrice || 0).toFixed(8);
+            coin.highestPrice = (coin.highestPrice || 0).toFixed(8);
+            coin.lowerPrice = (coin.lowerPrice || 0).toFixed(8);
+            coin.dayCount = (coin.dayCount || 0).toFixed(8);
             return coin;
           });
         });
@@ -174,17 +178,23 @@ class Home extends Component {
         </div>
         <div className="content-inner">
           <div className="coins-market">
-            <Tabs tabBarExtraContent={searchBar} defaultActiveKey={'USDT'} onChange={this.handleSwitchTabs}>
+            <Tabs
+              tabBarExtraContent={searchBar}
+              defaultActiveKey={'USDT'}
+              onChange={this.handleSwitchTabs}
+            >
               {['optional', 'USDT', 'ETH', 'BTC'].map(market => (
                 <TabPane
-                  tab={market === 'optional' ? (
-                    <span>
-                      <i className="iconfont icon-shoucang-active" />
-                      自选市场
-                    </span>
-                  ) : (
-                    `${market} 市场`
-                  )}
+                  tab={
+                    market === 'optional' ? (
+                      <span>
+                        <i className="iconfont icon-shoucang-active" />
+                        自选市场
+                      </span>
+                    ) : (
+                      `${market} 市场`
+                    )
+                  }
                   key={market}
                 >
                   <Table
