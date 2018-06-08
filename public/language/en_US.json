@@ -3,7 +3,6 @@
   "c2c": "C2C TRADING",
   "signin": "Sign in",
   "signup": "Sign up",
-  "favorites": "Favorites",
   "Market_risk": "Market risk investment needs to be cautious",
   "about_us": "About Us",
   "exchange_links": "Exchange Links",
@@ -21,5 +20,15 @@
   "contact_us": "Contact Us",
   "contact_email": "Contact Email",
   "friendship_links": "Friendship Links",
-  "markets": "Markets"
+  "markets": "Markets",
+  "favorite": "Favorite",
+  "partner": "Partner",
+  "more": "More",
+  "enter_keywords": "Enter Keywords",
+  "coin": "Coin",
+  "latest_price": "Latest Price",
+  "change": "Change",
+  "high": "High",
+  "low": "Low",
+  "volume": "Volume"
 }

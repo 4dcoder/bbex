@@ -31,8 +31,7 @@ class Container extends Component {
       value: 'zh_CN',
       name: '中文'
     },
-    locale: {},
-    localization: {}
+    locale: {}
   };
 
   componentWillMount() {
@@ -54,7 +53,7 @@ class Container extends Component {
         }
       })
       .then(json => {
-        this.setState({ localization: json });
+        this.props.onGetLocalization(json);
       });
 
     //获取antd语言包
@@ -88,30 +87,8 @@ class Container extends Component {
   };
 
   render() {
-    const { isLogin, language, locale, localization } = this.state;
-    const {
-      exchange,
-      c2c,
-      signin,
-      signup,
-      Market_risk,
-      about_us,
-      exchange_links,
-      coin_apply,
-      customer_support,
-      service_agreement,
-      privacy_statement,
-      rate_standard,
-      legal_notices,
-      other,
-      announcement_center,
-      common_problem,
-      currency_introduction,
-      submit_order,
-      contact_us,
-      contact_email,
-      friendship_links
-    } = localization;
+    const { localization } = this.props;
+    const { isLogin, language, locale } = this.state;
     return (
       <LocaleProvider locale={locale}>
         <div className="container">
@@ -121,18 +98,18 @@ class Container extends Component {
             </Link>
             <ul className="nav-bar">
               <li>
-                <Link to="/trade">{exchange}</Link>
+                <Link to="/trade">{localization['exchange']}</Link>
               </li>
               <li>
-                <Link to="/c2c">{c2c}</Link>
+                <Link to="/c2c">{localization['c2c']}</Link>
               </li>
             </ul>
             {!isLogin && (
               <div className="user-status">
                 <i className="iconfont icon-yonghu" />
-                <Link to="/signin">{signin}</Link>
+                <Link to="/signin">{localization['signin']}</Link>
                 /
-                <Link to="/signup">{signup}</Link>
+                <Link to="/signup">{localization['signup']}</Link>
               </div>
             )}
             {isLogin && (
@@ -175,33 +152,33 @@ class Container extends Component {
               <div className="footer-main clear">
                 <div className="footer-logo">
                   <img src={logo} alt="logo" width="108" height="68" />
-                  <p>{Market_risk}</p>
+                  <p>{localization['Market_risk']}</p>
                 </div>
                 <div className="footer-main-right">
                   <ul className="footer-nav clear">
                     <li>
-                      <span>{about_us}</span>
-                      <Link to="javascript:void(0)">{about_us}</Link>
-                      <Link to="javascript:void(0)">{exchange_links}</Link>
-                      <Link to="javascript:void(0)">{coin_apply}</Link>
+                      <span>{localization['about_us']}</span>
+                      <Link to="javascript:void(0)">{localization['about_us']}</Link>
+                      <Link to="javascript:void(0)">{localization['exchange_links']}</Link>
+                      <Link to="javascript:void(0)">{localization['coin_apply']}</Link>
                     </li>
                     <li>
-                      <span>{customer_support}</span>
-                      <Link to="javascript:void(0)">{service_agreement}</Link>
-                      <Link to="javascript:void(0)">{privacy_statement}</Link>
-                      <Link to="javascript:void(0)">{rate_standard}</Link>
-                      <Link to="javascript:void(0)">{legal_notices}</Link>
+                      <span>{localization['customer_support']}</span>
+                      <Link to="javascript:void(0)">{localization['service_agreement']}</Link>
+                      <Link to="javascript:void(0)">{localization['privacy_statement']}</Link>
+                      <Link to="javascript:void(0)">{localization['rate_standard']}</Link>
+                      <Link to="javascript:void(0)">{localization['legal_notices']}</Link>
                     </li>
                     <li>
-                      <span>{other}</span>
-                      <Link to="javascript:void(0)">{announcement_center}</Link>
-                      <Link to="javascript:void(0)">{common_problem}</Link>
-                      <Link to="javascript:void(0)">{currency_introduction}</Link>
-                      <Link to="javascript:void(0)">{submit_order}</Link>
+                      <span>{localization['other']}</span>
+                      <Link to="javascript:void(0)">{localization['announcement_center']}</Link>
+                      <Link to="javascript:void(0)">{localization['common_problem']}</Link>
+                      <Link to="javascript:void(0)">{localization['currency_introduction']}</Link>
+                      <Link to="javascript:void(0)">{localization['submit_order']}</Link>
                     </li>
                   </ul>
                   <ul className="footer-contact">
-                    <li>{contact_us}</li>
+                    <li>{localization['contact_us']}</li>
                     <li>
                       <Link to="javascript:void(0)" target="_blank" rel="noopener noreferrer">
                         <i className="iconfont icon-weixin" />
@@ -214,13 +191,13 @@ class Container extends Component {
                       </Link>
                     </li>
                     <li>
-                      {contact_email}：<Link to="mailto: support@bbex.com">support@bbex.com</Link>
+                      {localization['contact_email']}：<Link to="mailto: support@bbex.com">support@bbex.com</Link>
                     </li>
                   </ul>
                 </div>
               </div>
               <div className="footer-link">
-                {friendship_links}：
+                {localization['friendship_links']}：
                 <Link to="https://www.coinmarketcap.com" target="_blank" rel="noopener noreferrer">
                   coinmarketcap
                 </Link>

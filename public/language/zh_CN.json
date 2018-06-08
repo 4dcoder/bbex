@@ -3,8 +3,6 @@
   "c2c": "C2C 交易",
   "signin": "登录",
   "signup": "注册",
-  "favorites": "自选",
-  "partner": "合作伙伴",
   "Market_risk": "市场有风险 投资需谨慎",
   "about_us": "关于我们",
   "exchange_links": "交换链接",
@@ -22,5 +20,15 @@
   "contact_us": "联系我们",
   "contact_email": "联系邮箱",
   "friendship_links": "友情链接",
-  "markets": "市场"
+  "markets": "市场",
+  "favorite": "自选",
+  "partner": "合作伙伴",
+  "more": "更多",
+  "enter_keywords": "输入关键字",
+  "coin": "币种",
+  "latest_price": "最新价",
+  "change": "涨跌幅",
+  "high": "最高价",
+  "low": "最低价",
+  "volume": "成交额"
 }

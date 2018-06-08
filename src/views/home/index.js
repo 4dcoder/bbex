@@ -17,9 +17,6 @@ import partner6 from '../../assets/images/partner/Jlab.png';
 
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
-const searchBar = (
-  <Search placeholder="输入关键词" onSearch={value => console.log(value)} style={{ width: 200 }} />
-);
 
 class Home extends Component {
   state = {
@@ -97,13 +94,14 @@ class Home extends Component {
   };
 
   render() {
+    const { localization } = this.props;
     let { banners, coinType, sortedInfo, tradeExpair } = this.state;
     coinType = coinType === 'my' ? '' : coinType;
     sortedInfo = sortedInfo || {};
 
     const columns = [
       {
-        title: '币种',
+        title: localization['coin'],
         dataIndex: 'coinOther',
         key: 'coinOther',
         sorter: (a, b) => a.coin.length - b.coin.length,
@@ -121,14 +119,14 @@ class Home extends Component {
         )
       },
       {
-        title: `最新价${coinType && `(${coinType})`}`,
+        title: `${localization['latest_price']}${coinType && `(${coinType})`}`,
         dataIndex: 'latestPrice',
         key: 'latestPrice',
         sorter: (a, b) => a.price - b.price,
         sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order
       },
       {
-        title: '涨跌幅',
+        title: localization['change'],
         dataIndex: 'change',
         key: 'change',
         sorter: (a, b) => a.change - b.change,
@@ -140,17 +138,17 @@ class Home extends Component {
         }
       },
       {
-        title: '最高价',
+        title: localization['high'],
         dataIndex: 'highestPrice',
         key: 'highestPrice'
       },
       {
-        title: '最低价',
+        title: localization['low'],
         dataIndex: 'lowerPrice',
         key: 'lowerPrice'
       },
       {
-        title: `成交额${coinType && `(${coinType})`}`,
+        title: `${localization['volume']}${coinType && `(${coinType})`}`,
         dataIndex: 'dayCount',
         key: 'dayCount',
         sorter: (a, b) => a.total - b.total,
@@ -174,12 +172,18 @@ class Home extends Component {
             })}
         </Carousel>
         <div className="content-inner">
-          <NoticeBar />
+          <NoticeBar {...{ localization }} />
         </div>
         <div className="content-inner">
           <div className="coins-market">
             <Tabs
-              tabBarExtraContent={searchBar}
+              tabBarExtraContent={
+                <Search
+                  placeholder={localization['enter_keywords']}
+                  onSearch={value => console.log(value)}
+                  style={{ width: 200 }}
+                />
+              }
               defaultActiveKey={'USDT'}
               onChange={this.handleSwitchTabs}
             >
@@ -189,10 +193,10 @@ class Home extends Component {
                     market === 'optional' ? (
                       <span>
                         <i className="iconfont icon-shoucang-active" />
-                        自选市场
+                        {localization['favorite']}
                       </span>
                     ) : (
-                      `${market} 市场`
+                      `${market} ${localization['markets']}`
                     )
                   }
                   key={market}
@@ -213,7 +217,7 @@ class Home extends Component {
         </div>
         <div className="partner">
           <div className="partner-inner">
-            <h2>-合作伙伴-</h2>
+            <h2>-{localization['partner']}-</h2>
             <ul className="content-inner">
               <li>
                 <a href="https://po.im/#/home" target="_blank" rel="noopener noreferrer">

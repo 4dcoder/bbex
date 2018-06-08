@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
@@ -77,34 +77,59 @@ const NotFound = Loadable({
   loading: Loading
 });
 
+const NormalRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={props => <Component {...props} {...rest} />} />
+);
+
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      sessionStorage.getItem('account') ? <Component {...props} /> : <Redirect to="/signin" />
+      sessionStorage.getItem('account') ? (
+        <Component {...props} {...rest} />
+      ) : (
+        <Redirect to="/signin" />
+      )
     }
   />
 );
 
-const App = () => (
-  <Router>
-      <Container request={request}>
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/trade" component={Trade} />
-          <Route path="/signin" component={SignIn} />
-          <Route path="/signup" component={SignUp} />
-          <Route path="/reset" component={Reset} />
-          <Route path="/resetPassword" component={ResetPassword} />
-          <PrivateRoute path="/user" component={User} />
-          <PrivateRoute path="/authentication" component={Authentication} />
-          <Route path="/c2c" component={C2c} />
-          <Route exact path="/notice" component={Notice} />
-          <Route path="/notice/:id" component={Detail} />
-          <Route path="*" component={NotFound} />
-        </Switch>
-      </Container>
-  </Router>
-);
+class App extends Component {
+  state = {
+    localization: {}
+  };
+
+  handleGetLocalization = localization => {
+    this.setState({ localization });
+  };
+
+  render() {
+    const { localization } = this.state;
+    return (
+      <Router>
+        <Container
+          request={request}
+          {...{ localization }}
+          onGetLocalization={this.handleGetLocalization}
+        >
+          <Switch>
+            <NormalRoute exact path="/" component={Home} {...{ localization }} />
+            <NormalRoute path="/trade" component={Trade} {...{ localization }} />
+            <NormalRoute path="/signin" component={SignIn} {...{ localization }} />
+            <NormalRoute path="/signup" component={SignUp} {...{ localization }} />
+            <NormalRoute path="/reset" component={Reset} {...{ localization }} />
+            <NormalRoute path="/resetPassword" component={ResetPassword} {...{ localization }} />
+            <PrivateRoute path="/user" component={User} {...{ localization }} />
+            <PrivateRoute path="/authentication" component={Authentication} {...{ localization }} />
+            <NormalRoute path="/c2c" component={C2c} {...{ localization }} />
+            <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
+            <NormalRoute path="/notice/:id" component={Detail} {...{ localization }} />
+            <NormalRoute path="*" component={NotFound} {...{ localization }} />
+          </Switch>
+        </Container>
+      </Router>
+    );
+  }
+}
 
 export default App;
