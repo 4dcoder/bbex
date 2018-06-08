@@ -94,7 +94,7 @@ class Container extends Component {
         <div className="container">
           <header className="header">
             <Link className="logo" to="/">
-              <img src={logo} alt="logo" width="60" height="60" />
+              <img src={logo} alt="logo" width="108" height="68" />
             </Link>
             <ul className="nav-bar">
               <li>
@@ -152,7 +152,7 @@ class Container extends Component {
             <div className="footer-container">
               <div className="footer-main clear">
                 <div className="footer-logo">
-                  <img src={logo} alt="logo" width="60" height="60" />
+                  <img src={logo} alt="logo" width="108" height="68" />
                   <p>市场有风险 投资需谨慎</p>
                 </div>
                 <div className="footer-main-right">
