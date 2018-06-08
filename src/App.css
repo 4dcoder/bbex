@@ -43,10 +43,10 @@ a:hover {
 .header {
     z-index: 10;
     position: relative;
-    height: 60px;
+    height: 68px;
     padding: 0 176px 0 206px;
     border-bottom: 1px solid rgba(204, 210, 218, 0.16);
-    line-height: 58px;
+    line-height: 68px;
     color: rgb(153, 153, 153);
     background-color: rgb(1, 4, 6);
 }
@@ -171,7 +171,7 @@ a:hover {
 }
 .footer-main {
     padding: 60px 0 40px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15); 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 .footer-logo {
     float: left;
@@ -496,31 +496,32 @@ a:hover {
     margin-top: 10px;
 }
 
+
 /* loading */
 .loading-content, .loading-mask, .loading-wrapper {
     width: 100%;
     height: 100%
   }
-  
+
   .loading-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     z-index: 11
   }
-  
+
   .loading-content {
     position: relative
   }
-  
+
   .loading-wrapper.black .loading-mask {
     background: #152237
   }
-  
+
   .loading-mask {
     background: #fff
   }
-  
+
   .loading {
     position: absolute;
     top: 50%;
@@ -529,7 +530,7 @@ a:hover {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
   }
-  
+
   .loading span {
     display: inline-block;
     width: 3px;
@@ -538,21 +539,21 @@ a:hover {
     background: #01a3ff;
     -webkit-animation: load 1.04s ease infinite
   }
-  
+
   .loading span:last-child {
     margin-right: 0
   }
-  
+
   .loading-wrapper.body {
     position: fixed
   }
-  
+
   .loading-wrapper.body .loading span {
     width: 4px;
     margin-right: 6px;
     -webkit-animation: bodyLoad 1.04s ease infinite
   }
-  
+
   @-webkit-keyframes load {
     0%, to {
       height: 10px
@@ -562,7 +563,7 @@ a:hover {
       margin-top: -15px
     }
   }
-  
+
   @-webkit-keyframes bodyLoad {
     0%, to {
       height: 25px
@@ -572,22 +573,22 @@ a:hover {
       margin-top: -15px
     }
   }
-  
+
   .loading-wrapper.body .loading span:nth-child(2), .loading span:nth-child(2) {
     -webkit-animation-delay: .13s;
     animation-delay: .13s
   }
-  
+
   .loading-wrapper.body .loading span:nth-child(3), .loading span:nth-child(3) {
     -webkit-animation-delay: .26s;
     animation-delay: .26s
   }
-  
+
   .loading-wrapper.body .loading span:nth-child(4), .loading span:nth-child(4) {
     -webkit-animation-delay: .39s;
     animation-delay: .39s
   }
-  
+
   .loading-wrapper.body .loading span:nth-child(5), .loading span:nth-child(5) {
     -webkit-animation-delay: .52s;
     animation-delay: .52s

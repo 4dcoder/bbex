@@ -68,7 +68,7 @@ class TradeBox extends Component {
     const { tradeType, marketName, coinName } = this.props;
     const { mainVolume, coinVolume } = this.state;
 
-    return [
+    return [            
       <div key="info" className="property-info">
         <span>
           {marketName} 可用 {mainVolume.toFixed(8)}

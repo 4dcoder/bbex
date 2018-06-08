@@ -4,7 +4,7 @@ import { LocaleProvider } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
 
-import logo from '../logo.svg';
+import logo from '../Artboard 4.png';
 
 class Container extends Component {
   constructor(props, context) {
@@ -117,7 +117,7 @@ class Container extends Component {
         <div className="container">
           <header className="header">
             <Link className="logo" to="/">
-              <img src={logo} alt="logo" width="60" height="60" />
+              <img src={logo} alt="logo" width="108" height="68" />
             </Link>
             <ul className="nav-bar">
               <li>
@@ -174,7 +174,7 @@ class Container extends Component {
             <div className="footer-container">
               <div className="footer-main clear">
                 <div className="footer-logo">
-                  <img src={logo} alt="logo" width="60" height="60" />
+                  <img src={logo} alt="logo" width="108" height="68" />
                   <p>{Market_risk}</p>
                 </div>
                 <div className="footer-main-right">

@@ -468,6 +468,7 @@ class Trade extends Component {
 
   // 切换市场
   switchMarket = obj => {
+    console.log(obj);
     this.setState({ market: obj.key });
   };
 

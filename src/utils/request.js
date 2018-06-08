@@ -21,7 +21,7 @@ function request(url, { method = 'POST', headers, body } = {}) {
   return new Promise((resolve, reject) => {
     const opts = {
       method,
-      headers: {
+      headers: {    
         'Content-Type': 'application/x-www-form-urlencoded',
         ...headers
       }
