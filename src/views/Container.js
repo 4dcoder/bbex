@@ -4,7 +4,7 @@ import { LocaleProvider } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
 
-import logo from '../logo.svg';
+import logo from '../Artboard 4.png';
 
 class Container extends Component {
   constructor(props, context) {
@@ -56,7 +56,7 @@ class Container extends Component {
       .then(json => {
         this.setState({ localization: json });
       });
-    
+
     //获取antd语言包
     (async () => {
       const locale = await import(`antd/lib/locale-provider/${language.value}`);
@@ -147,6 +147,7 @@ class Container extends Component {
 
           {this.props.children}
 
+
           <footer className="footer">
             <div className="footer-container">
               <div className="footer-main clear">
@@ -195,6 +196,7 @@ class Container extends Component {
                     </li>
                   </ul>
                 </div>
+
               </div>
               <div className="footer-link">
                 友情链接：

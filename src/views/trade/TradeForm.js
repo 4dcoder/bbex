@@ -99,6 +99,7 @@ class TradeForm extends Component {
     };
 
     return (
+      
       <ul className="trade-form">
         {tradeType === 'stop' && (
           <li>
