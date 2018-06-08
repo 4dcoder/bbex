@@ -56,7 +56,7 @@ class Container extends Component {
       .then(json => {
         this.setState({ localization: json });
       });
-    
+
     //获取antd语言包
     (async () => {
       const locale = await import(`antd/lib/locale-provider/${language.value}`);
@@ -89,6 +89,29 @@ class Container extends Component {
 
   render() {
     const { isLogin, language, locale, localization } = this.state;
+    const {
+      exchange,
+      c2c,
+      signin,
+      signup,
+      Market_risk,
+      about_us,
+      exchange_links,
+      coin_apply,
+      customer_support,
+      service_agreement,
+      privacy_statement,
+      rate_standard,
+      legal_notices,
+      other,
+      announcement_center,
+      common_problem,
+      currency_introduction,
+      submit_order,
+      contact_us,
+      contact_email,
+      friendship_links
+    } = localization;
     return (
       <LocaleProvider locale={locale}>
         <div className="container">
@@ -98,18 +121,18 @@ class Container extends Component {
             </Link>
             <ul className="nav-bar">
               <li>
-                <Link to="/trade">{localization['exchange']}</Link>
+                <Link to="/trade">{exchange}</Link>
               </li>
               <li>
-                <Link to="/c2c">C2C</Link>
+                <Link to="/c2c">{c2c}</Link>
               </li>
             </ul>
             {!isLogin && (
               <div className="user-status">
                 <i className="iconfont icon-yonghu" />
-                <Link to="/signin">登录</Link>
+                <Link to="/signin">{signin}</Link>
                 /
-                <Link to="/register">注册</Link>
+                <Link to="/signup">{signup}</Link>
               </div>
             )}
             {isLogin && (
@@ -152,33 +175,33 @@ class Container extends Component {
               <div className="footer-main clear">
                 <div className="footer-logo">
                   <img src={logo} alt="logo" width="60" height="60" />
-                  <p>市场有风险 投资需谨慎</p>
+                  <p>{Market_risk}</p>
                 </div>
                 <div className="footer-main-right">
                   <ul className="footer-nav clear">
                     <li>
-                      <span>关于我们</span>
-                      <Link to="javascript:void(0)">关于我们</Link>
-                      <Link to="javascript:void(0)">交换链接</Link>
-                      <Link to="javascript:void(0)">上币申请</Link>
+                      <span>{about_us}</span>
+                      <Link to="javascript:void(0)">{about_us}</Link>
+                      <Link to="javascript:void(0)">{exchange_links}</Link>
+                      <Link to="javascript:void(0)">{coin_apply}</Link>
                     </li>
                     <li>
-                      <span>用户支持</span>
-                      <Link to="javascript:void(0)">服务协议</Link>
-                      <Link to="javascript:void(0)">隐私声明</Link>
-                      <Link to="javascript:void(0)">费率标准</Link>
-                      <Link to="javascript:void(0)">法律声明</Link>
+                      <span>{customer_support}</span>
+                      <Link to="javascript:void(0)">{service_agreement}</Link>
+                      <Link to="javascript:void(0)">{privacy_statement}</Link>
+                      <Link to="javascript:void(0)">{rate_standard}</Link>
+                      <Link to="javascript:void(0)">{legal_notices}</Link>
                     </li>
                     <li>
-                      <span>其他</span>
-                      <Link to="javascript:void(0)">公告中心</Link>
-                      <Link to="javascript:void(0)">常见问题</Link>
-                      <Link to="javascript:void(0)">币种介绍</Link>
-                      <Link to="javascript:void(0)">提交工单</Link>
+                      <span>{other}</span>
+                      <Link to="javascript:void(0)">{announcement_center}</Link>
+                      <Link to="javascript:void(0)">{common_problem}</Link>
+                      <Link to="javascript:void(0)">{currency_introduction}</Link>
+                      <Link to="javascript:void(0)">{submit_order}</Link>
                     </li>
                   </ul>
                   <ul className="footer-contact">
-                    <li>联系我们</li>
+                    <li>{contact_us}</li>
                     <li>
                       <Link to="javascript:void(0)" target="_blank" rel="noopener noreferrer">
                         <i className="iconfont icon-weixin" />
@@ -191,13 +214,13 @@ class Container extends Component {
                       </Link>
                     </li>
                     <li>
-                      联系邮箱：<Link to="mailto: support@bbex.com">support@bbex.com</Link>
+                      {contact_email}：<Link to="mailto: support@bbex.com">support@bbex.com</Link>
                     </li>
                   </ul>
                 </div>
               </div>
               <div className="footer-link">
-                友情链接：
+                {friendship_links}：
                 <Link to="https://www.coinmarketcap.com" target="_blank" rel="noopener noreferrer">
                   coinmarketcap
                 </Link>

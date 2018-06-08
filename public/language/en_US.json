@@ -1,4 +1,25 @@
 {
-  "exchange": "Exchange",
-  "market": "Market"
+  "exchange": "EXCHANGE",
+  "c2c": "C2C TRADING",
+  "signin": "Sign in",
+  "signup": "Sign up",
+  "favorites": "Favorites",
+  "Market_risk": "Market risk investment needs to be cautious",
+  "about_us": "About Us",
+  "exchange_links": "Exchange Links",
+  "coin_apply": "Coin Apply",
+  "customer_support": "Customer Support",
+  "service_agreement": "Service Agreement",
+  "privacy_statement": "Privacy Statement",
+  "rate_standard": "Rate Standard",
+  "legal_notices": "Legal Notice",
+  "other": "Other",
+  "announcement_center": "Announcement Center",
+  "common_problem": "Common Problem",
+  "currency_introduction": "Currency Introduction",
+  "submit_order": "Submit Order",
+  "contact_us": "Contact Us",
+  "contact_email": "Contact Email",
+  "friendship_links": "Friendship Links",
+  "markets": "Markets"
 }

@@ -313,11 +313,13 @@
     position: absolute;
     top: 12px;
     right: 45px;
+    z-index: 2;
 }
 .trade-form li .trade-form-coinName {
     position: absolute;
     top: 12px;
     right: 15px;
+    z-index: 2;
 }
 .trade-form li .trade-form-coinName.market {
     top: 44px;

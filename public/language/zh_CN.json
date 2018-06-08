@@ -1,4 +1,26 @@
 {
   "exchange": "交易中心",
-  "market": "市场"
+  "c2c": "C2C 交易",
+  "signin": "登录",
+  "signup": "注册",
+  "favorites": "自选",
+  "partner": "合作伙伴",
+  "Market_risk": "市场有风险 投资需谨慎",
+  "about_us": "关于我们",
+  "exchange_links": "交换链接",
+  "coin_apply": "上币申请",
+  "customer_support": "用户支持",
+  "service_agreement": "服务协议",
+  "privacy_statement": "隐私声明",
+  "rate_standard": "费率标准",
+  "legal_notices": "法律声明",
+  "other": "其他",
+  "announcement_center": "公告中心",
+  "common_problem": "常见问题",
+  "currency_introduction": "币种介绍",
+  "submit_order": "提交工单",
+  "contact_us": "联系我们",
+  "contact_email": "联系邮箱",
+  "friendship_links": "友情链接",
+  "markets": "市场"
 }

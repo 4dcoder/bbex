@@ -4,7 +4,7 @@ import { Button, message } from 'antd';
 import GraphicPopup from '../../components/graphic-popup';
 import request from '../../utils/request';
 
-class Register extends Component {
+class SignUp extends Component {
     state = {
         registerType: 2,
         mail: '',
@@ -138,4 +138,4 @@ class Register extends Component {
     }
 }
 
-export default Register;
+export default SignUp;

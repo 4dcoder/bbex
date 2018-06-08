@@ -27,13 +27,13 @@ const Trade = Loadable({
   loading: Loading
 });
 
-const Signin = Loadable({
+const SignIn = Loadable({
   loader: () => import('./views/signin'),
   loading: Loading
 });
 
-const Register = Loadable({
-  loader: () => import('./views/register'),
+const SignUp = Loadable({
+  loader: () => import('./views/signup'),
   loading: Loading
 });
 
@@ -92,8 +92,8 @@ const App = () => (
         <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/trade" component={Trade} />
-          <Route path="/signin" component={Signin} />
-          <Route path="/register" component={Register} />
+          <Route path="/signin" component={SignIn} />
+          <Route path="/signup" component={SignUp} />
           <Route path="/reset" component={Reset} />
           <Route path="/resetPassword" component={ResetPassword} />
           <PrivateRoute path="/user" component={User} />

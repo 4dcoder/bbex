@@ -5,7 +5,7 @@ import { IMAGES_ADDRESS } from '../../utils/constants';
 import request from '../../utils/request';
 import classnames from 'classnames';
 
-class Signin extends Component {
+class SignIn extends Component {
   state = {
     username: '',
     password: '',
@@ -144,7 +144,7 @@ class Signin extends Component {
                 忘记密码？
               </Link>{' '}
               <span className="pull-right">
-                还没账号？<Link to="/register">立即注册</Link>
+                还没账号？<Link to="/signup">立即注册</Link>
               </span>
             </li>
           </ul>
@@ -154,4 +154,4 @@ class Signin extends Component {
   }
 }
 
-export default Signin;
+export default SignIn;
