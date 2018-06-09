@@ -690,10 +690,11 @@ class Trade extends Component {
       });
     }
 
+    const { localization } = this.props;
     return (
       <div className="content trade">
         <div className="content-inner">
-          <NoticeBar />
+          <NoticeBar {...{localization}}/>
         </div>
         <div className="content-inner trade-area clear">
           <div className="trade-left">
