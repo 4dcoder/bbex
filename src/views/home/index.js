@@ -193,7 +193,7 @@ class Home extends Component {
                     market === 'optional' ? (
                       <span>
                         <i className="iconfont icon-shoucang-active" />
-                        {localization['favorite']}
+                        {localization['favorites']}
                       </span>
                     ) : (
                       `${market} ${localization['markets']}`

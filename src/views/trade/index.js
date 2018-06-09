@@ -694,7 +694,7 @@ class Trade extends Component {
     return (
       <div className="content trade">
         <div className="content-inner">
-          <NoticeBar {...{localization}}/>
+          <NoticeBar {...{ localization }} />
         </div>
         <div className="content-inner trade-area clear">
           <div className="trade-left">

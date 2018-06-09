@@ -117,12 +117,12 @@ class Container extends Component {
                 <div className="select-bar">
                   <i className="iconfont icon-yonghu" />
                   <i className="iconfont icon-jiantou_down" />
-                  <span>用户中心</span>
+                  <span>{localization['user_center']}</span>
                   <ul className="select-list">
                     <li>
-                      <Link to="/user">用户中心</Link>
+                      <Link to="/user">{localization['user_center']}</Link>
                     </li>
-                    <li onClick={this.logout}>退出</li>
+                    <li onClick={this.logout}>{localization['signout']}</li>
                   </ul>
                 </div>
               </div>

@@ -4,13 +4,6 @@
   min-width: 500px;
 }
 
-.transation_content .search{
-  position: absolute;
-  top: 40px;
-  right: 20px;
-  z-index: 2;
-}
-
 .transation_content .line{
   padding: 0 6px;
 }
