@@ -44,8 +44,9 @@ const datafeedConfig = params => {
           'left_toolbar',
           'header_indicators', //图表指标
           // 'header_settings', //设置
-          'header_resolutions' //时间下拉框
+          'header_resolutions', //时间下拉框
           // 'header_fullscreen_button' //全屏按钮
+          'volume_force_overlay'
         ],
         enabled_features: ['study_templates', 'hide_last_na_study_output'],
         charts_storage_url: 'http://saveload.tradingview.com',
@@ -61,7 +62,7 @@ const datafeedConfig = params => {
             "paneProperties.vertGridProperties.color": "#454545",
             "paneProperties.horzGridProperties.color": "#454545",
             "paneProperties.crossHairProperties.color": "#9194A3",
-            // "paneProperties.legendProperties.showLegend": false,
+            "paneProperties.legendProperties.showLegend": false,
             "paneProperties.legendProperties.showStudyArguments": true,
             "paneProperties.legendProperties.showStudyTitles": true,
             "paneProperties.legendProperties.showStudyValues": true,
