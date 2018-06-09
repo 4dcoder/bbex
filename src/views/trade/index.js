@@ -16,7 +16,9 @@ const Option = Select.Option;
 class Trade extends Component {
   state = {
     market: getQueryString('market') || 'USDT',
-    coinList: null,
+    tradeExpair: null,
+    searchList: null,
+    searchValue: '',
     marketName: getQueryString('market') || 'USDT',
     coinName: getQueryString('coin') || 'LOOM',
     mainVolume: 0,
@@ -134,7 +136,7 @@ class Trade extends Component {
 
   componentDidMount() {
     const { marketName, coinName } = this.state;
-    this.getCoinList();
+    this.gettradeExpair();
     this.getStream({
       coinMain: marketName,
       coinOther: coinName
@@ -175,11 +177,11 @@ class Trade extends Component {
       const record = JSON.parse(evt.data);
       console.log('======stream record: ', record);
 
-      const { coinList, tradeList, streamList, marketName } = this.state;
+      const { tradeExpair, tradeList, streamList, marketName } = this.state;
 
       if (record.matchStreamVO) {
         const matchVo = record.matchStreamVO;
-        coinList[marketName] = coinList[marketName].map(item => {
+        tradeExpair[marketName] = tradeExpair[marketName].map(item => {
           if (matchVo.coinOther === item.coinOther) {
             item.latestPrice = matchVo.price;
           }
@@ -209,7 +211,7 @@ class Trade extends Component {
         streamList.unshift(record.matchStreamVO);
       }
 
-      this.setState({ coinList, tradeList, streamList });
+      this.setState({ tradeExpair, tradeList, streamList });
     };
 
     streamWS.onclose = evt => {
@@ -394,11 +396,11 @@ class Trade extends Component {
   }
 
   componentWillUnmount() {
-    const { coinList } = this.state;
-    if (coinList) {
+    const { tradeExpair } = this.state;
+    if (tradeExpair) {
       const favoriteCoins = [];
-      Object.keys(coinList).forEach(key => {
-        coinList[key].forEach(coin => {
+      Object.keys(tradeExpair).forEach(key => {
+        tradeExpair[key].forEach(coin => {
           if (coin.favorite && !favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)) {
             favoriteCoins.push(`${coin.coinMain}.${coin.coinOther}`);
           }
@@ -409,12 +411,12 @@ class Trade extends Component {
   }
 
   // 获取币种列表
-  getCoinList = () => {
+  gettradeExpair = () => {
     this.request('/index/allTradeExpair', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        let coinList = {};
+        let tradeExpair = {};
         Object.keys(json.data).forEach(key => {
           if (key === this.state.market && !getQueryString('coin')) {
             this.setState({
@@ -429,8 +431,8 @@ class Trade extends Component {
             coin.latestPrice = coin.latestPrice || 0;
             return coin;
           });
-          coinList[key] = coins;
-          this.setState({ coinList });
+          tradeExpair[key] = coins;
+          this.setState({ tradeExpair });
         });
       } else {
         message.error(json.msg);
@@ -468,17 +470,35 @@ class Trade extends Component {
 
   // 切换市场
   switchMarket = obj => {
-    console.log(obj);
-    this.setState({ market: obj.key });
+    this.setState({ market: obj.key, searchValue: '', searchList: null });
+  };
+
+  // 搜索币
+  handleSearch = event => {
+    const { tradeExpair, market } = this.state;
+    const searchValue = event.target.value.trim();
+
+    let searchList = null;
+
+    if (searchValue) {
+      searchList = [];
+      tradeExpair[market].forEach(trade => {
+        if (trade.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
+          searchList.push(trade);
+        }
+      });
+    }
+
+    this.setState({ searchList, searchValue });
   };
 
   // 收藏币种
   collectCoin = (event, selectedCoin) => {
     event.stopPropagation();
 
-    const { coinList } = this.state;
-    Object.keys(coinList).forEach(key => {
-      const coins = coinList[key].map(coin => {
+    const { tradeExpair } = this.state;
+    Object.keys(tradeExpair).forEach(key => {
+      const coins = tradeExpair[key].map(coin => {
         if (selectedCoin.coinMain === coin.coinMain && selectedCoin.coinOther === coin.coinOther) {
           if (coin.favorite) {
             delete coin.favorite;
@@ -488,10 +508,10 @@ class Trade extends Component {
         }
         return coin;
       });
-      coinList[key] = coins;
+      tradeExpair[key] = coins;
     });
 
-    this.setState({ coinList });
+    this.setState({ tradeExpair });
   };
 
   // 选择币种
@@ -564,7 +584,9 @@ class Trade extends Component {
   render() {
     const {
       market,
-      coinList,
+      tradeExpair,
+      searchList,
+      searchValue,
       marketName,
       coinName,
       mainVolume,
@@ -594,14 +616,14 @@ class Trade extends Component {
     }
 
     let pairList = [];
-    if (coinList) {
+    if (tradeExpair) {
       if (market === 'optional') {
-        Object.values(coinList).forEach(coins => {
+        Object.values(tradeExpair).forEach(coins => {
           coins = coins.filter(coin => coin.favorite);
           pairList = [...pairList, ...coins];
         });
       } else {
-        pairList = coinList[market] || [];
+        pairList = tradeExpair[market] || [];
       }
     }
 
@@ -676,8 +698,8 @@ class Trade extends Component {
       change: 0,
       trend: 'green'
     };
-    if (coinList && coinList[marketName] && coinList[marketName].length > 0) {
-      coinList[marketName].forEach(coin => {
+    if (tradeExpair && tradeExpair[marketName] && tradeExpair[marketName].length > 0) {
+      tradeExpair[marketName].forEach(coin => {
         if (coin.coinOther === coinName) {
           currentCoin = {
             highestPrice: coin.highestPrice || 0,
@@ -719,7 +741,7 @@ class Trade extends Component {
                   </a>
                 </Dropdown>
                 <div className="trade-plate-header-right">
-                  <Search onSearch={value => console.log(value)} style={{ width: 80 }} />
+                  <Search value={searchValue} onChange={this.handleSearch} style={{ width: 80 }} />
                 </div>
               </header>
               <div className="trade-plate-tit cell-3">
@@ -751,7 +773,7 @@ class Trade extends Component {
                 <Scrollbars>
                   <table>
                     <tbody>
-                      {pairList.map(coin => {
+                      {(searchList ? searchList : pairList).map(coin => {
                         const change = (coin.latestPrice - coin.firstPrice) / coin.firstPrice || 0;
                         const trend = change > 0 ? 'green' : 'red';
                         return (

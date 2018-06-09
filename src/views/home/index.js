@@ -21,9 +21,11 @@ const Search = Input.Search;
 class Home extends Component {
   state = {
     banners: [],
-    coinType: 'my',
+    market: 'USDT',
     sortedInfo: null,
-    tradeExpair: null
+    tradeExpair: null,
+    searchList: null,
+    searchValue: ''
   };
 
   request = window.request;
@@ -73,9 +75,8 @@ class Home extends Component {
     });
   };
 
-  handleSwitchTabs = coinType => {
-    console.log(coinType);
-    this.setState({ coinType });
+  handleSwitchMarkets = market => {
+    this.setState({ market, searchList: null, searchValue: '' });
   };
 
   handleCollect = () => {
@@ -93,11 +94,41 @@ class Home extends Component {
     this.props.history.push(`/trade?market=${record.coinMain}&coin=${record.coinOther}`);
   };
 
+  // 搜索币
+  handleSearch = event => {
+    const { tradeExpair, market } = this.state;
+    const searchValue = event.target.value;
+
+    let searchList = null;
+
+    if (searchValue) {
+      searchList = [];
+      tradeExpair[market].forEach(trade => {
+        if (trade.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
+          searchList.push(trade);
+        }
+      });
+    }
+
+    this.setState({ searchList, searchValue });
+  };
+
   render() {
     const { localization } = this.props;
-    let { banners, coinType, sortedInfo, tradeExpair } = this.state;
-    coinType = coinType === 'my' ? '' : coinType;
+    let { banners, market, sortedInfo, tradeExpair, searchList, searchValue } = this.state;
     sortedInfo = sortedInfo || {};
+
+    let pairList = [];
+    if (tradeExpair) {
+      if (market === 'optional') {
+        Object.values(tradeExpair).forEach(coins => {
+          coins = coins.filter(coin => coin.favorite);
+          pairList = [...pairList, ...coins];
+        });
+      } else {
+        pairList = tradeExpair[market] || [];
+      }
+    }
 
     const columns = [
       {
@@ -119,7 +150,7 @@ class Home extends Component {
         )
       },
       {
-        title: `${localization['latest_price']}${coinType && `(${coinType})`}`,
+        title: `${localization['latest_price']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'latestPrice',
         key: 'latestPrice',
         sorter: (a, b) => a.price - b.price,
@@ -148,7 +179,7 @@ class Home extends Component {
         key: 'lowerPrice'
       },
       {
-        title: `${localization['volume']}${coinType && `(${coinType})`}`,
+        title: `${localization['volume']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'dayCount',
         key: 'dayCount',
         sorter: (a, b) => a.total - b.total,
@@ -179,13 +210,14 @@ class Home extends Component {
             <Tabs
               tabBarExtraContent={
                 <Search
+                  value={searchValue}
                   placeholder={localization['enter_keywords']}
-                  onSearch={value => console.log(value)}
+                  onChange={this.handleSearch}
                   style={{ width: 200 }}
                 />
               }
-              defaultActiveKey={'USDT'}
-              onChange={this.handleSwitchTabs}
+              activeKey={market}
+              onChange={this.handleSwitchMarkets}
             >
               {['optional', 'USDT', 'ETH', 'BTC'].map(market => (
                 <TabPane
@@ -203,7 +235,7 @@ class Home extends Component {
                 >
                   <Table
                     columns={columns}
-                    dataSource={tradeExpair && tradeExpair[market]}
+                    dataSource={searchList ? searchList : pairList}
                     onChange={this.handleChange}
                     onRow={record => ({
                       onClick: this.jumpToTrade.bind(this, record)
