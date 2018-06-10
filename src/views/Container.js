@@ -49,7 +49,7 @@ class Container extends Component {
     })
       .then(response => {
         if (response.status === 200) {
-          return response;
+          return response.json();
         }
       })
       .then(json => {
