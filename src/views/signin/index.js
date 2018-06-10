@@ -4,6 +4,11 @@ import { message } from 'antd';
 import { IMAGES_ADDRESS } from '../../utils/constants';
 import request from '../../utils/request';
 import classnames from 'classnames';
+import { JSEncrypt } from '../../utils/jsencrypt.js';
+
+//公钥
+const PUBLI_KEY = 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLADJL0WYJJrxmpNqKeoAXhW8P0GWMy7ZJG/I+8CwLZ2we83VnHcF4zXfpWrw3zY4RIYkFQT8EkW7FUDFeY9XzoxoQbcjyG3ywIzN6SI+7Jd07TGktNTTxFR6Bj4IjzAlazitFlUKAP77AyhT65YDChbNRul8u6M5qqt/ojjGb1QIDAQAB';
+
 
 class SignIn extends Component {
   state = {
@@ -20,11 +25,15 @@ class SignIn extends Component {
 
   handleSubmit = () => {
     const { username, password, code } = this.state;
+    let encrypt = new JSEncrypt();
+    encrypt.setPublicKey(PUBLI_KEY);
+    let enPassword = encrypt.encrypt(password);
+
     if (username && password) {
       request('/user/login', {
         body: {
           username,
-          password,
+          password: enPassword,
           code
         }
       }).then(json => {

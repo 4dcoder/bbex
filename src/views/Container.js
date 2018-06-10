@@ -4,8 +4,6 @@ import { LocaleProvider } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
 
-import logo from '../Artboard 4.png';
-
 class Container extends Component {
   constructor(props, context) {
     super(props, context);
@@ -31,11 +29,13 @@ class Container extends Component {
       value: 'zh_CN',
       name: '中文'
     },
-    locale: {}
+    locale: {},
+    logo: ''
   };
 
   componentWillMount() {
     this.getLanguage(this.state.language);
+    this.getLogo();
   }
 
   switchLanguage(language) {
@@ -85,10 +85,22 @@ class Container extends Component {
       }
     });
   };
+  getLogo = () => {
+    request('/cms/logo',{
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        this.setState({logo: json.data});
+      } else {
+        message.destroy();
+        message.error(json.msg);
+      }
+    });
+  }
 
   render() {
     const { localization } = this.props;
-    const { isLogin, language, locale } = this.state;
+    const { isLogin, language, locale, logo } = this.state;
     return (
       <LocaleProvider locale={locale}>
         <div className="container">
@@ -151,7 +163,7 @@ class Container extends Component {
             <div className="footer-container">
               <div className="footer-main clear">
                 <div className="footer-logo">
-                  <img src={logo} alt="logo" width="108" height="68" />
+                  <img src={this.state.logo} alt="logo" width="108" height="68" />
                   <p>{localization['Market_risk']}</p>
                 </div>
                 <div className="footer-main-right">
