@@ -492,105 +492,16 @@ a:hover {
     margin-bottom: 16px;
 }
 
-.property-modal .line_li{
-    margin-top: 10px;
+.c2c-form .line_li{
+    margin-top: 16px;
 }
-
-
-/* loading */
-.loading-content, .loading-mask, .loading-wrapper {
-    width: 100%;
-    height: 100%
-  }
-
-  .loading-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 11
-  }
-
-  .loading-content {
-    position: relative
-  }
-
-  .loading-wrapper.black .loading-mask {
-    background: #152237
-  }
-
-  .loading-mask {
-    background: #fff
-  }
-
-  .loading {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%)
-  }
-
-  .loading span {
-    display: inline-block;
-    width: 3px;
-    height: 100%;
-    margin-right: 3px;
-    background: #01a3ff;
-    -webkit-animation: load 1.04s ease infinite
-  }
-
-  .loading span:last-child {
-    margin-right: 0
-  }
-
-  .loading-wrapper.body {
-    position: fixed
-  }
-
-  .loading-wrapper.body .loading span {
-    width: 4px;
-    margin-right: 6px;
-    -webkit-animation: bodyLoad 1.04s ease infinite
-  }
-
-  @-webkit-keyframes load {
-    0%, to {
-      height: 10px
-    }
-    50% {
-      height: 25px;
-      margin-top: -15px
-    }
-  }
-
-  @-webkit-keyframes bodyLoad {
-    0%, to {
-      height: 25px
-    }
-    50% {
-      height: 40px;
-      margin-top: -15px
-    }
-  }
-
-  .loading-wrapper.body .loading span:nth-child(2), .loading span:nth-child(2) {
-    -webkit-animation-delay: .13s;
-    animation-delay: .13s
-  }
-
-  .loading-wrapper.body .loading span:nth-child(3), .loading span:nth-child(3) {
-    -webkit-animation-delay: .26s;
-    animation-delay: .26s
-  }
-
-  .loading-wrapper.body .loading span:nth-child(4), .loading span:nth-child(4) {
-    -webkit-animation-delay: .39s;
-    animation-delay: .39s
-  }
-
-  .loading-wrapper.body .loading span:nth-child(5), .loading span:nth-child(5) {
-    -webkit-animation-delay: .52s;
-    animation-delay: .52s
-  }
-  /* loading */
+.c2c-form .ant-input-group-addon{
+    width: 120px;
+}
+.c2c-form .aviable_symbol{
+    margin: 20px 0;
+    text-align: right;
+}
+.c2c-form .c2c_submit{
+    text-align: right;
+}
