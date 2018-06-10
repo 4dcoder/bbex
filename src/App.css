@@ -505,3 +505,7 @@ a:hover {
 .c2c-form .c2c_submit{
     text-align: right;
 }
+
+.security_con .ant-row-flex{
+    height: 50px;
+}
