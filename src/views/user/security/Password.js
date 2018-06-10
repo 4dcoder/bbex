@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
 import request from '../../../utils/request';
-// import { JSEncrypt } from '../../../utils/jsencrypt.js'
+import { JSEncrypt } from '../../../utils/jsencrypt.js';
 
 const FormItem = Form.Item;
 
 class Password extends Component {
 
   componentDidMount(){
-    
+    console.log("JSEncrypt", JSEncrypt);
   }
 
   handleSubmit = (e) =>{

@@ -387,10 +387,10 @@ class Property extends Component {
                                         onChange={this.inputVolume}
                                     />
                                 </li>
-                                <li>
-                                    可用：{availableC2c}{handleCoin.symbol}
+                                <li className='aviable_symbol'>
+                                    可用：{availableC2c}  {handleCoin.symbol}
                                 </li>
-                                <li>
+                                <li className='c2c_submit'>
                                     <Button
                                         type='primary'
                                         size='large'
