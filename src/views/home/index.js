@@ -45,7 +45,14 @@ class Home extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        this.setState({ banners: json.data });
+        console.log('banner', json);
+        // /userfiles/1/_thumbs/images/cms/advert/2018/06/banner01.jpg
+        let result = json.data.map((item)=>{
+          let { image } = item;
+          item.image = image.replace(/\/_thumbs/,"");
+          return item;
+        })
+        this.setState({ banners: result });
       } else {
         message.error(json.msg);
       }
