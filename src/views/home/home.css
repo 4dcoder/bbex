@@ -59,6 +59,7 @@
   border-bottom-color: #5a5959;
 }
 .coins-market .ant-table-tbody > tr.ant-table-row:hover > td{
+  cursor: pointer;
   background-color: #27292e;
 }
 .coins-market .ant-table-column-sorter-up {

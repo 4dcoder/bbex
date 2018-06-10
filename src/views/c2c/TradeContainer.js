@@ -299,7 +299,7 @@ class TradeContainer extends Component {
     //登录后才打开websockets
     if (JSON.parse(sessionStorage.getItem('account'))) {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
-      var ws = new window.ReconnectingWebSocket(`${WS_ADDRESS}/bbex/bbusersocket?${userId}`);
+      var ws = new window.ReconnectingWebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
 
       setInterval(() => {
         if (ws.readyState === 1) {

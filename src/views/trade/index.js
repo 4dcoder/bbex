@@ -3,7 +3,7 @@ import { Tabs, Input, Table, Menu, Dropdown, Icon, Tooltip, Button, Select, mess
 import NoticeBar from '../../components/noticeBar';
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
-import { stampToDate, getQueryString } from '../../utils';
+import { stampToDate } from '../../utils';
 import { WS_ADDRESS } from '../../utils/constants';
 import TradeBox from './TradeBox';
 import Tradeview from '../../tradeview';
@@ -14,13 +14,15 @@ const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
 class Trade extends Component {
+  market = this.props.history.location.state && this.props.history.location.state.market;
+  coin = this.props.history.location.state && this.props.history.location.state.coin;
   state = {
-    market: getQueryString('market') || 'USDT',
+    market: this.market || 'USDT',
     tradeExpair: null,
     searchList: null,
     searchValue: '',
-    marketName: getQueryString('market') || 'USDT',
-    coinName: getQueryString('coin') || 'LOOM',
+    marketName: this.market || 'USDT',
+    coinName: this.coin || 'LOOM',
     mainVolume: 0,
     coinVolume: 0,
     tradeList: {
@@ -177,9 +179,16 @@ class Trade extends Component {
       const record = JSON.parse(evt.data);
       console.log('======stream record: ', record);
 
-      const { tradeExpair, tradeList, streamList, marketName } = this.state;
+      const { marketName, coinName } = this.state;
 
-      if (record.matchStreamVO) {
+      // 当流水的交易对跟当前交易对相等时
+      if (
+        record.matchStreamVO &&
+        record.matchStreamVO.coinMain === marketName &&
+        record.matchStreamVO.coinOther === coinName
+      ) {
+        const { tradeExpair, tradeList, streamList, marketName } = this.state;
+
         const matchVo = record.matchStreamVO;
         tradeExpair[marketName] = tradeExpair[marketName].map(item => {
           if (matchVo.coinOther === item.coinOther) {
@@ -209,9 +218,9 @@ class Trade extends Component {
           return item.volume > 0;
         });
         streamList.unshift(record.matchStreamVO);
-      }
 
-      this.setState({ tradeExpair, tradeList, streamList });
+        this.setState({ tradeExpair, tradeList, streamList });
+      }
     };
 
     streamWS.onclose = evt => {
@@ -227,68 +236,39 @@ class Trade extends Component {
 
   openBuyAndSellWebsocket = () => {
     //打开websockets
-    const { marketName, coinName } = this.state;
     const buyandsellWS = new window.ReconnectingWebSocket(`${WS_ADDRESS}/bbex/buysellsocket`);
 
     setInterval(() => {
       if (buyandsellWS.readyState === 1) {
-        buyandsellWS.send('ping');
-      }
-    }, 1000 * 3);
-
-    buyandsellWS.onopen = evt => {
-      console.log('buyandsell Websocket Connection open ...');
-      if (buyandsellWS.readyState === 1) {
-        // 给 buyandsell websocket 发消息 切换交易对
+        const { marketName, coinName } = this.state;
         buyandsellWS.send(`${coinName}_${marketName}`);
       }
-    };
+    }, 1000);
 
     buyandsellWS.onmessage = evt => {
       if (evt.data === 'pong') {
         console.log('buyandsell: ', evt.data);
         return;
       }
-      const record = JSON.parse(evt.data);
-      console.log('======buyandsell record: ', record);
+      const tradeList = JSON.parse(evt.data);
+      const { marketName, coinName } = this.state;
 
-      const { tradeList } = this.state;
+      console.log('buyandsell reciveDate: ', tradeList);
 
-      let isnNewRecord = true;
-
-      if (record.buyOrderVO) {
-        if (tradeList && tradeList.buyOrderVOList && tradeList.buyOrderVOList.length > 0) {
-          tradeList.buyOrderVOList = tradeList.buyOrderVOList.map(item => {
-            if (item.price === record.buyOrderVO.price) {
-              item.volume += record.buyOrderVO.volume;
-              isnNewRecord = false;
-            }
-            return item;
-          });
-        }
-        if (isnNewRecord) {
-          tradeList.buyOrderVOList.push(record.buyOrderVO);
-          tradeList.buyOrderVOList = tradeList.buyOrderVOList.sort((x, y) => y.price - x.price);
-        }
+      // 如果所推买卖盘是当前交易对，就覆盖当前买卖盘列表
+      if (
+        tradeList &&
+        ((tradeList.buyOrderVOList &&
+          tradeList.buyOrderVOList.length > 0 &&
+          tradeList.buyOrderVOList[0].coinMain === marketName &&
+          tradeList.buyOrderVOList[0].coinOther === coinName) ||
+          (tradeList.sellOrderVOList &&
+            tradeList.sellOrderVOList.length > 0 &&
+            tradeList.sellOrderVOList[0].coinMain === marketName &&
+            tradeList.sellOrderVOList[0].coinOther === coinName))
+      ) {
+        this.setState({ tradeList });
       }
-
-      if (record.sellOrderVO) {
-        if (tradeList && tradeList.sellOrderVOList && tradeList.sellOrderVOList.length > 0) {
-          tradeList.sellOrderVOList = tradeList.sellOrderVOList.map(item => {
-            if (item.price === record.sellOrderVO.price) {
-              item.volume += record.sellOrderVO.volume;
-              isnNewRecord = false;
-            }
-            return item;
-          });
-        }
-        if (isnNewRecord) {
-          tradeList.sellOrderVOList.push(record.sellOrderVO);
-          tradeList.sellOrderVOList = tradeList.sellOrderVOList.sort((x, y) => y.price - x.price);
-        }
-      }
-
-      this.setState({ tradeList });
     };
 
     buyandsellWS.onclose = evt => {
@@ -418,7 +398,7 @@ class Trade extends Component {
       if (json.code === 10000000) {
         let tradeExpair = {};
         Object.keys(json.data).forEach(key => {
-          if (key === this.state.market && !getQueryString('coin')) {
+          if (key === this.state.market && !this.coin) {
             this.setState({
               coinName: json.data[key][0].coinOther,
               coinPrice: json.data[key][0].latestPrice || 0
@@ -517,7 +497,7 @@ class Trade extends Component {
   // 选择币种
   selectCoin = coin => {
     const { orderStatus } = this.state;
-    this.props.history.push(`/trade?market=${coin.coinMain}&coin=${coin.coinOther}`);
+    // this.props.history.push(`/trade?market=${coin.coinMain}&coin=${coin.coinOther}`);
     this.setState({
       marketName: coin.coinMain,
       coinName: coin.coinOther,
@@ -774,7 +754,9 @@ class Trade extends Component {
                   <table>
                     <tbody>
                       {(searchList ? searchList : pairList).map(coin => {
-                        const change = (coin.latestPrice - coin.firstPrice) / coin.firstPrice || 0;
+                        const latestPrice = coin.latestPrice || 0;
+                        const firstPrice = coin.firstPrice || 0;
+                        const change = (latestPrice - firstPrice) / firstPrice || 0;
                         const trend = change > 0 ? 'green' : 'red';
                         return (
                           <tr

@@ -46,11 +46,11 @@ class Home extends Component {
       if (json.code === 10000000) {
         console.log('banner', json);
         // /userfiles/1/_thumbs/images/cms/advert/2018/06/banner01.jpg
-        let result = json.data.map((item)=>{
+        let result = json.data.map(item => {
           let { image } = item;
-          item.image = image.replace(/\/_thumbs/,"");
+          item.image = image.replace(/\/_thumbs/, '');
           return item;
-        })
+        });
         this.setState({ banners: result });
       } else {
         message.error(json.msg);
@@ -98,7 +98,13 @@ class Home extends Component {
   };
 
   jumpToTrade = record => {
-    this.props.history.push(`/trade?market=${record.coinMain}&coin=${record.coinOther}`);
+    this.props.history.push({
+      pathname: '/trade',
+      state: {
+        market: record.coinMain,
+        coin: record.coinOther
+      }
+    });
   };
 
   // 搜索币
