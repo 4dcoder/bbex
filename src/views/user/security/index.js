@@ -12,7 +12,11 @@ class Security extends Component {
   }
 
   showDialog = () =>{
-    this.setState({dialog: <Password />})
+    this.setState({dialog: <Password 
+      closeModal = {()=>{
+        this.setState({dialog: ''});
+      }}
+    />})
   }
 
   render(){
