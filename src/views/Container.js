@@ -3,6 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { LocaleProvider } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
+import logo1 from '../Artboard 4.png';
 
 class Container extends Component {
   constructor(props, context) {
@@ -106,7 +107,7 @@ class Container extends Component {
         <div className="container">
           <header className="header">
             <Link className="logo" to="/">
-              <img src={logo} alt="logo" width="108" height="68" />
+              <img src={logo1} alt="logo" width="108" height="68" />
             </Link>
             <ul className="nav-bar">
               <li>
@@ -163,7 +164,7 @@ class Container extends Component {
             <div className="footer-container">
               <div className="footer-main clear">
                 <div className="footer-logo">
-                  <img src={this.state.logo} alt="logo" width="108" height="68" />
+                  <img src={logo1} alt="logo" width="108" height="68" />
                   <p>{localization['Market_risk']}</p>
                 </div>
                 <div className="footer-main-right">

@@ -57,7 +57,7 @@ class Authentication extends Component {
     }
 
     render() {
-        const { 
+        const {
             current,
             qrcodeContent,
             secret,
@@ -73,7 +73,7 @@ class Authentication extends Component {
                         <ul className="auth-progress-bar clear">
                             {['下载App', '扫描二维码', '备份密钥', '开启谷歌验证'].map((text, index) => {
                                 return (
-                                    <li 
+                                    <li
                                         className={classnames({
                                             'auth-progress-step': true,
                                             'current': current === index
