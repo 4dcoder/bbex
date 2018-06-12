@@ -14,6 +14,7 @@ import partner3 from '../../assets/images/partner/nodecape.png';
 import partner4 from '../../assets/images/partner/lians.png';
 import partner5 from '../../assets/images/partner/lianwen.png';
 import partner6 from '../../assets/images/partner/Jlab.png';
+import { Object } from 'core-js';
 
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
@@ -25,7 +26,10 @@ class Home extends Component {
     sortedInfo: null,
     tradeExpair: null,
     searchList: null,
-    searchValue: ''
+    searchValue: '',
+    favoriteCoins: sessionStorage.getItem('favoriteCoins')
+      ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
+      : []
   };
 
   request = window.request;
@@ -86,8 +90,19 @@ class Home extends Component {
     this.setState({ market, searchList: null, searchValue: '' });
   };
 
-  handleCollect = () => {
-    console.log('收藏');
+  //收藏币种
+  handleCollect = (record, event) => {
+    event.stopPropagation();
+    const { favoriteCoins } = this.state;
+    const favoriteCoin = `${record.coinMain}.${record.coinOther}`;
+    if (favoriteCoins.includes(favoriteCoin)) {
+      const coinIndex = favoriteCoins.findIndex(n => n === favoriteCoin);
+      favoriteCoins.splice(coinIndex, 1);
+    } else {
+      favoriteCoins.push(`${record.coinMain}.${record.coinOther}`);
+    }
+    this.setState({ favoriteCoins });
+    sessionStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
   };
 
   handleChange = (pagination, filters, sorter) => {
@@ -109,18 +124,31 @@ class Home extends Component {
 
   // 搜索币
   handleSearch = event => {
-    const { tradeExpair, market } = this.state;
+    const { tradeExpair, market, favoriteCoins } = this.state;
     const searchValue = event.target.value;
 
     let searchList = null;
 
     if (searchValue) {
       searchList = [];
-      tradeExpair[market].forEach(trade => {
-        if (trade.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
-          searchList.push(trade);
-        }
-      });
+      if (market === 'optional') {
+        Object.values(tradeExpair).forEach(tradeList => {
+          tradeList.forEach(expair => {
+            if (
+              expair.coinOther.indexOf(searchValue.toUpperCase()) > -1 &&
+              favoriteCoins.includes(`${expair.coinMain}.${expair.coinOther}`)
+            ) {
+              searchList.push(expair);
+            }
+          });
+        });
+      } else {
+        tradeExpair[market].forEach(expair => {
+          if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
+            searchList.push(expair);
+          }
+        });
+      }
     }
 
     this.setState({ searchList, searchValue });
@@ -128,14 +156,24 @@ class Home extends Component {
 
   render() {
     const { localization } = this.props;
-    let { banners, market, sortedInfo, tradeExpair, searchList, searchValue } = this.state;
+    let {
+      banners,
+      market,
+      sortedInfo,
+      tradeExpair,
+      searchList,
+      searchValue,
+      favoriteCoins
+    } = this.state;
     sortedInfo = sortedInfo || {};
 
     let pairList = [];
     if (tradeExpair) {
       if (market === 'optional') {
         Object.values(tradeExpair).forEach(coins => {
-          coins = coins.filter(coin => coin.favorite);
+          coins = coins.filter(coin =>
+            favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)
+          );
           pairList = [...pairList, ...coins];
         });
       } else {
@@ -157,7 +195,12 @@ class Home extends Component {
               attention: true
             })}
           >
-            <i className="iconfont icon-shoucang" onClick={this.handleCollect} />
+            <i
+              className={`iconfont icon-shoucang${
+                favoriteCoins.includes(`${record.coinMain}.${record.coinOther}`) ? '-active' : ''
+              }`}
+              onClick={this.handleCollect.bind(this, record)}
+            />
             {text}
           </span>
         )
@@ -232,19 +275,23 @@ class Home extends Component {
               activeKey={market}
               onChange={this.handleSwitchMarkets}
             >
-              {['optional', 'USDT', 'ETH', 'BTC'].map(market => (
+              {['optional', 'USDT', 'ETH', 'BTC'].map(curMarket => (
                 <TabPane
                   tab={
-                    market === 'optional' ? (
+                    curMarket === 'optional' ? (
                       <span>
-                        <i className="iconfont icon-shoucang-active" />
+                        <i
+                          className={`iconfont icon-shoucang${
+                            market === 'optional' ? '-active' : ''
+                          }`}
+                        />
                         {localization['favorites']}
                       </span>
                     ) : (
-                      `${market} ${localization['markets']}`
+                      `${curMarket} ${localization['markets']}`
                     )
                   }
-                  key={market}
+                  key={curMarket}
                 >
                   <Table
                     columns={columns}
