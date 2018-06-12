@@ -71,7 +71,7 @@ class Home extends Component {
         const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
           tradeExpair[key] = json.data[key].map(coin => {
-            coin.key = coin.coinOther;
+            coin.key = `${coin.coinMain}.${coin.coinOther}`;
             coin.latestPrice = (coin.latestPrice || 0).toFixed(8);
             coin.highestPrice = (coin.highestPrice || 0).toFixed(8);
             coin.lowerPrice = (coin.lowerPrice || 0).toFixed(8);
@@ -94,12 +94,11 @@ class Home extends Component {
   handleCollect = (record, event) => {
     event.stopPropagation();
     const { favoriteCoins } = this.state;
-    const favoriteCoin = `${record.coinMain}.${record.coinOther}`;
-    if (favoriteCoins.includes(favoriteCoin)) {
-      const coinIndex = favoriteCoins.findIndex(n => n === favoriteCoin);
+    if (favoriteCoins.includes(record.key)) {
+      const coinIndex = favoriteCoins.findIndex(n => n === record.key);
       favoriteCoins.splice(coinIndex, 1);
     } else {
-      favoriteCoins.push(`${record.coinMain}.${record.coinOther}`);
+      favoriteCoins.push(record.key);
     }
     this.setState({ favoriteCoins });
     sessionStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
@@ -136,7 +135,7 @@ class Home extends Component {
           tradeList.forEach(expair => {
             if (
               expair.coinOther.indexOf(searchValue.toUpperCase()) > -1 &&
-              favoriteCoins.includes(`${expair.coinMain}.${expair.coinOther}`)
+              favoriteCoins.includes(expair.key)
             ) {
               searchList.push(expair);
             }
@@ -172,7 +171,7 @@ class Home extends Component {
       if (market === 'optional') {
         Object.values(tradeExpair).forEach(coins => {
           coins = coins.filter(coin =>
-            favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)
+            favoriteCoins.includes(coin.key)
           );
           pairList = [...pairList, ...coins];
         });
@@ -180,6 +179,8 @@ class Home extends Component {
         pairList = tradeExpair[market] || [];
       }
     }
+
+    console.log("pairList: ", pairList)
 
     const columns = [
       {
@@ -197,7 +198,7 @@ class Home extends Component {
           >
             <i
               className={`iconfont icon-shoucang${
-                favoriteCoins.includes(`${record.coinMain}.${record.coinOther}`) ? '-active' : ''
+                favoriteCoins.includes(record.key) ? '-active' : ''
               }`}
               onClick={this.handleCollect.bind(this, record)}
             />

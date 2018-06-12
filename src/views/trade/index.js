@@ -45,10 +45,6 @@ class Trade extends Component {
 
   request = window.request;
 
-  favoriteCoins = localStorage.getItem('favoriteCoins')
-    ? JSON.parse(localStorage.getItem('favoriteCoins'))
-    : [];
-
   componentWillMount() {
     this.getRate();
     if (sessionStorage.getItem('account')) {
@@ -142,7 +138,7 @@ class Trade extends Component {
 
   componentDidMount() {
     const { marketName, coinName } = this.state;
-    this.gettradeExpair();
+    this.getTradeExpair();
     this.getStream({
       coinMain: marketName,
       coinOther: coinName
@@ -380,13 +376,13 @@ class Trade extends Component {
     }
   }
 
-  // 获取币种列表
-  gettradeExpair = () => {
+  //市场币种列表
+  getTradeExpair = () => {
     this.request('/index/allTradeExpair', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        let tradeExpair = {};
+        const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
           if (key === this.state.market && !this.coin) {
             this.setState({
@@ -394,21 +390,47 @@ class Trade extends Component {
               coinPrice: json.data[key][0].latestPrice || 0
             });
           }
-          const coins = json.data[key].map(coin => {
-            if (this.favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)) {
-              coin.favorite = true;
-            }
+          tradeExpair[key] = json.data[key].map(coin => {
+            coin.key = `${coin.coinMain}.${coin.coinOther}`;
             coin.latestPrice = coin.latestPrice || 0;
             return coin;
           });
-          tradeExpair[key] = coins;
-          this.setState({ tradeExpair });
         });
+        this.setState({ tradeExpair });
       } else {
         message.error(json.msg);
       }
     });
   };
+  // // 获取币种列表
+  // getTradeExpair = () => {
+  //   this.request('/index/allTradeExpair', {
+  //     method: 'GET'
+  //   }).then(json => {
+  //     if (json.code === 10000000) {
+  //       let tradeExpair = {};
+  //       Object.keys(json.data).forEach(key => {
+  //         if (key === this.state.market && !this.coin) {
+  //           this.setState({
+  //             coinName: json.data[key][0].coinOther,
+  //             coinPrice: json.data[key][0].latestPrice || 0
+  //           });
+  //         }
+  //         const coins = json.data[key].map(coin => {
+  //           if (this.favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)) {
+  //             coin.favorite = true;
+  //           }
+  //           coin.latestPrice = coin.latestPrice || 0;
+  //           return coin;
+  //         });
+  //         tradeExpair[key] = coins;
+  //         this.setState({ tradeExpair });
+  //       });
+  //     } else {
+  //       message.error(json.msg);
+  //     }
+  //   });
+  // };
 
   // 获取交易列表
   getTradeList = ({ coinMain, coinOther }) => {
@@ -457,7 +479,7 @@ class Trade extends Component {
           tradeList.forEach(expair => {
             if (
               expair.coinOther.indexOf(searchValue.toUpperCase()) > -1 &&
-              favoriteCoins.includes(`${expair.coinMain}.${expair.coinOther}`)
+              favoriteCoins.includes(expair.key)
             ) {
               searchList.push(expair);
             }
@@ -479,12 +501,11 @@ class Trade extends Component {
   handleCollect = (record, event) => {
     event.stopPropagation();
     const { favoriteCoins } = this.state;
-    const favoriteCoin = `${record.coinMain}.${record.coinOther}`;
-    if (favoriteCoins.includes(favoriteCoin)) {
-      const coinIndex = favoriteCoins.findIndex(n => n === favoriteCoin);
+    if (favoriteCoins.includes(record.key)) {
+      const coinIndex = favoriteCoins.findIndex(n => n === record.key);
       favoriteCoins.splice(coinIndex, 1);
     } else {
-      favoriteCoins.push(`${record.coinMain}.${record.coinOther}`);
+      favoriteCoins.push(record.key);
     }
     this.setState({ favoriteCoins });
     sessionStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
@@ -597,7 +618,7 @@ class Trade extends Component {
       if (market === 'optional') {
         Object.values(tradeExpair).forEach(coins => {
           coins = coins.filter(coin =>
-            favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)
+            favoriteCoins.includes(coin.key)
           );
           pairList = [...pairList, ...coins];
         });
@@ -759,7 +780,7 @@ class Trade extends Component {
                         const trend = change > 0 ? 'green' : 'red';
                         return (
                           <tr
-                            key={coin.coinOther}
+                            key={coin.key}
                             onClick={this.selectCoin.bind(this, coin)}
                             className={classnames({
                               selected: coin.coinMain === marketName && coin.coinOther === coinName
@@ -768,7 +789,7 @@ class Trade extends Component {
                             <td>
                               <i
                                 className={`iconfont icon-shoucang${
-                                  favoriteCoins.includes(`${coin.coinMain}.${coin.coinOther}`)
+                                  favoriteCoins.includes(coin.key)
                                     ? '-active'
                                     : ''
                                 }`}
