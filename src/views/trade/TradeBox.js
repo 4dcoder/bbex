@@ -23,15 +23,18 @@ class TradeBox extends Component {
 
   componentWillMount() {
     if (sessionStorage.getItem('account')) {
-      const { tradeType, marketName, coinName } = this.props;
+      const { marketName, coinName } = this.props;
       this.getCoinVolume({
         coinType: 'mainVolume',
         symbol: marketName
       });
-      this.getCoinVolume({
-        coinType: 'coinVolume',
-        symbol: coinName
-      });
+
+      if (coinName) {
+        this.getCoinVolume({
+          coinType: 'coinVolume',
+          symbol: coinName
+        });
+      }
     }
   }
 
@@ -68,7 +71,7 @@ class TradeBox extends Component {
     const { tradeType, marketName, coinName } = this.props;
     const { mainVolume, coinVolume } = this.state;
 
-    return [            
+    return [
       <div key="info" className="property-info">
         <span>
           {marketName} 可用 {mainVolume.toFixed(8)}
