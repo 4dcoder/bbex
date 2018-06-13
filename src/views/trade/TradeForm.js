@@ -25,7 +25,7 @@ class TradeForm extends Component {
     const { type, mainVolume, coinVolume } = this.props;
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
-    const volume = assetVolume / price * (value / 100);
+    const volume = (assetVolume / price) * (value / 100);
     this.setState({ volume });
   };
 
@@ -78,6 +78,12 @@ class TradeForm extends Component {
       });
   };
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.tradePrice !== this.props.tradePrice) {
+      this.setState({ price: nextProps.tradePrice });
+    }
+  }
+
   render() {
     const marks = {
       0: '',
@@ -99,7 +105,6 @@ class TradeForm extends Component {
     };
 
     return (
-      
       <ul className="trade-form">
         {tradeType === 'stop' && (
           <li>

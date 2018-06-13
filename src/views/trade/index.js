@@ -45,7 +45,8 @@ class Trade extends Component {
     coinDetail: '',
     favoriteCoins: sessionStorage.getItem('favoriteCoins')
       ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
-      : []
+      : [],
+    tradePrice: '',
   };
 
   request = window.request;
@@ -484,6 +485,12 @@ class Trade extends Component {
     });
   };
 
+  //设置交易价格
+  handleTradePrice = tradePrice => {
+    console.log(tradePrice);
+    this.setState({ tradePrice });
+  };
+
   componentWillMount() {
     this.getTradeExpair();
     this.getRate();
@@ -567,7 +574,8 @@ class Trade extends Component {
       listType,
       coinDetail,
       btcLastPrice,
-      ethLastPrice
+      ethLastPrice,
+      tradePrice
     } = this.state;
 
     let toCNY = 0;
@@ -888,6 +896,7 @@ class Trade extends Component {
                     coinName={coinName}
                     mainVolume={mainVolume}
                     coinVolume={coinVolume}
+                    tradePrice={tradePrice}
                     tradeType="limit"
                   />
                 </TabPane>
@@ -898,6 +907,7 @@ class Trade extends Component {
                       coinName={coinName}
                       mainVolume={mainVolume}
                       coinVolume={coinVolume}
+                      tradePrice={tradePrice}
                       tradeType="market"
                     />
                   </TabPane>
@@ -987,7 +997,10 @@ class Trade extends Component {
                             const startIndex = arr.length - visibleLength;
                             return (
                               index > startIndex - 1 && (
-                                <tr key={index}>
+                                <tr
+                                  key={index}
+                                  onClick={this.handleTradePrice.bind(this, record.price)}
+                                >
                                   <td className="font-color-red">
                                     卖出{visibleLength - index + startIndex}
                                   </td>
@@ -1043,7 +1056,10 @@ class Trade extends Component {
                           tradeList.buyOrderVOList.map((record, index) => {
                             return (
                               index < 15 && (
-                                <tr key={index}>
+                                <tr
+                                  key={index}
+                                  onClick={this.handleTradePrice.bind(this, record.price)}
+                                >
                                   <td className="font-color-green">买入{index + 1}</td>
                                   <td>{record.price.toFixed(8)}</td>
                                   <td>{record.volume.toFixed(8)}</td>
@@ -1069,7 +1085,10 @@ class Trade extends Component {
                             const colorName = listType === 0 ? 'green' : 'red';
                             const actionName = listType === 0 ? '买入' : '卖出';
                             return (
-                              <tr key={index}>
+                              <tr
+                                key={index}
+                                onClick={this.handleTradePrice.bind(this, record.price)}
+                              >
                                 <td className={`font-color-${colorName}`}>
                                   {actionName}
                                   {index + 1}
