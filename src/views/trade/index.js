@@ -14,16 +14,21 @@ const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
 class Trade extends Component {
-  market = this.props.history.location.state && this.props.history.location.state.market;
-  coin = this.props.history.location.state && this.props.history.location.state.coin;
+  constructor(props) {
+    super(props);
+
+    const [coinName, marketName] = sessionStorage.getItem('tradePair').split('_');
+    this.coinName = coinName;
+    this.marketName = marketName;
+  }
 
   state = {
-    market: this.market || 'USDT',
+    market: this.marketName || 'USDT',
     tradeExpair: null,
     searchList: null,
     searchValue: '',
-    marketName: this.market || 'USDT',
-    coinName: this.coin,
+    marketName: this.marketName || 'USDT',
+    coinName: '',
     mainVolume: 0,
     coinVolume: 0,
     tradeList: {
@@ -316,7 +321,7 @@ class Trade extends Component {
     this.setState({ userWS });
   };
 
-  //市场币种列表
+  // 市场币种列表
   getTradeExpair = () => {
     this.request('/index/allTradeExpair', {
       method: 'GET'
@@ -324,7 +329,7 @@ class Trade extends Component {
       if (json.code === 10000000) {
         const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
-          if (key === this.state.market && !this.coin) {
+          if (key === this.state.market && !this.coinName) {
             this.setState({
               coinName: json.data[key][0].coinOther,
               coinPrice: json.data[key][0].latestPrice || 0
@@ -336,6 +341,7 @@ class Trade extends Component {
             return coin;
           });
         });
+
         this.setState({ tradeExpair });
       } else {
         message.error(json.msg);
@@ -490,6 +496,11 @@ class Trade extends Component {
     if (sessionStorage.getItem('account')) {
       this.openUserWebsocket();
     }
+
+    //如果是首页跳转指定的币种
+    if (this.coinName) {
+      this.setState({ coinName: this.coinName });
+    }
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -507,14 +518,17 @@ class Trade extends Component {
         coinOther: coinName
       });
 
+      const tradePair = `${coinName}_${marketName}`;
       // 给 buyandsell websocket 发消息 切换交易对
       if (buyandsellWS.readyState === 1) {
-        buyandsellWS.send(`${coinName}_${marketName}`);
+        buyandsellWS.send(tradePair);
       }
+
+      // 保存交易对,以便刷新能够定位交易对
+      sessionStorage.setItem('tradePair', tradePair);
     }
 
-    if(this.state.coinName !== nextState.coinName) {
-      console.log(this.state.coinName, nextState.coinName);
+    if (this.state.coinName !== nextState.coinName) {
       const { marketName, coinName, orderStatus } = nextState;
 
       this.getCoinDetail(coinName);

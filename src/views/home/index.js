@@ -62,7 +62,7 @@ class Home extends Component {
     });
   };
 
-  //市场币种列表
+  // 市场币种列表
   getTradeExpair = () => {
     this.request('/index/allTradeExpair', {
       method: 'GET'
@@ -112,13 +112,8 @@ class Home extends Component {
   };
 
   jumpToTrade = record => {
-    this.props.history.push({
-      pathname: '/trade',
-      state: {
-        market: record.coinMain,
-        coin: record.coinOther
-      }
-    });
+    sessionStorage.setItem('tradePair', `${record.coinOther}_${record.coinMain}`);
+    this.props.history.push('/trade');
   };
 
   // 搜索币
