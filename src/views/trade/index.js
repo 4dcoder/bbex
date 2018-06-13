@@ -424,23 +424,12 @@ class Trade extends Component {
 
   // 选择币种
   selectCoin = coin => {
-    const { orderStatus } = this.state;
-    // this.props.history.push(`/trade?market=${coin.coinMain}&coin=${coin.coinOther}`);
     this.setState({
       marketName: coin.coinMain,
       coinName: coin.coinOther,
       coinPrice: coin.latestPrice || 0
     });
-    //重新获取币种详情
-    this.getCoinDetail(coin.coinOther);
 
-    if (sessionStorage.getItem('account')) {
-      this.findOrderList({
-        status: orderStatus,
-        marketName: coin.coinMain,
-        coinName: coin.coinOther
-      });
-    }
     // TradingView切换商品
     var symbol = coin.coinOther + '/' + coin.coinMain;
     if (window.tvWidget) {
@@ -517,9 +506,6 @@ class Trade extends Component {
         coinMain: marketName,
         coinOther: coinName
       });
-      if (sessionStorage.getItem('account')) {
-        this.findOrderList({ marketName, coinName, status: 0 });
-      }
 
       // 给 buyandsell websocket 发消息 切换交易对
       if (buyandsellWS.readyState === 1) {
@@ -528,8 +514,14 @@ class Trade extends Component {
     }
 
     if(this.state.coinName !== nextState.coinName) {
-      const { coinName } = nextState;
+      console.log(this.state.coinName, nextState.coinName);
+      const { marketName, coinName, orderStatus } = nextState;
+
       this.getCoinDetail(coinName);
+
+      if (sessionStorage.getItem('account')) {
+        this.findOrderList({ marketName, coinName, status: orderStatus });
+      }
     }
   }
 
