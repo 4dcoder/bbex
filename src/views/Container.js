@@ -5,6 +5,12 @@ import { message } from 'antd';
 import request from '../utils/request';
 import logo1 from '../Artboard 4.png';
 
+// 设置全局消息
+message.config({
+  top: 200,
+  maxCount: 1
+});
+
 class Container extends Component {
   constructor(props, context) {
     super(props, context);

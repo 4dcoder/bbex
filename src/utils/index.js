@@ -55,8 +55,7 @@ function dateToStamp(dateStr) {
  * @returns 没有返回值
  **/
 function copy(e) {
-  const ele =
-    typeof e === 'string' ? document.querySelector(e) : e.currentTarget;
+  const ele = typeof e === 'string' ? document.querySelector(e) : e.currentTarget;
 
   if (ele.value) {
     ele.select();
@@ -64,15 +63,7 @@ function copy(e) {
     const text = ele.innerText.trim();
     const textArea = document.createElement('textarea');
     textArea.style.position = 'fixed';
-    textArea.style.top = '0';
-    textArea.style.left = '0';
-    textArea.style.width = '2em';
-    textArea.style.height = '2em';
-    textArea.style.padding = '0';
-    textArea.style.border = 'none';
-    textArea.style.outline = 'none';
-    textArea.style.boxShadow = 'none';
-    textArea.style.background = 'transparent';
+    textArea.style.left = '-1000px';
     textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();
@@ -92,8 +83,7 @@ function copy(e) {
 }
 
 function copyText(e) {
-  const ele =
-    typeof e === 'string' ? document.querySelector(e) : e.currentTarget;
+  const ele = typeof e === 'string' ? document.querySelector(e) : e.currentTarget;
 
   if (ele.value) {
     ele.select();
@@ -101,15 +91,7 @@ function copyText(e) {
     const text = e.target.getAttribute('data-address');
     const textArea = document.createElement('textarea');
     textArea.style.position = 'fixed';
-    textArea.style.top = '0';
-    textArea.style.left = '0';
-    textArea.style.width = '2em';
-    textArea.style.height = '2em';
-    textArea.style.padding = '0';
-    textArea.style.border = 'none';
-    textArea.style.outline = 'none';
-    textArea.style.boxShadow = 'none';
-    textArea.style.background = 'transparent';
+    textArea.style.left = '-1000px';
     textArea.value = text;
     document.body.appendChild(textArea);
     textArea.select();

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
 import { stampToDate, copy } from '../../utils';
@@ -8,11 +7,6 @@ import TransactionForm from './TransactionForm';
 import { IMAGES_ADDRESS, WS_ADDRESS } from '../../utils/constants';
 
 const TabPane = Tabs.TabPane;
-
-message.config({
-  top: 200,
-  maxCount: '1'
-});
 
 const ExpandComponent = ({
   record,

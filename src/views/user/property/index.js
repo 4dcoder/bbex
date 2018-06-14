@@ -8,11 +8,6 @@ import './property.css';
 
 const TabPane = Tabs.TabPane;
 
-message.config({
-    top: 200,
-    maxCount: 3,
-});
-
 class Property extends Component {
     state = {
         modalTit: '',
