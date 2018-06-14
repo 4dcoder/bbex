@@ -31,6 +31,33 @@
     line-height: 52px;
     border-bottom: 1px solid #d4a668;
 }
+.trade-plate-header .market-tit {
+    position: relative;
+    font-size: 16px;
+}
+.trade-plate-header .market-tabs{
+    display: flex;
+    margin-bottom: 0px;
+    line-height: 34px;
+}
+.trade-plate-header .market-tabs>li {
+    margin-right: 12%;
+    color: rgb(210, 210, 210);
+    cursor: pointer;
+}
+.trade-plate-header .market-tabs>li.active {
+    color: #d4a668;
+}
+.trade-plate-header .market-tabs>li:last-child {
+    margin-left: auto;
+    margin-right: 0;
+}
+.trade-plate-header .market-tabs .icon-shoucang,
+.trade-plate-header .market-tabs .icon-shoucang-active {
+    vertical-align: top;
+    font-size: 16px;
+}
+
 .trade-plate-header a:link,
 .trade-plate-header a:visited,
 .trade-plate-header-text{

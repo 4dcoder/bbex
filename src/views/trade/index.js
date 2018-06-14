@@ -367,8 +367,8 @@ class Trade extends Component {
   };
 
   // 切换市场
-  switchMarket = obj => {
-    this.setState({ market: obj.key, searchValue: '', searchList: null });
+  switchMarket = market => {
+    this.setState({ market, searchValue: '', searchList: null });
   };
 
   // 搜索币
@@ -686,7 +686,37 @@ class Trade extends Component {
           <div className="trade-left">
             <div className="trade-plate">
               <header className="trade-plate-header">
-                <Dropdown
+                <div className="market-tit">
+                  市场
+                  <div className="trade-plate-header-right" style={{ right: 0 }}>
+                    <Search
+                      value={searchValue}
+                      onChange={this.handleSearch}
+                      style={{ width: 100 }}
+                    />
+                  </div>
+                </div>
+                <ul className="market-tabs">
+                  {['USDT', 'ETH', 'BTC', 'optional'].map(marketName => {
+                    return (
+                      <li
+                        key={marketName}
+                        className={marketName === market ? 'active' : ''}
+                        onClick={this.switchMarket.bind(this, marketName)}
+                      >
+                        {marketName === 'optional' && (
+                          <i
+                            className={`iconfont icon-shoucang${
+                              marketName === market ? '-active' : ''
+                            }`}
+                          />
+                        )}
+                        {marketName === 'optional' ? '自选' : marketName}
+                      </li>
+                    );
+                  })}
+                </ul>
+                {/* <Dropdown
                   overlay={
                     <Menu onClick={this.switchMarket}>
                       {['optional', 'USDT', 'ETH', 'BTC'].map(market => {
@@ -706,7 +736,7 @@ class Trade extends Component {
                 </Dropdown>
                 <div className="trade-plate-header-right">
                   <Search value={searchValue} onChange={this.handleSearch} style={{ width: 80 }} />
-                </div>
+                </div> */}
               </header>
               <div className="trade-plate-tit cell-3">
                 <div className="trade-plate-tit-cell">币种</div>
@@ -733,7 +763,7 @@ class Trade extends Component {
                   </div>
                 </div>
               </div>
-              <div className="trade-plate-container market">
+              <div className="trade-plate-container market" style={{height: 345}}>
                 <Scrollbars>
                   <table>
                     <tbody>
