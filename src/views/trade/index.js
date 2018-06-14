@@ -46,7 +46,7 @@ class Trade extends Component {
     favoriteCoins: sessionStorage.getItem('favoriteCoins')
       ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
       : [],
-    tradePrice: '',
+    tradePrice: ''
   };
 
   request = window.request;
@@ -232,20 +232,8 @@ class Trade extends Component {
 
       console.log('buyandsell reciveDate: ', tradeList);
 
-      // 如果所推买卖盘是当前交易对，就覆盖当前买卖盘列表
-      if (
-        tradeList &&
-        ((tradeList.buyOrderVOList &&
-          tradeList.buyOrderVOList.length > 0 &&
-          tradeList.buyOrderVOList[0].coinMain === marketName &&
-          tradeList.buyOrderVOList[0].coinOther === coinName) ||
-          (tradeList.sellOrderVOList &&
-            tradeList.sellOrderVOList.length > 0 &&
-            tradeList.sellOrderVOList[0].coinMain === marketName &&
-            tradeList.sellOrderVOList[0].coinOther === coinName))
-      ) {
-        this.setState({ tradeList });
-      }
+      //不用计算和判断，后端推送过来的买卖盘直接覆盖当前买卖盘
+      this.setState({ tradeList });
     };
 
     buyandsellWS.onclose = evt => {
@@ -797,10 +785,10 @@ class Trade extends Component {
                   <table>
                     <tbody>
                       {streamList &&
-                        streamList.map(stream => {
+                        streamList.map((stream, index) => {
                           const trend = stream.type === 0 ? 'green' : 'red';
                           return (
-                            <tr key={stream.date} className={`font-color-${trend}`}>
+                            <tr key={stream.date + index} className={`font-color-${trend}`}>
                               <td style={{ paddingLeft: 25 }}>
                                 {stampToDate(Number(stream.date), 'hh:mm:ss')}
                               </td>
