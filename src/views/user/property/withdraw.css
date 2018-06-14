@@ -28,10 +28,14 @@
 .btn_block{
   display: flex;
   justify-content: space-between;
+  color: #fff;
 }
 .btn_block .btn{
   width: 300px;
   padding: 20px 0 0 20px;;
+}
+.withdraw_content{
+  padding-left: 20px;
 }
 .withdraw_content .title{
   line-height: 30px;

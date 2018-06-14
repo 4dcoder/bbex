@@ -1,8 +1,17 @@
 
+.recharge_content{
+  padding-left: 20px;
+}
 .recharge_content .address{
   display: flex;
   justify-content: flex-start;
   margin-top: 10px;
+}
+.recharge_content #re_address{
+  color: #d4a668;
+}
+.recharge_content h4{
+  color: #fff;
 }
 
 .recharge_content .address .copy{

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Input, Table, Menu, Dropdown, Icon, Tooltip, Button, Select, message } from 'antd';
+import { Tabs, Input, Table, Menu, Dropdown, Icon, Tooltip, Button, Select, message, List } from 'antd';
 import NoticeBar from '../../components/noticeBar';
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
@@ -46,7 +46,9 @@ class Trade extends Component {
     favoriteCoins: sessionStorage.getItem('favoriteCoins')
       ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
       : [],
-    tradePrice: ''
+    tradePrice: '',
+    historyDetails: [],
+    historyExpendKey: ''
   };
 
   request = window.request;
@@ -121,18 +123,27 @@ class Trade extends Component {
     });
   };
 
-  // 订单详情
+
+  // 点击订单详情
+  handleOrderDetail = orderNo => {
+    let { historyExpendKey } = this.state;
+    if(historyExpendKey!=orderNo){
+      this.getOrderDetail(orderNo);
+      this.setState({ historyExpendKey: orderNo});
+    }
+  };
+  // 获取订单详情
   getOrderDetail = orderNo => {
     this.request(`/coin/tradeOrderDetail/${orderNo}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        console.log(json.data);
+        this.setState({historyDetails: json.data})
       } else {
         message.error(json.msg);
       }
     });
-  };
+  }
 
   openStreamWebsocket = () => {
     //打开websockets
@@ -563,7 +574,9 @@ class Trade extends Component {
       coinDetail,
       btcLastPrice,
       ethLastPrice,
-      tradePrice
+      tradePrice,
+      historyDetails,
+      historyExpendKey
     } = this.state;
 
     let toCNY = 0;
@@ -638,7 +651,7 @@ class Trade extends Component {
         render: (text, record) => {
           if (record.status === 2 || record.status === 3) {
             return (
-              <Button type="primary" onClick={this.getOrderDetail.bind(this, record.orderNo)}>
+              <Button type="primary" onClick={this.handleOrderDetail.bind(this, record.orderNo)}>
                 详情
               </Button>
             );
@@ -1146,36 +1159,41 @@ class Trade extends Component {
               <TabPane tab="成交历史" key="1">
                 <Scrollbars>
                   <Table
+                    className="trade_history"
                     columns={orderColumns}
-                    onExpand={this.handleExpand}
                     dataSource={completedOrderList}
                     pagination={false}
-                    expandedRowRender={record =>
-                      record.orderDetail && (
-                        <ul className="order-detail">
-                          <li>
-                            <span>数量</span>
-                            <span>成交额</span>
-                            <span>手续费</span>
-                          </li>
-                          <li>
-                            <span>3.12345674</span>
-                            <span>234.89056432</span>
-                            <span>5.40957673</span>
-                          </li>
-                          <li>
-                            <span>3.12345674</span>
-                            <span>234.89056432</span>
-                            <span>5.40957673</span>
-                          </li>
-                          <li>
-                            <span>3.12345674</span>
-                            <span>234.89056432</span>
-                            <span>5.40957673</span>
-                          </li>
-                        </ul>
-                      )
-                    }
+                    expandedRowKeys={[historyExpendKey]}
+                    expandedRowRender={record => {
+                      return (
+                        <div className="expend_content">
+                          <List
+                            size="small"
+                            header={
+                              <ul className="expent_title">
+                                <li>时间</li>
+                                <li>价格</li>
+                                <li>数量</li>
+                                <li>成交额</li>
+                                <li>手续费</li>
+                              </ul>
+                            }
+                            dataSource={historyDetails}
+                            renderItem={item => (
+                              <List.Item className="list_lis">
+                                <ul className="list_item">
+                                  <li>{stampToDate(item.createDate * 1)}</li>
+                                  <li>{Number(item.price).toFixed(8)}</li>
+                                  <li>{Number(item.successVolume).toFixed(8)}</li>
+                                  <li>{Number(item.price * item.successVolume).toFixed(8)}</li>
+                                  <li>{Number(item.exFee).toFixed(8)}</li>
+                                </ul>
+                              </List.Item>
+                            )}
+                          />
+                        </div>
+                      );
+                    }}
                   />
                 </Scrollbars>
               </TabPane>

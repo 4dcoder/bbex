@@ -18,13 +18,16 @@ class Transaction extends Component {
 
       currentList: [],
       currentTotal: 0,
+      currentPage: 1,
       expendRecordKey: '',
 
       recordList: [],
       recordTotal: 0,
+      recordPage: 1,
       recordAllDetail: [],
 
       detailList: [],
+      detailPage: 1,
       detailTotal: 0
     };
   }
@@ -62,7 +65,7 @@ class Transaction extends Component {
           item.key = item.id;
           return item;
         });
-        this.setState({ currentList, currentTotal: json.data.count });
+        this.setState({ currentList, currentTotal: json.data.count, currentPage: page });
       } else {
         message.error(json.msg);
       }
@@ -85,7 +88,7 @@ class Transaction extends Component {
           item.key = item.id;
           return item;
         });
-        this.setState({ recordList, recordTotal: json.data.count });
+        this.setState({ recordList, recordTotal: json.data.count, recordPage: page });
       } else {
         message.error(json.msg);
       }
@@ -105,6 +108,29 @@ class Transaction extends Component {
     this.getRecordTrade(page, currency, coin);
   };
 
+  // 撤单点击事件
+  handleCancelTrade = (record) =>{
+    this.cancelTrade(record.id);
+
+  }
+  // 撤单
+  cancelTrade = (orderNo) => {
+    request(`/trade/cancelTrade/${orderNo}`, {
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success('撤单成功！');
+        let { currency, coin, currentPage } = this.state;
+        console.log(currency, coin, currentPage );
+        this.getCurrentTrade(currentPage, currency, coin);
+
+      } else {
+        message.destroy();
+        message.error(json.msg);
+      }
+    });
+  };
+
   getTradeDetail = (page, coinOther, coinMain) => {
     request('/coin/userTradeOrderDetail', {
       method: 'POST',
@@ -121,7 +147,7 @@ class Transaction extends Component {
           item.key = item.id;
           return item;
         });
-        this.setState({ detailList, detailTotal: json.data.count });
+        this.setState({ detailList, detailTotal: json.data.count, detailPage: page });
       } else {
         message.error(json.msg);
       }
@@ -260,9 +286,9 @@ class Transaction extends Component {
         title: '操作',
         dataIndex: 'toCoinVolume',
         key: 'toCoinVolume',
-        render: () => {
+        render: (text, record) => {
           return (
-            <Button type="primary" style={{ borderRadius: 4 }}>
+            <Button type="primary" style={{ borderRadius: 4 }} onClick={()=>{this.handleCancelTrade(record)}}>
               撤单
             </Button>
           );
@@ -451,6 +477,9 @@ class Transaction extends Component {
     ];
     const {
       currency,
+      currentPage,
+      recordPage,
+      detailPage,
       expendRecordKey,
       currentTotal,
       recordTotal,
@@ -506,6 +535,7 @@ class Transaction extends Component {
               pagination={{
                 defaultCurrent: 1,
                 total: currentTotal,
+                current: currentPage,
                 pageSize: 10,
                 onChange: page => {
                   this.currentPageChange(page);
@@ -520,6 +550,7 @@ class Transaction extends Component {
               pagination={{
                 defaultCurrent: 1,
                 total: recordTotal,
+                current: recordPage,
                 pageSize: 10,
                 onChange: page => {
                   this.recordPageChange(page);
@@ -565,6 +596,7 @@ class Transaction extends Component {
               pagination={{
                 defaultCurrent: 1,
                 total: detailTotal,
+                current: detailPage,
                 pageSize: 10,
                 onChange: page => {
                   this.detailPageChange(page);

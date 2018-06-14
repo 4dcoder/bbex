@@ -16,7 +16,8 @@ html, body {
     width: 100%;
     min-width: 1200px;
     padding-bottom: 347px;
-    background-color: #f5f5f5;
+    /* background-color: #f5f5f5; */
+    background-color: #353C4A;
 }
 .content-inner {
     display: flex;
@@ -508,4 +509,114 @@ a:hover {
 
 .security_con .ant-row-flex{
     height: 50px;
+}
+
+/* 交易历史详情 */
+.expend_content .expent_title{
+    display: flex;
+}
+.expend_content .ant-list-split .ant-list-header{
+    border-bottom: 1px solid #585858;
+}
+.expend_content .expent_title li{
+    width: 20%;
+    text-align: center;
+    color: #fff;
+}
+.expend_content .list_item{
+    width: 100%;
+    display: flex; 
+}
+.expend_content .list_item li{
+    width: 20%;
+    text-align: center;
+    color: #fff;
+  }
+.expend_content .ant-list-header{
+    padding-bottom: 0;
+    padding-top: 0;
+}
+
+/* 我的交易 */
+.transation_content .ant-table-expand-icon-th{
+    display: none;
+}
+.transation_content .ant-table-row-expand-icon-cell{
+    display: none;
+}
+.transation_content .ant-table-expanded-row td:nth-child(1){
+    display: none;
+}
+/* 交易历史  */
+.trade_history .ant-table-expand-icon-th{
+    display: none;
+}
+.trade_history .ant-table-row-expand-icon-cell{
+    display: none;
+}
+.trade_history .ant-table-expanded-row td:nth-child(1){
+    display: none;
+}
+
+/* c2c交易 */
+.trade-cont .ant-table-thead>tr>th{
+    background: #161A22;
+    color: #fff;
+}
+.trade-cont .ant-table-placeholder{
+    color: #fff;
+    background: #353C4A;
+    border-bottom: 0;
+}
+.trade-cont .ant-table-tbody>tr>td{
+    border-bottom:1px solid #595959;
+    color: #fff;
+}
+
+.trade-cont .ant-table-tbody>tr.ant-table-row:hover>td {
+    cursor: pointer;
+    background-color: #27292e;
+}
+/* 个人中心 */
+.user-cont .ant-tabs-tab{
+    color: #fff;
+}
+.user-cont .ant-steps-item .ant-steps-item-title{
+    color: #fff !important;
+}
+.user-cont  .ant-form-item-required{
+    color: #fff;
+}
+.user-cont .ant-table-thead>tr>th{
+    background: #161A22;
+    color: #fff;
+}
+.user-cont  .ant-table-placeholder{
+    color: #fff;
+    background: #353C4A;
+    border-bottom: 0;
+}
+.user-cont  .ant-table-tbody>tr>td{
+    border-bottom:1px solid #595959;
+    color: #fff;
+}
+.user-cont .ant-table-expand-icon-th{
+    display: none;
+}
+.user-cont  .ant-table-row-expand-icon-cell{
+    display: none;
+}
+.user-cont .ant-table-expanded-row td:nth-child(1){
+    display: none;
+}
+
+.user-cont .ant-table-tbody>tr.ant-table-row:hover>td {
+    cursor: pointer;
+    background-color: #27292e;
+}
+.user-cont .ant-table-tbody>tr.ant-table-expanded-row{
+    background-color: #353C4A;
+}
+.user-cont .ant-table-tbody>tr.ant-table-expanded-row:hover>td{
+    background-color: #353C4A;
 }

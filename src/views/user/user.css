@@ -7,20 +7,27 @@
     margin-right: 20px;
     padding-bottom: 40px;
     color: #666;
-    background-color: #fff;
+    /* background-color: #fff; */
+    color: #fff;
+    background-color: #2A2F3C;
+
 }
 .user-cont {
     flex: 1;
     padding: 40px 30px;
-    background-color: #fff;
+    /* background-color: #fff; */
+    color: #fff;
+    background-color: #2A2F3C;
 }
 
 .user-header {
     padding: 20px 0;
-    border-bottom: 1px solid #e6e6e6;
-    color: #666;
+    border-bottom: 1px solid #595959;
+    /* color: #666; */
     text-align: center;
-    background-color: #efefef;
+    /* background-color: #efefef; */
+    color: #fff;
+    background-color: #2A2F3C;
 }
 .user-avatar {
     width: 60px;
@@ -38,7 +45,7 @@
 }
 .user-nav .user-link {
     display: block;
-    color: #666;
+    color: #fff;
     line-height: 46px;
     text-align: center;
     border-left: 2px solid transparent;

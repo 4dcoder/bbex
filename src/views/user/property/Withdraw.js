@@ -148,20 +148,13 @@ class Withdraw extends Component {
         </li>
       </ul>
       <div className="btn_block">
-        <List size="small" split={false}>
-          <List.Item>
-            温馨提示
-          </List.Item>
-          <List.Item>
-            .最小提币数量为：{withdrawMinVolume}{name}
-          </List.Item>
-          <List.Item>
-            .为保障资金安全，当您账户安全策略变更，密码修改，使用新地址提币。我们会对你提笔币进行人工审核，请耐心等待工作人员电话或邮件联系。
-          </List.Item>
-          <List.Item>
-            .请务必确认电脑及浏览器安全，防止信息被篡改或泄漏。
-          </List.Item>
-        </List>
+        <ul>
+          <li>温馨提示</li>
+          <li> 最小提币数量为：{withdrawMinVolume}{name}</li>
+          <li>为保障资金安全，当您账户安全策略变更，密码修改，使用新地址提币。我们会对你提笔币进行人工审核，请耐心等待工作人员电话或邮件联系。</li>
+          <li>请务必确认电脑及浏览器安全，防止信息被篡改或泄漏。</li>
+        </ul>
+        
         <div className="btn">
             <Button onClick={this.withdrawClick} type="primary" style={{width: 140,height: 50, borderRadius: 4}}>提币</Button>
         </div>

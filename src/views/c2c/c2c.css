@@ -5,15 +5,20 @@
     flex: 0 0 200px;
     height: 500px;
     margin-right: 20px;
-    color: #666;
-    background-color: #fff;
+    /* color: #666;
+     */
+     color: #fff;
+    /* background-color: #fff; */
+    background-color: #2E3442;
 }
 .nav-item .nav-tit {
     padding: 30px 20px 20px;
     font-size: 16px;
     line-height: 20px;
-    background-color: #fbfbfb;
+    /* background-color: #fbfbfb; */
+    background-color: #2E3442;
     font-weight: 400;
+    color: #fff;
 }
 .nav-item .nav-tit .iconfont {
     padding-right: 10px;
@@ -21,7 +26,8 @@
 }
 .nav-item .nav-link {
     display: block;
-    color: #666;
+    /* color: #666; */
+    color: #fff;
     line-height: 46px;
     text-indent: 50px;
     border-left: 2px solid transparent;
@@ -38,7 +44,8 @@
 
 .trade-list {
     padding: 30px;
-    background-color: #fff;
+    /* background-color: #fff; */
+    background-color: #2E3442;
 }
 .trade-list .trade-list-header {
     margin-bottom: 20px;
@@ -50,11 +57,13 @@
     padding-right: 30px;
 }
 .trade-list .trade-index span em {
-    color: #55666b;
+    /* color: #55666b; */
+    color: #fff;
     font-size: 14px;
 }
 .trade-list .trade-part {
-    color: #55666b;
+    /* color: #55666b; */
+    color: #fff;
     font-size: 20px;
 }
 .trade-list .now-trade-price {
@@ -94,9 +103,11 @@
     font-weight: bolder;
 }
 
+
 .trade-record {
     margin-top: 20px;
-    background-color: #fff;
+    /* background-color: #fff; */
+    background-color: #2E3442;
 }
 .trade-record .ant-table-row-expand-icon-cell {
     padding: 0;
@@ -133,7 +144,8 @@
     display: inline-block;
     padding: 0 35px;
     font-size: 15px;
-    color: #666;
+    /* color: #666; */
+    color: #fff;
     line-height: 70px;
     cursor: pointer;
 }

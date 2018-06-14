@@ -222,13 +222,13 @@ class Property extends Component {
             render: (text, record) => (
                 <div className="property-action">
                     { (record.tokenStatus==1 || record.tokenStatus==2) && <Button
-                        type="normal"
+                        type="primary"
                         onClick={()=>{this.handleRecharge(record)}}
                     >
                         充币
                     </Button>}
                     { (record.tokenStatus==1 || record.tokenStatus==3) && <Button
-                        type="normal"
+                        type="primary"
                         onClick={()=>{this.handleWithdraw(record)}}
                     >
                         提币
@@ -306,7 +306,6 @@ class Property extends Component {
                         <header className="property-header">
                             <h2 className="pull-left">
                                 我的资金一览表
-                                <Checkbox onChange={this.handleZero}>隱藏0余額</Checkbox>
                             </h2>
                             {/* <ul className="pull-right">
                                 <li className="assets-estimate">資產估算：0.000000 BTC</li>
