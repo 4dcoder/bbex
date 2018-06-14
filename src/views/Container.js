@@ -171,7 +171,7 @@ class Container extends Component {
               <div className="footer-main clear">
                 <div className="footer-logo">
                   <img src={logo1} alt="logo" width="108" height="68" />
-                  <p>{localization['Market_risk']}</p>
+                  <p>{localization['market_risk']}</p>
                 </div>
                 <div className="footer-main-right">
                   <ul className="footer-nav clear">

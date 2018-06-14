@@ -14,7 +14,6 @@ import partner3 from '../../assets/images/partner/nodecape.png';
 import partner4 from '../../assets/images/partner/lians.png';
 import partner5 from '../../assets/images/partner/lianwen.png';
 import partner6 from '../../assets/images/partner/Jlab.png';
-import { Object } from 'core-js';
 
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
