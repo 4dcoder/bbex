@@ -29,4 +29,5 @@
     "react-app-rewired": "^1.5.0"
   },
   "proxy": "http://api.ckex.com"
+
 }
