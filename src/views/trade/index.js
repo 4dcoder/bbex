@@ -16,10 +16,14 @@ const Option = Select.Option;
 class Trade extends Component {
   constructor(props) {
     super(props);
-
-    const [coinName, marketName] = sessionStorage.getItem('tradePair').split('_');
-    this.coinName = coinName;
-    this.marketName = marketName;
+    let tradePair = sessionStorage.getItem('tradePair');
+    console.log('tradePair', tradePair);
+    if(tradePair){
+      const [coinName, marketName] = sessionStorage.getItem('tradePair').split('_');
+      this.coinName = coinName;
+      this.marketName = marketName;
+    }
+    
   }
 
   state = {
@@ -122,7 +126,6 @@ class Trade extends Component {
       }
     });
   };
-
 
   // 点击订单详情
   handleOrderDetail = orderNo => {
