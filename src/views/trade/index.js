@@ -19,7 +19,7 @@ class Trade extends Component {
     let tradePair = sessionStorage.getItem('tradePair');
     console.log('tradePair', tradePair);
     if(tradePair){
-      const [coinName, marketName] = sessionStorage.getItem('tradePair').split('_');
+      const [coinName, marketName] = tradePair.split('_');
       this.coinName = coinName;
       this.marketName = marketName;
     }
