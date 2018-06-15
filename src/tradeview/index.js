@@ -7,12 +7,11 @@ class TradeviewPage extends Component {
   websocketUrl = `${WS_ADDRESS}/bbex/klinesocket`;
 
   componentDidMount() {
-    this.tradingViewGetReady();
     this.websocketStart();
 
-    // window.ws.onopen = evt => {
-    //   console.log('Kline Connection open ...');
-    // };
+    window.ws.onopen = evt => {
+      console.log('Kline Connection open ...');
+    };
 
     window.ws.onclose = evt => {
       console.log('Kline Connection closed.');
@@ -20,15 +19,16 @@ class TradeviewPage extends Component {
   }
 
   componentWillUpdate(nextProps, nextState) {
-    if(this.props !== nextProps) {
-      const { market, coin } = this.props;
+    if(!this.props.coin && nextProps.coin) {
+      //当coin第一次有值的时候，就初始化tradingview
+      const {market, coin} = nextProps;
+      this.tradingViewGetReady({market, coin});
     }
   }
 
   // 开启websocket
   websocketStart() {
     window.ws = new window.ReconnectingWebSocket(this.websocketUrl);
-
     setInterval(() => {
       if (window.ws.readyState === 1) {
         window.ws.send('ping');
@@ -37,8 +37,7 @@ class TradeviewPage extends Component {
   }
 
   // tradeView准备
-  tradingViewGetReady() {
-    const { market, coin } = this.props;
+  tradingViewGetReady({market, coin}) {
     let params = {
       resolution: '5',
       Datafeeds: datafeeds(`${coin}/${market}`),
