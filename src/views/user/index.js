@@ -8,7 +8,8 @@ import Finance from './finance';
 import Address from './address';
 import Status from './status';
 import Security from './security';
-import Popup from '../../components/popup';
+import Verification from '../../components/verification';
+
 
 import './user.css';
 
@@ -23,24 +24,15 @@ class UserCenter extends Component {
       if (!account.googleAuth) {
         this.setState({
           popup: (
-            <Popup
-              wrapClassName="verification-popup"
-              cancelBtn="暂不设置"
-              confirmBtn="立即设置"
-              cancelHandle={this.closePopup}
-              confirmHandle={() => {
+            <Verification 
+              closeModal={()=>{
                 this.closePopup();
-                this.props.history.push('/authentication');
+              }} 
+              gotoSetting={()=>{
+                this.closePopup();
+                this.props.history.push('/user/security');
               }}
-            >
-              <i className="iconfont icon-icon" />
-              <p className="message">
-                为了您的账号安全，我们强烈建议您开启二次验证。
-              </p>
-              <a href="/authentication" className="input-verification">
-                请输入谷歌验证码
-              </a>
-            </Popup>
+            />
           )
         });
       }

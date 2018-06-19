@@ -114,6 +114,7 @@ class Verified extends Component {
                             <Button
                                 onFocus={this.showExample}
                                 onBlur={this.hideExample}
+                                type="primary"
                             >
                                 示例
                             </Button>
@@ -168,7 +169,7 @@ class Verified extends Component {
                 {current === 2 && (
                     <div className="steps-content step3">
                         <i className="iconfont icon-shimingrenzheng1"></i>
-                        <h3>您已完成身份认证</h3>
+                        <h3 style={{color:'#fff'}}>您已完成身份认证</h3>
                         <p>您的真实姓名为：{this.account.realName}</p>
                     </div>
                 )}

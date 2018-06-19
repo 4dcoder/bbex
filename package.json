@@ -5,7 +5,6 @@
   "dependencies": {
     "antd": "^3.4.1",
     "classnames": "^2.2.5",
-    "copy-to-clipboard": "^3.0.8",
     "jquery": "^3.3.1",
     "qrcode.react": "^0.8.0",
     "react": "^16.3.1",
@@ -15,7 +14,8 @@
     "react-responsive-carousel": "^3.1.37",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "react-spinners": "^0.3.2"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -28,6 +28,5 @@
     "react-app-rewire-less": "^2.1.1",
     "react-app-rewired": "^1.5.0"
   },
-  "proxy": "http://api.ckex.com"
-
+  "proxy": "https://api.ckex.com"
 }

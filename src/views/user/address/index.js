@@ -78,6 +78,7 @@ class Address extends Component {
         if (json.code === 10000000) {
             message.success("添加成功",1);
             this.getAddress();
+            this.setState({address: '', remark: ''});
         } else {
             message.error(json.msg);
         }

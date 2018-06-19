@@ -49,7 +49,7 @@ class Authentication extends Component {
                 const account = JSON.parse(sessionStorage.getItem('account'));
                 account.googleAuth = secret;
                 sessionStorage.setItem('account', JSON.stringify(account));
-                this.props.history.push('/userCenter');
+                this.props.history.push('/user');
             }else {
                 message.error(json.msg);
             }

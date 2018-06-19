@@ -39,7 +39,7 @@ class TradeviewPage extends Component {
   // tradeView准备
   tradingViewGetReady({market, coin}) {
     let params = {
-      resolution: '5',
+      resolution: '1',
       Datafeeds: datafeeds(`${coin}/${market}`),
       serverUrl: this.websocketUrl,
       pushInterval: 1000,

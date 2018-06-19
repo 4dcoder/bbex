@@ -8,7 +8,8 @@ import request from '../../utils/request';
 class TradeBox extends Component {
   state = {
     mainVolume: 0,
-    coinVolume: 0
+    coinVolume: 0,
+    
   };
 
   componentWillReceiveProps(nextProps, nextState) {
@@ -68,8 +69,18 @@ class TradeBox extends Component {
   };
 
   render() {
-    const { tradeType, marketName, coinName, tradePrice } = this.props;
+    const { tradeType, marketName, coinName, tradePrice, clickTradeType } = this.props;
     const { mainVolume, coinVolume } = this.state;
+
+
+    const tradeProps = {
+      tradeType,
+      marketName,
+      coinName,
+      mainVolume,
+      tradePrice,
+      clickTradeType
+    };
 
     return [
       <div key="info" className="property-info">
@@ -90,24 +101,8 @@ class TradeBox extends Component {
           )}
         </span>
       </div>,
-      <TradeForm
-        key="buy"
-        type="buy"
-        tradeType={tradeType}
-        marketName={marketName}
-        coinName={coinName}
-        mainVolume={mainVolume}
-        tradePrice={tradePrice}
-      />,
-      <TradeForm
-        key="sell"
-        type="sell"
-        tradeType={tradeType}
-        marketName={marketName}
-        coinName={coinName}
-        coinVolume={coinVolume}
-        tradePrice={tradePrice}
-      />
+      <TradeForm key="buy" type="buy" {...tradeProps} />,
+      <TradeForm key="sell" type="sell" {...tradeProps} />
     ];
   }
 }

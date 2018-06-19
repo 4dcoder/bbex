@@ -105,6 +105,9 @@
     font-size: 180px;
 }
 
+.steps-photos .ant-upload {
+    color: rgb(153, 153, 153);
+}
 .steps-photos .ant-upload.ant-upload-select > .ant-upload {
     position: relative;
     vertical-align: bottom;
@@ -124,6 +127,10 @@
 
 .steps-photos .anticon.anticon-plus::before {
     font-size: 20px;
+}
+
+.steps-photos .ant-upload.ant-upload-select-picture-card {
+    background-color: transparent;
 }
 
 .steps-content > .iconfont {

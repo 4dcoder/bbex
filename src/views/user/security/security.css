@@ -1,0 +1,96 @@
+.security_con .title{
+  text-align: right;
+}
+.security_con .pwd_btn{
+  padding-left: 100px;
+}
+.google_ver_con{
+  padding-left: 30px;
+}
+.security_con  .down-btn {
+  display: inline-block;
+  width: 169px;
+  height: 57px;
+  margin-right: 20px;
+  background-image: url(../../../assets//images/down_googleapp.png);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-indent: -999px;
+}
+.security_con  .down-btn.apple {
+  background-position: 0 0;
+}
+.security_con .down-btn.google {
+  background-position: -184px 0;
+}
+.security_con .step_title span{
+  color: #d4a668;
+}
+.security_con .step_content{
+  padding: 10px 20px 16px;
+}
+
+.security_con .qrcode-box {
+  width: 147px;
+  padding: 10px 15px 2px;
+  margin-right: 40px;
+  border: 1px solid #363C49;
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  background-color: #f8f8f8;
+}
+.security_con .qrcode-box p {
+  font-size: 12px;
+  color: #363C49;
+}
+.security_con .qrcode-text {
+  overflow: hidden;
+  padding-top: 30px;
+  line-height: 18px;
+}
+.security_con .qrcode-num {
+  display: inline-block;
+  height: 38px;
+  margin-bottom: 20px;
+  padding: 0 18px;
+  border: 1px solid #363C49;
+  font-weight: 700;
+  line-height: 38px;
+  background-color: #363C49;
+}
+
+.security_con .key-box {
+  margin: 8px 0;
+  width: 325px;
+  height: 40px;
+  border: 1px solid #f3d6af; 
+  line-height: 40px;
+  text-align: center;
+  color: #bb925c;
+  background-color: #fff6e9;
+}
+.security_con .key-box .icon-miyao {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: bolder;
+  transform: rotate(-45deg);
+}
+
+.security_con .key-text {
+  line-height: 18px;
+}
+.security_con .key-text p {
+  padding: 6px 0;
+}
+
+.security_con .auth-box .form-list {
+  width: 360px;
+}
+.security_con .form-list input{
+  width: 350px;
+  background-color: #363C49;
+}
+.security_con .auth-direction button{
+  width: 100px;
+}

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { LocaleProvider } from 'antd';
+import { LocaleProvider, Input } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
 import logo1 from '../Artboard 4.png';
+import Popup from '../components/popup';
+import Verification from '../components/verification';
 
 // 设置全局消息
 message.config({
@@ -14,18 +16,61 @@ message.config({
 class Container extends Component {
   constructor(props, context) {
     super(props, context);
-    window.request = (url, options) => {
+    this.request = window.request = (url, options) => {
       return new Promise((resolve, reject) => {
-        props.request(url, options).then(json => {
-          if (json.code === -5) {
-            //登录失效
-            this.setState({ isLogin: false });
-            sessionStorage.clear();
-            props.history.push('/signin');
-          } else {
-            resolve(json);
-          }
-        });
+        props
+          .request(url, options)
+          .then(json => {
+            if (json.code === -5 || json.code === -8) {
+              //登录失效
+              this.setState({ isLogin: false });
+              sessionStorage.clear();
+              props.history.push('/signin');
+
+              const msg = json.code === -5 ? '用户登录失效' : '用户被挤出';
+              message.error(msg);
+            } else {
+              resolve(json);
+            }
+          })
+          .catch(error => {
+            // 需要谷歌验证
+            if (error.status === 403) {
+              const { googleAuth } = JSON.parse(sessionStorage.getItem('account'));
+              if (googleAuth) {
+                console.log(22222);
+                // 如果已经谷歌绑定了，去输入谷歌验证码
+                this.setState({
+                  popup: (
+                    <Popup cancelHandle={this.closePopup} confirmHandle={this.handleGoogleValid}>
+                      <div>
+                        <label htmlFor="">谷歌验证码：</label>
+                        <Input onChange={this.inputGoogleCode} />
+                      </div>
+                    </Popup>
+                  )
+                });
+              } else {
+                console.log(111111)
+                // 去绑定谷歌验证
+                this.setState({
+                  popup: (
+                    <Verification 
+                      closeModal={()=>{
+                        this.closePopup();
+                      }} 
+                      gotoSetting={()=>{
+                        this.closePopup();
+                        this.props.history.push('/user/security');
+                      }}
+                    />
+                  )
+                });
+              }
+
+              reject(error);
+            }
+          });
       });
     };
   }
@@ -37,7 +82,34 @@ class Container extends Component {
       name: '中文'
     },
     locale: {},
-    logo: ''
+    logo: '',
+    googleCode: '',
+    popup: false
+  };
+
+  closePopup = () => {
+    this.setState({ popup: false });
+  };
+
+  inputGoogleCode = e => {
+    this.setState({ googleCode: e.target.value });
+  };
+
+  // 谷歌验证
+  handleGoogleValid = () => {
+    const { googleCode } = this.state;
+    if (googleCode) {
+      this.request('/user/googleValid', { body: { code: googleCode } }).then(json => {
+        if (json.code === 10000000) {
+          this.closePopup();
+          message.success('谷歌验证成功！');
+        } else {
+          message.error(json.msg);
+        }
+      });
+    } else {
+      message.error('请输入谷歌验证码');
+    }
   };
 
   componentWillMount() {
@@ -93,21 +165,21 @@ class Container extends Component {
     });
   };
   getLogo = () => {
-    request('/cms/logo',{
+    request('/cms/logo', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        this.setState({logo: json.data});
+        this.setState({ logo: json.data });
       } else {
         message.destroy();
         message.error(json.msg);
       }
     });
-  }
+  };
 
   render() {
     const { localization } = this.props;
-    const { isLogin, language, locale, logo } = this.state;
+    const { isLogin, language, locale, logo, popup } = this.state;
     return (
       <LocaleProvider locale={locale}>
         <div className="container">
@@ -210,7 +282,9 @@ class Container extends Component {
                       </Link>
                     </li>
                     <li>
-                      {localization['contact_email']}：<Link to="mailto: support@bbex.com">support@bbex.com</Link>
+                      {localization['contact_email']}：<Link to="mailto: support@bbex.com">
+                        support@bbex.com
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -246,6 +320,7 @@ class Container extends Component {
               <div className="footer-copyright">Copyright 2018 All Rights Reserved.</div>
             </div>
           </footer>
+          {popup}
         </div>
       </LocaleProvider>
     );

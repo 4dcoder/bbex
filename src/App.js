@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import Spinners from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
 import request from './utils/request';
-import Home from './views/home';
 
 import './App.css';
 import './assets/fonts/iconfont.css';
@@ -11,9 +11,20 @@ import './assets/fonts/iconfont.css';
 const Loading = ({ isLoading, error }) => {
   // Handle the loading state
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="page-loading">
+        <Spinners.ScaleLoader
+          color={'#d4a668'}
+          height={100}
+          width={5}
+          margin="5px"
+          radius={5}
+          loading
+        />
+      </div>
+    );
   }
-
+  
   // Handle the error state
   else if (error) {
     return <div>Sorry, there was a problem loading the page.</div>;
@@ -21,6 +32,11 @@ const Loading = ({ isLoading, error }) => {
     return null;
   }
 };
+
+const Home = Loadable({
+  loader: () => import('./views/home'),
+  loading: Loading
+});
 
 const Trade = Loadable({
   loader: () => import('./views/trade'),

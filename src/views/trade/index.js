@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import { Tabs, Input, Table, Menu, Dropdown, Icon, Tooltip, Button, Select, message, List } from 'antd';
+import {
+  Tabs,
+  Input,
+  Table,
+  Menu,
+  Dropdown,
+  Icon,
+  Tooltip,
+  Button,
+  Select,
+  message,
+  List
+} from 'antd';
 import NoticeBar from '../../components/noticeBar';
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
+import Spinners from 'react-spinners';
 import { stampToDate } from '../../utils';
 import { WS_ADDRESS } from '../../utils/constants';
 import TradeBox from './TradeBox';
@@ -18,42 +31,41 @@ class Trade extends Component {
     super(props);
     let tradePair = sessionStorage.getItem('tradePair');
     console.log('tradePair', tradePair);
-    if(tradePair){
+    if (tradePair) {
       const [coinName, marketName] = tradePair.split('_');
       this.coinName = coinName;
       this.marketName = marketName;
     }
-    
-  }
 
-  state = {
-    market: this.marketName || 'USDT',
-    tradeExpair: null,
-    searchList: null,
-    searchValue: '',
-    marketName: this.marketName || 'USDT',
-    coinName: '',
-    mainVolume: 0,
-    coinVolume: 0,
-    tradeList: {
-      buyOrderVOList: [],
-      sellOrderVOList: []
-    },
-    streamList: null,
-    pendingOrderList: [],
-    completedOrderList: [],
-    coinPrice: 0,
-    listType: -1,
-    mergeNumber: 8,
-    orderStatus: 0,
-    coinDetail: '',
-    favoriteCoins: sessionStorage.getItem('favoriteCoins')
-      ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
-      : [],
-    tradePrice: '',
-    historyDetails: [],
-    historyExpendKey: ''
-  };
+    this.state = {
+      market: this.marketName || 'USDT',
+      tradeExpair: {},
+      searchList: null,
+      searchValue: '',
+      marketName: this.marketName || 'USDT',
+      coinName: '',
+      mainVolume: 0,
+      coinVolume: 0,
+      tradeList: {
+        buyOrderVOList: [],
+        sellOrderVOList: []
+      },
+      streamList: [],
+      pendingOrderList: [],
+      completedOrderList: [],
+      listType: -1,
+      mergeNumber: 8,
+      orderStatus: 0,
+      coinDetail: '',
+      favoriteCoins: sessionStorage.getItem('favoriteCoins')
+        ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
+        : [],
+      tradePrice: '',
+      clickTradeType: '',
+      historyDetails: [],
+      historyExpendKey: ''
+    };
+  }
 
   request = window.request;
 
@@ -73,6 +85,12 @@ class Trade extends Component {
 
   // 未完成订单
   findOrderList = ({ marketName, coinName, status }) => {
+    if (status === 0) {
+      this.setState({ pendingOrderList: null });
+    } else {
+      this.setState({ completedOrderList: null });
+    }
+
     const { id } = JSON.parse(sessionStorage.getItem('account'));
     this.request('/order/findOrderProposeList', {
       body: {
@@ -91,11 +109,16 @@ class Trade extends Component {
           return order;
         });
         if (status === 0) {
-          this.setState({ pendingOrderList: json.data });
+          this.setState({ pendingOrderList: json.data || [] });
         } else {
-          this.setState({ completedOrderList: json.data });
+          this.setState({ completedOrderList: json.data || [] });
         }
       } else {
+        if (status === 0) {
+          this.setState({ pendingOrderList: [] });
+        } else {
+          this.setState({ completedOrderList: [] });
+        }
         message.error(json.msg);
       }
     });
@@ -115,11 +138,13 @@ class Trade extends Component {
   };
 
   // 撤单
-  cancelTrade = orderNo => {
+  handleCancelTrade = orderNo => {
     this.request(`/trade/cancelTrade/${orderNo}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
+        const { marketName, coinName, orderStatus } = this.state;
+        this.findOrderList({ marketName, coinName, status: orderStatus });
         message.success('撤单成功！');
       } else {
         message.error(json.msg);
@@ -130,9 +155,9 @@ class Trade extends Component {
   // 点击订单详情
   handleOrderDetail = orderNo => {
     let { historyExpendKey } = this.state;
-    if(historyExpendKey!=orderNo){
+    if (historyExpendKey != orderNo) {
       this.getOrderDetail(orderNo);
-      this.setState({ historyExpendKey: orderNo});
+      this.setState({ historyExpendKey: orderNo });
     }
   };
   // 获取订单详情
@@ -141,12 +166,12 @@ class Trade extends Component {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        this.setState({historyDetails: json.data})
+        this.setState({ historyDetails: json.data });
       } else {
         message.error(json.msg);
       }
     });
-  }
+  };
 
   openStreamWebsocket = () => {
     //打开websockets
@@ -244,7 +269,7 @@ class Trade extends Component {
       const tradeList = JSON.parse(evt.data);
       const { marketName, coinName } = this.state;
 
-      console.log('buyandsell reciveDate: ', tradeList);
+      // console.log('buyandsell reciveDate: ', tradeList);
 
       //不用计算和判断，后端推送过来的买卖盘直接覆盖当前买卖盘
       this.setState({ tradeList });
@@ -268,9 +293,10 @@ class Trade extends Component {
 
     setInterval(() => {
       if (userWS.readyState === 1) {
-        userWS.send('ping');
+        const { marketName, coinName } = this.state;
+        userWS.send(`${coinName}_${marketName}_${id}`);
       }
-    }, 1000 * 3);
+    }, 1000);
 
     userWS.onopen = evt => {
       console.log('user Websocket Connection open ...');
@@ -284,33 +310,46 @@ class Trade extends Component {
       const { orderVo, coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
       console.log('======user record: ', JSON.parse(evt.data));
 
-      const { pendingOrderList } = this.state;
+      // 当推的数据是挂单，更新用户挂单列表
+      if (orderVo) {
+        let { pendingOrderList } = this.state;
+        let isNewRecord = true;
+        pendingOrderList = pendingOrderList.filter(order => {
+          if (order.orderNo === orderVo.orderNo) {
+            isNewRecord = false;
+            order.status = orderVo.status;
+            order.exType = orderVo.exType;
+            if (orderVo.status === 1) {
+              order.successVolume = (Number(order.successVolume) + orderVo.successVolume).toFixed(
+                8
+              );
+            } else {
+              order.successVolume = orderVo.successVolume;
+            }
+          }
+          return order.status !== 2;
+        });
 
-      let isNewRecord = true;
-      const pendingList = pendingOrderList.filter(order => {
-        if (order.orderNo === orderVo.orderNo) {
-          isNewRecord = false;
-          order.status = orderVo.status;
-          order.exType = order.exType;
+        if (isNewRecord) {
+          orderVo.key = orderVo.orderNo;
+          orderVo.price = orderVo.price && orderVo.price.toFixed(8);
+          orderVo.volume = orderVo.volume && orderVo.volume.toFixed(8);
+          orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
+          pendingOrderList.unshift(orderVo);
         }
-        return order.status !== 2;
-      });
-
-      if (isNewRecord) {
-        orderVo.key = orderVo.orderNo;
-        orderVo.price = orderVo.price && orderVo.price.toFixed(8);
-        orderVo.volume = orderVo.volume && orderVo.volume.toFixed(8);
-        orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
-        pendingList.unshift(orderVo);
+        this.setState({ pendingOrderList });
       }
 
-      const { mainVolume, coinVolume } = this.state;
+      const { mainVolume, coinVolume } = this.props;
+      // 当推的数据有主币而且跟当前不相等，就更新主币资产
+      if (coinMainVolume && coinMainVolume.volume && coinMainVolume.volume !== mainVolume) {
+        this.setState({ mainVolume: coinMainVolume.volume });
+      }
 
-      this.setState({
-        pendingOrderList: pendingList,
-        mainVolume: coinMainVolume ? coinMainVolume.volume : mainVolume,
-        coinVolume: coinOtherVolume ? coinOtherVolume.volume : coinVolume
-      });
+      // 当推的数据有副币而且跟当前不相等，就更新副币资产
+      if (coinOtherVolume && coinOtherVolume.volume && coinOtherVolume.volume !== coinVolume) {
+        this.setState({ coinVolume: coinOtherVolume.volume });
+      }
     };
 
     userWS.onclose = evt => {
@@ -326,27 +365,33 @@ class Trade extends Component {
 
   // 市场币种列表
   getTradeExpair = () => {
+    this.setState({ tradeExpair: null });
     this.request('/index/allTradeExpair', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
+        
+        if (this.coinName) {
+          //如果有保存在sessionStorage的交易对，就取保存中的
+          this.setState({ coinName: this.coinName });
+        } else {
+          //如果没有保存的交易对，就取当前市场的第一个币种
+          this.setState({
+            coinName: json.data[this.state.market][0].coinOther
+          });
+        }
+
         const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
-          if (key === this.state.market && !this.coinName) {
-            this.setState({
-              coinName: json.data[key][0].coinOther,
-              coinPrice: json.data[key][0].latestPrice || 0
-            });
-          }
           tradeExpair[key] = json.data[key].map(coin => {
             coin.key = `${coin.coinMain}.${coin.coinOther}`;
             coin.latestPrice = coin.latestPrice || 0;
             return coin;
           });
         });
-
         this.setState({ tradeExpair });
       } else {
+        this.setState({ tradeExpair: {} });
         message.error(json.msg);
       }
     });
@@ -354,13 +399,31 @@ class Trade extends Component {
 
   // 获取交易列表
   getTradeList = ({ coinMain, coinOther }) => {
+    this.setState({
+      tradeList: {
+        buyOrderVOList: null,
+        sellOrderVOList: null
+      }
+    });
     this.request('/index/buyAndSellerOrder', {
       method: 'GET',
       body: { coinMain, coinOther }
     }).then(json => {
       if (json.code === 10000000) {
+        this.setState({
+          tradeList: {
+            buyOrderVOList: json.data.buyOrderVOList || [],
+            sellOrderVOList: json.data.sellOrderVOList || []
+          }
+        });
         this.setState({ tradeList: json.data });
       } else {
+        this.setState({
+          tradeList: {
+            buyOrderVOList: [],
+            sellOrderVOList: []
+          }
+        });
         message.error(json.msg);
       }
     });
@@ -368,20 +431,22 @@ class Trade extends Component {
 
   // 获取流水记录
   getStream = ({ coinMain, coinOther }) => {
+    this.setState({ streamList: null });
     this.request('/index/findMatchStream', {
       method: 'GET',
       body: { coinMain, coinOther }
     }).then(json => {
       if (json.code === 10000000) {
-        this.setState({ streamList: json.data });
+        this.setState({ streamList: json.data || [] });
       } else {
+        this.setState({ streamList: [] });
         message.error(json.msg);
       }
     });
   };
 
   // 切换市场
-  switchMarket = market => {
+  handleSwitchMarket = market => {
     this.setState({ market, searchValue: '', searchList: null });
   };
 
@@ -432,11 +497,10 @@ class Trade extends Component {
   };
 
   // 选择币种
-  selectCoin = coin => {
+  handleSelectCoin = coin => {
     this.setState({
       marketName: coin.coinMain,
-      coinName: coin.coinOther,
-      coinPrice: coin.latestPrice || 0
+      coinName: coin.coinOther
     });
 
     // TradingView切换商品
@@ -457,6 +521,12 @@ class Trade extends Component {
   };
 
   requestMerge = ({ type, length }) => {
+    this.setState({
+      tradeList: {
+        buyOrderVOList: null,
+        sellOrderVOList: null
+      }
+    });
     const { marketName, coinName } = this.state;
     this.request('/index/merge', {
       method: 'GET',
@@ -468,18 +538,26 @@ class Trade extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        const { tradeList } = this.state;
-        if (json.data.buyOrderVOList) tradeList.buyOrderVOList = json.data.buyOrderVOList;
-        if (json.data.sellOrderVOList) tradeList.sellOrderVOList = json.data.sellOrderVOList;
-        this.setState({ tradeList });
+        this.setState({
+          tradeList: {
+            buyOrderVOList: json.data.buyOrderVOList ? json.data.buyOrderVOList : [],
+            sellOrderVOList: json.data.sellOrderVOList ? json.data.sellOrderVOList : []
+          }
+        });
       } else {
+        this.setState({
+          tradeList: {
+            buyOrderVOList: [],
+            sellOrderVOList: []
+          }
+        });
         message.error(json.msg);
       }
     });
   };
 
   // 切换列表
-  switchList = index => {
+  handleSwitchList = index => {
     this.setState({ listType: index - 1 });
     this.requestMerge({
       type: index - 1,
@@ -488,9 +566,8 @@ class Trade extends Component {
   };
 
   //设置交易价格
-  handleTradePrice = tradePrice => {
-    console.log(tradePrice);
-    this.setState({ tradePrice });
+  handleTradePrice = (tradePrice, clickTradeType) => {
+    this.setState({ tradePrice, clickTradeType });
   };
 
   componentWillMount() {
@@ -504,11 +581,6 @@ class Trade extends Component {
     this.openBuyAndSellWebsocket();
     if (sessionStorage.getItem('account')) {
       this.openUserWebsocket();
-    }
-
-    //如果是首页跳转指定的币种
-    if (this.coinName) {
-      this.setState({ coinName: this.coinName });
     }
   }
 
@@ -572,17 +644,35 @@ class Trade extends Component {
       streamList,
       pendingOrderList,
       completedOrderList,
-      coinPrice,
       listType,
       coinDetail,
       btcLastPrice,
       ethLastPrice,
       tradePrice,
+      clickTradeType,
       historyDetails,
       historyExpendKey
     } = this.state;
 
-    let toCNY = 0;
+    let coinPrice = 0; //当前交易对的最新价
+    let pairList = []; //当前交易市场的币种列表
+    if (tradeExpair) {
+      if (market === 'optional') {
+        Object.values(tradeExpair).forEach(coins => {
+          coins = coins.filter(coin => favoriteCoins.includes(coin.key));
+          pairList = [...pairList, ...coins];
+        });
+      } else {
+        pairList = tradeExpair[market] || [];
+      }
+    }
+    pairList.forEach(coin => {
+      if (coin.coinMain === marketName && coin.coinOther === coinName && coin.latestPrice) {
+        coinPrice = coin.latestPrice;
+      }
+    });
+
+    let toCNY = 0; //当前最新价的折合人民币
     const usdToCnyRate = 6.5;
     switch (marketName) {
       case 'BTC':
@@ -593,18 +683,6 @@ class Trade extends Component {
         break;
       default:
         toCNY = coinPrice * usdToCnyRate;
-    }
-
-    let pairList = [];
-    if (tradeExpair) {
-      if (market === 'optional') {
-        Object.values(tradeExpair).forEach(coins => {
-          coins = coins.filter(coin => favoriteCoins.includes(coin.key));
-          pairList = [...pairList, ...coins];
-        });
-      } else {
-        pairList = tradeExpair[market] || [];
-      }
     }
 
     const orderColumns = [
@@ -632,7 +710,7 @@ class Trade extends Component {
         key: 'price'
       },
       {
-        title: '委托数量',
+        title: `委托数量(${coinName})`,
         dataIndex: 'volume',
         key: 'volume'
       },
@@ -643,9 +721,10 @@ class Trade extends Component {
         render: (text, record) => (record.price * record.volume).toFixed(8)
       },
       {
-        title: '成交量',
+        title: `成交量(${coinName})`,
         dataIndex: 'successVolume',
-        key: 'successVolume'
+        key: 'successVolume',
+        render: (text, record) => `${text}${record.status === 1 ? '（部分成交）' : ''}`
       },
       {
         title: '状态/操作',
@@ -660,7 +739,7 @@ class Trade extends Component {
             );
           } else if (record.status === 0 || record.status === 1) {
             return (
-              <Button type="primary" onClick={this.cancelTrade.bind(this, record.orderNo)}>
+              <Button type="primary" onClick={this.handleCancelTrade.bind(this, record.orderNo)}>
                 撤单
               </Button>
             );
@@ -692,7 +771,23 @@ class Trade extends Component {
       });
     }
 
+    const tradeProps = {
+      marketName,
+      coinName,
+      mainVolume,
+      coinVolume,
+      tradePrice,
+      clickTradeType
+    };
+
     const { localization } = this.props;
+
+    const loading = (
+      <div className="container-loading">
+        <Spinners.ClipLoader color={'#d4a668'} size={35} />
+      </div>
+    );
+
     return (
       <div className="content trade">
         <div className="content-inner">
@@ -718,7 +813,7 @@ class Trade extends Component {
                       <li
                         key={marketName}
                         className={marketName === market ? 'active' : ''}
-                        onClick={this.switchMarket.bind(this, marketName)}
+                        onClick={this.handleSwitchMarket.bind(this, marketName)}
                       >
                         {marketName === 'optional' && (
                           <i
@@ -734,7 +829,7 @@ class Trade extends Component {
                 </ul>
                 {/* <Dropdown
                   overlay={
-                    <Menu onClick={this.switchMarket}>
+                    <Menu onClick={this.handleSwitchMarket}>
                       {['optional', 'USDT', 'ETH', 'BTC'].map(market => {
                         return (
                           <Menu.Item key={market}>
@@ -779,40 +874,45 @@ class Trade extends Component {
                   </div>
                 </div>
               </div>
-              <div className="trade-plate-container market" style={{height: 345}}>
-                <Scrollbars>
-                  <table>
-                    <tbody>
-                      {(searchList ? searchList : pairList).map(coin => {
-                        const latestPrice = coin.latestPrice || 0;
-                        const firstPrice = coin.firstPrice || 0;
-                        const change = (latestPrice - firstPrice) / firstPrice || 0;
-                        const trend = change > 0 ? 'green' : 'red';
-                        return (
-                          <tr
-                            key={coin.key}
-                            onClick={this.selectCoin.bind(this, coin)}
-                            className={classnames({
-                              selected: coin.coinMain === marketName && coin.coinOther === coinName
-                            })}
-                          >
-                            <td>
-                              <i
-                                className={`iconfont icon-shoucang${
-                                  favoriteCoins.includes(coin.key) ? '-active' : ''
-                                }`}
-                                onClick={this.handleCollect.bind(this, coin)}
-                              />
-                              {coin.coinOther}
-                            </td>
-                            <td>{coin.latestPrice.toFixed(8)}</td>
-                            <td className={`font-color-${trend}`}>{change.toFixed(2)}%</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </Scrollbars>
+              <div className="trade-plate-container market" style={{ height: 345 }}>
+                {tradeExpair ? (
+                  <Scrollbars>
+                    <table>
+                      <tbody>
+                        {(searchList ? searchList : pairList).map(coin => {
+                          const latestPrice = coin.latestPrice || 0;
+                          const firstPrice = coin.firstPrice || 0;
+                          const change = (latestPrice - firstPrice) / firstPrice || 0;
+                          const trend = change > 0 ? 'green' : 'red';
+                          return (
+                            <tr
+                              key={coin.key}
+                              onClick={this.handleSelectCoin.bind(this, coin)}
+                              className={classnames({
+                                selected:
+                                  coin.coinMain === marketName && coin.coinOther === coinName
+                              })}
+                            >
+                              <td>
+                                <i
+                                  className={`iconfont icon-shoucang${
+                                    favoriteCoins.includes(coin.key) ? '-active' : ''
+                                  }`}
+                                  onClick={this.handleCollect.bind(this, coin)}
+                                />
+                                {coin.coinOther}
+                              </td>
+                              <td>{coin.latestPrice.toFixed(8)}</td>
+                              <td className={`font-color-${trend}`}>{change.toFixed(2)}%</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </Scrollbars>
+                ) : (
+                  loading
+                )}
               </div>
             </div>
             <div className="trade-plate">
@@ -826,12 +926,12 @@ class Trade extends Component {
                 <div className="trade-plate-tit-cell">成交价格</div>
                 <div className="trade-plate-tit-cell">成交量</div>
               </div>
-              <div className="trade-plate-container">
-                <Scrollbars>
-                  <table>
-                    <tbody>
-                      {streamList &&
-                        streamList.map((stream, index) => {
+              <div className="trade-plate-container stream">
+                {streamList ? (
+                  <Scrollbars>
+                    <table>
+                      <tbody>
+                        {streamList.map((stream, index) => {
                           const trend = stream.type === 0 ? 'green' : 'red';
                           return (
                             <tr key={stream.date + index} className={`font-color-${trend}`}>
@@ -843,9 +943,12 @@ class Trade extends Component {
                             </tr>
                           );
                         })}
-                    </tbody>
-                  </table>
-                </Scrollbars>
+                      </tbody>
+                    </table>
+                  </Scrollbars>
+                ) : (
+                  loading
+                )}
               </div>
             </div>
           </div>
@@ -925,25 +1028,11 @@ class Trade extends Component {
             <div className="trade-plate">
               <Tabs defaultActiveKey="1">
                 <TabPane tab="限价交易" key="1">
-                  <TradeBox
-                    marketName={marketName}
-                    coinName={coinName}
-                    mainVolume={mainVolume}
-                    coinVolume={coinVolume}
-                    tradePrice={tradePrice}
-                    tradeType="limit"
-                  />
+                  <TradeBox tradeType="limit" {...tradeProps} />
                 </TabPane>
                 {false && (
                   <TabPane tab="市价交易" key="2">
-                    <TradeBox
-                      marketName={marketName}
-                      coinName={coinName}
-                      mainVolume={mainVolume}
-                      coinVolume={coinVolume}
-                      tradePrice={tradePrice}
-                      tradeType="market"
-                    />
+                    <TradeBox tradeType="market" {...tradeProps} />
                   </TabPane>
                 )}
                 {false && (
@@ -986,7 +1075,7 @@ class Trade extends Component {
                           active: listType === index - 1
                         })}
                         title={mapToTitle[iconName]}
-                        onClick={this.switchList.bind(this, index)}
+                        onClick={this.handleSwitchList.bind(this, index)}
                       />
                     );
                   })}
@@ -1023,17 +1112,17 @@ class Trade extends Component {
               {listType === -1 ? (
                 <div className="trade-plate-list">
                   <div className="trade-plate-list-wrap">
-                    <table>
-                      <tbody>
-                        {tradeList &&
-                          tradeList.sellOrderVOList.map((record, index, arr) => {
+                    {tradeList.sellOrderVOList ? (
+                      <table>
+                        <tbody>
+                          {tradeList.sellOrderVOList.map((record, index, arr) => {
                             const visibleLength = arr.length < 15 ? arr.length : 15;
                             const startIndex = arr.length - visibleLength;
                             return (
                               index > startIndex - 1 && (
                                 <tr
                                   key={index}
-                                  onClick={this.handleTradePrice.bind(this, record.price)}
+                                  onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
                                 >
                                   <td className="font-color-red">
                                     卖出{visibleLength - index + startIndex}
@@ -1045,8 +1134,11 @@ class Trade extends Component {
                               )
                             );
                           })}
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    ) : (
+                      loading
+                    )}
                   </div>
                   <div className="latest-price">
                     <span>
@@ -1084,15 +1176,15 @@ class Trade extends Component {
                     </span>
                   </div>
                   <div className="trade-plate-list-wrap">
-                    <table>
-                      <tbody>
-                        {tradeList &&
-                          tradeList.buyOrderVOList.map((record, index) => {
+                    {tradeList.buyOrderVOList ? (
+                      <table>
+                        <tbody>
+                          {tradeList.buyOrderVOList.map((record, index) => {
                             return (
                               index < 15 && (
                                 <tr
                                   key={index}
-                                  onClick={this.handleTradePrice.bind(this, record.price)}
+                                  onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
                                 >
                                   <td className="font-color-green">买入{index + 1}</td>
                                   <td>{record.price.toFixed(8)}</td>
@@ -1102,42 +1194,53 @@ class Trade extends Component {
                               )
                             );
                           })}
-                      </tbody>
-                    </table>
+                        </tbody>
+                      </table>
+                    ) : (
+                      loading
+                    )}
                   </div>
                 </div>
               ) : (
                 <div className="trade-plate-list">
-                  <Scrollbars>
-                    <table>
-                      <tbody>
-                        {tradeList &&
-                          (listType === 1
-                            ? tradeList.sellOrderVOList
-                            : tradeList.buyOrderVOList
-                          ).map((record, index) => {
-                            const colorName = listType === 0 ? 'green' : 'red';
-                            const actionName = listType === 0 ? '买入' : '卖出';
-                            return (
-                              <tr
-                                key={index}
-                                onClick={this.handleTradePrice.bind(this, record.price)}
-                              >
-                                <td className={`font-color-${colorName}`}>
-                                  {actionName}
-                                  {index + 1}
-                                </td>
-                                <td>{record.price.toFixed(8)}</td>
-                                <td>{record.volume.toFixed(8)}</td>
-                                {false && (
-                                  <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
-                                )}
-                              </tr>
-                            );
-                          })}
-                      </tbody>
-                    </table>
-                  </Scrollbars>
+                  {(listType === 1 ? (
+                    tradeList.sellOrderVOList
+                  ) : (
+                    tradeList.buyOrderVOList
+                  )) ? (
+                    <Scrollbars>
+                      <table>
+                        <tbody>
+                          {tradeList &&
+                            (listType === 1
+                              ? tradeList.sellOrderVOList
+                              : tradeList.buyOrderVOList
+                            ).map((record, index) => {
+                              const colorName = listType === 0 ? 'green' : 'red';
+                              const actionName = listType === 0 ? '买入' : '卖出';
+                              return (
+                                <tr
+                                  key={index}
+                                  onClick={this.handleTradePrice.bind(this, record.price)}
+                                >
+                                  <td className={`font-color-${colorName}`}>
+                                    {actionName}
+                                    {index + 1}
+                                  </td>
+                                  <td>{record.price.toFixed(8)}</td>
+                                  <td>{record.volume.toFixed(8)}</td>
+                                  {false && (
+                                    <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </Scrollbars>
+                  ) : (
+                    loading
+                  )}
                 </div>
               )}
             </div>
@@ -1156,7 +1259,12 @@ class Trade extends Component {
             >
               <TabPane tab="我的挂单" key="0">
                 <Scrollbars>
-                  <Table columns={orderColumns} dataSource={pendingOrderList} pagination={false} />
+                  <Table
+                    columns={orderColumns}
+                    dataSource={pendingOrderList}
+                    loading={!pendingOrderList}
+                    pagination={false}
+                  />
                 </Scrollbars>
               </TabPane>
               <TabPane tab="成交历史" key="1">
@@ -1165,6 +1273,7 @@ class Trade extends Component {
                     className="trade_history"
                     columns={orderColumns}
                     dataSource={completedOrderList}
+                    loading={!completedOrderList}
                     pagination={false}
                     expandedRowKeys={[historyExpendKey]}
                     expandedRowRender={record => {

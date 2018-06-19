@@ -44,7 +44,7 @@ function request(url, { method = 'POST', headers, body } = {}) {
     fetch(`/bbex${url}`, opts)
       .then(response => {
         if (response.ok) {
-          return response.status === 200 ? response.json() : { status: response.status };
+          return (response.status === 200 ? response.json() : { status: response.status });
         }
         switch (response.status) {
           case -2:
@@ -81,9 +81,9 @@ function request(url, { method = 'POST', headers, body } = {}) {
       .then(json => {
         resolve(json);
       })
-      .catch(e => {
-        console.log('fetchjson: ', e);
-      });
+      .catch(error => {
+        console.log('+++++++++: ', error)
+      })
   });
 }
 

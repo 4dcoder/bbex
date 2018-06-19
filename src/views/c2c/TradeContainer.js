@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
 import { stampToDate, copy } from '../../utils';
@@ -306,7 +307,7 @@ class TradeContainer extends Component {
       };
 
       ws.onmessage = evt => {
-        if(evt.data === 'pong') {
+        if (evt.data === 'pong') {
           console.log('c2c: ', evt.data);
           return;
         }
@@ -1063,4 +1064,4 @@ class TradeContainer extends Component {
   }
 }
 
-export default TradeContainer;
+export default withRouter(TradeContainer);

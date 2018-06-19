@@ -92,17 +92,17 @@ const transformTime = time => {
   let period = '';
   if (time.toString().indexOf('D') !== -1) {
     if (time === 'D') {
-      period = '1D';
+      period = '1d';
     } else {
       let dayNumber = parseInt(time.split('D')[0]);
-      period = `${dayNumber}D`;
+      period = `${dayNumber}d`;
     }
   } else {
     if (parseInt(time) < 60) {
-      period = `${time}min`;
+      period = `${time}m`;
     } else {
       let hourNumber = Math.floor(parseInt(time) / 60);
-      period = `${hourNumber}hour`;
+      period = `${hourNumber}h`;
     }
   }
 

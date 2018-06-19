@@ -62,6 +62,7 @@ class Home extends Component {
 
   // 市场币种列表
   getTradeExpair = () => {
+    this.setState({ tradeExpair: {} });
     this.request('/index/allTradeExpair', {
       method: 'GET'
     }).then(json => {
@@ -163,9 +164,7 @@ class Home extends Component {
     if (tradeExpair) {
       if (market === 'optional') {
         Object.values(tradeExpair).forEach(coins => {
-          coins = coins.filter(coin =>
-            favoriteCoins.includes(coin.key)
-          );
+          coins = coins.filter(coin => favoriteCoins.includes(coin.key));
           pairList = [...pairList, ...coins];
         });
       } else {
@@ -319,22 +318,10 @@ class Home extends Component {
                 </a>
               </li>
               <li>
-                <a href="http://chainup.com/" target="_blank" rel="noopener noreferrer">
-                  <img src={partner4} alt="" />
-                </a>
-              </li>
-              <li>
                 <a href="https://www.chainnews.com/" target="_blank" rel="noopener noreferrer">
                   <img src={partner5} alt="" />
                 </a>
               </li>
-              <li>
-                <a href="javascript:;" target="_blank" rel="noopener noreferrer">
-                  <img src={partner6} alt="" />
-                </a>
-              </li>
-              <li />
-              <li />
             </ul>
           </div>
         </div>

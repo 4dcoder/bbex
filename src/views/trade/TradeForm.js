@@ -2,23 +2,43 @@ import React, { Component } from 'react';
 import { Input, InputNumber, Slider, Button, Tooltip, message } from 'antd';
 import classnames from 'classnames';
 
-import request from '../../utils/request';
-
 class TradeForm extends Component {
   state = {
     triggerPrice: '',
     price: '',
     volume: '',
     totalPrice: '',
-    pending: false
+    pending: false,
+    tradePrice: 0, //交易额
   };
 
-  handleInput = event => {
-    this.setState({ [event.target.id]: event.target.value });
-  };
+  request = window.request;
 
   handleValue = (value, key) => {
     this.setState({ [key]: value });
+
+    if(key==='price'){
+      const { volume } = this.state;
+      if(volume){
+        let total = value*volume;
+        if(isNaN(total)){
+          this.setState({tradePrice: 0})
+        }else{
+          this.setState({tradePrice: (value*volume).toFixed(8)});
+        }
+      }
+    }else{
+      const { price } = this.state;
+      if(price){
+        let total = price*value;
+        if(isNaN(total)){
+          this.setState({tradePrice: 0})
+        } else {
+          this.setState({tradePrice: (price*value).toFixed(8)});
+        }
+      }
+    }
+    
   };
 
   handleSlideInput = value => {
@@ -32,13 +52,17 @@ class TradeForm extends Component {
   // 获取订单号
   getOrderNo = () => {
     this.setState({ pending: true });
-    request('/trade/getOrderNo').then(json => {
-      if (json.code === 10000000) {
-        this.tradeAction(json.data.orderNo);
-      } else {
-        message.error(json.msg);
-      }
-    });
+    this.request('/trade/getOrderNo')
+      .then(json => {
+        if (json.code === 10000000) {
+          this.tradeAction(json.data.orderNo);
+        } else {
+          message.error(json.msg);
+        }
+      })
+      .catch(error => {
+        this.setState({ pending: false });
+      });
   };
 
   // 买入卖出
@@ -54,7 +78,7 @@ class TradeForm extends Component {
       sell: 'sellOut'
     };
 
-    request(`/trade/${mapTypeToAction[type]}`, {
+    this.request(`/trade/${mapTypeToAction[type]}`, {
       body: {
         orderNo,
         userId,
@@ -95,7 +119,7 @@ class TradeForm extends Component {
 
     const { type, tradeType, marketName, coinName, mainVolume, coinVolume } = this.props;
 
-    const { triggerPrice, price, volume, totalPrice, pending } = this.state;
+    const { triggerPrice, price, volume, totalPrice, pending, tradePrice } = this.state;
 
     const isLogin = sessionStorage.getItem('account');
 
@@ -125,16 +149,17 @@ class TradeForm extends Component {
           <li>
             <span className="trade-form-name">价格</span>
             <InputNumber
-              min={0.00000001}
-              step={0.00000001}
               id="price"
               value={price}
+              min={0.00000001}
+              step={0.00000001}
+              placeholder={`${typeToText[type]}价`}
               onChange={value => {
                 this.handleValue(value, 'price');
               }}
             />
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
-            <span className="trade-form-marketName">{marketName}</span>
+            <span className="trade-form-coinName">{marketName}</span>
           </li>
         )}
         {(tradeType !== 'market' || (tradeType === 'market' && type === 'sell')) && (
@@ -158,11 +183,15 @@ class TradeForm extends Component {
                 </Tooltip>
               </span>
             )}
-            <Input
+            <InputNumber
               id="volume"
               value={volume}
+              min={0.00000001}
+              step={0.00000001}
               placeholder={`${typeToText[type]}量`}
-              onChange={this.handleInput}
+              onChange={value => {
+                this.handleValue(value, 'volume');
+              }}
             />
             <Slider
               marks={marks}
@@ -209,7 +238,9 @@ class TradeForm extends Component {
                 id="totalPrice"
                 value={totalPrice}
                 placeholder={`${typeToText[type]}量`}
-                onChange={this.handleInput}
+                onChange={value => {
+                  this.handleValue(value, 'totalPrice');
+                }}
               />
               <Slider marks={marks} defaultValue={0} />
               <span
@@ -223,7 +254,7 @@ class TradeForm extends Component {
             </li>
           )}
         <li>
-          {tradeType !== 'market' && <div className="trade-form-total">交易额 0 {marketName}</div>}
+          {tradeType !== 'market' && <div className="trade-form-total">交易额 {tradePrice} {marketName}</div>}
           {tradeType === 'market' &&
             type === 'buy' && (
               <div className="trade-form-txt">

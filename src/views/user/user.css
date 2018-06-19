@@ -58,32 +58,38 @@
     padding-right: 10px;
 }
 
+.user-cont .ant-input {
+    border: 1px solid #cfd2a6;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #292f3d;
+}
 
-.verification-popup {
-    text-align: center;
+.user-cont .ant-select .ant-select-selection {
+    border-color: #cfd2a6;
+    color: rgb(238, 238, 238);
+    font-size: 12px;
+    border-radius: 4px;
+    background-color: #252b36;
 }
-.verification-popup .icon-icon{
-    font-size: 70px;
-    color: #ea0053;
+.user-cont .ant-select .ant-select-arrow {
+    color: #cfd2a6;
 }
-.verification-popup .message {
-    padding: 10px;
-    font-size: 16px;
-    color: #ea0053;
+.ant-select-dropdown-menu{
+    border: 1px solid #585858;
+    background-color: #252b36 !important;
 }
-.verification-popup .input-verification:link,
-.verification-popup .input-verification:visited {
-    display: block;
-    height: 78px;
-    margin: 10px 0;
-    padding: 20px;
-    padding-left: 60px;
-    color: #333;
-    font-size: 16px;
-    line-height: 2;
-    background: #f8f8f8 170px 18px url(../../assets/images/verify_google.png) no-repeat;
-    border: 1px solid #eaeaea;
+.ant-select-dropdown-menu-item {
+    color: #fff;
+    padding: 10px 12px;
+    background-color: #252b36;
 }
-.verification-popup .input-verification:hover {
-    color: #333;
+.ant-select-dropdown-menu-item-active{
+    color: #d4a668;
+    background-color: #434447;
+}
+.ant-select-dropdown-menu-item:hover, 
+.ant-select-dropdown-menu-item-selected{
+    color: #d4a668;
+    background-color: #434447;
 }

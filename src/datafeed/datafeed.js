@@ -203,6 +203,13 @@ const datafeeds = symbol => {
     let resolutionTime = datafeedUtil.filteringTime(resolution);
     let period = datafeedUtil.transformTime(resolution);
 
+    if(!window.period) {
+      window.period = resolution;
+    } else if( window.period !== resolution) {
+      window.hasWsMessage = false;
+      window.period = resolution;
+    }
+
     var that = this;
 
     var websocketGetData = function() {
@@ -214,7 +221,7 @@ const datafeeds = symbol => {
             that._logMessage(`send ${symbolName} get bars...`);
 
             if (window.ws.readyState === 1) {
-              window.ws.send(symbolName);
+              window.ws.send(symbolName + '_' + period);
             }
             
           }
@@ -253,53 +260,41 @@ const datafeeds = symbol => {
         return;
       }
       var data = JSON.parse(data);
+      /*
       var nodata = data.s == 'no_data';
-
       if (data.s != 'ok' && !nodata) {
         if (!!onErrorCallback) {
           onErrorCallback(data.s);
         }
         return;
-      }
+      }*/
 
       var bars = [];
-      //	data is JSON having format {s: "status" (ok, no_data, error),
-      //  v: [volumes], t: [times], o: [opens], h: [highs], l: [lows], c:[closes], nb: "optional_unixtime_if_no_data"}
-      var barsCount = nodata ? 0 : data.t.length;
-      var volumePresent = typeof data.v != 'undefined';
-      var ohlPresent = typeof data.o != 'undefined';
+      if(data && data.s != 'no_data') {
 
-      for (var i = 0; i < barsCount; ++i) {
-        var barValue = {
-          time: data.t[i],
-          close: data.c[i]
-        };
-
-        if (ohlPresent) {
-          barValue.open = data.o[i];
-          barValue.high = data.h[i];
-          barValue.low = data.l[i];
-        } else {
-          barValue.open = barValue.high = barValue.low = barValue.close;
+        for (const dataBar of data) {
+          const bar = {
+            time: +dataBar.t,
+            volume: +dataBar.v,
+            high: +dataBar.h,
+            open: +dataBar.o,
+            low: +dataBar.l,
+            close: +dataBar.c,
+          }
+          bars.push(bar);
         }
-
-        if (volumePresent) {
-          barValue.volume = data.v[i];
-        }
-        bars.push(barValue);
+        bars = bars
+          .sort((a, b) => {
+            return a.time - b.time;
+          })
+          .filter((item, index, array) => {
+            return (!index || item.time !== array[index - 1].time) && item.close;
+          });
       }
-      bars = bars
-        .sort((a, b) => {
-          return a.time - b.time;
-        })
-        .filter((item, index, array) => {
-          return (!index || item.time !== array[index - 1].time) && item.close;
-        });
 
       let meta = {
         version: that._protocolVersion,
-        noData: bars.length === 0,
-        nextTime: data.nb || data.nextTime
+        noData: bars.length === 0
       };
 
       // console.log('getBars bars->', bars);
