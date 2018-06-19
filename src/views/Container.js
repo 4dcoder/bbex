@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { LocaleProvider, Input } from 'antd';
+import { Input } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
 import logo1 from '../Artboard 4.png';
@@ -134,12 +134,6 @@ class Container extends Component {
       .then(json => {
         this.props.onGetLocalization(json);
       });
-
-    //获取antd语言包
-    (async () => {
-      const locale = await import(`antd/lib/locale-provider/${language.value}`);
-      this.setState({ locale });
-    })();
   }
 
   componentDidMount() {
@@ -181,7 +175,7 @@ class Container extends Component {
     const { localization } = this.props;
     const { isLogin, language, locale, logo, popup } = this.state;
     return (
-      <LocaleProvider locale={locale}>
+      
         <div className="container">
           <header className="header">
             <Link className="logo" to="/">
@@ -322,7 +316,7 @@ class Container extends Component {
           </footer>
           {popup}
         </div>
-      </LocaleProvider>
+      
     );
   }
 }
