@@ -41,6 +41,23 @@
 .trade-cont {
     flex: 1 0 1000px;
 }
+.trade-list .icon-yinhangqia{
+    color: #d4a668;
+    font-size: 22px;
+}
+.trade-list .icon-zhifubao{
+    color: #d4a668;
+    margin-top: 2px;
+    font-size: 18px;
+}
+.trade-list .icon-wxpay{
+    color: #d4a668;
+    font-size: 22px;
+}
+.trade-list .pay_list_icon{
+    display: flex;
+    justify-content: space-between;
+}
 
 .trade-list {
     padding: 30px;

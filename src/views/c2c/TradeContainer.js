@@ -736,19 +736,19 @@ class TradeContainer extends Component {
         )
       },
       {
-        title: '成交笔数',
+        title: `挂单数量(${coin.symbol})`,
+        dataIndex: 'volume',
+        key: 'volume'
+      },
+      {
+        title: `成交数量(${coin.symbol})`,
         dataIndex: 'successVolume',
         key: 'successVolume'
       },
       {
-        title: '商家处理速度',
-        dataIndex: 'speed',
-        key: 'speed'
-      },
-      {
-        title: `数量(${coin.symbol})`,
-        dataIndex: 'volume',
-        key: 'volume'
+        title: `锁定数量(${coin.symbol})`,
+        dataIndex: 'lockVolume',
+        key: 'lockVolume'
       },
       {
         title: '金额(CNY)',
@@ -771,16 +771,32 @@ class TradeContainer extends Component {
         )
       },
       {
+        title: '支付方式',
+        dataIndex: 'wechatNo',
+        key: 'wechatNo',
+        render: (text, record)=>{
+          return <div className='pay_list_icon'>
+            {record.cardNo && <i className='iconfont icon-yinhangqia'></i>}
+            {record.alipayNo && <i className='iconfont icon-zhifubao'></i>}
+            {record.wechatNo && <i className='iconfont icon-wxpay'></i>}
+          </div>
+        }
+      },
+      {
         title: '操作',
         dataIndex: 'action',
         key: 'action',
-        render: (text, record) => (
+        render: (text, record) => {
           // console.log(text, record)
-          <Button type={exType} onClick={this.triggerTransaction.bind(this, { exType, record })}>
-            {typeText[exType]}
-          </Button>
-        )
-      }
+          if(Number(record.volume-record.lockVolume-record.successVolume)>0){
+           return <Button type={exType} onClick={this.triggerTransaction.bind(this, { exType, record })}>
+              {typeText[exType]}
+            </Button>
+          }else{
+            return '';
+          }
+        }
+      },
     ];
 
     const orderColumns = [
@@ -814,7 +830,10 @@ class TradeContainer extends Component {
       {
         title: '状态',
         dataIndex: 'status',
-        key: 'status'
+        key: 'status',
+        render: (text, record) => {
+          return <div>{text}</div>
+        }
       },
       {
         title: '对方姓名',
@@ -908,33 +927,6 @@ class TradeContainer extends Component {
       <div className="trade-cont">
         <div className="trade-list">
           <div className="trade-list-header clear">
-            <div className="trade-index pull-left">
-              <strong className="trade-part">{coin.symbol}/CNY</strong>
-              <strong
-                className={classnames({
-                  'now-trade-price': true,
-                  'font-color-green': true,
-                  'font-color-red': false
-                })}
-              >
-                ￥{advertList ? advertList.price : 0.0}
-              </strong>
-              <span
-                className={classnames({
-                  'now-trade-per': true,
-                  'font-color-green': true,
-                  'font-color-red': false
-                })}
-              >
-                +0.10%
-              </span>
-              <span className="high-price">
-                最高<em>￥1.003</em>
-              </span>
-              <span className="low-price">
-                最低<em>￥0.995</em>
-              </span>
-            </div>
             <Button
               type="primary"
               size="large"
@@ -1054,7 +1046,7 @@ class TradeContainer extends Component {
               coin={coin}
               exType={exType}
               price={selectedCoin.price}
-              volume={selectedCoin.volume - selectedCoin.lockVolume - selectedCoin.successVolume}
+              volume={Number(selectedCoin.volume - selectedCoin.lockVolume - selectedCoin.successVolume)}
               onSubmit={this.handleTransaction}
             />
           )}

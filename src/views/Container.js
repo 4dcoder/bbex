@@ -175,7 +175,6 @@ class Container extends Component {
     const { localization } = this.props;
     const { isLogin, language, locale, logo, popup } = this.state;
     return (
-      
         <div className="container">
           <header className="header">
             <Link className="logo" to="/">

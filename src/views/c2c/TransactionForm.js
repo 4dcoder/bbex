@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 
 class TransactionForm extends Component {
+  componentDidMount(){
+    console.log('props',this.props);
+  }
   state = {
     price: this.props.price,
     volume: this.props.volume || 0,
