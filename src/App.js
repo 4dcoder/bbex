@@ -8,6 +8,39 @@ import request from './utils/request';
 import './App.css';
 import './assets/fonts/iconfont.css';
 
+const loadComponent = loader =>
+    Loadable({
+        loader,
+        loading: ({ isLoading, timedOut, pastDelay, error }) => {
+            if (isLoading) {
+                if (timedOut) {
+                    return <div>Loader timed out!</div>;
+                } else if (pastDelay) {
+                    return (
+                        <div className="page-loading">
+                            <Spinners.ScaleLoader
+                                color={'#d4a668'}
+                                height={100}
+                                width={5}
+                                margin="5px"
+                                radius={5}
+                                loading
+                            />
+                        </div>
+                    );
+                } else {
+                    return null;
+                }
+            } else if (error) {
+                return <div>Error! Component failed to load</div>;
+            } else {
+                return null;
+            }
+        },
+        delay: 100,
+        timeout: 10000
+    });
+
 const Loading = ({ isLoading, timedOut, pastDelay, error }) => {
     if (isLoading) {
         if (timedOut) {
@@ -35,65 +68,29 @@ const Loading = ({ isLoading, timedOut, pastDelay, error }) => {
     }
 };
 
-const Home = Loadable({
-    loader: () => import('./views/home'),
-    loading: Loading
-});
+const Home = loadComponent(() => import('./views/home'));
 
-const Trade = Loadable({
-    loader: () => import('./views/trade'),
-    loading: Loading
-});
+const Trade = loadComponent(() => import('./views/trade'));
 
-const SignIn = Loadable({
-    loader: () => import('./views/signin'),
-    loading: Loading
-});
+const SignIn = loadComponent(() => import('./views/signin'));
 
-const SignUp = Loadable({
-    loader: () => import('./views/signup'),
-    loading: Loading
-});
+const SignUp = loadComponent(() => import('./views/signup'));
 
-const Reset = Loadable({
-    loader: () => import('./views/reset'),
-    loading: Loading
-});
+const Reset = loadComponent(() => import('./views/reset'));
 
-const ResetPassword = Loadable({
-    loader: () => import('./views/reset/Password'),
-    loading: Loading
-});
+const ResetPassword = loadComponent(() => import('./views/reset/Password'));
 
-const User = Loadable({
-    loader: () => import('./views/user'),
-    loading: Loading
-});
+const User = loadComponent(() => import('./views/user'));
 
-const Authentication = Loadable({
-    loader: () => import('./views/authentication'),
-    loading: Loading
-});
+const Authentication = loadComponent(() => import('./views/authentication'));
 
-const C2c = Loadable({
-    loader: () => import('./views/c2c'),
-    loading: Loading
-});
+const C2c = loadComponent(() => import('./views/c2c'));
 
-const Detail = Loadable({
-    loader: () => import('./views/notice/Detail'),
-    loading: Loading
-});
+const Notice = loadComponent(() => import('./views/notice'));
 
-const Notice = Loadable({
-    loader: () => import('./views/notice'),
-    loading: Loading
-});
+const Detail = loadComponent(() => import('./views/notice/Detail'));
 
-const NotFound = Loadable({
-    loader: () => import('./views/404'),
-    loading: Loading
-});
+const NotFound = loadComponent(() => import('./views/404'));
 
 const NormalRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => <Component {...props} {...rest} />} />
