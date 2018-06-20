@@ -27,20 +27,31 @@ class TransactionForm extends Component {
 
   handlePrice = e => {
     const price = e.target.value;
-    const amount = (price * this.state.volume).toFixed(2);
-    this.setState({ price, amount });
+    if(/^\d*\.{0,1}\d{0,2}$/.test(price) && price.length<16 ){
+      const amount = (price * this.state.volume).toFixed(2);
+      this.setState({ price, amount });
+    }
+   
   };
 
   handleVolume = e => {
     const volume = e.target.value;
-    const amount = (volume * this.state.price).toFixed(2);
-    this.setState({ volume, amount });
+    if(/^\d*\.{0,1}\d{0,8}$/.test(volume) && volume.length<16 ){
+      const amount = (volume * this.state.price).toFixed(2);
+      this.setState({ volume, amount });
+    }
+    
   };
 
   handleAmount = e => {
     const amount = e.target.value;
-    const volume = amount / this.state.price;
-    this.setState({ volume, amount });
+    if(/^\d*\.{0,1}\d{0,2}$/.test(amount) && amount.length<16 ){
+      const volume = amount / this.state.price;
+      this.setState({amount });
+      if( this.state.price>0){
+        this.setState({volume})
+      }
+    }
   };
 
   render() {

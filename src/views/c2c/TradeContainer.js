@@ -19,7 +19,6 @@ const ExpandComponent = ({
   confirmReceipt
 }) => {
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
-  console.log('record',record.status)
   return (
     <div className="payment-box">
       <Tabs
@@ -220,7 +219,7 @@ const ExpandComponent = ({
         {remarks === 'sell' &&
           status === 0 && (
             <Button size="large" disabled>
-              等待卖家确认付款
+              等待买家确认付款
             </Button>
           )}
         {remarks === 'sell' &&
@@ -304,7 +303,7 @@ class TradeContainer extends Component {
     //登录后才打开websockets
     if (JSON.parse(sessionStorage.getItem('account'))) {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
-      var ws = new WebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
+      var ws = new window.ReconnectingWebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
 
       setInterval(() => {
         if (ws.readyState === 1) {
@@ -379,7 +378,7 @@ class TradeContainer extends Component {
         });
         let advertList = json.data;
         advertList.list = list;
-        advertList.price = 0.999;
+        advertList.price = 0;
         this.setState({ advertList, current });
       } else {
         message.error(json.msg);
@@ -931,6 +930,31 @@ class TradeContainer extends Component {
         title: '总额(CNY)',
         dataIndex: 'totalPrice',
         key: 'totalPrice'
+      },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        key: 'status',
+        render: (text)=>{
+          switch(text){
+            case 0:
+              return '已挂单';
+            case 1:
+              return '已付款';
+            case 2:
+              return '已收到款';
+            case 3:
+              return '确认没收到款';
+            case 4:
+              return '申诉';
+            case 5:
+              return '仲裁结束';
+            case 9:
+              return '取消';
+            default:
+              return ''
+          }
+        }
       },
       {
         title: '操作',
