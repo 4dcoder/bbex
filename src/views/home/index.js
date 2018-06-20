@@ -192,7 +192,7 @@ class Home extends Component {
               }`}
               onClick={this.handleCollect.bind(this, record)}
             />
-            {text}
+            {text}/{record.coinMain}
           </span>
         )
       },

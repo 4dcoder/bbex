@@ -19,6 +19,7 @@ const ExpandComponent = ({
   confirmReceipt
 }) => {
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
+  console.log('record',record.status)
   return (
     <div className="payment-box">
       <Tabs
@@ -196,13 +197,22 @@ const ExpandComponent = ({
         </TabPane>
       </Tabs>
       <div className="payment-box-action">
-        {remarks === 'buy' && (
+        {remarks === 'buy' &&  status === 0 && (
           <Button
             type="primary"
             size="large"
             onClick={() => {
               confirmPay(record);
             }}
+          >
+            我已付款给卖家
+          </Button>
+        )}
+        {remarks === 'buy' &&  status === 1 && (
+          <Button
+            type="primary"
+            size="large"
+            disabled
           >
             我已付款给卖家
           </Button>
@@ -496,7 +506,7 @@ class TradeContainer extends Component {
         //没有足够资产
         Modal.error({
           title: typeText[exType],
-          content: '您没有足够资产',
+          content: json.msg,
           okText: '确定'
         });
       } else if (json.code === 10004017) {
@@ -751,11 +761,6 @@ class TradeContainer extends Component {
         key: 'lockVolume'
       },
       {
-        title: '金额(CNY)',
-        dataIndex: 'totalPrice',
-        key: 'totalPrice'
-      },
-      {
         title: '价格(CNY)',
         dataIndex: 'price',
         render: (text, record) => (
@@ -769,6 +774,11 @@ class TradeContainer extends Component {
             {text}
           </span>
         )
+      },
+      {
+        title: '金额(CNY)',
+        dataIndex: 'totalPrice',
+        key: 'totalPrice'
       },
       {
         title: '支付方式',
@@ -831,8 +841,25 @@ class TradeContainer extends Component {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
-        render: (text, record) => {
-          return <div>{text}</div>
+        render: (text) => {
+          switch(text){
+            case 0:
+              return '已挂单';
+            case 1:
+              return '已付款';
+            case 2:
+              return '确认收到款';
+            case 3:
+              return '确认没收到款';
+            case 4:
+              return '申诉';
+            case 5:
+              return '仲裁结束';
+            case 9:
+              return '取消';
+            default:
+              return ''
+          }
         }
       },
       {

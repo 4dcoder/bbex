@@ -711,7 +711,7 @@ class Trade extends Component {
                 key: 'price'
             },
             {
-                title: `委托数量(${coinName})`,
+                title: `委托数量(${coinName}/${marketName})`,
                 dataIndex: 'volume',
                 key: 'volume'
             },
@@ -722,7 +722,7 @@ class Trade extends Component {
                 render: (text, record) => (record.price * record.volume).toFixed(8)
             },
             {
-                title: `成交量(${coinName})`,
+                title: `成交量(${coinName}/${marketName})`,
                 dataIndex: 'successVolume',
                 key: 'successVolume',
                 render: (text, record) => `${text}${record.status === 1 ? '（部分成交）' : ''}`
@@ -930,7 +930,7 @@ class Trade extends Component {
                                                                         coin
                                                                     )}
                                                                 />
-                                                                {coin.coinOther}
+                                                                {coin.coinOther}/{coin.coinMain}
                                                             </td>
                                                             <td>{coin.latestPrice.toFixed(8)}</td>
                                                             <td className={`font-color-${trend}`}>
