@@ -15,7 +15,11 @@ class TradeForm extends Component {
   request = window.request;
 
   handleValue = (value, key) => {
-    this.setState({ [key]: value });
+    if (value > 0) {
+      this.setState({ [key]: value });
+    } else {
+      this.setState({ [key]: '' });
+    }
   };
 
   handleSlideInput = value => {
@@ -28,6 +32,16 @@ class TradeForm extends Component {
 
   // 获取订单号
   getOrderNo = () => {
+    const { price, volume } = this.state;
+    if (price <= 0) {
+      message.error('请输入价格！');
+      return;
+    }
+    if (volume <= 0) {
+      message.error('请输入数量！');
+      return;
+    }
+
     this.setState({ pending: true });
     this.request('/trade/getOrderNo')
       .then(json => {
@@ -232,7 +246,7 @@ class TradeForm extends Component {
         <li>
           {tradeType !== 'market' && (
             <div className="trade-form-total">
-              交易额 {(isNaN(price*volume) ? 0 : price*volume).toFixed(8)} {marketName}
+              交易额 {(isNaN(price * volume) ? 0 : price * volume).toFixed(8)} {marketName}
             </div>
           )}
           {tradeType === 'market' &&
