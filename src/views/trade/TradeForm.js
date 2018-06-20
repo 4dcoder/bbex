@@ -9,36 +9,13 @@ class TradeForm extends Component {
     volume: '',
     totalPrice: '',
     pending: false,
-    tradePrice: 0, //交易额
+    tradeAmount: 0 //交易额
   };
 
   request = window.request;
 
   handleValue = (value, key) => {
     this.setState({ [key]: value });
-
-    if(key==='price'){
-      const { volume } = this.state;
-      if(volume){
-        let total = value*volume;
-        if(isNaN(total)){
-          this.setState({tradePrice: 0})
-        }else{
-          this.setState({tradePrice: (value*volume).toFixed(8)});
-        }
-      }
-    }else{
-      const { price } = this.state;
-      if(price){
-        let total = price*value;
-        if(isNaN(total)){
-          this.setState({tradePrice: 0})
-        } else {
-          this.setState({tradePrice: (price*value).toFixed(8)});
-        }
-      }
-    }
-    
   };
 
   handleSlideInput = value => {
@@ -69,7 +46,7 @@ class TradeForm extends Component {
   tradeAction = orderNo => {
     const { type, marketName, coinName } = this.props;
 
-    const { price, volume, totalPrice } = this.state;
+    const { price, volume } = this.state;
 
     const userId = JSON.parse(sessionStorage.getItem('account')).id;
 
@@ -102,7 +79,7 @@ class TradeForm extends Component {
       });
   };
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps) {
     if (nextProps.tradePrice !== this.props.tradePrice) {
       this.setState({ price: nextProps.tradePrice });
     }
@@ -119,7 +96,7 @@ class TradeForm extends Component {
 
     const { type, tradeType, marketName, coinName, mainVolume, coinVolume } = this.props;
 
-    const { triggerPrice, price, volume, totalPrice, pending, tradePrice } = this.state;
+    const { triggerPrice, price, volume, totalPrice, pending, tradeAmount } = this.state;
 
     const isLogin = sessionStorage.getItem('account');
 
@@ -198,8 +175,7 @@ class TradeForm extends Component {
               defaultValue={0}
               onChange={this.handleSlideInput}
               disabled={
-                (type === 'buy' && (!mainVolume || !price)) ||
-                (type === 'sell' && (!coinVolume || !price))
+                !price || ((type === 'buy' && !mainVolume) || (type === 'sell' && !coinVolume))
               }
             />
             <span
@@ -254,7 +230,11 @@ class TradeForm extends Component {
             </li>
           )}
         <li>
-          {tradeType !== 'market' && <div className="trade-form-total">交易额 {tradePrice} {marketName}</div>}
+          {tradeType !== 'market' && (
+            <div className="trade-form-total">
+              交易额 {(isNaN(price*volume) ? 0 : price*volume).toFixed(8)} {marketName}
+            </div>
+          )}
           {tradeType === 'market' &&
             type === 'buy' && (
               <div className="trade-form-txt">

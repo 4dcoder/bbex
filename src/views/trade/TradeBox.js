@@ -72,12 +72,12 @@ class TradeBox extends Component {
     const { tradeType, marketName, coinName, tradePrice, clickTradeType } = this.props;
     const { mainVolume, coinVolume } = this.state;
 
-
     const tradeProps = {
       tradeType,
       marketName,
       coinName,
       mainVolume,
+      coinVolume,
       tradePrice,
       clickTradeType
     };
