@@ -199,7 +199,10 @@
 .c2c-form li .ant-btn {
     width: 100%;
 }
-
+.payment-box {
+    background-color: #353c4a;
+    color: #fff;
+}
 .payment-box .ant-tabs-bar {
     margin-bottom: 5px;
 }
@@ -233,13 +236,17 @@
 .payment-box-cont {
     padding: 10px 20px 15px 20px;
     line-height: 3;
-    border-bottom: 1px solid #ededed;
+    border-bottom: 1px solid #5f5f5f;
 }
 .payment-box-cont h3 {
     color: #999;
 }
 .payment-box-cont th {
     position: relative;
+    color: #fff;
+}
+.payment-box-cont td{
+    color: #fff;
 }
 .payment-box-cont th .font-color-red{
     position: absolute;
@@ -277,10 +284,10 @@
 }
 .payment-box-notice h3 {
     font-size: 16px;
-    color: #666;
+    color: #eee;
 }
 .payment-box-notice li {
     list-style: decimal inside;
-    color: #999;
+    color: #eee;
     line-height: 2;
 }

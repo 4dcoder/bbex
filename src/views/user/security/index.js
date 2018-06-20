@@ -76,7 +76,7 @@ inputValue = (e) => {
           <Col span={2} className="title">手机号: </Col>
           <Col span={20}>{mobile}</Col>
         </Row>
-        <Row type="flex">
+        <Row type="flex"  className='password_row'>
           <Col span={2} className="title">密码: </Col>
           <Col span={20}className="pwd_btn"> <Button onClick={this.showDialog} type="primary" style={{borderRadius: 4}}>修改密码</Button></Col>
         </Row>

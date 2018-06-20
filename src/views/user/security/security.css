@@ -1,7 +1,18 @@
 .security_con .title{
   text-align: right;
 }
+.security_con .password_row{
+  border-top: 1px solid #5f5f5f;
+  border-bottom: 1px solid #5f5f5f;
+}
+.security_con .ant-row-flex{
+  padding-top: 12px;
+  min-height: 60px;
+}
 .security_con .pwd_btn{
+  padding-left: 100px;
+}
+.security_con .mobile_con{
   padding-left: 100px;
 }
 .google_ver_con{

@@ -851,3 +851,24 @@ a:hover {
     top: 0;
     text-align: left;
 }
+.trade-cont .ant-table-expanded-row{
+    background-color: #353C4A;
+}
+.trade-cont .ant-table-tbody>tr.ant-table-expanded-row:hover>td{
+    background-color: #353C4A;
+}
+.trade-cont tr.ant-table-expanded-row, .trade-cont tr.ant-table-expanded-row:hover{
+    background-color: #353C4A;
+}
+.trade-cont .payment-box .ant-tabs-tab{
+    color: #fff;
+}
+.trade-cont .payment-box .ant-tabs-tab i{
+    color: #d4a668;
+}
+.trade-cont .payment-box .ant-tabs-bar{
+    border-bottom:1px solid #5f5f5f;
+}
+.trade-cont .payment-box .extra-cont{
+    color: #fff;
+}
