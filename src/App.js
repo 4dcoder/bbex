@@ -41,33 +41,6 @@ const loadComponent = loader =>
         timeout: 10000
     });
 
-const Loading = ({ isLoading, timedOut, pastDelay, error }) => {
-    if (isLoading) {
-        if (timedOut) {
-            return <div>Loader timed out!</div>;
-        } else if (pastDelay) {
-            return (
-                <div className="page-loading">
-                    <Spinners.ScaleLoader
-                        color={'#d4a668'}
-                        height={100}
-                        width={5}
-                        margin="5px"
-                        radius={5}
-                        loading
-                    />
-                </div>
-            );
-        } else {
-            return null;
-        }
-    } else if (error) {
-        return <div>Error! Component failed to load</div>;
-    } else {
-        return null;
-    }
-};
-
 const Home = loadComponent(() => import('./views/home'));
 
 const Trade = loadComponent(() => import('./views/trade'));

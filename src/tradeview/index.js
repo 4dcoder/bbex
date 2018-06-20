@@ -28,7 +28,7 @@ class TradeviewPage extends Component {
 
   // 开启websocket
   websocketStart() {
-    window.ws = new window.ReconnectingWebSocket(this.websocketUrl);
+    window.ws = new WebSocket(this.websocketUrl);
     setInterval(() => {
       if (window.ws.readyState === 1) {
         window.ws.send('ping');
