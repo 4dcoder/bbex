@@ -27,7 +27,7 @@ class TradeForm extends Component {
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const volume = (assetVolume / price) * (value / 100);
-    this.setState({ volume });
+    this.setState({ volume: volume.toFixed(8)});
   };
 
   // 获取订单号
