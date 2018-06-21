@@ -3,7 +3,6 @@ import { Button, Row, Col, message } from 'antd';
 import Password from './Password';
 import QRCode from 'qrcode.react';
 import request from '../../../utils/request';
-import Scrollbars from 'react-custom-scrollbars';
 import classnames from 'classnames';
 import './security.css';
 
@@ -71,7 +70,6 @@ inputValue = (e) => {
     const mobile = sessionStorage.getItem('account')? JSON.parse(sessionStorage.getItem('account')).mobile : "";
     
     return <div className="security_con user-cont">
-      <Scrollbars>
         <Row type="flex">
           <Col span={2} className="title">手机号: </Col>
           <Col span={20}>{mobile}</Col>
@@ -80,7 +78,7 @@ inputValue = (e) => {
           <Col span={2} className="title">密码: </Col>
           <Col span={20}className="pwd_btn"> <Button onClick={this.showDialog} type="primary" style={{borderRadius: 4}}>修改密码</Button></Col>
         </Row>
-        <Row type="flex">
+        <Row type="flex" className="google_ver_row">
           <Col span={2} className="title">谷歌验证: </Col>
           <Col span={20}className="google_ver_con">
             <div>
@@ -144,7 +142,6 @@ inputValue = (e) => {
           </Col>
         </Row>
         {this.state.dialog}
-      </Scrollbars>
     </div>
   }
 }
