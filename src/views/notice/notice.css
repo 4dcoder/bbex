@@ -18,7 +18,15 @@
   justify-content: space-between;
 }
 .notice_title{
-  padding-bottom: 8px;
-  font-size: 18px;
-  border-bottom: 1px solid #80D8F7;
+  text-align: center;
+  padding-bottom: 6px;
+  font-size: 24px;
+}
+.bbex_notice .notice_item{
+  border-bottom: 1px solid #5f5f5f;
+  height: 50px;
+  cursor: pointer;
+}
+.bbex_notice .notice_item:last-child{
+  border-bottom: 1px solid #5f5f5f;
 }
