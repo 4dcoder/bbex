@@ -15,11 +15,7 @@ class TradeForm extends Component {
   request = window.request;
 
   handleValue = (value, key) => {
-    if (value > 0) {
-      this.setState({ [key]: value });
-    } else {
-      this.setState({ [key]: '' });
-    }
+    this.setState({ [key]: value });
   };
 
   handleSlideInput = value => {
@@ -119,18 +115,28 @@ class TradeForm extends Component {
       sell: '卖出'
     };
 
+    let totalCount = 0;
+    
+    if(isNaN(price*volume)){
+      totalCount = 0
+    }else{
+      totalCount = (price*volume)>0 ?(price*volume).toFixed(2):(price*volume).toFixed(8)
+    }
+
     return (
       <ul className="trade-form">
         {tradeType === 'stop' && (
           <li>
             <span className="trade-form-name">触发价</span>
-            <InputNumber
-              min={0.00000001}
-              step={0.00000001}
+            <Input
               id="triggerPrice"
               value={triggerPrice}
-              onChange={value => {
-                this.handleValue(value, 'triggerPrice');
+              onChange={e => {
+                let value = e.target.value;
+                if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
+                  this.handleValue(value, 'triggerPrice');
+                }
+                
               }}
             />
             <span className="trade-form-marketName">{marketName}</span>
@@ -139,14 +145,16 @@ class TradeForm extends Component {
         {tradeType !== 'market' && (
           <li>
             <span className="trade-form-name">价格</span>
-            <InputNumber
+            <Input
               id="price"
               value={price}
-              min={0.00000001}
-              step={0.00000001}
               placeholder={`${typeToText[type]}价`}
-              onChange={value => {
-                this.handleValue(value, 'price');
+              onChange={e => {
+                let value = e.target.value;
+                if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
+                  this.handleValue(value, 'price');
+                }
+                
               }}
             />
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
@@ -174,14 +182,16 @@ class TradeForm extends Component {
                 </Tooltip>
               </span>
             )}
-            <InputNumber
+            <Input
               id="volume"
               value={volume}
-              min={0.00000001}
-              step={0.00000001}
               placeholder={`${typeToText[type]}量`}
-              onChange={value => {
-                this.handleValue(value, 'volume');
+              onChange={e => {
+                let value = e.target.value;
+                if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
+                  this.handleValue(value, 'volume');
+                }
+               
               }}
             />
             <Slider
@@ -246,7 +256,7 @@ class TradeForm extends Component {
         <li>
           {tradeType !== 'market' && (
             <div className="trade-form-total">
-              交易额 {(isNaN(price * volume) ? 0 : price * volume).toFixed(8)} {marketName}
+              交易额 {totalCount} {marketName}
             </div>
           )}
           {tradeType === 'market' &&
