@@ -177,8 +177,8 @@ class Home extends Component {
         title: localization['coin'],
         dataIndex: 'coinOther',
         key: 'coinOther',
-        sorter: (a, b) => a.coin.length - b.coin.length,
-        sortOrder: sortedInfo.columnKey === 'coin' && sortedInfo.order,
+        sorter: (a, b) => a.coinOther.charCodeAt() - b.coinOther.charCodeAt(),
+        sortOrder: sortedInfo.columnKey === 'coinOther' && sortedInfo.order,
         render: (text, record) => (
           <span
             className={classnames({
