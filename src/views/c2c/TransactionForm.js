@@ -8,7 +8,7 @@ class TransactionForm extends Component {
   state = {
     price: this.props.price,
     volume: this.props.volume || 0,
-    amount: this.props.volume ? this.props.price * this.props.volume : '0.00'
+    amount: this.props.volume ? (this.props.price * this.props.volume).toFixed(2) : '0.00'
   };
 
   componentWillReceiveProps(nextProps) {
