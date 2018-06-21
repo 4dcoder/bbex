@@ -136,7 +136,7 @@ class Home extends Component {
           });
         });
       } else {
-        tradeExpair[market].forEach(expair => {
+        tradeExpair[market]&&tradeExpair[market].forEach(expair => {
           if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
             searchList.push(expair);
           }

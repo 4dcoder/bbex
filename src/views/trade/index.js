@@ -468,7 +468,7 @@ class Trade extends Component {
           });
         });
       } else {
-        tradeExpair[market].forEach(expair => {
+        tradeExpair[market] && tradeExpair[market].forEach(expair => {
           if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
             searchList.push(expair);
           }
@@ -857,7 +857,10 @@ class Trade extends Component {
                         {(searchList ? searchList : pairList).map(coin => {
                           const latestPrice = coin.latestPrice || 0;
                           const firstPrice = coin.firstPrice || 0;
-                          const change = (latestPrice - firstPrice) / firstPrice || 0;
+                          let change = 0;
+                          if(firstPrice>0){
+                            change = (latestPrice - firstPrice) / firstPrice
+                          }
                           const trend = change > 0 ? 'green' : 'red';
                           return (
                             <tr
@@ -875,7 +878,7 @@ class Trade extends Component {
                                   }`}
                                   onClick={this.handleCollect.bind(this, coin)}
                                 />
-                                {coin.coinOther}/{coin.coinMain}
+                                {coin.coinOther}
                               </td>
                               <td>{coin.latestPrice.toFixed(8)}</td>
                               <td className={`font-color-${trend}`}>{change.toFixed(2)}%</td>
