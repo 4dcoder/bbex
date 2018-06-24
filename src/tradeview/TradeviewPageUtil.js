@@ -5,7 +5,7 @@ const datafeedConfig = params => {
 
   return {
     symbol,
-    debug: false,
+    debug: true,
     fullscreen: false,
     interval: resolution,
     container_id: 'tv_chart_container',
@@ -119,11 +119,6 @@ const chartReady = widget => {
     {
       value: '1',
       period: '1m',
-      text: '分时'
-    },
-    {
-      value: '1',
-      period: '1m',
       text: '1m'
     },
     {
@@ -197,7 +192,7 @@ const chartReady = widget => {
       .on('click', function(e) {
         handleClick(e, v.value);
       });
-    if (v.text === '分时') {
+    if (v.text === '1m') {
       btn.addClass('select');
     }
     btn[0].innerHTML = v.text;

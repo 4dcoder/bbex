@@ -24,7 +24,7 @@ const datafeeds = symbol => {
     this._symbolSearch = null;
     this._symbolsStorage = null;
     // 实时订阅
-    this._barsPulseUpdater = new Datafeeds.DataPulseUpdater(this, updateFrequency || 1000 * 10);
+    // this._barsPulseUpdater = new Datafeeds.DataPulseUpdater(this, updateFrequency || 1000 * 10);
     // 交易终端
     this._quotesPulseUpdater = new Datafeeds.QuotesPulseUpdater(this);
     this._protocolVersion = protocolVersion || 2;
@@ -220,10 +220,11 @@ const datafeeds = symbol => {
             const symbolName = symbolInfo.name.replace(/\//g, '_');
             that._logMessage(`send ${symbolName} get bars...`);
 
-            if (window.ws.readyState === 1) {
+            try{
               window.ws.send(symbolName + '_' + period);
+            } catch (e) {
+              that._logMessage(`send ws error: ${e.message} get bars...`);
             }
-            
           }
         } catch (e) {
           console.log('send error: ', e);
@@ -317,18 +318,18 @@ const datafeeds = symbol => {
   ) {
     // console.log('subscribeBars ->');
     window.hasWsMessage = '';
-    this._barsPulseUpdater.subscribeDataListener(
+    /*this._barsPulseUpdater.subscribeDataListener(
       symbolInfo,
       resolution,
       onRealtimeCallback,
       listenerGUID,
       onResetCacheNeededCallback
-    );
+    );*/
   };
 
   // 取消订阅K线数据。在调用subscribeBars方法时,图表库将跳过与subscriberUID相同的对象。
   Datafeeds.UDFCompatibleDatafeed.prototype.unsubscribeBars = function(listenerGUID) {
-    this._barsPulseUpdater.unsubscribeDataListener(listenerGUID);
+    // this._barsPulseUpdater.unsubscribeDataListener(listenerGUID);
   };
 
   /*
