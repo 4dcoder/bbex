@@ -30,7 +30,7 @@
   },
   "proxy": {
     "/bbex": {
-      "target": "https://api.ckex.com",
+      "target": "http://www.ckex.com",
       "changeOrigin": true
     }
   }
