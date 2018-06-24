@@ -399,7 +399,7 @@ class Trade extends Component {
           this.setState({pendingOrderList})
         }
   
-        const { mainVolume, coinVolume } = this.props;
+        const { mainVolume, coinVolume } = this.state;
         // 当推的数据有主币而且跟当前不相等，就更新主币资产
         if (coinMainVolume && coinMainVolume.volume && coinMainVolume.volume !== mainVolume) {
           this.setState({ mainVolume: coinMainVolume.volume });
@@ -434,10 +434,10 @@ class Trade extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         if (this.coinName) {
-          //如果有保存在sessionStorage的交易对，就取保存中的
+          // 如果有保存在sessionStorage的交易对，就取保存中的
           this.setState({ coinName: this.coinName });
         } else {
-          //如果没有保存的交易对，就取当前市场的第一个币种
+          // 如果没有保存的交易对，就取当前市场的第一个币种
           this.setState({
             coinName: json.data[this.state.market][0].coinOther
           });
@@ -618,7 +618,7 @@ class Trade extends Component {
     });
   };
 
-  // 切换列表
+  // 切换买卖盘列表
   handleSwitchList = index => {
     this.setState({ listType: index - 1 });
     this.requestMerge({
@@ -636,27 +636,17 @@ class Trade extends Component {
     this.getTradeExpair();
     this.getRate();
   }
-  componentWillUnmount(){
-    clearInterval(this.interval1);
-    clearInterval(this.interval2);
-    clearInterval(this.interval3);
-    clearInterval(this.interval4);
-  }
 
   componentDidMount() {
-    //websocket 链接
+    // 打开websocket链接
     this.openStreamWebsocket();
     this.openBuyAndSellWebsocket();
+
+    // 只有登录状态下才打开用户websocket
     if (sessionStorage.getItem('account')) {
       this.openUserWebsocket();
     }
   }
-
-  // shouldComponentUpdate(nextProps,nextState){
-  //   console.log('11111',nextProps,nextState);
-  //   return true;
-   
-  // }
 
   componentWillUpdate(nextProps, nextState) {
     if (
@@ -695,6 +685,13 @@ class Trade extends Component {
   }
 
   componentWillUnmount() {
+    // 停止定时订阅或pingpong机制
+    clearInterval(this.interval1);
+    clearInterval(this.interval2);
+    clearInterval(this.interval3);
+    clearInterval(this.interval4);
+
+    // 关闭websocket的连接
     const { streamWS, buyandsellWS, userWS } = this.state;
     streamWS && streamWS.close();
     buyandsellWS && buyandsellWS.close();

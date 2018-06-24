@@ -44,7 +44,7 @@ function request(url, { method = 'POST', headers, body } = {}) {
     fetch(`/bbex${url}`, opts)
       .then(response => {
         if (response.ok) {
-          return (response.status === 200 ? response.json() : { status: response.status });
+          return response.status === 200 ? response.json() : { status: response.status }
         }
         switch (response.status) {
           case -2:
