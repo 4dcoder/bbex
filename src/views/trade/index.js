@@ -336,7 +336,6 @@ class Trade extends Component {
     };
 
     userWS.onmessage = evt => {
-      // return;
 
       let current = new Date().getTime();
 
@@ -707,8 +706,6 @@ class Trade extends Component {
       historyDetails,
       historyExpendKey
     } = this.state;
-
-    console.log("-------------------: ", tradeList);
 
     let coinPrice = 0; //当前交易对的最新价
     let pairList = []; //当前交易市场的币种列表
