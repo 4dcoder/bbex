@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Tabs, Checkbox, Tooltip, Icon, Table, Button, Input, message, Modal } from 'antd';
+import { Tabs, Table, Button, Input, message, Modal } from 'antd';
 import Recharge from './Recharge';
 import Withdraw from './Withdraw';
-import request from '../../../utils/request';
 
 import './property.css';
 
@@ -22,6 +21,8 @@ class Property extends Component {
         expendedFlag: ''
     }
 
+    request = window.request;
+
     componentWillMount() {
         this.getNormalData();
     }
@@ -40,7 +41,7 @@ class Property extends Component {
         }
     }
     getC2cData = () => {
-        request('/offline/volume/list', {
+        this.request('/offline/volume/list', {
             method: 'GET'
         }).then(json => {
             if (json.code === 10000000) {
@@ -59,7 +60,7 @@ class Property extends Component {
         })
     }
     getNormalData =  () => {
-        request('/coin/volume/list', {
+        this.request('/coin/volume/list', {
             method: 'GET'
         }).then(json => {
             if (json.code === 10000000) {
@@ -116,7 +117,7 @@ class Property extends Component {
         if(type.indexOf('turn') > -1) {
             url = `/${type === 'turnIn' ? 'coin' : 'offline'}/volume/${coin.coinId}`;
         }
-        request(url, {
+        this.request(url, {
             method: 'GET'
         }).then(json => {
             if (json.code === 10000000) {
@@ -140,7 +141,7 @@ class Property extends Component {
 
     turnAction = (type) => {
         const { handleCoin, handleVolume } = this.state;
-        request(`/offline/volume/${type.substr(4).toLowerCase()}`, {
+        this.request(`/offline/volume/${type.substr(4).toLowerCase()}`, {
             body: {
                 coinId: handleCoin.coinId,
                 symbol: handleCoin.symbol,

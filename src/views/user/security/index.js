@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Button, Row, Col, message } from 'antd';
 import Password from './Password';
 import QRCode from 'qrcode.react';
-import request from '../../../utils/request';
 import classnames from 'classnames';
 import './security.css';
 
@@ -18,8 +17,10 @@ class Security extends Component {
     }
   }
 
+  request = window.request;
+
   componentDidMount() {
-    request('/user/createGoogleSecret').then(json => {
+    this.request('/user/createGoogleSecret').then(json => {
         if(json.code === 10000000) {
             const {qrcodeContent, secret} = json.data;
             this.setState({qrcodeContent, secret});
@@ -34,7 +35,7 @@ submit = () => {
       secret,
       code,
   } = this.state;
-  request('/user/googleBinder', {
+  this.request('/user/googleBinder', {
       body: {secret, code,}
   }).then(json => {
       if(json.code === 10000000) {

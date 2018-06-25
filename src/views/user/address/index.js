@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Input, Select, Button, Table, message} from 'antd';
-import request from '../../../utils/request';
 import './adress.css';
 
 const Option = Select.Option;
@@ -18,13 +17,15 @@ class Address extends Component {
     }
   }
 
+  request = window.request;
+
   componentWillMount(){
     this.getCoinList();
     this.getAddress();
   }
 
   getAddress = () => {
-    request('/withdraw/address/list', {
+    this.request('/withdraw/address/list', {
         method: 'GET'
     }).then(json => {
         if (json.code === 10000000) {
@@ -40,7 +41,7 @@ class Address extends Component {
   }
 
   getCoinList = () => {
-    request('/coin/list', {
+    this.request('/coin/list', {
         method: 'GET'
     }).then(json => {
         if (json.code === 10000000) {
@@ -67,7 +68,7 @@ class Address extends Component {
     this.setState({remark: e.target.value});
   }
   add = (coinId, symbol, address, tag) => {
-    request('/withdraw/address/add', {
+    this.request('/withdraw/address/add', {
         body: {
           coinId,
           symbol,
@@ -85,7 +86,7 @@ class Address extends Component {
     })
   }
   delete = (id) => {
-    request('/withdraw/address/delete/'+id,{
+    this.request('/withdraw/address/delete/'+id,{
       method: 'GET'
     }).then(json => {
         if (json.code === 10000000) {

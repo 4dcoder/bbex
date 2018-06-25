@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Upload, Icon, message } from 'antd';
-import request from '../../../utils/request';
 import { IMAGES_ADDRESS } from '../../../utils/constants';
 
 const FormItem = Form.Item;
@@ -17,6 +16,8 @@ class PaymentForm extends Component {
         loading: false,
     };
 
+    request = window.request;
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
@@ -24,7 +25,7 @@ class PaymentForm extends Component {
                 const { type } = this.props;
                 const urlpart = type === 'wechat' ? 'wechatpay' : 'alipay';
                 const typeText = this.props.type === 'wechat' ? '微信' : '支付宝';
-                request(`/offline/${urlpart}/bind`, {
+                this.request(`/offline/${urlpart}/bind`, {
                     body: {
                         realName: values.realName,
                         [`${type}No`]: values[`${type}No`],

@@ -3,7 +3,6 @@ import { Button, message } from 'antd';
 import classnames from 'classnames';
 import BankForm from './BankForm';
 import PaymentForm from './PaymentForm';
-import request from '../../../utils/request';
 
 import './payment.css';
 
@@ -13,8 +12,10 @@ class Payment extends Component {
         bankInfo: null,
     }
 
+    request = window.request;
+
     componentWillMount() {  
-        request(`/offline/bank/get`, {
+        this.request(`/offline/bank/get`, {
             method: 'GET',
         }).then(json => {
             if (json.code === 10000000) {
