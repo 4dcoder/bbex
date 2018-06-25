@@ -12,14 +12,15 @@ import {
   message,
   List
 } from 'antd';
-import NoticeBar from '../../components/noticeBar';
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
 import Spinners from 'react-spinners';
+import NoticeBar from '../../components/noticeBar';
 import { stampToDate } from '../../utils';
 import { WS_ADDRESS } from '../../utils/constants';
 import TradeBox from './TradeBox';
 import Tradeview from '../../tradeview';
+import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import './trade.css';
 
 const Search = Input.Search;
@@ -175,7 +176,7 @@ class Trade extends Component {
 
   openStreamWebsocket = () => {
     //打开websockets
-    const streamWS = new WebSocket(`${WS_ADDRESS}/bbex/platsocket`);
+    const streamWS = new ReconnectingWebSocket(`${WS_ADDRESS}/bbex/platsocket`);
 
     this.interval1 = setInterval(() => {
       if (streamWS.readyState === 1) {
@@ -271,7 +272,7 @@ class Trade extends Component {
 
   openBuyAndSellWebsocket = () => {
     //打开websockets
-    const buyandsellWS = new WebSocket(`${WS_ADDRESS}/bbex/buysellsocket`);
+    const buyandsellWS = new ReconnectingWebSocket(`${WS_ADDRESS}/bbex/buysellsocket`);
 
     if (buyandsellWS.readyState === 1) {
       const { marketName, coinName } = this.state;
@@ -333,7 +334,7 @@ class Trade extends Component {
   openUserWebsocket = () => {
     //打开websockets
     const { id } = JSON.parse(sessionStorage.getItem('account'));
-    const userWS = new WebSocket(`${WS_ADDRESS}/bbex/socketuser?${id}`);
+    const userWS = new ReconnectingWebSocket(`${WS_ADDRESS}/bbex/socketuser?${id}`);
 
     this.interval3 = setInterval(() => {
       if (userWS.readyState === 1) {

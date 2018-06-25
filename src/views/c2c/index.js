@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Route, NavLink } from "react-router-dom";
 import { message } from 'antd';
 import TradeContainer from './TradeContainer';
 import classnames from 'classnames';
-import request from '../../utils/request';
 
 import './c2c.css';
 
@@ -14,9 +12,11 @@ class C2c extends Component {
     coinList: []
   };
 
+  request = window.request;
+
   componentWillMount() {
     //获取币种列表
-    request('/offline/coin/list', {
+    this.request('/offline/coin/list', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {

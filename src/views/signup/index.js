@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Button, message } from 'antd';
 import GraphicPopup from '../../components/graphic-popup';
-import request from '../../utils/request';
 
 class SignUp extends Component {
     state = {
@@ -18,6 +17,8 @@ class SignUp extends Component {
         popup: false,
         count: 60,
     }
+
+    request = window.request;
 
     inputValue = (e) => {
         this.setState({ [e.target.id]: e.target.value });
@@ -63,7 +64,7 @@ class SignUp extends Component {
             vaildCode,
             inviteCode,
         } = this.state;
-        request('/user/register', {
+        this.request('/user/register', {
             body: {
                 registerType,
                 mail: mail,

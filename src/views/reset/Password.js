@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import request from '../../utils/request';
 import classnames from 'classnames';
 
 class SubmitRest extends Component {
@@ -12,6 +11,8 @@ class SubmitRest extends Component {
         resetSuccess: false
     };
 
+    request = window.request;
+
     inputValue = e => {
         this.setState({ [e.target.id]: e.target.value });
     };
@@ -19,7 +20,7 @@ class SubmitRest extends Component {
     reset = () => {
         const { password, repassword } = this.state;
         if (password === repassword) {
-            request('/user/resetPassword', {
+            this.request('/user/resetPassword', {
                 body: {
                     password: this.state.password,
                     ptoken: this.state.ptoken

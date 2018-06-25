@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { message } from 'antd';
-import request from '../../utils/request';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
 import './authentication.css';
@@ -15,8 +14,10 @@ class Authentication extends Component {
         errorTip: '',
     }
 
+    request = window.request;
+
     componentDidMount() {
-        request('/user/createGoogleSecret').then(json => {
+        this.request('/user/createGoogleSecret').then(json => {
             if(json.code === 10000000) {
                 this.setState(json.data);
             }else {
@@ -42,7 +43,7 @@ class Authentication extends Component {
             secret,
             code,
         } = this.state;
-        request('/user/googleBinder', {
+        this.request('/user/googleBinder', {
             body: {secret, code,}
         }).then(json => {
             if(json.code === 10000000) {

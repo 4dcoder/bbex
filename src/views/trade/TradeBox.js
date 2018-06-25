@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 import { message } from 'antd';
 import TradeForm from './TradeForm';
 
-import request from '../../utils/request';
-
 class TradeBox extends Component {
   state = {
     mainVolume: 0,
     coinVolume: 0,
     
   };
+
+  request = window.request;
 
   componentWillReceiveProps(nextProps, nextState) {
     if (
@@ -59,7 +59,7 @@ class TradeBox extends Component {
 
   // 根据币种名称获取资产
   getCoinVolume = ({ coinType, symbol }) => {
-    request(`/coin/volume/symbol/${symbol}`, {
+    this.request(`/coin/volume/symbol/${symbol}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {

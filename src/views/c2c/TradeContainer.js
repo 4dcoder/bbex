@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
-import { stampToDate, copy } from '../../utils';
-import request from '../../utils/request';
 import TransactionForm from './TransactionForm';
+import { stampToDate, copy } from '../../utils';
 import { IMAGES_ADDRESS, WS_ADDRESS } from '../../utils/constants';
+import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 
 const TabPane = Tabs.TabPane;
 
@@ -286,6 +286,8 @@ class TradeContainer extends Component {
     ws: null
   };
 
+  request = window.request;
+
   componentWillReceiveProps(nextProps) {
     this.getAdvertList(1, nextProps);
   }
@@ -303,7 +305,7 @@ class TradeContainer extends Component {
     //登录后才打开websockets
     if (JSON.parse(sessionStorage.getItem('account'))) {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
-      var ws = new WebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
+      var ws = new ReconnectingWebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
 
       setInterval(() => {
         if (ws.readyState === 1) {
@@ -363,7 +365,7 @@ class TradeContainer extends Component {
       buy: 1,
       sell: 0
     };
-    request('/offline/advert/list', {
+    this.request('/offline/advert/list', {
       body: {
         exType: typeMap[exType],
         coinId: coin.coinId,
@@ -405,7 +407,7 @@ class TradeContainer extends Component {
     }
 
     //验证是否可以发布广告
-    request('/offline/topublish', {
+    this.request('/offline/topublish', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
@@ -445,7 +447,7 @@ class TradeContainer extends Component {
       sell: 1
     };
     const { coin } = this.props;
-    request('/offline/publish', {
+    this.request('/offline/publish', {
       body: {
         volume,
         price,
@@ -483,7 +485,7 @@ class TradeContainer extends Component {
       buy: '买入',
       sell: '卖出'
     };
-    request(`/offline/${exType}`, {
+    this.request(`/offline/${exType}`, {
       body: {
         volume,
         orderId: selectedCoin.id,
@@ -538,7 +540,7 @@ class TradeContainer extends Component {
 
   //获取我的订单列表
   getMyOrderList = () => {
-    request('/offline/myOrderDetail/list', {
+    this.request('/offline/myOrderDetail/list', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
@@ -555,7 +557,7 @@ class TradeContainer extends Component {
 
   //获取我的广告列表
   getMyAdvertList = () => {
-    request('/offline/myAdvert/list', {
+    this.request('/offline/myAdvert/list', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
@@ -577,7 +579,7 @@ class TradeContainer extends Component {
 
   //根据币种ID获取余额
   getVolume = () => {
-    request(`/offline/volume/${this.props.coin.coinId}`, {
+    this.request(`/offline/volume/${this.props.coin.coinId}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
@@ -593,7 +595,7 @@ class TradeContainer extends Component {
   //根据用户ID获取用户支付信息
   getBankInfo = (id, askUserId) => {
     let { myOrderList } = this.state;
-    request(`/offline/bankInfo/${askUserId}`, {
+    this.request(`/offline/bankInfo/${askUserId}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000 && json.data) {
@@ -633,7 +635,7 @@ class TradeContainer extends Component {
 
   //确认付款
   confirmPay = record => {
-    request('/offline/buy/confirm', {
+    this.request('/offline/buy/confirm', {
       body: {
         orderId: record.orderId,
         subOrderId: record.subOrderId
@@ -650,7 +652,7 @@ class TradeContainer extends Component {
 
   //确认收款
   confirmReceipt = record => {
-    request('/offline/sell/confirm', {
+    this.request('/offline/sell/confirm', {
       body: {
         orderId: record.orderId,
         subOrderId: record.subOrderId
@@ -667,7 +669,7 @@ class TradeContainer extends Component {
 
   //撤销交易
   cancelPay = record => {
-    request('/offline/detail/cancel', {
+    this.request('/offline/detail/cancel', {
       body: {
         orderId: record.orderId,
         subOrderId: record.subOrderId
@@ -684,7 +686,7 @@ class TradeContainer extends Component {
 
   //撤销广告
   cancelAdvert = record => {
-    request('/offline/advert/cancel', {
+    this.request('/offline/advert/cancel', {
       body: { orderId: record.id }
     }).then(json => {
       if (json.code === 10000000) {
