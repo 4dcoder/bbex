@@ -30,7 +30,7 @@
   },
   "proxy": {
     "/bbex": {
-      "target": "http://www.ckex.com",
+      "target": "http://www.uescoin.com",
       "changeOrigin": true
     }
   }

@@ -286,13 +286,6 @@ class Trade extends Component {
       }
     }, 1000);
   
-
-    this.interval4 = setInterval(()=>{
-      if (buyandsellWS.readyState === 1){
-        buyandsellWS.send('ping');
-      }
-    }, 1000);
-
     buyandsellWS.onopen = evt => {
       //console.log('stream Websocket Connection open ...');
       this.timer2= new Date().getTime();
@@ -308,7 +301,10 @@ class Trade extends Component {
       if(current-this.timer2>50){
         this.timer2 = current;
 
-        const tradeList = JSON.parse(evt.data);
+        let tradeList =  [];
+        if(evt.data && (evt.data.buyOrderVOList||evt.data.sellOrderVOList)){
+          tradeList = JSON.parse(evt.data);
+        }
         // console.log('buyandsell reciveDate: ', tradeList);
         if(tradeList){
           this.setState({ tradeList });
@@ -577,10 +573,10 @@ class Trade extends Component {
   handleMerge = value => {
     const { listType } = this.state;
     this.setState({ mergeNumber: value });
-    this.requestMerge({
-      type: listType,
-      length: value
-    });
+    // this.requestMerge({
+    //   type: listType,
+    //   length: value
+    // });
   };
 
   requestMerge = ({ type='', length }) => {
@@ -622,10 +618,10 @@ class Trade extends Component {
   // 切换买卖盘列表
   handleSwitchList = index => {
     this.setState({ listType: index - 1 });
-    this.requestMerge({
-      type: index - 1,
-      length: this.state.mergeNumber
-    });
+    // this.requestMerge({
+    //   type: index - 1,
+    //   length: this.state.mergeNumber
+    // });
   };
 
   //设置交易价格
@@ -654,17 +650,17 @@ class Trade extends Component {
       this.state.marketName !== nextState.marketName ||
       this.state.coinName !== nextState.coinName
     ) {
-      const { buyandsellWS, marketName, coinName } = nextState;
+      const { buyandsellWS, marketName, coinName, mergeNumber } = nextState;
       this.getStream({
         coinMain: marketName,
         coinOther: coinName
       });
-      this.getTradeList({
-        coinMain: marketName,
-        coinOther: coinName
-      });
+      // this.getTradeList({
+      //   coinMain: marketName,
+      //   coinOther: coinName
+      // });
 
-      const tradePair = `${coinName}_${marketName}`;
+      const tradePair = `${coinName}_${marketName}_${mergeNumber}`;
       // 给 buyandsell websocket 发消息 切换交易对
       if (buyandsellWS.readyState === 1) {
         buyandsellWS.send(tradePair);
@@ -690,8 +686,6 @@ class Trade extends Component {
     clearInterval(this.interval1);
     clearInterval(this.interval2);
     clearInterval(this.interval3);
-    clearInterval(this.interval4);
-
     // 关闭websocket的连接
     const { streamWS, buyandsellWS, userWS } = this.state;
     streamWS && streamWS.close();
@@ -1177,10 +1171,10 @@ class Trade extends Component {
               {listType === -1 ? (
                 <div className="trade-plate-list">
                   <div className="trade-plate-list-wrap">
-                    {tradeList.sellOrderVOList ? (
+                    {(
                       <table>
                         <tbody>
-                          {tradeList.sellOrderVOList.map((record, index, arr) => {
+                          {tradeList && tradeList.sellOrderVOList && tradeList.sellOrderVOList.map((record, index, arr) => {
                             const visibleLength = arr.length < 15 ? arr.length : 15;
                             const startIndex = arr.length - visibleLength;
                             return (
@@ -1201,8 +1195,6 @@ class Trade extends Component {
                           })}
                         </tbody>
                       </table>
-                    ) : (
-                      loading
                     )}
                   </div>
                   <div className="latest-price">
@@ -1241,10 +1233,10 @@ class Trade extends Component {
                     </span>
                   </div>
                   <div className="trade-plate-list-wrap">
-                    {tradeList.buyOrderVOList ? (
+                    {(
                       <table>
                         <tbody>
-                          {tradeList.buyOrderVOList.map((record, index) => {
+                          {tradeList && tradeList.buyOrderVOList && tradeList.buyOrderVOList.map((record, index) => {
                             return (
                               index < 15 && (
                                 <tr
@@ -1261,22 +1253,16 @@ class Trade extends Component {
                           })}
                         </tbody>
                       </table>
-                    ) : (
-                      loading
                     )}
                   </div>
                 </div>
               ) : (
                 <div className="trade-plate-list">
-                  {(listType === 1 ? (
-                    tradeList.sellOrderVOList
-                  ) : (
-                    tradeList.buyOrderVOList
-                  )) ? (
+                  {(
                     <Scrollbars>
                       <table>
                         <tbody>
-                          {tradeList &&
+                          {tradeList && (tradeList.sellOrderVOList || tradeList.buyOrderVOList ) &&
                             (listType === 1
                               ? tradeList.sellOrderVOList
                               : tradeList.buyOrderVOList
@@ -1303,8 +1289,6 @@ class Trade extends Component {
                         </tbody>
                       </table>
                     </Scrollbars>
-                  ) : (
-                    loading
                   )}
                 </div>
               )}

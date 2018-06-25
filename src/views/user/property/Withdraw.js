@@ -98,21 +98,23 @@ class Withdraw extends Component {
   }
 
   countChange = (e) => {
-    
-    let { withdrawFee, withdrawFeeType } = this.props;
-    this.setState({myCoinCount: e.target.value});
-    if(withdrawFeeType == 0) {
-
-    } else if(withdrawFeeType == 1){
-
-    } else {
-
+    let value = e.target.value;
+    let { withdrawFee, withdrawFeeType, volume } = this.props;
+    if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16 && value<volume && value>0){
+      this.setState({myCoinCount: value});
     }
   }
 
   render(){
     const { id, name, volume, withdrawFee, withdrawFeeType, withdrawMaxVolume, withdrawMinVolume } = this.props;
     let { addressHistory, myCoinCount, address, fee } = this.state;
+
+    let lastCount = (myCoinCount-withdrawFee)
+    if(isNaN(lastCount)){
+      lastCount = 0;
+    }else{
+      lastCount = lastCount.toFixed(8);
+    }
 
     return <div className="withdraw_content">
       <div className="title">提币地址</div>
@@ -135,14 +137,14 @@ class Withdraw extends Component {
            手续费
           </div>
           <div className="money">
-            <Input disabled size="large" value="10" />
+            <Input disabled size="large" value={withdrawFee} />
             <span>{name}</span>
           </div>
         </li>
         <li>
           <div className="title">到账数量</div>
           <div className="number">
-            <Input disabled size="large" value="0.00000" />
+            <Input disabled size="large" value={lastCount} />
             <span>{name}</span>
           </div>
         </li>

@@ -13,7 +13,7 @@ class Transaction extends Component {
       currentTab: 'current',
       currency: '',
       coin: 'USDT',
-      coinList: [{ name: 'USDT' }, { name: 'CNC' }, { name: 'ETH' }, { name: 'BTC' }],
+      coinList: [{ name: 'USDT' }, { name: 'ETH' }, { name: 'BTC' }],
 
       currentList: [],
       currentTotal: 0,
