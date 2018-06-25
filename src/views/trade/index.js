@@ -283,7 +283,6 @@ class Trade extends Component {
         const { marketName, coinName, mergeNumber } = this.state;
         buyandsellWS.send(`${coinName}_${marketName}_${mergeNumber}`);
       }
-      
     }, 1000);
 
     buyandsellWS.onopen = evt => {
@@ -336,7 +335,6 @@ class Trade extends Component {
     };
 
     userWS.onmessage = evt => {
-
       let current = new Date().getTime();
 
       if (evt.data === 'pong') {
@@ -648,14 +646,8 @@ class Trade extends Component {
       //   coinOther: coinName
       // });
 
-      const tradePair = `${coinName}_${marketName}_${mergeNumber}`;
-      // 给 buyandsell websocket 发消息 切换交易对
-      if (buyandsellWS.readyState === 1) {
-        buyandsellWS.send(tradePair);
-      }
-
       // 保存交易对,以便刷新能够定位交易对
-      sessionStorage.setItem('tradePair', tradePair);
+      sessionStorage.setItem('tradePair', `${coinName}_${marketName}`);
     }
 
     if (this.state.coinName !== nextState.coinName) {
