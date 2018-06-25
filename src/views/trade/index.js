@@ -47,10 +47,7 @@ class Trade extends Component {
       coinName: '',
       mainVolume: 0,
       coinVolume: 0,
-      tradeList: {
-        buyOrderVOList: [],
-        sellOrderVOList: []
-      },
+      tradeList: {},
       streamList: [],
       pendingOrderList: [],
       completedOrderList: [],
@@ -545,7 +542,8 @@ class Trade extends Component {
   handleSelectCoin = coin => {
     this.setState({
       marketName: coin.coinMain,
-      coinName: coin.coinOther
+      coinName: coin.coinOther,
+      tradeList: {} // 触发买卖盘loading
     });
 
     // TradingView切换商品
@@ -1151,33 +1149,33 @@ class Trade extends Component {
               {listType === -1 ? (
                 <div className="trade-plate-list">
                   <div className="trade-plate-list-wrap">
-                    {
+                    {tradeList && tradeList.sellOrderVOList ? (
                       <table>
                         <tbody>
-                          {tradeList &&
-                            tradeList.sellOrderVOList &&
-                            tradeList.sellOrderVOList.map((record, index, arr) => {
-                              const visibleLength = arr.length < 15 ? arr.length : 15;
-                              const startIndex = arr.length - visibleLength;
-                              return (
-                                index > startIndex - 1 && (
-                                  <tr
-                                    key={index}
-                                    onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
-                                  >
-                                    <td className="font-color-red">
-                                      卖出{visibleLength - index + startIndex}
-                                    </td>
-                                    <td>{record.price.toFixed(8)}</td>
-                                    <td>{record.volume.toFixed(8)}</td>
-                                    {false && <td className="font-color-red">{record.sumTotal}</td>}
-                                  </tr>
-                                )
-                              );
-                            })}
+                          {tradeList.sellOrderVOList.map((record, index, arr) => {
+                            const visibleLength = arr.length < 15 ? arr.length : 15;
+                            const startIndex = arr.length - visibleLength;
+                            return (
+                              index > startIndex - 1 && (
+                                <tr
+                                  key={index}
+                                  onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
+                                >
+                                  <td className="font-color-red">
+                                    卖出{visibleLength - index + startIndex}
+                                  </td>
+                                  <td>{record.price.toFixed(8)}</td>
+                                  <td>{record.volume.toFixed(8)}</td>
+                                  {false && <td className="font-color-red">{record.sumTotal}</td>}
+                                </tr>
+                              )
+                            );
+                          })}
                         </tbody>
                       </table>
-                    }
+                    ) : (
+                      loading
+                    )}
                   </div>
                   <div className="latest-price">
                     <span>
@@ -1215,68 +1213,66 @@ class Trade extends Component {
                     </span>
                   </div>
                   <div className="trade-plate-list-wrap">
-                    {
+                    {tradeList && tradeList.buyOrderVOList ? (
                       <table>
                         <tbody>
-                          {tradeList &&
-                            tradeList.buyOrderVOList &&
-                            tradeList.buyOrderVOList.map((record, index) => {
-                              return (
-                                index < 15 && (
-                                  <tr
-                                    key={index}
-                                    onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
-                                  >
-                                    <td className="font-color-green">买入{index + 1}</td>
-                                    <td>{record.price.toFixed(8)}</td>
-                                    <td>{record.volume.toFixed(8)}</td>
-                                    {false && (
-                                      <td className="font-color-green">{record.sumTotal}</td>
-                                    )}
-                                  </tr>
-                                )
-                              );
-                            })}
+                          {tradeList.buyOrderVOList.map((record, index) => {
+                            return (
+                              index < 15 && (
+                                <tr
+                                  key={index}
+                                  onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
+                                >
+                                  <td className="font-color-green">买入{index + 1}</td>
+                                  <td>{record.price.toFixed(8)}</td>
+                                  <td>{record.volume.toFixed(8)}</td>
+                                  {false && <td className="font-color-green">{record.sumTotal}</td>}
+                                </tr>
+                              )
+                            );
+                          })}
                         </tbody>
                       </table>
-                    }
+                    ) : (
+                      loading
+                    )}
                   </div>
                 </div>
               ) : (
                 <div className="trade-plate-list">
-                  {
+                  {tradeList && (tradeList.sellOrderVOList || tradeList.buyOrderVOList) ? (
                     <Scrollbars>
                       <table>
                         <tbody>
-                          {tradeList &&
-                            (tradeList.sellOrderVOList || tradeList.buyOrderVOList) &&
-                            (listType === 1
-                              ? tradeList.sellOrderVOList
-                              : tradeList.buyOrderVOList
-                            ).map((record, index) => {
-                              const colorName = listType === 0 ? 'green' : 'red';
-                              const actionName = listType === 0 ? '买入' : '卖出';
-                              return (
-                                <tr
-                                  key={index}
-                                  onClick={this.handleTradePrice.bind(this, record.price)}
-                                >
-                                  <td className={`font-color-${colorName}`}>
-                                    {actionName}
-                                    {index + 1}
-                                  </td>
-                                  <td>{record.price.toFixed(8)}</td>
-                                  <td>{record.volume.toFixed(8)}</td>
-                                  {false && (
-                                    <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
-                                  )}
-                                </tr>
-                              );
-                            })}
+                          {(listType === 1
+                            ? tradeList.sellOrderVOList
+                            : tradeList.buyOrderVOList
+                          ).map((record, index) => {
+                            const colorName = listType === 0 ? 'green' : 'red';
+                            const actionName = listType === 0 ? '买入' : '卖出';
+                            return (
+                              <tr
+                                key={index}
+                                onClick={this.handleTradePrice.bind(this, record.price)}
+                              >
+                                <td className={`font-color-${colorName}`}>
+                                  {actionName}
+                                  {index + 1}
+                                </td>
+                                <td>{record.price.toFixed(8)}</td>
+                                <td>{record.volume.toFixed(8)}</td>
+                                {false && (
+                                  <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
+                                )}
+                              </tr>
+                            );
+                          })}
                         </tbody>
                       </table>
                     </Scrollbars>
-                  }
+                  ) : (
+                    loading
+                  )}
                 </div>
               )}
             </div>
