@@ -253,9 +253,10 @@ a:hover {
     text-align: center;
 }
 
-.footer-nav li>a {
+.footer-nav li>span {
     display: block;
     margin-top: 10px;
+    cursor: pointer;
 }
 
 .footer-contact {

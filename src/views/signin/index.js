@@ -75,11 +75,11 @@ class SignIn extends Component {
                     <h1>用户登录</h1>
                     <div className="attention">
                         <i className="iconfont icon-zhuyishixiang" />请确认您正在访问{' '}
-                        <strong>https://www.bbex.one</strong>
+                        <strong>https://www.ues.com</strong>
                     </div>
                     <div className="safety-site">
                         <i className="iconfont icon-suo1" />
-                        <em>https</em>://www.bbex.one
+                        <em>https</em>://www.ues.com
                     </div>
                     <p className="error-tip">
                         {errorTip && <i className="iconfont icon-zhuyishixiang" />}

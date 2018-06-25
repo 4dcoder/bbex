@@ -3,7 +3,7 @@ import { withRouter, Link } from 'react-router-dom';
 import { Input } from 'antd';
 import { message } from 'antd';
 import request from '../utils/request';
-import logo1 from '../Artboard 4.png';
+import logo1 from '../logo.png';
 import Popup from '../components/popup';
 import Verification from '../components/verification';
 
@@ -242,23 +242,23 @@ class Container extends Component {
                   <ul className="footer-nav clear">
                     <li>
                       <span>{localization['about_us']}</span>
-                      <Link to="javascript:void(0)">{localization['about_us']}</Link>
-                      <Link to="javascript:void(0)">{localization['exchange_links']}</Link>
-                      <Link to="javascript:void(0)">{localization['coin_apply']}</Link>
+                      <span to="javascript:void(0)">{localization['about_us']}</span>
+                      <span to="javascript:void(0)">{localization['exchange_links']}</span>
+                      <span to="javascript:void(0)">{localization['coin_apply']}</span>
                     </li>
                     <li>
                       <span>{localization['customer_support']}</span>
-                      <Link to="javascript:void(0)">{localization['service_agreement']}</Link>
-                      <Link to="javascript:void(0)">{localization['privacy_statement']}</Link>
-                      <Link to="javascript:void(0)">{localization['rate_standard']}</Link>
-                      <Link to="javascript:void(0)">{localization['legal_notices']}</Link>
+                      <span to="javascript:void(0)">{localization['service_agreement']}</span>
+                      <span to="javascript:void(0)">{localization['privacy_statement']}</span>
+                      <span to="javascript:void(0)">{localization['rate_standard']}</span>
+                      <span to="javascript:void(0)">{localization['legal_notices']}</span>
                     </li>
                     <li>
                       <span>{localization['other']}</span>
-                      <Link to="javascript:void(0)">{localization['announcement_center']}</Link>
-                      <Link to="javascript:void(0)">{localization['common_problem']}</Link>
-                      <Link to="javascript:void(0)">{localization['currency_introduction']}</Link>
-                      <Link to="javascript:void(0)">{localization['submit_order']}</Link>
+                      <span to="javascript:void(0)">{localization['announcement_center']}</span>
+                      <span to="javascript:void(0)">{localization['common_problem']}</span>
+                      <span to="javascript:void(0)">{localization['currency_introduction']}</span>
+                      <span to="javascript:void(0)">{localization['submit_order']}</span>
                     </li>
                   </ul>
                   <ul className="footer-contact">
@@ -275,9 +275,9 @@ class Container extends Component {
                       </Link>
                     </li>
                     <li>
-                      {localization['contact_email']}：<Link to="mailto: support@bbex.com">
-                        support@bbex.com
-                      </Link>
+                      {localization['contact_email']}：<span to="mailto: support@bbex.com">
+                        support@uescoin.com
+                      </span>
                     </li>
                   </ul>
                 </div>
