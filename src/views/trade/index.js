@@ -283,6 +283,7 @@ class Trade extends Component {
         const { marketName, coinName, mergeNumber } = this.state;
         buyandsellWS.send(`${coinName}_${marketName}_${mergeNumber}`);
       }
+      
     }, 1000);
 
     buyandsellWS.onopen = evt => {
