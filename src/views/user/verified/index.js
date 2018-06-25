@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Steps, Button, message, Upload, Icon } from 'antd';
-import request from '../../../utils/request';
 import { IMAGES_ADDRESS } from '../../../utils/constants';
 
 import './verified.css';
@@ -30,6 +29,7 @@ class Verified extends Component {
         };
     }
 
+    request = window.request;
     account = JSON.parse(sessionStorage.getItem('account'));
 
     showExample = () => {
@@ -47,7 +47,7 @@ class Verified extends Component {
             handheldIdCard,
         } = this.state;
 
-        request('/user/updateUser', {
+        this.request('/user/updateUser', {
             body: {
                 cardUpId: frontIdCard.response,
                 cardDownId: backIdCard.response,

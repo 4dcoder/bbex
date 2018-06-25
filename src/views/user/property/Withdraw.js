@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Form, Input, Select, List, Button, message } from 'antd';
+import { Input, Select, Button, message } from 'antd';
 import { withRouter } from 'react-router-dom';
-import './withdraw.css';
-import request from '../../../utils/request';
 import Validate from './Validate';
 import GraphicPopup from '../../../components/graphic-popup';
+import './withdraw.css';
 
-const FormItem = Form.Item;
 const Option = Select.Option;
 
 
@@ -24,6 +22,8 @@ class Withdraw extends Component {
       vmodal: ''
     }
   }
+
+  request = window.request;
 
   closeModal = () =>{
     this.setState({vmodal: ''})
@@ -70,7 +70,7 @@ class Withdraw extends Component {
   submitWithdraw = (callback) => {
     const { id, name } = this.props;
     let { address, myCoinCount } = this.state;
-    request('/coin/volume/withdraw', {
+    this.request('/coin/volume/withdraw', {
         method: 'POST',
         body: {
           coinId: id,
@@ -86,7 +86,7 @@ class Withdraw extends Component {
   componentWillMount(){
     
     const { id, name, volume } = this.props;
-    request('/coin/withdraw/address/list/'+id, {
+    this.request('/coin/withdraw/address/list/'+id, {
         method: 'POST',
     }).then(json => {
 

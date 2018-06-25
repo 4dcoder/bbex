@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Tabs, Input, Select, Button, Table, message, List } from 'antd';
-import request from '../../../utils/request';
 import { stampToDate } from '../../../utils/index';
 import './transaction.css';
 
@@ -32,6 +31,8 @@ class Transaction extends Component {
     };
   }
 
+  request = window.request;
+
   componentDidMount() {
     let { coin } = this.state;
     this.getCurrentTrade(1, '', coin);
@@ -50,7 +51,7 @@ class Transaction extends Component {
   };
 
   getCurrentTrade = (page, coinOther, coinMain) => {
-    request('/coin/userTradeOrder', {
+    this.request('/coin/userTradeOrder', {
       method: 'POST',
       body: {
         coinMain,
@@ -73,7 +74,7 @@ class Transaction extends Component {
   };
 
   getRecordTrade = (page, coinOther, coinMain) => {
-    request('/coin/userTradeOrder', {
+    this.request('/coin/userTradeOrder', {
       method: 'POST',
       body: {
         coinMain,
@@ -115,7 +116,7 @@ class Transaction extends Component {
   }
   // 撤单
   cancelTrade = (orderNo) => {
-    request(`/trade/cancelTrade/${orderNo}`, {
+    this.request(`/trade/cancelTrade/${orderNo}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
@@ -132,7 +133,7 @@ class Transaction extends Component {
   };
 
   getTradeDetail = (page, coinOther, coinMain) => {
-    request('/coin/userTradeOrderDetail', {
+    this.request('/coin/userTradeOrderDetail', {
       method: 'POST',
       body: {
         coinMain,
@@ -195,7 +196,7 @@ class Transaction extends Component {
   };
 
   getDetailList = id => {
-    request(`/coin/tradeOrderDetail/${id}`, {
+    this.request(`/coin/tradeOrderDetail/${id}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {

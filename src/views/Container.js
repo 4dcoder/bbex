@@ -16,6 +16,7 @@ message.config({
 class Container extends Component {
   constructor(props, context) {
     super(props, context);
+    
     this.request = window.request = (url, options) => {
       return new Promise((resolve, reject) => {
         props
