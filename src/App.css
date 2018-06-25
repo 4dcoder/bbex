@@ -586,6 +586,7 @@ a:hover {
 
 .withdraw_content .ant-list-sm .ant-list-item {
     padding: 2px 0;
+    border-bottom: 1px solid #5f6f5f;
 }
 
 .bbex_notice .ant-list-header {
@@ -624,7 +625,7 @@ a:hover {
 }
 
 .expend_content .ant-list-split .ant-list-header {
-    border-bottom: 1px solid #585858;
+    border-bottom: 1px solid #4f6f4f;
 }
 
 .expend_content .expent_title li {
@@ -642,6 +643,9 @@ a:hover {
     width: 20%;
     text-align: center;
     color: #fff;
+}
+.expend_content .ant-list-split .ant-list-item{
+    border-bottom: 1px solid #4f6f4f;
 }
 
 .expend_content .ant-list-header {
@@ -871,4 +875,10 @@ a:hover {
 }
 .trade-cont .payment-box .extra-cont{
     color: #fff;
+}
+
+
+.merge-dropdown .ant-select-dropdown-menu-item:hover, .merge-dropdown .ant-select-dropdown-menu-item-selected {
+    color: #d4a668;
+    background-color: #434447;
 }

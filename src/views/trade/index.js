@@ -78,7 +78,7 @@ class Trade extends Component {
         const { btcLastPrice, ethLastPrice } = json.data;
         this.setState({ btcLastPrice, ethLastPrice });
       } else {
-        message.error(json.msg);
+       // message.error(json.msg);
       }
     });
   };
@@ -119,7 +119,7 @@ class Trade extends Component {
         } else {
           this.setState({ completedOrderList: [] });
         }
-        message.error(json.msg);
+        //message.error(json.msg);
       }
     });
   };
@@ -168,7 +168,7 @@ class Trade extends Component {
       if (json.code === 10000000) {
         this.setState({ historyDetails: json.data });
       } else {
-        message.error(json.msg);
+        //message.error(json.msg);
       }
     });
   };
@@ -357,7 +357,7 @@ class Trade extends Component {
         return;
       }
 
-      if(current-this.timer3>1000){
+      if(current-this.timer3>300){
 
         this.timer3 = current;
 
@@ -454,7 +454,7 @@ class Trade extends Component {
         this.setState({ tradeExpair });
       } else {
         this.setState({ tradeExpair: {} });
-        message.error(json.msg);
+        //message.error(json.msg);
       }
     });
   };
@@ -486,7 +486,7 @@ class Trade extends Component {
             sellOrderVOList: []
           }
         });
-        message.error(json.msg);
+        //message.error(json.msg);
       }
     });
   };
@@ -502,7 +502,7 @@ class Trade extends Component {
         this.setState({ streamList: json.data || [] });
       } else {
         this.setState({ streamList: [] });
-        message.error(json.msg);
+        //message.error(json.msg);
       }
     });
   };
