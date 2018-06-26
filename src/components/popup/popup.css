@@ -30,12 +30,20 @@
 .popup-tit {
     height: 50px;
     line-height: 50px;
+    padding-left: 30px;
 }
 .popup-content {
     min-height: 160px;
     max-height: 560px;
     padding: 10px 20px;
     overflow-y: auto;
+}
+.popup-content .form-list li input.text{
+    color: #333;
+    border: 1px solid #d4a668;
+}
+.popup-content .form-list li{
+    color: #333;
 }
 .popup-footer {
     height: 70px;
@@ -51,6 +59,9 @@
     font-weight: normal;
     border: 1px solid #eaeaea;
     background-color: #f8f8f8;
+}
+.popup-footer button.popup-cancel{
+    color: #333;
 }
 .popup-footer button.popup-confirm {
     color: #fff;
