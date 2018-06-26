@@ -21,6 +21,9 @@
 .security_con .google_ver_row{
   height: 800px;
 }
+.security_con  .col_content{
+  padding-left: 100px;
+}
 .security_con  .down-btn {
   display: inline-block;
   width: 169px;

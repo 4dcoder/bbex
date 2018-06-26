@@ -1174,7 +1174,7 @@ class Trade extends Component {
                         </tbody>
                       </table>
                     ) : (
-                      null
+                      loading
                     )}
                   </div>
                   <div className="latest-price">
@@ -1234,7 +1234,7 @@ class Trade extends Component {
                         </tbody>
                       </table>
                     ) : (
-                      null
+                      loading
                     )}
                   </div>
                 </div>
@@ -1271,7 +1271,7 @@ class Trade extends Component {
                       </table>
                     </Scrollbars>
                   ) : (
-                    null
+                    loading
                   )}
                 </div>
               )}

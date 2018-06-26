@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
 import { JSEncrypt } from '../../../utils/jsencrypt.js';
+import request from '../../../utils/request';
 
 const FormItem = Form.Item;
 
@@ -54,7 +55,7 @@ class Password extends Component {
     };
 
     changePassword = (oldPassword, password) => {
-        this.request('/user/updatePassword', {
+        request('/user/updatePassword', {
             method: 'POST',
             body: {
                 password,

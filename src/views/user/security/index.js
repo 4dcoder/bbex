@@ -68,12 +68,12 @@ inputValue = (e) => {
       code,
       errorTip,
     } = this.state;
-    const mobile = sessionStorage.getItem('account')? JSON.parse(sessionStorage.getItem('account')).mobile : "";
-    
+    const account =JSON.parse(sessionStorage.getItem('account'));
+   
     return <div className="security_con user-cont">
         <Row type="flex">
           <Col span={2} className="title">手机号: </Col>
-          <Col span={20}>{mobile}</Col>
+          <Col span={20} className='col_content'>{account && account.mobile}</Col>
         </Row>
         <Row type="flex"  className='password_row'>
           <Col span={2} className="title">密码: </Col>
@@ -81,7 +81,7 @@ inputValue = (e) => {
         </Row>
         <Row type="flex" className="google_ver_row">
           <Col span={2} className="title">谷歌验证: </Col>
-          <Col span={20}className="google_ver_con">
+          { account && account.googleAuth ? <Col span={20} className='col_content'>已认证</Col> : <Col span={20}className="google_ver_con">
             <div>
                 <div className='step_title'><span>第一步: </span> 下载并安装谷歌验证器APP</div>
                 <div className='step_content'>
@@ -140,7 +140,7 @@ inputValue = (e) => {
                     </div>
                 </div>
             </div>
-          </Col>
+          </Col>}
         </Row>
         {this.state.dialog}
     </div>
