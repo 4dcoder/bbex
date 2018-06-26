@@ -39,7 +39,7 @@ class Container extends Component {
             if (error.status === 403) {
               const { googleAuth } = JSON.parse(sessionStorage.getItem('account'));
               if (googleAuth) {
-                console.log(22222);
+                //console.log(22222);
                 // 如果已经谷歌绑定了，去输入谷歌验证码
                 this.setState({
                   popup: (
@@ -52,7 +52,7 @@ class Container extends Component {
                   )
                 });
               } else {
-                console.log(111111)
+                //console.log(111111)
                 // 去绑定谷歌验证
                 this.setState({
                   popup: (
