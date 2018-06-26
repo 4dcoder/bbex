@@ -417,9 +417,17 @@ class Trade extends Component {
           this.setState({ coinName: this.coinName });
         } else {
           // 如果没有保存的交易对，就取当前市场的第一个币种
-          this.setState({
-            coinName: json.data[this.state.market][0].coinOther
-          });
+          if (json.data[this.state.market]) {
+            this.setState({
+              coinName: json.data[this.state.market][0].coinOther
+            });
+          } else {
+            this.setState({
+              market: Object.keys(json.data)[0],
+              marketName: Object.keys(json.data)[0],
+              coinName: json.data[Object.keys(json.data)[0]][0].coinOther
+            })
+          }
         }
 
         const tradeExpair = {};
@@ -634,7 +642,7 @@ class Trade extends Component {
       this.state.marketName !== nextState.marketName ||
       this.state.coinName !== nextState.coinName
     ) {
-      const { buyandsellWS, marketName, coinName, mergeNumber } = nextState;
+      const { marketName, coinName } = nextState;
       this.getStream({
         coinMain: marketName,
         coinOther: coinName
