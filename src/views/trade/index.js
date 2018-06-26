@@ -195,7 +195,7 @@ class Trade extends Component {
       }
       let current = new Date().getTime();
       // socket 1s后回消息才会刷新界面
-      if (current - this.timer1 > 100) {
+      if (current - this.timer1 > 200) {
         this.timer1 = current;
 
         const record = JSON.parse(evt.data);
@@ -293,7 +293,7 @@ class Trade extends Component {
       }
       let current = new Date().getTime();
 
-      if (current - this.timer2 > 50) {
+      if (current - this.timer2 > 100) {
         this.timer2 = current;
 
         // console.log('buyandsell reciveDate: ', JSON.parse(evt.data));
@@ -339,7 +339,7 @@ class Trade extends Component {
         return;
       }
 
-      if (current - this.timer3 > 300) {
+      if (current - this.timer3 > 1000) {
         this.timer3 = current;
 
         const { orderVo, coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
