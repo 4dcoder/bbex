@@ -76,18 +76,19 @@ class Password extends Component {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
-                xs: { span: 5 },
-                sm: { span: 5 }
+                xs: { span: 6 },
+                sm: { span: 6 }
             },
             wrapperCol: {
-                xs: { span: 19 },
-                sm: { span: 19 }
+                xs: { span: 16 },
+                sm: { span: 16 }
             }
         };
         return (
             <Modal
                 title="修改密码"
                 visible
+                width={420}
                 wrapClassName="change_pwd_modal"
                 onCancel={this.props.closeModal}
                 footer={null}
@@ -120,7 +121,7 @@ class Password extends Component {
                             type="primary"
                             htmlType="submit"
                             onClick={this.handleSubmit}
-                            style={{ width: 100, height: 40, borderRadius: 4 }}
+                            style={{ width: 100, height: 36, borderRadius: 4 }}
                         >
                             确认
                         </Button>

@@ -117,7 +117,7 @@ class Validate extends Component {
                         onClick={this.getCodeClick}
                         disabled={disabled}
                         type="primary"
-                        style={{ width: 100, height: 40, marginLeft: 20, borderRadius: 4 }}
+                        style={{ width: 100, height: 36, marginLeft: 20, borderRadius: 4 }}
                     >
                         {!disabled ? '获取验证码' : number + 's'}
                     </Button>

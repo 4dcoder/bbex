@@ -61,7 +61,7 @@ class Trade extends Component {
       tradePrice: '',
       clickTradeType: '',
       historyDetails: [],
-      historyExpendKey: ''
+      historyExpendKey: '',
     };
   }
 
@@ -412,6 +412,7 @@ class Trade extends Component {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
+
         if (this.coinName) {
           // 如果有保存在sessionStorage的交易对，就取保存中的
           this.setState({ coinName: this.coinName });
@@ -520,7 +521,7 @@ class Trade extends Component {
           });
         });
       } else {
-        tradeExpair[market] &&
+        tradeExpair && tradeExpair[market] &&
           tradeExpair[market].forEach(expair => {
             if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
               searchList.push(expair);
@@ -846,6 +847,12 @@ class Trade extends Component {
       </div>
     );
 
+    let allTradeMarket  = [];
+    if(tradeExpair){
+      allTradeMarket = Object.keys(tradeExpair);
+      allTradeMarket.push('optional');
+    }
+
     return (
       <div className="content trade">
         <div className="content-inner">
@@ -866,7 +873,7 @@ class Trade extends Component {
                   </div>
                 </div>
                 <ul className="market-tabs">
-                  {['USDT', 'ETH', 'BTC', 'optional'].map(marketName => {
+                  {allTradeMarket.map(marketName => {
                     return (
                       <li
                         key={marketName}

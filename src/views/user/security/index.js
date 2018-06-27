@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Row, Col, message } from 'antd';
 import Password from './Password';
+import Mobile from './Mobilde';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
 import './security.css';
@@ -49,15 +50,26 @@ submit = () => {
   });
 }
 
+	// 绑定手机号
+	handleBind = () => {
+		this.setState({
+			dialog: <Mobile 
+				closeModal = {()=>{
+					this.setState({dialog: ''});
+				}}
+			/>
+		});
+	}
 
-inputValue = (e) => {
-  this.setState({[e.target.id]: e.target.value});
-}
+	inputValue = (e) => {
+		this.setState({[e.target.id]: e.target.value});
+	}
   showDialog = () =>{
-    this.setState({dialog: <Password 
-      closeModal = {()=>{
-        this.setState({dialog: ''});
-      }}
+    this.setState({
+			dialog: <Password 
+				closeModal = {()=>{
+					this.setState({dialog: ''});
+				}}
     />})
   }
 
@@ -68,12 +80,23 @@ inputValue = (e) => {
       code,
       errorTip,
     } = this.state;
-    const account =JSON.parse(sessionStorage.getItem('account'));
-   
+		let account = '';
+		if(sessionStorage.getItem('account')){
+			account = JSON.parse(sessionStorage.getItem('account'));
+		}
+	
     return <div className="security_con user-cont">
         <Row type="flex">
           <Col span={2} className="title">手机号: </Col>
-          <Col span={20} className='col_content'>{account && account.mobile}</Col>
+          {
+              account && account.mobile? 
+            <Col span={20} className='col_content'>{account.mobile}</Col>:
+            <Col span={20} className='col_content'>
+                <Button onClick={this.handleBind}  type="primary" style={{borderRadius: 4}}>
+                    绑定手机号
+                </Button>
+            </Col>
+          }
         </Row>
         <Row type="flex"  className='password_row'>
           <Col span={2} className="title">密码: </Col>
