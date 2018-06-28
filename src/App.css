@@ -883,3 +883,10 @@ a:hover {
     color: #d4a668;
     background-color: #434447;
 }
+
+/* 绑定手机号 */
+.change_pwd_modal .get_mobile_code{
+    position: absolute;
+    right: -110px;
+    top: -6px;
+}

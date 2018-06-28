@@ -6,6 +6,7 @@ import Withdraw from './Withdraw';
 import './property.css';
 
 const TabPane = Tabs.TabPane;
+const Search = Input.Search;
 
 class Property extends Component {
     state = {
@@ -17,8 +18,10 @@ class Property extends Component {
         handleVolume: 0,
         c2cData: null,
         normalData: null,
+        normalAllData: null,
         expandedRowKey: "",
-        expendedFlag: ''
+        expendedFlag: '',
+        currencyName:''
     }
 
     request = window.request;
@@ -34,6 +37,7 @@ class Property extends Component {
     tabChange = (key) => {
         if(key==="routine"){
             this.getNormalData();
+            this.setState({currencyName: ''})
         } else if(key==="c2c"){
             this.getC2cData();
         }else{
@@ -84,7 +88,7 @@ class Property extends Component {
                         withdrawMaxVolume
                     }
                 });
-                this.setState({normalData});
+                this.setState({normalData, normalAllData: normalData});
             } else {
                 message.error(json.msg);
             }
@@ -106,6 +110,18 @@ class Property extends Component {
             expandedRowKey: record.key,
             expendedFlag: 'withdraw'
         });
+    }
+
+    handleSearch = (e) => {
+        let value = e.target.value;
+        if(value.length<16){
+            let {normalAllData} = this.state;
+            let target = value.toUpperCase();
+            let normalData = normalAllData.filter((item)=>{
+                return item.name.indexOf(target)>-1;
+            })
+            this.setState({currencyName: value, normalData});
+        }
     }
 
     triggerAction = ({ type, coin }) => {
@@ -182,7 +198,8 @@ class Property extends Component {
             c2cData,
             normalData,
             expandedRowKey,
-            expendedFlag
+            expendedFlag,
+            currencyName
         } = this.state;
 
         const routineColumns = [{
@@ -308,6 +325,9 @@ class Property extends Component {
                             <h2 className="pull-left">
                                 我的资金一览表
                             </h2>
+                            <div className="header_search">
+                                <Search value={currencyName} onChange={this.handleSearch} style={{width:180}}/>
+                            </div>
                             {/* <ul className="pull-right">
                                 <li className="assets-estimate">資產估算：0.000000 BTC</li>
                                 <li>
@@ -345,7 +365,7 @@ class Property extends Component {
                             </h2>
                             <ul className="pull-right">
                                 <li>&nbsp;</li>
-                                <li className="assets-estimate">资产估算：0.000000 BTC</li>
+                                {/* <li className="assets-estimate">资产估算：0.000000 BTC</li> */}
                             </ul>
                         </header>
                         <Table

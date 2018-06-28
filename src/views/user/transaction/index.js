@@ -15,17 +15,17 @@ class Transaction extends Component {
       coin: 'USDT',
       coinList: [{ name: 'USDT' }, { name: 'ETH' }, { name: 'BTC' }],
 
-      currentList: [],
+      currentList: null,
       currentTotal: 0,
       currentPage: 1,
       expendRecordKey: '',
 
-      recordList: [],
+      recordList: null,
       recordTotal: 0,
       recordPage: 1,
       recordAllDetail: [],
 
-      detailList: [],
+      detailList: null,
       detailPage: 1,
       detailTotal: 0
     };
@@ -122,7 +122,6 @@ class Transaction extends Component {
       if (json.code === 10000000) {
         message.success('撤单成功！');
         let { currency, coin, currentPage } = this.state;
-        console.log(currency, coin, currentPage );
         this.getCurrentTrade(currentPage, currency, coin);
 
       } else {
@@ -366,19 +365,14 @@ class Transaction extends Component {
           switch (text) {
             case 0:
               return <div>未成交</div>;
-              break;
             case 1:
               return <div>部分成交</div>;
-              break;
             case 2:
               return <div>全部成交</div>;
-              break;
             case 3:
               return <div>部分取消</div>;
-              break;
             case 4:
               return <div>全部取消</div>;
-              break;
             default:
               return <div>--</div>;
           }
@@ -533,6 +527,7 @@ class Transaction extends Component {
             <Table
               dataSource={currentList}
               columns={currentColumns}
+              loading={!currentList}
               pagination={{
                 defaultCurrent: 1,
                 total: currentTotal,
@@ -548,6 +543,7 @@ class Transaction extends Component {
             <Table
               dataSource={recordList}
               columns={recordColumns}
+              loading={!recordList}
               pagination={{
                 defaultCurrent: 1,
                 total: recordTotal,
@@ -593,6 +589,7 @@ class Transaction extends Component {
           <TabPane tab="成交明细" key="detail">
             <Table
               dataSource={detailList}
+              loading={!detailList}
               columns={detailColumns}
               pagination={{
                 defaultCurrent: 1,

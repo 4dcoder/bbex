@@ -24,7 +24,7 @@ class UserCenter extends Component {
       if (!account.googleAuth) {
         this.setState({
           popup: (
-            <Verification 
+            <Verification
               closeModal={()=>{
                 this.closePopup();
               }} 

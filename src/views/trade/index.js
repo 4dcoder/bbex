@@ -953,7 +953,7 @@ class Trade extends Component {
                                 {coin.coinOther}
                               </td>
                               <td>{coin.latestPrice.toFixed(8)}</td>
-                              <td className={`font-color-${trend}`}>{change.toFixed(2)}%</td>
+                              <td className={`font-color-${trend}`}>{(change*100).toFixed(2)}%</td>
                             </tr>
                           );
                         })}

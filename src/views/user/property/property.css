@@ -1,5 +1,6 @@
 .property-header {
     margin-bottom: 20px;
+    position: relative;
 }
 .property-header h2 {
     padding-top: 20px;
@@ -9,11 +10,24 @@
 .property-header h2 .ant-checkbox-wrapper {
     margin-left: 20px;
 }
+.property-header .header_search{
+    position: absolute;
+    z-index: 1;
+    top: 8px;
+    right: 20px;
+    width: 240px;
+    display: flex;
+    justify-content: space-between;
+}
+.property-header .header_search .ant-input-search-icon{
+    color: #d4a668;
+}
 .property-header .pull-right {
     text-align: right;
 }
 .property-header .pull-right li.assets-estimate {
     font-weight: bold;
+    color: #fff;
 }
 .property-header .pull-right .anticon {
     color: #d4a668;

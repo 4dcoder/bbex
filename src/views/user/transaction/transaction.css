@@ -6,4 +6,12 @@
 
 .transation_content .line{
   padding: 0 6px;
+  color: #fff;
+}
+
+.ant-table-thead > tr.ant-table-row-hover > td, 
+.ant-table-tbody > tr.ant-table-row-hover > td, 
+.ant-table-thead > tr:hover > td, 
+.ant-table-tbody > tr:hover > td{
+  background-color: #2A2F3C;
 }

@@ -111,7 +111,7 @@ class Validate extends Component {
                         value={emailCode}
                         onChange={this.codeChange}
                         size="large"
-                        placeholder="请输入验证码"
+                        placeholder="请输入邮箱验证码"
                     />
                     <Button
                         onClick={this.getCodeClick}

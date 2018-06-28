@@ -6,6 +6,7 @@ import TransactionForm from './TransactionForm';
 import { stampToDate, copy } from '../../utils';
 import { IMAGES_ADDRESS, WS_ADDRESS } from '../../utils/constants';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
+import AppealModal from './AppealModal';
 
 const TabPane = Tabs.TabPane;
 
@@ -16,7 +17,8 @@ const ExpandComponent = ({
   onCloseImage,
   confirmPay,
   cancelPay,
-  confirmReceipt
+  confirmReceipt,
+  handleAppeal
 }) => {
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
   return (
@@ -25,9 +27,9 @@ const ExpandComponent = ({
         tabBarExtraContent={
           <div className="extra-cont">
             <span>
-              <i className="iconfont icon-phone" />卖家：{bankInfo.mobile}
+              <i className="iconfont icon-phone" />{remarks === 'buy'? '卖': '买'}家：{bankInfo.mobile}
             </span>
-            <a href="javascript:;">
+            <a href="javascript:;" onClick={handleAppeal}>
               <i className="iconfont icon-kefu" />申请客服处理
             </a>
           </div>
@@ -36,7 +38,7 @@ const ExpandComponent = ({
         <TabPane
           tab={
             <span>
-              <i className="iconfont icon-yinhangqia" />卖家银行卡信息
+              <i className="iconfont icon-yinhangqia" />{remarks === 'buy'? '卖': '买'}家银行卡信息
             </span>
           }
           key="bank"
@@ -85,7 +87,7 @@ const ExpandComponent = ({
         <TabPane
           tab={
             <span>
-              <i className="iconfont icon-zhifubao" />卖家支付宝信息
+              <i className="iconfont icon-zhifubao" />{remarks === 'buy'? '卖': '买'}家支付宝信息
             </span>
           }
           key="alipay"
@@ -141,7 +143,7 @@ const ExpandComponent = ({
         <TabPane
           tab={
             <span>
-              <i className="iconfont icon-wxpay" />卖家微信支付信息
+              <i className="iconfont icon-wxpay" />{remarks === 'buy'? '卖': '买'}家微信支付信息
             </span>
           }
           key="wechat"
@@ -283,7 +285,9 @@ class TradeContainer extends Component {
     myOrderList: null,
     myAdvertList: null,
     previewImage: '',
-    ws: null
+    ws: null,
+    appealList: null, //我的申诉
+    showAppeal: '', //显示申诉弹窗
   };
 
   request = window.request;
@@ -294,10 +298,13 @@ class TradeContainer extends Component {
 
   componentWillMount() {
     this.getAdvertList(1);
+   
 
     if (sessionStorage.getItem('account')) {
       this.getMyOrderList();
       this.getMyAdvertList();
+       //获取申诉
+      this.getAppealList();
     }
   }
 
@@ -307,19 +314,19 @@ class TradeContainer extends Component {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
       var ws = new ReconnectingWebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
 
-      setInterval(() => {
+      this.timer = setInterval(() => {
         if (ws.readyState === 1) {
           ws.send('ping');
         }
       }, 1000 * 3);
 
       ws.onopen = evt => {
-        console.log('Connection open ...');
+        //console.log('Connection open ...');
       };
 
       ws.onmessage = evt => {
         if (evt.data === 'pong') {
-          console.log('c2c: ', evt.data);
+          //console.log('c2c: ', evt.data);
           return;
         }
         const record = JSON.parse(evt.data);
@@ -342,11 +349,11 @@ class TradeContainer extends Component {
       };
 
       ws.onclose = evt => {
-        console.log('Connection closed.');
+        //console.log('Connection closed.');
       };
 
       ws.onerror = evt => {
-        console.log(evt);
+        //console.log(evt);
       };
 
       this.setState({ ws });
@@ -354,6 +361,7 @@ class TradeContainer extends Component {
   }
 
   componentWillUnmount() {
+    clearInterval( this.timer);
     this.state.ws && this.state.ws.close();
   }
 
@@ -698,6 +706,101 @@ class TradeContainer extends Component {
     });
   };
 
+  //检查申诉
+  checkAppeal = (subOrderId, callback) => {
+    this.request('/offline/appeal/check', {
+      method: 'GET',
+      body: {
+        subOrderId
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        callback(true)
+      }else{
+        message.destroy();
+        message.warn(json.msg, 1);
+        callback(false);
+      }
+    });
+  }
+  // 撤销申诉
+  cancelAppeal = (appealId) => {
+    this.request('/offline/appeal/cancel', {
+      method: 'POST',
+      body: {
+        appealId
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success('撤销申诉成功');
+        this.getAppealList();
+      }
+    });
+  }
+
+  // 点击撤销申诉
+  handleCancel = (appealId) =>{
+    this.cancelAppeal(appealId);
+  }
+
+  // 获取我的申诉
+  getAppealList = () => {
+    this.request('/offline/appeal/findall', {
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        let appealList = json.data.map((item)=>{
+          item.key = item.id;
+          return item;
+        })
+        this.setState({appealList})
+      }
+    });
+  }
+
+   // 提交申诉
+   submitAppeal = (subOrderId, appealType, reason) =>{
+    this.request('/offline/appeal/doappeal', {
+      body: {
+        subOrderId,
+        appealType,
+        reason
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success('提交成功',1);
+        this.closeAppealModal();
+        this.getAppealList();
+      }
+    });
+  }
+
+  closeAppealModal = () => {
+    this.setState({showAppeal:''})
+  }
+
+  //点击申请客服处理
+  handleAppeal = (record) => {
+    const {subOrderId} = record;
+
+    //检查是否可以申诉
+    this.checkAppeal(subOrderId, (check)=>{
+      if(check){
+        this.setState({
+          showAppeal: <AppealModal
+            onCancel={()=>{
+             this.closeAppealModal();
+            }}
+            onOk={(appealType, reason)=>{
+              this.submitAppeal(subOrderId,appealType,reason);
+            }}
+          />
+        })
+      }
+    })
+    
+  }
+
   render() {
     const { exType, coin } = this.props;
     const typeText = {
@@ -716,7 +819,8 @@ class TradeContainer extends Component {
       recordIndex,
       myOrderList,
       myAdvertList,
-      previewImage
+      previewImage,
+      appealList
     } = this.state;
 
     let undoneOrderList, completedOrderList, cancelledOrderList;
@@ -810,6 +914,47 @@ class TradeContainer extends Component {
       },
     ];
 
+    const appealColumns = [
+      {
+        title: '订单号',
+        dataIndex: 'subOrderId',
+        key: 'subOrderId',
+      },
+      {
+        title: '时间',
+        dataIndex: 'createDate',
+        key: 'createDate',
+        render: (text)=>{
+          return stampToDate(text*1)
+        }
+      },
+      { 
+        title: '申诉类型',
+        dataIndex: 'appealType',
+        key: 'appealType'
+      },
+      { 
+        title: '申诉理由',
+        dataIndex: 'reason',
+        key: 'reason'
+      },
+      { 
+        title: '操作',
+        dataIndex: 'status',
+        key: 'status',
+        render: (text,record)=>{
+          switch(text){
+            case '1':
+            return <Button type="primary" onClick={()=>{this.handleCancel(record.id)}} style={{borderRadius:4}}>撤销申诉</Button>;
+            case '2':
+            return <div>客服已处理完</div>;
+            case '3':
+            return <div>已撤销</div>
+          }
+        }
+      }
+    ]
+
     const orderColumns = [
       {
         title: '类型',
@@ -822,6 +967,11 @@ class TradeContainer extends Component {
           };
           return `${typeToText[text]}${record.symbol}`;
         }
+      },
+      {
+        title: '订单号',
+        dataIndex: 'subOrderId',
+        key: 'subOrderId',
       },
       {
         title: '价格(CNY)',
@@ -863,11 +1013,11 @@ class TradeContainer extends Component {
           }
         }
       },
-      {
-        title: '对方姓名',
-        dataIndex: 'name',
-        key: 'name'
-      },
+      // {
+      //   title: '对方姓名',
+      //   dataIndex: 'name',
+      //   key: 'name'
+      // },
       {
         title: '下单时间',
         dataIndex: 'createDate',
@@ -922,6 +1072,11 @@ class TradeContainer extends Component {
         title: '价格(CNY)',
         dataIndex: 'price',
         key: 'price'
+      },
+      {
+        title: '币种',
+        dataIndex: 'symbol',
+        key: 'symbol'
       },
       {
         title: '数量',
@@ -1037,7 +1192,7 @@ class TradeContainer extends Component {
         </div>
         <div className="trade-record">
           <ul className="trade-record-nav">
-            {['我的未完成订单', '我发布的广告', '我的已完成订单', '我的已取消订单'].map(
+            {['我的未完成订单', '我发布的广告', '我的已完成订单', '我的已取消订单', '我的申诉'].map(
               (text, index) => {
                 return (
                   <li
@@ -1070,6 +1225,7 @@ class TradeContainer extends Component {
                       confirmPay={this.confirmPay}
                       cancelPay={this.cancelPay}
                       confirmReceipt={this.confirmReceipt}
+                      handleAppeal={()=>{this.handleAppeal(record)}}
                     />
                   ) : null
                 }
@@ -1083,6 +1239,9 @@ class TradeContainer extends Component {
             )}
             {recordIndex === 3 && (
               <Table dataSource={cancelledOrderList} columns={orderColumns} pagination={false} />
+            )}
+             {recordIndex === 4 && (
+              <Table dataSource={appealList} columns={appealColumns} pagination={false} />
             )}
           </div>
         </div>
@@ -1104,6 +1263,8 @@ class TradeContainer extends Component {
             />
           )}
         </Modal>
+
+        {this.state.showAppeal}
       </div>
     );
   }

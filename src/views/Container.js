@@ -242,7 +242,6 @@ class Container extends Component {
                 <div className="footer-main-right">
                   <ul className="footer-nav clear">
                     <li>
-                      <span>{localization['about_us']}</span>
                       <span to="javascript:void(0)">{localization['about_us']}</span>
                       <span to="javascript:void(0)">{localization['exchange_links']}</span>
                       <span to="javascript:void(0)">{localization['coin_apply']}</span>

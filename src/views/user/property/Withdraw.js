@@ -84,12 +84,22 @@ class Withdraw extends Component {
   }
   
   componentWillMount(){
-    
-    const { id, name, volume } = this.props;
-    this.request('/coin/withdraw/address/list/'+id, {
-        method: 'POST',
-    }).then(json => {
+   this.getAddress();
+  }
 
+  // 获取提币地址
+  getAddress = () => {
+    const { id } = this.props;
+    this.request('/withdraw/address/list/'+id, {
+        method: 'GET',
+    }).then(json => {
+      if(json.code===10000000){
+        let addressHistory = json.data.map((item)=>{
+          const { address } = item;
+          return address;
+        })
+        this.setState({addressHistory});
+      }
     })
   }
 

@@ -38,6 +38,9 @@ class PaymentForm extends Component {
                         account[`${type}QrcodeId`] = values.qrcode[0].response;
                         sessionStorage.setItem('account', JSON.stringify(account));
                         message.success(`${typeText}账号绑定成功！`);
+                    }else{
+                        message.destroy();
+                        message.warn(json.msg,1);
                     }
                 });
             }

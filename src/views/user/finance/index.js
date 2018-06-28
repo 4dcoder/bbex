@@ -14,13 +14,13 @@ class Finance extends Component {
 
             currentTab: 'recharge',
 
-            rechargeList: [],
+            rechargeList: null,
             rechargeTotal: 0,
 
-            withdrawList: [],
+            withdrawList: null,
             withdrawTotal: 0,
 
-            transferList: [],
+            transferList: null,
             transferTotal: 0
         };
     }
@@ -277,14 +277,6 @@ class Finance extends Component {
                     }
                     return <div>{myNote}</div>;
                 }
-            },
-            {
-                title: '操作',
-                dataIndex: 'address',
-                key: 'address',
-                render: () => {
-                    return <div>操作</div>;
-                }
             }
         ];
         const transferColumns = [
@@ -307,9 +299,9 @@ class Finance extends Component {
                 key: 'type',
                 render: text => {
                     if (text == 0) {
-                        return <div>转入</div>;
+                        return <div style={{color:'#13ae50'}}>转入</div>;
                     } else {
-                        return <div>转出</div>;
+                        return <div style={{color:'#f51726'}}>转出</div>;
                     }
                 }
             },
@@ -329,14 +321,6 @@ class Finance extends Component {
                     return <div>成功</div>;
                 }
             },
-            {
-                title: '操作',
-                dataIndex: 'address',
-                key: 'address',
-                render: () => {
-                    return <div>操作</div>;
-                }
-            }
         ];
 
         const {
@@ -370,6 +354,7 @@ class Finance extends Component {
                     <TabPane tab="充币记录" key="recharge">
                         <Table
                             dataSource={rechargeList}
+                            loading={!rechargeList}
                             columns={rechargeColumns}
                             pagination={{
                                 defaultCurrent: 1,
@@ -385,6 +370,7 @@ class Finance extends Component {
                         <Table
                             dataSource={withdrawList}
                             columns={withdrowColumns}
+                            loading={!withdrawList}
                             pagination={{
                                 defaultCurrent: 1,
                                 total: withdrawTotal,
@@ -399,6 +385,7 @@ class Finance extends Component {
                         <Table
                             dataSource={transferList}
                             columns={transferColumns}
+                            loading={!transferList}
                             pagination={{
                                 defaultCurrent: 1,
                                 total: transferTotal,
