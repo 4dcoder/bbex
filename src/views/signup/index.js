@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { Button, message } from 'antd';
 import GraphicPopup from '../../components/graphic-popup';
+import { JSEncrypt } from '../../utils/jsencrypt.js';
+
+//公钥
+const PUBLI_KEY =
+    'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLADJL0WYJJrxmpNqKeoAXhW8P0GWMy7ZJG/I+8CwLZ2we83VnHcF4zXfpWrw3zY4RIYkFQT8EkW7FUDFeY9XzoxoQbcjyG3ywIzN6SI+7Jd07TGktNTTxFR6Bj4IjzAlazitFlUKAP77AyhT65YDChbNRul8u6M5qqt/ojjGb1QIDAQAB';
+
 
 class SignUp extends Component {
     state = {
@@ -57,28 +63,44 @@ class SignUp extends Component {
     }
 
     submit = () => {
+       
         const {
             registerType,
             mail,
             password,
+            repassword,
             vaildCode,
             inviteCode,
         } = this.state;
-        this.request('/user/register', {
-            body: {
-                registerType,
-                mail: mail,
-                password,
-                code: vaildCode,
-                inviteCode,
-            }
-        }).then(json => {
-            if (json.code === 10000000) {
-                this.props.history.push('/signin');
-            }else {
-                message.error(json.msg);
-            }
-        })
+
+        if(password===repassword){
+
+            let encrypt = new JSEncrypt();
+            encrypt.setPublicKey(PUBLI_KEY);
+            const enPassword = encrypt.encrypt(password);
+    
+            this.request('/user/register', {
+                body: {
+                    registerType,
+                    mail: mail,
+                    password: enPassword,
+                    code: vaildCode,
+                    inviteCode,
+                }
+            }).then(json => {
+                if (json.code === 10000000) {
+                    this.props.history.push('/signin');
+                }else {
+                    message.error(json.msg);
+                }
+            });
+
+        }else{
+            message.destroy();
+            message.warn('密码不一致',1)
+        }
+
+       
     }
 
     render() {

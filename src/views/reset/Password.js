@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
+import { JSEncrypt } from '../../utils/jsencrypt.js';
+
+const PUBLI_KEY =
+    'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCLADJL0WYJJrxmpNqKeoAXhW8P0GWMy7ZJG/I+8CwLZ2we83VnHcF4zXfpWrw3zY4RIYkFQT8EkW7FUDFeY9XzoxoQbcjyG3ywIzN6SI+7Jd07TGktNTTxFR6Bj4IjzAlazitFlUKAP77AyhT65YDChbNRul8u6M5qqt/ojjGb1QIDAQAB';
 
 class SubmitRest extends Component {
     state = {
@@ -19,10 +23,16 @@ class SubmitRest extends Component {
 
     reset = () => {
         const { password, repassword } = this.state;
+
         if (password === repassword) {
+
+            let encrypt = new JSEncrypt();
+            encrypt.setPublicKey(PUBLI_KEY);
+            let enPassword = encrypt.encrypt(password);
+    
             this.request('/user/resetPassword', {
                 body: {
-                    password: this.state.password,
+                    password: enPassword,
                     ptoken: this.state.ptoken
                 }
             }).then(json => {
