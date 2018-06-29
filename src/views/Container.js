@@ -175,6 +175,13 @@ class Container extends Component {
   render() {
     const { localization } = this.props;
     const { isLogin, language, locale, logo, popup } = this.state;
+
+    let mail = localization['user_center'];
+    const account =  sessionStorage.getItem('account');
+    if(isLogin && account){
+      mail = JSON.parse(account).mail;
+    }
+
     return (
         <div className="container">
           <header className="header">
@@ -202,7 +209,7 @@ class Container extends Component {
                 <div className="select-bar">
                   <i className="iconfont icon-yonghu" />
                   <i className="iconfont icon-jiantou_down" />
-                  <span>{localization['user_center']}</span>
+                  <span>{mail}</span>
                   <ul className="select-list">
                     <li>
                       <Link to="/user">{localization['user_center']}</Link>
@@ -276,7 +283,7 @@ class Container extends Component {
                     </li>
                     <li>
                       {localization['contact_email']}：<span to="mailto: support@bbex.com">
-                        support@uescoin.com
+                        support@ecoexc.com
                       </span>
                     </li>
                   </ul>

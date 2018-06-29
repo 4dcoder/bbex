@@ -1,0 +1,14 @@
+.finance_content .withdraw_expend li{
+  display: flex;
+  padding: 4px 0;
+}
+.finance_content .withdraw_expend li>div{
+  width: 50%;
+  display: flex;
+  font-size: 12px;
+}
+.finance_content .withdraw_expend .title{
+  width: 120px;
+  text-align: right;
+  margin-right: 20px;
+}

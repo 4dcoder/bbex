@@ -1,36 +1,36 @@
 
 
-.wi_number{
+.withdraw_content .wi_number{
   position: relative;
 }
-.my_count{
+.withdraw_content .my_count{
   display: flex;
   justify-content: space-between;
 }
-.my_count li{
+.withdraw_content .my_count li{
   width: 45%;
 }
-.my_count .title{
+.withdraw_content .my_count .title{
   line-height: 30px;
 }
-.my_count .money{
+.withdraw_content .my_count .money{
   position: relative;
 }
 
-.my_count .number{
+.withdraw_content .my_count .number{
   position: relative;
 }
-.my_count .money span, .my_count .number span{
+.withdraw_content .my_count .money span, .my_count .number span{
   position: absolute;
   right: 10px;
   top: 8px;
 }
-.btn_block{
+.withdraw_content .btn_block{
   display: flex;
   justify-content: space-between;
   color: #fff;
 }
-.btn_block .btn{
+.withdraw_content .btn_block .btn{
   width: 300px;
   padding: 20px 0 0 20px;;
 }
@@ -44,4 +44,19 @@
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
+}
+.withdraw_content .rest_number{
+  color: #e0c192;
+  margin: 0 30px 0 10px;
+  font-weight: 600;
+}
+.withdraw_content .limite_number{
+  color: #e0c192;
+  margin: 0 30px 0 10px;
+  font-weight: 600;
+}
+.withdraw_content .min_withdraw{
+  color: #e0c192;
+  margin: 0 20px;
+  font-weight: 600;
 }

@@ -743,7 +743,7 @@ class TradeContainer extends Component {
     this.cancelAppeal(appealId);
   }
 
-  // 获取我的申诉
+  // 获取申诉列表
   getAppealList = () => {
     this.request('/offline/appeal/findall', {
       method: 'GET'

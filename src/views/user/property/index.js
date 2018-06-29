@@ -70,7 +70,7 @@ class Property extends Component {
             if (json.code === 10000000) {
                 const normalData = json.data.map((item)=>{
                     let totalPrice = 0;
-                    let {id, name, volume, lockVolume, tokenStatus, withdrawFee, withdrawFeeType, withdrawMaxVolume } = item;
+                    let {id, name, volume, lockVolume, tokenStatus, withdrawFee, withdrawFeeType, withdrawMaxVolume, withdrawMinVolume } = item;
                     volume = volume || '0.000000';
                     lockVolume = lockVolume || '0.000000';
                     totalPrice = (Number(volume) + Number(lockVolume)).toFixed(6)
@@ -85,7 +85,8 @@ class Property extends Component {
                         tokenStatus,
                         withdrawFee,
                         withdrawFeeType,
-                        withdrawMaxVolume
+                        withdrawMaxVolume,
+                        withdrawMinVolume
                     }
                 });
                 this.setState({normalData, normalAllData: normalData});

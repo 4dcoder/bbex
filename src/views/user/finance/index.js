@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Tabs, List, Table, Select, message, Button } from 'antd';
+import { Tabs, Table, Select, message, Button } from 'antd';
 import { stampToDate } from '../../../utils/index';
+import './finance.css';
 
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
@@ -18,7 +19,9 @@ class Finance extends Component {
             rechargeTotal: 0,
 
             withdrawList: null,
+            withdrawPage: 1,
             withdrawTotal: 0,
+            expendKey: '',
 
             transferList: null,
             transferTotal: 0
@@ -81,7 +84,11 @@ class Finance extends Component {
             }
         }).then(json => {
             if (json.code === 10000000) {
-                this.setState({ withdrawList: json.data.list, withdrawTotal: json.data.count });
+                let withdrawList = json.data.list.map((item, index)=>{
+                    item.key = item.id;
+                    return item;
+                })
+                this.setState({ withdrawList, withdrawTotal: json.data.count });
             } else {
                 message.error(json.msg);
             }
@@ -101,7 +108,11 @@ class Finance extends Component {
             }
         }).then(json => {
             if (json.code === 10000000) {
-                this.setState({ transferList: json.data.list, transferTotal: json.data.count });
+                let transferList =  json.data.list.map((item)=>{
+                    item.key = item.id;
+                    return item;
+                })
+                this.setState({ transferList, transferTotal: json.data.count });
             } else {
                 message.error(json.msg);
             }
@@ -109,7 +120,7 @@ class Finance extends Component {
     };
 
     tabChange = value => {
-        this.setState({ symbol: '全部', currentTab: value });
+        this.setState({ symbol: '全部', currentTab: value, withdrawPage: 1 });
         if (value == 'recharge') {
             this.getRechargeList(1, '', '');
         } else if (value == 'withdraw') {
@@ -119,13 +130,44 @@ class Finance extends Component {
         }
     };
 
+    // 取消
+    cancelClick = (record) => {
+     
+      this.request(`/coin/volume/cancel/${record.id}`, {
+        method: 'GET',
+        }).then(json => {
+            if (json.code === 10000000) {
+               message.success(json.msg);
+               const { coinList, symbol, withdrawPage } = this.state;
+               const coinId = coinList.filter(item => {
+                    return item.name == symbol;
+                })[0].id;
+               this.getWithdrawList(withdrawPage,coinId, symbol);
+            } else {
+                message.destroy();
+                message.error(json.msg);
+            }
+        });
+    }
+
+    // 提币记录 点击详情
+    detailClick = (record) => {
+        const { expendKey } = this.state;
+        if(expendKey === record.id){
+            this.setState({expendKey: ''})
+        }else{
+            this.setState({expendKey: record.id});
+        }
+    }
+
+
     coinSelect = value => {
         const { currentTab, coinList } = this.state;
         const coinId = coinList.filter(item => {
             return item.name == value;
         })[0].id;
 
-        this.setState({ symbol: value });
+        this.setState({ symbol: value, withdrawPage: 1 });
 
         if (currentTab == 'recharge') {
             this.getRechargeList(1, coinId, value);
@@ -150,6 +192,7 @@ class Finance extends Component {
         const coinId = coinList.filter(item => {
             return item.name == symbol;
         })[0].id;
+        this.setState({withdrawPage: page})
         ///coin/deposit/list
         this.getWithdrawList(page, coinId, symbol);
     };
@@ -164,7 +207,6 @@ class Finance extends Component {
     };
 
     render() {
-        let { data } = this.state;
         const rechargeColumns = [
             {
                 title: '时间',
@@ -252,11 +294,11 @@ class Finance extends Component {
                 title: '状态',
                 dataIndex: 'status',
                 key: 'status',
-                render: text => {
+                render: (text, record) => {
                     let myNote = '';
                     switch (text) {
                         case 0:
-                            myNote = <Button type="primary">取消</Button>;
+                            myNote = <Button type="primary" onClick={()=>{this.cancelClick(record)}}>取消</Button>;
                             break;
                         case 1:
                             myNote = '审核通过';
@@ -277,7 +319,17 @@ class Finance extends Component {
                     }
                     return <div>{myNote}</div>;
                 }
-            }
+            },
+            {
+                title: '操作',
+                dataIndex: 'updateDate',
+                key: 'updateDate',
+                render: (text, record) => {
+                    return <div onClick={()=>{this.detailClick(record)}} style={{color: '#d4a668'}}>
+                        详情
+                    </div>;
+                }
+            },
         ];
         const transferColumns = [
             {
@@ -330,12 +382,14 @@ class Finance extends Component {
             rechargeList,
             rechargeTotal,
             withdrawList,
+            withdrawPage,
             withdrawTotal,
             transferList,
-            transferTotal
+            transferTotal,
+            expendKey
         } = this.state;
         return (
-            <div className="finance_content user-cont">
+            <ul className="finance_content user-cont">
                 <Tabs
                     value={currentTab}
                     tabBarExtraContent={
@@ -373,11 +427,29 @@ class Finance extends Component {
                             loading={!withdrawList}
                             pagination={{
                                 defaultCurrent: 1,
+                                current: withdrawPage,
                                 total: withdrawTotal,
                                 pageSize: 10,
                                 onChange: page => {
                                     this.withdrawPageChange(page);
                                 }
+                            }}
+                            expandedRowKeys={[expendKey]}
+                            expandedRowRender = {(record)=>{
+                                let {updateDate, fee, address, txId} = record;
+                                if(txId && txId.length>40){
+                                    txId = txId.subString(0,40)+'...';
+                                }
+                                return <ul className='withdraw_expend'>
+                                    <li>
+                                        <div> <span className="title">钱包处理时间 : </span>{updateDate && stampToDate(updateDate*1)}</div>
+                                        <div> <span className="title">手续费 : </span>{(fee*1).toFixed(8)}</div>
+                                    </li>
+                                    <li>
+                                        <div> <span className="title">提币地址 :</span>{address}</div>
+                                        <div> <span className="title">区块链交易ID : </span>{txId}</div>
+                                    </li>
+                                </ul>
                             }}
                         />
                     </TabPane>
@@ -397,7 +469,7 @@ class Finance extends Component {
                         />
                     </TabPane>
                 </Tabs>
-            </div>
+            </ul>
         );
     }
 }

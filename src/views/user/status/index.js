@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Steps } from 'antd';
+import { stampToDate } from '../../../utils/index';
 import './status.css';
 
 const Step = Steps.Step;
@@ -10,7 +11,7 @@ class Status extends Component{
     console.log(this.props.location.state);
   }
   render(){
-    const { name, address, myCoinCount } = this.props.location.state;
+    const { name, address, myVolume } = this.props.location.state;
     return <div className="order_status user-cont">
       <h4>提币订单已提交，请耐心等待</h4>
       <div className="step_block">
@@ -32,11 +33,11 @@ class Status extends Component{
         </li>
         <li>
           <div className="title">到账数量：</div>
-          <div>{myCoinCount}</div>
+          <div>{myVolume}</div>
         </li>
         <li>
           <div className="title">申请时间：</div>
-          <div>ewewewe</div>
+          <div>{stampToDate(new Date().getTime())}</div>
         </li>
       </ul>
     </div>

@@ -30,6 +30,22 @@ class Withdraw extends Component {
   }
 
   withdrawClick = () => {
+    const { myCoinCount, address} = this.state;
+    if(address && address.length>64){
+      message.destroy();
+      message.warn('地址不能超过64位');
+      return;
+    }
+    if(!address){
+      message.destroy();
+      message.warn('地址不能为空');
+      return;
+    }
+    if(!myCoinCount){
+      message.destroy();
+      message.warn('数量不能为空');
+      return;
+    }
     this.submitWithdraw((json)=>{
       let mail = JSON.parse(sessionStorage.getItem('account')).mail;
 
@@ -40,10 +56,9 @@ class Withdraw extends Component {
             this.setState({popup: ''});
           }} okClick={()=>{
             this.setState({popup: ''});
-            const { name } = this.props;
-            const { myCoinCount, address} = this.state;
-
-            this.props.history.push("/user/status",{name, myCoinCount, address});
+            const { name, withdrawFee } = this.props;
+            const myVolume = (myCoinCount-withdrawFee);
+            this.props.history.push("/user/status",{name, myVolume, address});
           }} getCode={()=>{
 
             this.setState({
@@ -109,21 +124,22 @@ class Withdraw extends Component {
 
   countChange = (e) => {
     let value = e.target.value;
-    let { withdrawFee, withdrawFeeType, volume } = this.props;
-    if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16 && value<volume && value>0){
+    if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
       this.setState({myCoinCount: value});
     }
   }
 
   render(){
-    const { id, name, volume, withdrawFee, withdrawFeeType, withdrawMaxVolume, withdrawMinVolume } = this.props;
-    let { addressHistory, myCoinCount, address, fee } = this.state;
+    const { id, name, volume, withdrawFee, withdrawMaxVolume, withdrawMinVolume } = this.props;
+    let { addressHistory, myCoinCount, address } = this.state;
 
     let lastCount = (myCoinCount-withdrawFee)
     if(isNaN(lastCount)){
       lastCount = 0;
-    }else{
+    }else if(lastCount>0){
       lastCount = lastCount.toFixed(8);
+    }else{
+      lastCount = 0;
     }
 
     return <div className="withdraw_content">
@@ -137,7 +153,7 @@ class Withdraw extends Component {
       </div>
       <ul className="count_top">
         <li className="title">数量</li>
-        <li className="title">可用余额 {volume}  限额: {withdrawMaxVolume}</li>
+        <li className="title">可用余额： <span className="rest_number">{volume}</span>限额： <span className="limite_number">{withdrawMaxVolume}</span></li>
       </ul>
       <Input placeholder="请输入数量" onChange={this.countChange} value={myCoinCount} size="large" />
          
@@ -162,7 +178,7 @@ class Withdraw extends Component {
       <div className="btn_block">
         <ul>
           <li>温馨提示</li>
-          <li> 最小提币数量为：{withdrawMinVolume}{name}</li>
+          <li> 最小提币数量为：<span className='min_withdraw'>{withdrawMinVolume}</span>{name}</li>
           <li>为保障资金安全，当您账户安全策略变更，密码修改，使用新地址提币。我们会对你提笔币进行人工审核，请耐心等待工作人员电话或邮件联系。</li>
           <li>请务必确认电脑及浏览器安全，防止信息被篡改或泄漏。</li>
         </ul>

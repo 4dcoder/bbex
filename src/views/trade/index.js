@@ -745,6 +745,11 @@ class Trade extends Component {
         render: (text, record) => stampToDate(Number(text))
       },
       {
+        title: '委托单号',
+        dataIndex:'orderNo',
+        key: 'orderNo'
+      },
+      {
         title: '委托类别',
         dataIndex: 'exType',
         key: 'exType',

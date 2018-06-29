@@ -145,7 +145,7 @@ a:hover {
 
 .select-bar {
     position: relative;
-    width: 150px;
+    min-width: 150px;
     height: 100%;
     text-align: center;
     cursor: pointer;
@@ -179,7 +179,7 @@ a:hover {
 
 .select-list {
     position: absolute;
-    width: 100px;
+    min-width: 100px;
     right: 10px;
     top: 0;
     opacity: 0;
