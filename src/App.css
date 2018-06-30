@@ -126,6 +126,11 @@ a:hover {
     color: rgb(170, 136, 89);
     border-bottom-color: rgb(170, 136, 89);
 }
+.nav-bar li a.active{
+    color: rgb(170, 136, 89);
+    border-bottom-color: rgb(170, 136, 89);
+}
+
 
 .user-status {
     float: right;

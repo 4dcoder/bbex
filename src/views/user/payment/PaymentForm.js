@@ -21,21 +21,27 @@ class PaymentForm extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
+           
             if (!err) {
                 const { type } = this.props;
                 const urlpart = type === 'wechat' ? 'wechatpay' : 'alipay';
                 const typeText = this.props.type === 'wechat' ? '微信' : '支付宝';
+
+                const account = JSON.parse(sessionStorage.getItem('account'));
+                const qrcodeId = account[`${type}QrcodeId`];
+                console.log(type, account)
+               
                 this.request(`/offline/${urlpart}/bind`, {
                     body: {
                         realName: values.realName,
                         [`${type}No`]: values[`${type}No`],
-                        [`${type}QrcodeId`]: values.qrcode[0].response,
+                        [`${type}QrcodeId`]: values.qrcode ? values.qrcode[0].response : qrcodeId,
                     }
                 }).then(json => {
                     if (json.code === 10000000) {
                         const account = JSON.parse(sessionStorage.getItem('account'));
                         account[`${type}No`] = values[`${type}No`];
-                        account[`${type}QrcodeId`] = values.qrcode[0].response;
+                        account[`${type}QrcodeId`] = values.qrcode ? values.qrcode[0].response : qrcodeId;
                         sessionStorage.setItem('account', JSON.stringify(account));
                         message.success(`${typeText}账号绑定成功！`);
                     }else{
@@ -146,7 +152,7 @@ class PaymentForm extends Component {
                         {getFieldDecorator('qrcode', {
                             valuePropName: 'file',
                             getValueFromEvent: this.normFile,
-                            rules: [{ required: true, message: '请上传收款二维码!' }],
+                            rules: [{required: (qrcodeUrl ? false: true), message: '请上传收款二维码!'}],
                         })(
                             <Upload
                                 key={type}

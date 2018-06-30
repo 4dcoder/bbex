@@ -57,6 +57,9 @@
 .user-nav .user-link>.iconfont {
     padding-right: 10px;
 }
+.payment-cell-form .ant-form-item-label>label{
+    color: #fff;
+}
 
 .user-cont .ant-input {
     border: 1px solid #cfd2a6;

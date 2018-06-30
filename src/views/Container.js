@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Input } from 'antd';
 import { message } from 'antd';
+import classnames from 'classnames';
 import request from '../utils/request';
 import logo1 from '../logo.png';
 import Popup from '../components/popup';
@@ -181,7 +182,7 @@ class Container extends Component {
     if(isLogin && account){
       mail = JSON.parse(account).mail;
     }
-
+    const pathname =  this.props.location.pathname;
     return (
         <div className="container">
           <header className="header">
@@ -190,10 +191,14 @@ class Container extends Component {
             </Link>
             <ul className="nav-bar">
               <li>
-                <Link to="/trade">{localization['exchange']}</Link>
+                <Link to="/trade" className={classnames({
+                  "active": pathname==='/trade'
+                })}>{localization['exchange']}</Link>
               </li>
               <li>
-                <Link to="/c2c">{localization['c2c']}</Link>
+                <Link to="/c2c" className={classnames({
+                  "active": pathname==='/c2c'
+                })}>{localization['c2c']}</Link>
               </li>
             </ul>
             {!isLogin && (

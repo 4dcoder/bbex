@@ -28,6 +28,9 @@ class SignUp extends Component {
 
     inputValue = (e) => {
         this.setState({ [e.target.id]: e.target.value });
+        if(e.target.id==='mail'&& e.target.value){
+            this.setState({errorTip: ''})
+        }
     }
 
     closePopup = () => {
@@ -47,16 +50,18 @@ class SignUp extends Component {
 
     getValidCode = () => {
         const { mail, count } = this.state;
-        if (mail && count > 59) {
-            this.setState({
-                popup: <GraphicPopup
-                    mail={this.state.mail}
-                    type="register"
-                    cancelHandle={this.closePopup}
-                    confirmHandle={this.countDown}
-                >
-                </GraphicPopup>
-            });
+        if (mail) {
+            if(count==60){
+                this.setState({
+                    popup: <GraphicPopup
+                        mail={this.state.mail}
+                        type="register"
+                        cancelHandle={this.closePopup}
+                        confirmHandle={this.countDown}
+                    >
+                    </GraphicPopup>
+                });
+            }
         } else {
             this.setState({ errorTip: '请输入邮箱' });
         }
@@ -97,9 +102,8 @@ class SignUp extends Component {
 
         }else{
             message.destroy();
-            message.warn('密码不一致',1)
+            message.warn('密码不一致',1);
         }
-
        
     }
 

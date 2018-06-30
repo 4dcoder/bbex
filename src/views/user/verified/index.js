@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Steps, Button, message, Upload, Icon } from 'antd';
 import { IMAGES_ADDRESS } from '../../../utils/constants';
+import VerForm from './VerForm';
 
 import './verified.css';
 import exampleImg from '../../../assets/images/card-template.png';
@@ -20,8 +21,8 @@ class Verified extends Component {
         const currentMap = {
             0: 0,
             9: 0,
-            1: 2,
-            2: 1,
+            1: 3,
+            2: 2,
         }
         this.state = {
             current: currentMap[cardStatus],
@@ -41,31 +42,65 @@ class Verified extends Component {
     }
 
     handleVerification = () => {
-        const {
-            frontIdCard,
-            backIdCard,
-            handheldIdCard,
-        } = this.state;
+        // const {
+        //     frontIdCard,
+        //     backIdCard,
+        //     handheldIdCard,
+        // } = this.state;
 
-        this.request('/user/updateUser', {
-            body: {
-                cardUpId: frontIdCard.response,
-                cardDownId: backIdCard.response,
-                cardFaceId: handheldIdCard.response,
-            }
-        }).then(json => {
-            if (json.code === 10000000) {
-                //设置认证状态
-                this.account.cardStatus = 2;
-                sessionStorage.setItem('account', JSON.stringify(this.account));
+        // this.request('/user/updateUser', {
+        //     body: {
+        //         cardUpId: frontIdCard.response,
+        //         cardDownId: backIdCard.response,
+        //         cardFaceId: handheldIdCard.response,
+        //     }
+        // }).then(json => {
+        //     if (json.code === 10000000) {
+        //         //设置认证状态
+        //         this.account.cardStatus = 2;
+        //         sessionStorage.setItem('account', JSON.stringify(this.account));
 
-                const current = this.state.current + 1;
-                this.setState({ current });
-                message.success('证件提交成功!');
-            } else {
-                message.success(json.msg);
-            }
-        });
+        //         const current = this.state.current + 1;
+        //         this.setState({ current });
+        //         message.success('证件提交成功!');
+        //     } else {
+        //         message.success(json.msg);
+        //     }
+        // });
+        const current = this.state.current + 1;
+        this.setState({ current });
+    }
+
+    // 提交身份信息
+    submitVer = (values) => {
+       const {idCard, age, sex, realName, address } = values;
+       const {frontIdCard, backIdCard, handheldIdCard } = this.state;
+       this.request('/user/updateUser', {
+        body: {
+            idCard,
+            age,
+            sex,
+            realName,
+            address,
+            cardUpId: frontIdCard.response,
+            cardDownId: backIdCard.response,
+            cardFaceId: handheldIdCard.response,
+        }
+    }).then(json => {
+        if (json.code === 10000000) {
+           
+            this.account.cardStatus = 2;
+            sessionStorage.setItem('account', JSON.stringify(this.account));
+
+            const current = this.state.current + 1;
+            this.setState({ current });
+            message.success('信息提交成功!');
+        } else {
+            message.success(json.msg);
+        }
+    }); 
+
+
     }
 
     beforeUpload = (file) => {
@@ -105,7 +140,7 @@ class Verified extends Component {
         return (
             <div className="user-cont verified">
                 <Steps current={current}>
-                    {['上传证件', '等待审核', '完成认证'].map(text => <Step key={text} title={text} />)}
+                    {['上传证件','填写资料', '等待审核', '完成认证'].map(text => <Step key={text} title={text} />)}
                 </Steps>
                 {current === 0 && (
                     <div className="steps-content step1">
@@ -161,13 +196,20 @@ class Verified extends Component {
                 )}
                 {current === 1 && (
                     <div className="steps-content step2">
+                       <VerForm 
+                            submitVer={(values)=>{this.submitVer(values)}}
+                       />
+                    </div>
+                )}
+                {current === 2 && (
+                    <div className="steps-content step3">
                         <i className="iconfont icon-tubiaolunkuo-"></i>
                         <h3>您的资料已递交审核，我们会在三个工作日内完成审核</h3>
                         <p>我们承诺保证您的个人隐私安全，请您积极配合，耐心等待审核</p>
                     </div>
                 )}
-                {current === 2 && (
-                    <div className="steps-content step3">
+                {current === 3 && (
+                    <div className="steps-content step4">
                         <i className="iconfont icon-shimingrenzheng1"></i>
                         <h3 style={{color:'#fff'}}>您已完成身份认证</h3>
                         <p>您的真实姓名为：{this.account.realName}</p>

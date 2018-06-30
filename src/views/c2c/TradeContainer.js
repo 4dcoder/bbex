@@ -239,6 +239,7 @@ const ExpandComponent = ({
         <Button
           type="normal"
           size="large"
+          disabled={remarks === 'sell'}
           onClick={() => {
             cancelPay(record);
           }}
@@ -443,6 +444,9 @@ class TradeContainer extends Component {
             this.props.history.push('/user/payment');
           }
         });
+      }else{
+        message.destroy();
+        message.warn(json.msg, 1);
       }
     });
   };

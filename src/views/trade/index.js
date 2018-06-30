@@ -955,7 +955,7 @@ class Trade extends Component {
                                   }`}
                                   onClick={this.handleCollect.bind(this, coin)}
                                 />
-                                {coin.coinOther}
+                                {coin.coinOther}{market === 'optional' && `/${coin.coinMain}`}
                               </td>
                               <td>{coin.latestPrice.toFixed(8)}</td>
                               <td className={`font-color-${trend}`}>{(change*100).toFixed(2)}%</td>

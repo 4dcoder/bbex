@@ -1,0 +1,14 @@
+.ver_form .ant-form-item-label>label{
+  color: #fff;
+}
+.ver_form .sex_item .ant-form-item-control{
+  text-align: left;
+  padding-left: 20px;
+  
+}
+.ver_form .sex_item .ant-form-item-control span{
+  color: #fff;
+}
+.ver_form .ant-form-item-label{
+  padding-right: 10px;
+}
