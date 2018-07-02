@@ -1,0 +1,13 @@
+.page_404{
+  min-height: 400px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.page_404 h1{
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 10px;
+}

@@ -29,7 +29,7 @@ class Verified extends Component {
             showExampleImage: false,
         };
     }
-
+    
     request = window.request;
     account = JSON.parse(sessionStorage.getItem('account'));
 

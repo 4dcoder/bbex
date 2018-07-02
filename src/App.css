@@ -249,9 +249,15 @@ a:hover {
 .footer-nav {
     float: left;
     width: 60%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.footer-nav>a{
+    min-width: 130px;
 }
 
-.footer-nav li {
+/* .footer-nav li {
     float: left;
     width: 33.3%;
     color: #fff;
@@ -262,7 +268,7 @@ a:hover {
     display: block;
     margin-top: 10px;
     cursor: pointer;
-}
+} */
 
 .footer-contact {
     float: right;

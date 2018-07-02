@@ -86,7 +86,8 @@ class Container extends Component {
     locale: {},
     logo: '',
     googleCode: '',
-    popup: false
+    popup: false,
+    introduces: [],
   };
 
   closePopup = () => {
@@ -114,9 +115,27 @@ class Container extends Component {
     }
   };
 
+  // 获取link列表
+  getIntroduce = () => {
+    this.request('/cms/introduce/list', { 
+      body: {
+        language: 'en_US'
+      },
+      method: 'GET'
+    }
+    ).then(json => {
+      if (json.code === 10000000) {
+        this.setState({introduces: json.data.list})
+      } else {
+        message.warn(json.msg);
+      }
+    });
+  }
+
   componentWillMount() {
     this.getLanguage(this.state.language);
     this.getLogo();
+    this.getIntroduce();
   }
 
   switchLanguage(language) {
@@ -175,7 +194,7 @@ class Container extends Component {
 
   render() {
     const { localization } = this.props;
-    const { isLogin, language, locale, logo, popup } = this.state;
+    const { isLogin, language, locale, logo, popup, introduces } = this.state;
 
     let mail = localization['user_center'];
     const account =  sessionStorage.getItem('account');
@@ -252,27 +271,13 @@ class Container extends Component {
                   <p>{localization['market_risk']}</p>
                 </div>
                 <div className="footer-main-right">
-                  <ul className="footer-nav clear">
-                    <li>
-                      <span to="javascript:void(0)">{localization['about_us']}</span>
-                      <span to="javascript:void(0)">{localization['exchange_links']}</span>
-                      <span to="javascript:void(0)">{localization['coin_apply']}</span>
-                    </li>
-                    <li>
-                      <span>{localization['customer_support']}</span>
-                      <span to="javascript:void(0)">{localization['service_agreement']}</span>
-                      <span to="javascript:void(0)">{localization['privacy_statement']}</span>
-                      <span to="javascript:void(0)">{localization['rate_standard']}</span>
-                      <span to="javascript:void(0)">{localization['legal_notices']}</span>
-                    </li>
-                    <li>
-                      <span>{localization['other']}</span>
-                      <span to="javascript:void(0)">{localization['announcement_center']}</span>
-                      <span to="javascript:void(0)">{localization['common_problem']}</span>
-                      <span to="javascript:void(0)">{localization['currency_introduction']}</span>
-                      <span to="javascript:void(0)">{localization['submit_order']}</span>
-                    </li>
-                  </ul>
+                  <div className="footer-nav clear">
+                    { introduces && introduces.map((item)=>{
+                      return  <Link to="about_us" rel="noopener noreferrer">
+                        {item.title}
+                      </Link>
+                    })}
+                  </div>
                   <ul className="footer-contact">
                     <li>{localization['contact_us']}</li>
                     <li>

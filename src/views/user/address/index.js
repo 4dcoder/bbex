@@ -154,7 +154,16 @@ class Address extends Component {
       <ul >
         <li>
           <h4>币种</h4>
-          <Select size="large" style={{ width: 120 }} value={symbol} onChange={this.handleChange}>
+          <Select
+          size="large" 
+          style={{ width: 120 }} 
+          value={symbol} 
+          onChange={this.handleChange}
+          showSearch
+          filterOption={(input, option) => {
+          return  option.props.children.indexOf(input.toUpperCase()) >= 0;
+          }}
+          >
             {
               currencys.map((item)=>{
                 return <Option key={item.id} value={item.name}>{item.name}</Option>
