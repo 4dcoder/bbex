@@ -738,6 +738,9 @@ class TradeContainer extends Component {
       if (json.code === 10000000) {
         message.success('撤销申诉成功');
         this.getAppealList();
+      }else{
+        message.destroy();
+        message.warn(json.msg, 1);
       }
     });
   }
@@ -772,9 +775,12 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success('提交成功',1);
+        message.success('提交成功', 1);
         this.closeAppealModal();
         this.getAppealList();
+      }else{
+        message.destroy();
+        message.warn(json.msg, 1);
       }
     });
   }

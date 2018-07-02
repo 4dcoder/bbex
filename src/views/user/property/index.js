@@ -51,10 +51,10 @@ class Property extends Component {
             if (json.code === 10000000) {
                 const c2cData = json.data.map(item => {
                     item.key = item.coinId;
-                    item.volume = item.volume || '0.000000';
-                    item.advertVolume = item.advertVolume || '0.000000';
-                    item.lockVolume = item.lockVolume || '0.000000';
-                    item.totalPrice = (Number(item.volume) + Number(item.advertVolume) + Number(item.lockVolume)).toFixed(6);
+                    item.volume = item.volume || '0.00000000';
+                    item.advertVolume = item.advertVolume || '0.00000000';
+                    item.lockVolume = item.lockVolume || '0.00000000';
+                    item.totalPrice = (Number(item.volume) + Number(item.advertVolume) + Number(item.lockVolume)).toFixed(8);
                     return item;
                 })
                 this.setState({ c2cData });
@@ -71,10 +71,10 @@ class Property extends Component {
                 const normalData = json.data.map((item)=>{
                     let totalPrice = 0;
                     let {id, name, volume, lockVolume, tokenStatus, withdrawFee, withdrawFeeType, withdrawMaxVolume, withdrawMinVolume } = item;
-                    volume = volume || '0.000000';
-                    lockVolume = lockVolume || '0.000000';
-                    totalPrice = (Number(volume) + Number(lockVolume)).toFixed(6)
-                    withdrawFee = withdrawFee || '0.000000';
+                    volume = volume || '0.00000000';
+                    lockVolume = lockVolume || '0.00000000';
+                    totalPrice = (Number(volume) + Number(lockVolume)).toFixed(8)
+                    withdrawFee = withdrawFee || '0.00000000';
                     return {
                         key: id,
                         id,
@@ -232,7 +232,7 @@ class Property extends Component {
             dataIndex: 'totalPrice',
             key: 'totalPrice',
             render: (text)=>{
-                return <div>{Number(text).toFixed(8)}</div>
+                return <div>{text}</div>
             }
         }, {
             title: '操作',
@@ -294,7 +294,7 @@ class Property extends Component {
             dataIndex: 'totalPrice',
             key: 'totalPrice',
             render: (text)=>{
-                return <div>{Number(text).toFixed(8)}</div>
+                return <div>{text}</div>
             }
         }, {
             title: '操作',

@@ -31,17 +31,6 @@ class VerForm extends Component{
         },
       };
 
-      const subItemLayout = {
-        labelCol: {
-            xs: { span: 8 },
-            sm: { span: 8 },
-        },
-        wrapperCol: {
-            xs: { span: 12 },
-            sm: { span: 12 },
-        },
-    };
-
       return <Form onSubmit={this.handleSubmit} className="ver_form">
           <FormItem
             {...formItemLayout}
@@ -76,14 +65,7 @@ class VerForm extends Component{
             label="年龄"
           >
             {getFieldDecorator('age', {
-                rules: [{ required: true, message: '请输入年龄', whitespace: true},{validator: (rule, value, callback)=>{
-                  const form = this.props.form;
-                  if(/^[1-9][0-9]{1,2}$/.test(form.getFieldValue('age'))){
-                    callback()
-                  }else{
-                    callback('')
-                  }
-                }}],
+                rules: [{ required: true, message: '请输入年龄', whitespace: true},{pattern: /^[0-9]{0,2}$/, message: '年龄不正确'}],
             })(
                 <Input  size="large" placeholder="请输入年龄" />
             )}
@@ -93,7 +75,9 @@ class VerForm extends Component{
             label="性别"
             className='sex_item'
           >
-          {getFieldDecorator('sex')(
+          {getFieldDecorator('sex',{
+            rules: [{required: true, message: '请选择性别',}]
+          })(
             <RadioGroup>
               <Radio value="1">男</Radio>
               <Radio value="2">女</Radio>

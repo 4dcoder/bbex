@@ -120,7 +120,7 @@ class TradeForm extends Component {
     if(isNaN(price*volume)){
       totalCount = 0
     }else{
-      totalCount = (price*volume)>0 ?(price*volume).toFixed(2):(price*volume).toFixed(8)
+      totalCount = (price*volume).toFixed(8)
     }
 
     return (
