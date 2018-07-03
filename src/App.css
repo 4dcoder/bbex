@@ -260,6 +260,7 @@ a:hover {
 
 .wexin_content{
     position: relative;
+    margin-right: 20px;
 }
 .wexin_content img{
     width: 120px;
