@@ -5,7 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import classnames from 'classnames';
 import NoticeBar from '../../components/noticeBar';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
-import { WS_ADDRESS } from '../../utils/constants';
+import { WS_PREFIX } from '../../utils/constants';
 
 import './carousel.css';
 import './home.css';
@@ -52,7 +52,7 @@ class Home extends Component {
 
   // 主页homeSocket
   openHomeSocket = () => {
-    const homeWS = new ReconnectingWebSocket(`${WS_ADDRESS}/home`);
+    const homeWS = new ReconnectingWebSocket(`${WS_PREFIX}/home`);
 
     this.interval = setInterval(() => {
       if (homeWS.readyState === 1) {

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import datafeeds from '../datafeed/datafeed.js';
 import tradeviewPageUtil from './TradeviewPageUtil';
-import { WS_ADDRESS } from '../utils/constants';
-import {onready, widget} from './ChartingLlibrary';
+import { WS_PREFIX } from '../utils/constants';
+import { onready, widget } from './ChartingLlibrary';
 import ReconnectingWebSocket from '../utils/ReconnectingWebSocket';
 
 class TradeviewPage extends Component {
-    websocketUrl = `${WS_ADDRESS}/bbex/klinesocket`;
+    websocketUrl = `${WS_PREFIX}/kline`;
 
     componentDidMount() {
         this.websocketStart();
@@ -30,7 +30,7 @@ class TradeviewPage extends Component {
 
     // 开启websocket
     websocketStart() {
-        window.ws = new ReconnectingWebSocket(this.websocketUrl);
+        window.ws = new WebSocket(this.websocketUrl);
         setInterval(() => {
             if (window.ws.readyState === 1) {
                 window.ws.send('ping');
