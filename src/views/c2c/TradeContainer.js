@@ -4,7 +4,7 @@ import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
 import TransactionForm from './TransactionForm';
 import { stampToDate, copy } from '../../utils';
-import { IMAGES_ADDRESS, WS_ADDRESS } from '../../utils/constants';
+import { IMAGES_ADDRESS, WS_PREFIX } from '../../utils/constants';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import AppealModal from './AppealModal';
 
@@ -313,7 +313,7 @@ class TradeContainer extends Component {
     //登录后才打开websockets
     if (JSON.parse(sessionStorage.getItem('account'))) {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
-      var ws = new ReconnectingWebSocket(`${WS_ADDRESS}/bbex/c2csocketuser?${userId}`);
+      var ws = new ReconnectingWebSocket(`${WS_PREFIX}/c2cUser?${userId}`);
 
       this.timer = setInterval(() => {
         if (ws.readyState === 1) {
