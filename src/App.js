@@ -63,7 +63,13 @@ const Notice = loadComponent(() => import('./views/notice'));
 
 const Detail = loadComponent(() => import('./views/notice/Detail'));
 
+const Agreement =  loadComponent(() => import('./views/links/Agreement'));
+
+const MyLink = loadComponent(() => import('./views/links/MyLink'));
+
 const NotFound = loadComponent(() => import('./views/404'));
+
+
 
 const NormalRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => <Component {...props} {...rest} />} />
@@ -118,6 +124,8 @@ class App extends Component {
                             {...{ localization }}
                         />
                         <NormalRoute path="/c2c" component={C2c} {...{ localization }} />
+                        <NormalRoute path="/link/:id" component={MyLink} {...{ localization }} />
+                        <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
                         <NormalRoute
                             exact
                             path="/notice"

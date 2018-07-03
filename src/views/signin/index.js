@@ -15,7 +15,8 @@ class SignIn extends Component {
         password: '',
         imgName: '',
         errorTip: '',
-        code: ''
+        code: '',
+        url: ''
     };
     request = window.request;
     inputValue = e => {
@@ -49,6 +50,22 @@ class SignIn extends Component {
         }
     };
 
+    //获取访问的网址
+    getUrl = () => {
+        this.request('/cms/link', {
+            method: 'GET',
+        }).then(json => {
+            if (json.code === 10000000) {
+                this.setState({ url: json.data });
+            } else {
+                message.error(json.msg);
+            }
+        });
+    }
+    componentWillMount(){
+        this.getUrl();
+    }
+
     getValidImg = () => {
         const { username } = this.state;
         this.request('/valid/createCode', {
@@ -67,7 +84,7 @@ class SignIn extends Component {
     };
 
     render() {
-        const { username, password, errorTip, code, imgName } = this.state;
+        const { username, password, errorTip, code, imgName, url } = this.state;
         const ok = this.state.username && this.state.password;
         return (
             <div className="content">
@@ -75,11 +92,11 @@ class SignIn extends Component {
                     <h1>用户登录</h1>
                     <div className="attention">
                         <i className="iconfont icon-zhuyishixiang" />请确认您正在访问{' '}
-                        <strong>http://www.ecoexc.com</strong>
+                        <strong>{url}</strong>
                     </div>
                     <div className="safety-site">
                         <i className="iconfont icon-suo1" />
-                        <em>http</em>://www.ecoexc.com
+                        {url}
                     </div>
                     <p className="error-tip">
                         {errorTip && <i className="iconfont icon-zhuyishixiang" />}

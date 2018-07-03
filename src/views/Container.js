@@ -88,6 +88,8 @@ class Container extends Component {
     googleCode: '',
     popup: false,
     introduces: [],
+    platLinks: [],
+    friendship: []
   };
 
   closePopup = () => {
@@ -119,7 +121,7 @@ class Container extends Component {
   getIntroduce = () => {
     this.request('/cms/introduce/list', { 
       body: {
-        language: 'en_US'
+        language: 'zh_CN'
       },
       method: 'GET'
     }
@@ -131,11 +133,25 @@ class Container extends Component {
       }
     });
   }
+  // 联系我们接口
+  getPlatLinks = () => {
+    this.request('/index/platLinks', { 
+      method: 'GET'
+    }
+    ).then(json => {
+      if (json.code === 10000000) {
+        this.setState({platLinks: json.data})
+      }
+    });
+  }
+
 
   componentWillMount() {
     this.getLanguage(this.state.language);
     this.getLogo();
     this.getIntroduce();
+    this.getPlatLinks();
+    this.getFriendship();
   }
 
   switchLanguage(language) {
@@ -191,10 +207,24 @@ class Container extends Component {
       }
     });
   };
+  
+  //获取友情链接
+  getFriendship = () => {
+    request('/cms/link/list', {
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        this.setState({ friendship: json.data });
+      } else {
+        message.destroy();
+        message.error(json.msg);
+      }
+    });
+  }
 
   render() {
     const { localization } = this.props;
-    const { isLogin, language, locale, logo, popup, introduces } = this.state;
+    const { isLogin, language, locale, logo, popup, introduces, platLinks, friendship } = this.state;
 
     let mail = localization['user_center'];
     const account =  sessionStorage.getItem('account');
@@ -202,11 +232,21 @@ class Container extends Component {
       mail = JSON.parse(account).mail;
     }
     const pathname =  this.props.location.pathname;
+
+    let mailLink = '', mailItem = [];
+    if(platLinks&&platLinks.length>0){
+      mailItem = platLinks.filter((item)=>{
+        return item.typeId==='link_mail'
+      });
+      if(mailItem.length>0){
+        mailLink = mailItem[0].linkUrl;
+      }
+    }
     return (
         <div className="container">
           <header className="header">
             <Link className="logo" to="/">
-              <img src={logo1} alt="logo" width="108" height="68" />
+              <img src={logo} alt="logo" width="108" height="68" />
             </Link>
             <ul className="nav-bar">
               <li>
@@ -267,33 +307,39 @@ class Container extends Component {
             <div className="footer-container">
               <div className="footer-main clear">
                 <div className="footer-logo">
-                  <img src={logo1} alt="logo" width="108" height="68" />
+                  <img src={logo} alt="logo" width="108" height="68" />
                   <p>{localization['market_risk']}</p>
                 </div>
                 <div className="footer-main-right">
                   <div className="footer-nav clear">
-                    { introduces && introduces.map((item)=>{
-                      return  <Link to="about_us" rel="noopener noreferrer">
-                        {item.title}
-                      </Link>
+                    { introduces && introduces.map((item, index)=>{
+                     
+                      return  <Link key={index} to={{
+                        pathname:`/link/${item.id}`,
+                      }} target="_blank" data-id={item.id} >{item.title}</Link>
                     })}
                   </div>
                   <ul className="footer-contact">
                     <li>{localization['contact_us']}</li>
                     <li>
-                      <Link to="javascript:void(0)" target="_blank" rel="noopener noreferrer">
-                        <i className="iconfont icon-weixin" />
-                      </Link>
-                      <Link to="javascript:void(0)" target="_blank" rel="noopener noreferrer">
-                        <i className="iconfont icon-weibo" />
-                      </Link>
-                      <Link to="javascript:void(0)" target="_blank" rel="noopener noreferrer">
-                        <i className="iconfont icon-qq" />
-                      </Link>
+                      {platLinks && platLinks.map((item, index)=>{
+                        if(item.typeId==='link_weixin'){
+                          return  <Link to="javascript:void(0)" key={index} className="wexin_content" target="_blank" rel="noopener noreferrer">
+                          <i className="iconfont icon-weixin" />
+                          <img src={item.linkUrl+item.linkImage}/>
+                        </Link>
+                        }else if(item.typeId==='link_mail'){
+
+                        }else{
+                            return <Link to={`${item.linkUrl}`} key={index} target="_blank" rel="noopener noreferrer">
+                            <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />
+                          </Link>
+                        }
+                      })}
                     </li>
                     <li>
                       {localization['contact_email']}：<span to="mailto: support@bbex.com">
-                        support@ecoexc.com
+                        {mailLink}
                       </span>
                     </li>
                   </ul>
@@ -301,31 +347,12 @@ class Container extends Component {
               </div>
               <div className="footer-link">
                 {localization['friendship_links']}：
-                <Link to="https://www.coinmarketcap.com" target="_blank" rel="noopener noreferrer">
-                  coinmarketcap
+                {friendship && friendship.map((item ,index)=>{
+                  return <Link key={index} to={item.href} target="_blank" rel="noopener noreferrer">
+                  {item.title}
                 </Link>
-                <Link to="https://www.bitcointalk.org" target="_blank" rel="noopener noreferrer">
-                  BitcoinTalk
-                </Link>
-                <Link to="https://www.coindesk.com" target="_blank" rel="noopener noreferrer">
-                  coindesk
-                </Link>
-                <Link to="https://www.btc123.com" target="_blank" rel="noopener noreferrer">
-                  btc123
-                </Link>
-                <Link
-                  to="https://tradeblock.com/ethereum"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  tradeblock
-                </Link>
-                <Link to="https://www.bitcoin.org" target="_blank" rel="noopener noreferrer">
-                  bitcoin.org
-                </Link>
-                <Link to="https://pool.btc.com" target="_blank" rel="noopener noreferrer">
-                  BTC.com矿池
-                </Link>
+                })}
+                
               </div>
               <div className="footer-copyright">Copyright 2018 All Rights Reserved.</div>
             </div>

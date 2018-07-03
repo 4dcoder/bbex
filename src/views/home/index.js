@@ -4,6 +4,8 @@ import { Tabs, Input, Table, message } from 'antd';
 import { Carousel } from 'react-responsive-carousel';
 import classnames from 'classnames';
 import NoticeBar from '../../components/noticeBar';
+import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
+import { WS_ADDRESS } from '../../utils/constants';
 
 import './carousel.css';
 import './home.css';
@@ -11,9 +13,8 @@ import './home.css';
 import partner1 from '../../assets/images/partner/bixin.png';
 import partner2 from '../../assets/images/partner/bi.png';
 import partner3 from '../../assets/images/partner/nodecape.png';
-import partner4 from '../../assets/images/partner/lians.png';
 import partner5 from '../../assets/images/partner/lianwen.png';
-import partner6 from '../../assets/images/partner/Jlab.png';
+
 
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
@@ -28,7 +29,8 @@ class Home extends Component {
     searchValue: '',
     favoriteCoins: sessionStorage.getItem('favoriteCoins')
       ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
-      : []
+      : [],
+    homeWS: null
   };
 
   request = window.request;
@@ -36,6 +38,78 @@ class Home extends Component {
   componentWillMount() {
     this.getBanner();
     this.getTradeExpair();
+  }
+
+  componentDidMount(){
+    this.openHomeSocket();
+  }
+
+  componentWillUnmount(){
+    clearInterval(this.interval);
+    const { homeWS } = this.state;
+    homeWS && homeWS.close();
+  }
+
+  // 主页homeSocket
+  openHomeSocket = () => {
+    const homeWS = new ReconnectingWebSocket(`${WS_ADDRESS}/home`);
+
+    this.interval = setInterval(() => {
+      if (homeWS.readyState === 1) {
+        homeWS.send('ping');
+      }
+    }, 1000 * 5);
+
+    homeWS.onopen = evt => {
+      this.timer1 = new Date().getTime();
+    };
+
+    homeWS.onmessage = evt => {
+     
+      if (evt.data === 'pong') {
+        return;
+      }
+      let current = new Date().getTime();
+     
+      if (current - this.timer1 > 1000) {
+        this.timer1 = current;
+
+        const markPair = JSON.parse(evt.data);
+        const socketMarket = Object.keys(markPair)[0];
+
+        markPair[socketMarket] = markPair[socketMarket].map((coin)=>{
+          coin.key = `${coin.coinMain}.${coin.coinOther}`;
+          coin.latestPrice = (coin.latestPrice || 0).toFixed(8);
+          coin.highestPrice = (coin.highestPrice || 0).toFixed(8);
+          coin.lowerPrice = (coin.lowerPrice || 0).toFixed(8);
+          coin.dayCount = (coin.dayCount || 0).toFixed(8);
+          return coin;
+        })
+
+        let { tradeExpair, searchList, searchValue } = this.state;
+
+        if(searchValue){
+          searchList = markPair[socketMarket].filter((expair)=>{
+            return  expair.coinOther.indexOf(searchValue.toUpperCase()) > -1
+          });
+          this.setState({searchList});
+        }
+        tradeExpair[socketMarket] = markPair[socketMarket];
+
+        this.setState({tradeExpair});
+
+      }
+    };
+
+    homeWS.onclose = evt => {
+      // console.log('stream Websocket Connection closed.');
+    };
+
+    homeWS.onerror = evt => {
+      // console.log(evt);
+    };
+
+    this.setState({ homeWS });
   }
 
   //获取banner图
@@ -172,6 +246,12 @@ class Home extends Component {
       }
     }
 
+    let allTradeMarket  = [];
+    if(tradeExpair){
+      allTradeMarket = Object.keys(tradeExpair);
+      allTradeMarket.unshift('optional');
+    }
+
     const columns = [
       {
         title: localization['coin'],
@@ -266,7 +346,7 @@ class Home extends Component {
               activeKey={market}
               onChange={this.handleSwitchMarkets}
             >
-              {['optional', 'USDT', 'ETH', 'BTC'].map(curMarket => (
+              {allTradeMarket && allTradeMarket.map(curMarket => (
                 <TabPane
                   tab={
                     curMarket === 'optional' ? (

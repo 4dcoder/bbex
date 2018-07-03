@@ -6,7 +6,7 @@
 
 // ckex.com 地址配置
 const IMAGES_ADDRESS = 'http://images.ecoexc.com';
-const WS_ADDRESS = 'ws://www.ecoexc.com';
+const WS_ADDRESS = 'ws://192.168.2.184:8083/bbex/websocket';
 
 //内网 ws://192.168.1.80
 //外网 wss://api.bbex.one

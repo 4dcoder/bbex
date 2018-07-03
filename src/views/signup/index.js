@@ -32,6 +32,21 @@ class SignUp extends Component {
             this.setState({errorTip: ''})
         }
     }
+    //获取服务条款
+    getService = () => {
+        this.request('/cms/service', {
+            method: 'GET',
+            body: {
+                language: 'zh_CN'
+            }
+        }).then(json => {
+            if (json.code === 10000000) {
+                this.props.history.push('/agreement');
+            }else {
+                message.error(json.msg);
+            }
+        });
+    }
 
     closePopup = () => {
         this.setState({ popup: false });
@@ -149,7 +164,7 @@ class SignUp extends Component {
                         </li>
                         <li>
                             <input type="checkbox" className="checkbox" id="agree" checked={agree} onChange={() => { this.setState({ agree: !agree }) }} />
-                            <label htmlFor="agree">我已阅读并同意<a href="javascript:;"> 服务条款</a></label>
+                            <label htmlFor="agree">我已阅读并同意<Link to='/agreement' target="_blank"> 服务条款</Link></label>
                         </li>
                         <li>
                             <Button type="primary" htmlType="submit" size='large' disabled={!ok} onClick={this.submit} className="button">注册</Button>
