@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Modal, Select, Input, message } from 'antd';
-import request from '../../utils/request';
 
 const Option = Select.Option;
 const { TextArea } = Input;

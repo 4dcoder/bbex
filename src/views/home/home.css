@@ -52,37 +52,6 @@
   color: #d4a668;
 }
 
-.coins-market .ant-table {
-  color: #fff;
-}
-
-.coins-market .ant-table-thead>tr>th {
-  color: #fff;
-  border-bottom-color: #d4a668;
-  background-color: #151a22;
-}
-
-.coins-market .ant-table-column-sorter .anticon-caret-up, .coins-market .ant-table-column-sorter .anticon-caret-down {
-  color: #fff;
-}
-
-.coins-market .ant-table-tbody>tr>td {
-  border-bottom-color: #5a5959;
-}
-
-.coins-market .ant-table-tbody>tr.ant-table-row:hover>td {
-  cursor: pointer;
-  background-color: #27292e;
-}
-
-.coins-market .ant-table-column-sorter-up {
-  margin-bottom: 2px;
-}
-
-.coins-market .ant-table-column-sorter-down {
-  margin-top: 2px;
-}
-
 .coins-market .on .anticon-caret-down, .coins-market .on .anticon-caret-up {
   color: #d4a668;
 }
@@ -93,12 +62,6 @@
 
 .coins-market .name-wrap.attention .anticon {
   color: #d4a668;
-}
-
-.coins-market .ant-table-placeholder {
-  color: #fff;
-  border-bottom-color: #5a5959;
-  background-color: rgb(51, 60, 75);
 }
 
 .partner {

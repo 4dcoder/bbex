@@ -20,8 +20,7 @@ class Container extends Component {
 
         this.request = window.request = (url, options) => {
             return new Promise((resolve, reject) => {
-                props
-                    .request(url, options)
+                request(url, options)
                     .then(json => {
                         if (json.code === -5 || json.code === -8) {
                             //登录失效
@@ -252,7 +251,7 @@ class Container extends Component {
             friendship
         } = this.state;
 
-        let mail = localization['user_center'];
+        let mail = localization['用户中心'];
         const account = sessionStorage.getItem('account');
         if (isLogin && account) {
             mail = JSON.parse(account).mail;
@@ -283,7 +282,7 @@ class Container extends Component {
                                     active: pathname === '/trade'
                                 })}
                             >
-                                {localization['exchange']}
+                                {localization['交易中心']}
                             </Link>
                         </li>
                         <li>
@@ -293,16 +292,16 @@ class Container extends Component {
                                     active: pathname === '/c2c'
                                 })}
                             >
-                                {localization['c2c']}
+                                {localization['C2C 交易']}
                             </Link>
                         </li>
                     </ul>
                     {!isLogin && (
                         <div className="user-status">
                             <i className="iconfont icon-yonghu" />
-                            <Link to="/signin">{localization['signin']}</Link>
+                            <Link to="/signin">{localization['登录']}</Link>
                             /
-                            <Link to="/signup">{localization['signup']}</Link>
+                            <Link to="/signup">{localization['注册']}</Link>
                         </div>
                     )}
                     {isLogin && (
@@ -314,11 +313,11 @@ class Container extends Component {
                                 <ul className="select-list">
                                     <li>
                                         <Link to="/user">
-                                            {localization['user_center']}
+                                            {localization['用户中心']}
                                         </Link>
                                     </li>
                                     <li onClick={this.logout}>
-                                        {localization['signout']}
+                                        {localization['退出']}
                                     </li>
                                 </ul>
                             </div>
@@ -361,7 +360,7 @@ class Container extends Component {
                                     width="108"
                                     height="68"
                                 />
-                                <p>{localization['market_risk']}</p>
+                                <p>{localization['市场有风险 投资需谨慎']}</p>
                             </div>
                             <div className="footer-main-right">
                                 <div className="footer-nav clear">
@@ -378,13 +377,13 @@ class Container extends Component {
                                                     target="_blank"
                                                     data-id={item.id}
                                                 >
-                                                    {item.title}
+                                                    {localization[item.title]}
                                                 </Link>
                                             );
                                         })}
                                 </div>
                                 <ul className="footer-contact">
-                                    <li>{localization['contact_us']}</li>
+                                    <li>{localization['联系我们']}</li>
                                     <li>
                                         {platLinks &&
                                             platLinks.map((item, index) => {
@@ -430,7 +429,7 @@ class Container extends Component {
                                             })}
                                     </li>
                                     <li>
-                                        {localization['contact_email']}：<span to="mailto: support@bbex.com">
+                                        {localization['联系邮箱']}：<span to="mailto: support@bbex.com">
                                             {mailLink}
                                         </span>
                                     </li>
@@ -438,7 +437,7 @@ class Container extends Component {
                             </div>
                         </div>
                         <div className="footer-link">
-                            {localization['friendship_links']}：
+                            {localization['友情链接']}：
                             {friendship &&
                                 friendship.map((item, index) => {
                                     return (

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Spinners from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
-import request from './utils/request';
 
 import './App.css';
 import './assets/fonts/iconfont.css';
@@ -102,7 +101,6 @@ class App extends Component {
         return (
             <Router>
                 <Container
-                    request={request}
                     {...{ localization }}
                     onGetLocalization={this.handleGetLocalization}
                 >
