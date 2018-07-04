@@ -47,6 +47,7 @@
 .coins-market .icon-shoucang-active {
   margin-right: 10px;
   font-size: 20px;
+  vertical-align: baseline;
 }
 .coins-market .icon-shoucang-active {
   color: #d4a668;

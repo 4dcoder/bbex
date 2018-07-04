@@ -15,7 +15,6 @@ import partner2 from '../../assets/images/partner/bi.png';
 import partner3 from '../../assets/images/partner/nodecape.png';
 import partner5 from '../../assets/images/partner/lianwen.png';
 
-
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
 
@@ -40,11 +39,11 @@ class Home extends Component {
     this.getTradeExpair();
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.openHomeSocket();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     clearInterval(this.interval);
     const { homeWS } = this.state;
     homeWS && homeWS.close();
@@ -65,39 +64,37 @@ class Home extends Component {
     };
 
     homeWS.onmessage = evt => {
-     
       if (evt.data === 'pong') {
         return;
       }
       let current = new Date().getTime();
-     
+
       if (current - this.timer1 > 1000) {
         this.timer1 = current;
 
         const markPair = JSON.parse(evt.data);
         const socketMarket = Object.keys(markPair)[0];
 
-        markPair[socketMarket] = markPair[socketMarket].map((coin)=>{
+        markPair[socketMarket] = markPair[socketMarket].map(coin => {
           coin.key = `${coin.coinMain}.${coin.coinOther}`;
           coin.latestPrice = (coin.latestPrice || 0).toFixed(8);
           coin.highestPrice = (coin.highestPrice || 0).toFixed(8);
           coin.lowerPrice = (coin.lowerPrice || 0).toFixed(8);
           coin.dayCount = (coin.dayCount || 0).toFixed(8);
           return coin;
-        })
+        });
 
         let { tradeExpair, searchList, searchValue } = this.state;
 
-        if(searchValue){
-          searchList = markPair[socketMarket].filter((expair)=>{
-            return  expair.coinOther.indexOf(searchValue.toUpperCase()) > -1
+        if (searchValue) {
+          searchList = markPair[socketMarket].filter(expair => {
+            return expair.coinOther.indexOf(searchValue.toUpperCase()) > -1;
           });
-          this.setState({searchList});
+          this.setState({ searchList });
         }
         tradeExpair[socketMarket] = markPair[socketMarket];
 
-        this.setState({tradeExpair});
-
+        this.setState({ tradeExpair });
       }
     };
 
@@ -110,7 +107,7 @@ class Home extends Component {
     };
 
     this.setState({ homeWS });
-  }
+  };
 
   //获取banner图
   getBanner = () => {
@@ -185,7 +182,10 @@ class Home extends Component {
   };
 
   jumpToTrade = record => {
-    sessionStorage.setItem('tradePair', `${record.coinOther}_${record.coinMain}`);
+    sessionStorage.setItem(
+      'tradePair',
+      `${record.coinOther}_${record.coinMain}`
+    );
     this.props.history.push('/trade');
   };
 
@@ -210,11 +210,12 @@ class Home extends Component {
           });
         });
       } else {
-        tradeExpair[market]&&tradeExpair[market].forEach(expair => {
-          if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
-            searchList.push(expair);
-          }
-        });
+        tradeExpair[market] &&
+          tradeExpair[market].forEach(expair => {
+            if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
+              searchList.push(expair);
+            }
+          });
       }
     }
 
@@ -246,8 +247,8 @@ class Home extends Component {
       }
     }
 
-    let allTradeMarket  = [];
-    if(tradeExpair){
+    let allTradeMarket = [];
+    if (tradeExpair) {
       allTradeMarket = Object.keys(tradeExpair);
       allTradeMarket.unshift('optional');
     }
@@ -277,7 +278,9 @@ class Home extends Component {
         )
       },
       {
-        title: `${localization['最新价']}${market !== 'optional' ? `(${market})` : ''}`,
+        title: `${localization['最新价']}${
+          market !== 'optional' ? `(${market})` : ''
+        }`,
         dataIndex: 'latestPrice',
         key: 'latestPrice',
         sorter: (a, b) => a.price - b.price,
@@ -306,7 +309,9 @@ class Home extends Component {
         key: 'lowerPrice'
       },
       {
-        title: `${localization['成交额']}${market !== 'optional' ? `(${market})` : ''}`,
+        title: `${localization['成交额']}${
+          market !== 'optional' ? `(${market})` : ''
+        }`,
         dataIndex: 'dayCount',
         key: 'dayCount',
         sorter: (a, b) => a.total - b.total,
@@ -316,16 +321,22 @@ class Home extends Component {
 
     return (
       <div className="content home">
-        <Carousel autoPlay infiniteLoop showArrows={false} showStatus={false} showThumbs={false}>
+        <Carousel
+          autoPlay
+          infiniteLoop
+          showArrows={false}
+          showStatus={false}
+          showThumbs={false}
+        >
           {banners.length > 0 &&
             banners.map(banner => {
               const props = {
                 target: banner.link && '_blank'
               };
               return (
-                <Link key={banner.id} to={banner.link || banner.id} {...props}>
+                <a key={banner.id} href={banner.link || banner.id} {...props}>
                   <img key={banner.id} src={banner.image} alt="" />
-                </Link>
+                </a>
               );
             })}
         </Carousel>
@@ -346,35 +357,36 @@ class Home extends Component {
               activeKey={market}
               onChange={this.handleSwitchMarkets}
             >
-              {allTradeMarket && allTradeMarket.map(curMarket => (
-                <TabPane
-                  tab={
-                    curMarket === 'optional' ? (
-                      <span>
-                        <i
-                          className={`iconfont icon-shoucang${
-                            market === 'optional' ? '-active' : ''
-                          }`}
-                        />
-                        {localization['自选']}
-                      </span>
-                    ) : (
-                      `${curMarket} ${localization['市场']}`
-                    )
-                  }
-                  key={curMarket}
-                >
-                  <Table
-                    columns={columns}
-                    dataSource={searchList ? searchList : pairList}
-                    onChange={this.handleChange}
-                    onRow={record => ({
-                      onClick: this.jumpToTrade.bind(this, record)
-                    })}
-                    pagination={false}
-                  />
-                </TabPane>
-              ))}
+              {allTradeMarket &&
+                allTradeMarket.map(curMarket => (
+                  <TabPane
+                    tab={
+                      curMarket === 'optional' ? (
+                        <span>
+                          <i
+                            className={`iconfont icon-shoucang${
+                              market === 'optional' ? '-active' : ''
+                            }`}
+                          />
+                          {localization['自选']}
+                        </span>
+                      ) : (
+                        `${curMarket} ${localization['市场']}`
+                      )
+                    }
+                    key={curMarket}
+                  >
+                    <Table
+                      columns={columns}
+                      dataSource={searchList ? searchList : pairList}
+                      onChange={this.handleChange}
+                      onRow={record => ({
+                        onClick: this.jumpToTrade.bind(this, record)
+                      })}
+                      pagination={false}
+                    />
+                  </TabPane>
+                ))}
             </Tabs>
           </div>
         </div>
@@ -383,22 +395,38 @@ class Home extends Component {
             <h2>-{localization['合作伙伴']}-</h2>
             <ul className="content-inner">
               <li>
-                <a href="https://po.im/#/home" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://po.im/#/home"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <img src={partner1} alt="" />
                 </a>
               </li>
               <li>
-                <a href="https://www.magicw.net/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://www.magicw.net/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <img src={partner2} alt="" />
                 </a>
               </li>
               <li>
-                <a href="http://www.nodecap.com/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="http://www.nodecap.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <img src={partner3} alt="" />
                 </a>
               </li>
               <li>
-                <a href="https://www.chainnews.com/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://www.chainnews.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <img src={partner5} alt="" />
                 </a>
               </li>
