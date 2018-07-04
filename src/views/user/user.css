@@ -1,98 +1,93 @@
 .content.user {
-    padding: 20px 0 40px;
+  padding: 20px 0 40px;
 }
 .user-bar {
-    width: 200px;
-    height: 530px;
-    margin-right: 20px;
-    padding-bottom: 40px;
-    color: #666;
-    /* background-color: #fff; */
-    color: #fff;
-    background-color: #2A2F3C;
-
+  width: 200px;
+  height: 530px;
+  margin-right: 20px;
+  padding-bottom: 40px;
+  color: #666;
+  color: #fff;
+  background-color: #2a2f3c;
 }
 .user-cont {
-    flex: 1;
-    padding: 40px 30px;
-    /* background-color: #fff; */
-    color: #fff;
-    background-color: #2A2F3C;
+  flex: 1;
+  padding: 40px 30px;
+  color: #fff;
+  background-color: #2a2f3c;
 }
 
 .user-header {
-    padding: 20px 0;
-    border-bottom: 1px solid #595959;
-    /* color: #666; */
-    text-align: center;
-    /* background-color: #efefef; */
-    color: #fff;
-    background-color: #2A2F3C;
+  padding: 20px 0;
+  border-bottom: 1px solid #595959;
+  text-align: center;
+  color: #fff;
+  background-color: #242b38;
 }
 .user-avatar {
-    width: 60px;
-    height: 60px;
-    margin: 10px auto;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 60px;
-    color: #fff;
-    font-size: 20px;
-    background-color: #d4a668;
+  width: 60px;
+  height: 60px;
+  margin: 10px auto;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 60px;
+  color: #fff;
+  font-size: 20px;
+  background-color: #d4a668;
 }
 .user-nav {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 .user-nav .user-link {
-    display: block;
-    color: #fff;
-    line-height: 46px;
-    text-align: center;
-    border-left: 2px solid transparent;
+  display: block;
+  color: #fff;
+  line-height: 46px;
+  text-align: center;
+  border-left: 2px solid transparent;
 }
 .user-nav .user-link.active {
-    color: #d4a668;
-    border-left-color: #d4a668;
+  color: #d4a668;
+  border-left-color: #d4a668;
 }
-.user-nav .user-link>.iconfont {
-    padding-right: 10px;
+.user-nav .user-link > .iconfont {
+  padding-right: 10px;
 }
-.payment-cell-form .ant-form-item-label>label{
-    color: #fff;
+.payment-cell-form .ant-form-item-label > label {
+  color: #fff;
 }
 
 .user-cont .ant-input {
-    border: 1px solid #cfd2a6;
-    border-radius: 4px;
-    color: #fff;
-    background-color: #292f3d;
+  border: 1px solid #cfd2a6;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #292f3d;
 }
 
 .user-cont .ant-select .ant-select-selection {
-    border-color: #cfd2a6;
-    color: rgb(238, 238, 238);
-    font-size: 12px;
-    border-radius: 4px;
-    background-color: #252b36;
+  border-color: #cfd2a6;
+  color: rgb(238, 238, 238);
+  font-size: 12px;
+  border-radius: 4px;
+  background-color: #252b36;
 }
 .user-cont .ant-select .ant-select-arrow {
-    color: #cfd2a6;
+  color: #cfd2a6;
 }
-.ant-select-dropdown-menu{
-    border: 1px solid #585858;
-    background-color: #252b36 !important;
+.ant-select-dropdown-menu {
+  border: 1px solid #585858;
+  background-color: #252b36 !important;
 }
 .ant-select-dropdown-menu-item {
-    color: #fff;
-    padding: 10px 12px;
-    background-color: #252b36;
+  color: #fff;
+  padding: 10px 12px;
+  background-color: #252b36;
 }
-.ant-select-dropdown-menu-item-active{
-    color: #d4a668;
-    background-color: #434447;
+.ant-select-dropdown-menu-item-active {
+  color: #d4a668;
+  background-color: #434447;
 }
-.ant-select-dropdown-menu-item:hover, 
-.ant-select-dropdown-menu-item-selected{
-    color: #d4a668;
-    background-color: #434447;
+.ant-select-dropdown-menu-item:hover,
+.ant-select-dropdown-menu-item-selected {
+  color: #d4a668;
+  background-color: #434447;
 }
