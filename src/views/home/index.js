@@ -254,7 +254,7 @@ class Home extends Component {
 
     const columns = [
       {
-        title: localization['coin'],
+        title: localization['币种'],
         dataIndex: 'coinOther',
         key: 'coinOther',
         sorter: (a, b) => a.coinOther.charCodeAt() - b.coinOther.charCodeAt(),
@@ -277,14 +277,14 @@ class Home extends Component {
         )
       },
       {
-        title: `${localization['latest_price']}${market !== 'optional' ? `(${market})` : ''}`,
+        title: `${localization['最新价']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'latestPrice',
         key: 'latestPrice',
         sorter: (a, b) => a.price - b.price,
         sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order
       },
       {
-        title: localization['change'],
+        title: localization['涨跌幅'],
         dataIndex: 'change',
         key: 'change',
         sorter: (a, b) => a.change - b.change,
@@ -296,17 +296,17 @@ class Home extends Component {
         }
       },
       {
-        title: localization['high'],
+        title: localization['最高价'],
         dataIndex: 'highestPrice',
         key: 'highestPrice'
       },
       {
-        title: localization['low'],
+        title: localization['最低价'],
         dataIndex: 'lowerPrice',
         key: 'lowerPrice'
       },
       {
-        title: `${localization['volume']}${market !== 'optional' ? `(${market})` : ''}`,
+        title: `${localization['成交额']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'dayCount',
         key: 'dayCount',
         sorter: (a, b) => a.total - b.total,
@@ -338,7 +338,7 @@ class Home extends Component {
               tabBarExtraContent={
                 <Search
                   value={searchValue}
-                  placeholder={localization['enter_keywords']}
+                  placeholder={localization['输入关键字']}
                   onChange={this.handleSearch}
                   style={{ width: 200 }}
                 />
@@ -356,10 +356,10 @@ class Home extends Component {
                             market === 'optional' ? '-active' : ''
                           }`}
                         />
-                        {localization['favorites']}
+                        {localization['自选']}
                       </span>
                     ) : (
-                      `${curMarket} ${localization['markets']}`
+                      `${curMarket} ${localization['市场']}`
                     )
                   }
                   key={curMarket}
@@ -380,7 +380,7 @@ class Home extends Component {
         </div>
         <div className="partner">
           <div className="partner-inner">
-            <h2>-{localization['partner']}-</h2>
+            <h2>-{localization['合作伙伴']}-</h2>
             <ul className="content-inner">
               <li>
                 <a href="https://po.im/#/home" target="_blank" rel="noopener noreferrer">
