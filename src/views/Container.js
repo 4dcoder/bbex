@@ -338,6 +338,12 @@ class Container extends Component {
                               <img src={item.linkImage} />
                             </span>
                           );
+                        } else if(item.typeId === 'link_qq'){
+                          return (
+                            <a  href={`tencent://message/?Site=baidu.com&uin=${item.linkUrl}&Menu=yes`} key={index}>
+                              <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />
+                            </a>
+                          );
                         } else if (item.typeId === 'link_mail') {
                         } else {
                           return (
