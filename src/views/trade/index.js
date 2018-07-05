@@ -1049,7 +1049,7 @@ class Trade extends Component {
                   <Scrollbars>
                     <table>
                       <tbody>
-                        {(searchList.length > 0 ? searchList : pairList).map(
+                        {(searchValue ? searchList : pairList).map(
                           coin => {
                             const latestPrice = coin.latestPrice || 0;
                             const firstPrice = coin.firstPrice || 0;
