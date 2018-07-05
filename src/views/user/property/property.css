@@ -1,5 +1,4 @@
 .property-header {
-    margin-bottom: 20px;
     position: relative;
 }
 .property-header h2 {
@@ -14,8 +13,7 @@
     position: absolute;
     z-index: 1;
     top: 8px;
-    right: 20px;
-    width: 240px;
+    right: 0;
     display: flex;
     justify-content: space-between;
 }

@@ -322,7 +322,7 @@ class Property extends Component {
             <div className="user-cont property">
                 <Tabs defaultActiveKey="routine" onChange={this.tabChange}>
                     <TabPane tab="常规账户" key="routine">
-                        <header className="property-header">
+                        <header className="property-header clear">
                             <h2 className="pull-left">
                                 我的资金一览表
                             </h2>
@@ -360,7 +360,7 @@ class Property extends Component {
                         />
                     </TabPane>
                     <TabPane tab="C2C账户" key="c2c">
-                        <header className="property-header">
+                        <header className="property-header clear">
                             <h2 className="pull-left">
                                 我的资金一览表
                             </h2>
