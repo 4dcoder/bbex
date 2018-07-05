@@ -42,31 +42,7 @@ class Verified extends Component {
     }
 
     handleVerification = () => {
-        // const {
-        //     frontIdCard,
-        //     backIdCard,
-        //     handheldIdCard,
-        // } = this.state;
-
-        // this.request('/user/updateUser', {
-        //     body: {
-        //         cardUpId: frontIdCard.response,
-        //         cardDownId: backIdCard.response,
-        //         cardFaceId: handheldIdCard.response,
-        //     }
-        // }).then(json => {
-        //     if (json.code === 10000000) {
-        //         //设置认证状态
-        //         this.account.cardStatus = 2;
-        //         sessionStorage.setItem('account', JSON.stringify(this.account));
-
-        //         const current = this.state.current + 1;
-        //         this.setState({ current });
-        //         message.success('证件提交成功!');
-        //     } else {
-        //         message.success(json.msg);
-        //     }
-        // });
+        
         const current = this.state.current + 1;
         this.setState({ current });
     }

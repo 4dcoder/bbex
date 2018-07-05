@@ -96,24 +96,7 @@ class Transaction extends Component {
     });
   };
 
-  detailPageChange = page => {
-    let { currency, coin } = this.state;
-    this.getTradeDetail(page, currency, coin);
-  };
-  currentPageChange = page => {
-    let { currency, coin } = this.state;
-    this.getCurrentTrade(page, currency, coin);
-  };
-  recordPageChange = page => {
-    let { currency, coin } = this.state;
-    this.getRecordTrade(page, currency, coin);
-  };
-
-  // 撤单点击事件
-  handleCancelTrade = (record) =>{
-    this.cancelTrade(record.id);
-
-  }
+ 
   // 撤单
   cancelTrade = (orderNo) => {
     this.request(`/trade/cancelTrade/${orderNo}`, {
@@ -158,6 +141,25 @@ class Transaction extends Component {
     this.setState({ currency: e.target.value });
   };
 
+  detailPageChange = page => {
+    let { currency, coin } = this.state;
+    this.getTradeDetail(page, currency, coin);
+  };
+  currentPageChange = page => {
+    let { currency, coin } = this.state;
+    this.getCurrentTrade(page, currency, coin);
+  };
+  recordPageChange = page => {
+    let { currency, coin } = this.state;
+    this.getRecordTrade(page, currency, coin);
+  };
+
+  // 撤单点击事件
+  handleCancelTrade = (record) =>{
+    this.cancelTrade(record.id);
+
+  }
+  
   coinSelectChange = value => {
     let { currentTab, currency } = this.state;
     this.setState({ coin: value });

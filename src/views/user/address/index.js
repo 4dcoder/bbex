@@ -24,6 +24,7 @@ class Address extends Component {
     this.getAddress();
   }
 
+  // 获取地址
   getAddress = () => {
     this.request('/withdraw/address/list', {
         method: 'GET'
@@ -40,6 +41,7 @@ class Address extends Component {
     })
   }
 
+  //获取币列表
   getCoinList = () => {
     this.request('/coin/list', {
         method: 'GET'
@@ -56,17 +58,23 @@ class Address extends Component {
     })
   }
 
-  handleChange = (value) => {
-    this.setState({symbol: value});
+  delete = (id) => {
+    this.request('/withdraw/address/delete/'+id,{
+      method: 'GET'
+    }).then(json => {
+        if (json.code === 10000000) {
+            message.success("删除成功",1);
+            let list = this.state.list.filter((item)=>{
+              return item.id !==id;
+            })
+            this.setState({list});
+        } else {
+            message.error(json.msg);
+        }
+    })
+
   }
 
-  addressChange = (e) => {
-    this.setState({address: e.target.value});
-  }
-
-  remarkChange = (e) =>{
-    this.setState({remark: e.target.value});
-  }
   add = (coinId, symbol, address, tag) => {
     this.request('/withdraw/address/add', {
         body: {
@@ -85,22 +93,8 @@ class Address extends Component {
         }
     })
   }
-  delete = (id) => {
-    this.request('/withdraw/address/delete/'+id,{
-      method: 'GET'
-    }).then(json => {
-        if (json.code === 10000000) {
-            message.success("删除成功",1);
-            let list = this.state.list.filter((item)=>{
-              return item.id !==id;
-            })
-            this.setState({list});
-        } else {
-            message.error(json.msg);
-        }
-    })
 
-  }
+ 
   addClick = () =>{
     let {currencys, address, symbol, remark} = this.state;
     let coinId = "";
@@ -126,6 +120,18 @@ class Address extends Component {
 
   deleteClick = (record) => {
     this.delete(record.id);
+  }
+
+  handleChange = (value) => {
+    this.setState({symbol: value});
+  }
+
+  addressChange = (e) => {
+    this.setState({address: e.target.value});
+  }
+
+  remarkChange = (e) =>{
+    this.setState({remark: e.target.value});
   }
 
   render(){
@@ -155,14 +161,14 @@ class Address extends Component {
         <li>
           <h4>币种</h4>
           <Select
-          size="large" 
-          style={{ width: 120 }} 
-          value={symbol} 
-          onChange={this.handleChange}
-          showSearch
-          filterOption={(input, option) => {
-          return  option.props.children.indexOf(input.toUpperCase()) >= 0;
-          }}
+            showSearch
+            size="large" 
+            style={{ width: 120 }} 
+            value={symbol} 
+            onChange={this.handleChange}
+            filterOption={(input, option) => {
+            return  option.props.children.indexOf(input.toUpperCase()) >= 0;
+            }}
           >
             {
               currencys.map((item)=>{

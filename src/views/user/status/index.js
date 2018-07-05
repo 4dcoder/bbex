@@ -8,7 +8,7 @@ const Step = Steps.Step;
 class Status extends Component{
   constructor(props){
     super(props);
-    console.log(this.props.location.state);
+    // console.log(this.props.location.state);
   }
   render(){
     const { name, address, myVolume } = this.props.location.state;
