@@ -5,7 +5,7 @@
   flex: 0 0 200px;
   height: 500px;
   margin-right: 20px;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #2e3442;
 }
 .nav-item .nav-tit {
@@ -14,7 +14,7 @@
   line-height: 20px;
   background-color: #242b38;
   font-weight: 400;
-  color: #fff;
+  color: #e8e8e8;
 }
 .nav-item .nav-tit .iconfont {
   padding-right: 10px;
@@ -22,7 +22,7 @@
 }
 .nav-item .nav-link {
   display: block;
-  color: #fff;
+  color: #e8e8e8;
   line-height: 46px;
   text-indent: 50px;
   border-left: 2px solid transparent;
@@ -68,11 +68,11 @@
   padding-right: 30px;
 }
 .trade-list .trade-index span em {
-  color: #fff;
+  color: #e8e8e8;
   font-size: 14px;
 }
 .trade-list .trade-part {
-  color: #fff;
+  color: #e8e8e8;
   font-size: 20px;
 }
 .trade-list .now-trade-price {
@@ -93,7 +93,7 @@
   border-radius: 50%;
   line-height: 34px;
   text-align: center;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #d4a668;
 }
 .trade-list .name-wrap.online:after {
@@ -151,7 +151,7 @@
   display: inline-block;
   padding: 0 35px;
   font-size: 15px;
-  color: #fff;
+  color: #e8e8e8;
   line-height: 70px;
   cursor: pointer;
 }
@@ -190,7 +190,7 @@
 }
 .payment-box {
   background-color: #353c4a;
-  color: #fff;
+  color: #e8e8e8;
 }
 .payment-box .ant-tabs-bar {
   margin-bottom: 5px;
@@ -232,10 +232,10 @@
 }
 .payment-box-cont th {
   position: relative;
-  color: #fff;
+  color: #e8e8e8;
 }
 .payment-box-cont td {
-  color: #fff;
+  color: #e8e8e8;
 }
 .payment-box-cont th .font-color-red {
   position: absolute;

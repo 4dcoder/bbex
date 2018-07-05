@@ -7,13 +7,13 @@
   margin-right: 20px;
   padding-bottom: 40px;
   color: #666;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #2a2f3c;
 }
 .user-cont {
   flex: 1;
   padding: 40px 30px;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #2a2f3c;
 }
 
@@ -21,7 +21,7 @@
   padding: 20px 0;
   border-bottom: 1px solid #595959;
   text-align: center;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #242b38;
 }
 .user-avatar {
@@ -31,7 +31,7 @@
   border-radius: 50%;
   text-align: center;
   line-height: 60px;
-  color: #fff;
+  color: #e8e8e8;
   font-size: 20px;
   background-color: #d4a668;
 }
@@ -40,7 +40,7 @@
 }
 .user-nav .user-link {
   display: block;
-  color: #fff;
+  color: #e8e8e8;
   line-height: 46px;
   text-align: center;
   border-left: 2px solid transparent;
@@ -53,13 +53,13 @@
   padding-right: 10px;
 }
 .payment-cell-form .ant-form-item-label > label {
-  color: #fff;
+  color: #e8e8e8;
 }
 
 .user-cont .ant-input {
   border: 1px solid #cfd2a6;
   border-radius: 4px;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #292f3d;
 }
 
@@ -78,7 +78,7 @@
   background-color: #252b36 !important;
 }
 .ant-select-dropdown-menu-item {
-  color: #fff;
+  color: #e8e8e8;
   padding: 10px 12px;
   background-color: #252b36;
 }

@@ -28,7 +28,7 @@
 .withdraw_content .btn_block{
   display: flex;
   justify-content: space-between;
-  color: #fff;
+  color: #e8e8e8;
 }
 .withdraw_content .btn_block .btn{
   width: 300px;

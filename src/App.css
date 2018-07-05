@@ -74,7 +74,7 @@ a:visited {
 }
 
 a:hover {
-  color: #fff;
+  color: #e8e8e8;
   outline: none;
   text-decoration: none;
 }
@@ -82,14 +82,14 @@ a:hover {
 
 /* 覆盖antd样式 */
 :root .ant-table {
-  color: #fff;
+  color: #e8e8e8;
 }
 :root .ant-table-column-sorter .anticon-caret-up,
 :root .ant-table-column-sorter .anticon-caret-down {
-  color: #fff;
+  color: #e8e8e8;
 }
 :root .ant-table-thead > tr > th {
-  color: #fff;
+  color: #e8e8e8;
   border-bottom-color: #d4a668;
   background-color: #151a22;
 }
@@ -98,7 +98,7 @@ a:hover {
   background: #232a36;
 }
 :root .ant-table-placeholder {
-  color: #fff;
+  color: #e8e8e8;
   background: #232a36;
   border-bottom: 0;
 }
@@ -111,6 +111,30 @@ a:hover {
 }
 :root .ant-table-column-sorter-down {
   margin-top: 2px;
+}
+:root .ant-tabs-tab {
+  color: #e8e8e8;
+}
+:root .ant-steps-item .ant-steps-item-title {
+  color: #fff !important;
+}
+
+:root .ant-form-item-required {
+  color: #e8e8e8;
+}
+
+:root .steps-content {
+  background-color: #363c49;
+  color: #e8e8e8;
+}
+
+:root .ant-table-tbody > tr.ant-table-expanded-row,
+:root .ant-table-tbody > tr.ant-table-expanded-row > td {
+  background-color: #353c4a;
+}
+
+:root .ant-table-tbody > tr.ant-table-expanded-row:hover > td {
+  background-color: #353c4a;
 }
 /* 覆盖antd样式 */
 
@@ -315,7 +339,7 @@ a:hover {
 .footer-contact {
   float: right;
   margin-right: 2%;
-  color: #fff;
+  color: #e8e8e8;
 }
 
 .footer-contact li {
@@ -355,7 +379,7 @@ a:hover {
   margin: 110px auto 130px;
   padding: 50px 56px;
   text-align: center;
-  background-color: #fff;
+  background-color: #e8e8e8;
 }
 
 .form-box h1 {
@@ -429,7 +453,7 @@ a:hover {
 .form-list input.button {
   width: 100%;
   height: 40px;
-  color: #fff;
+  color: #e8e8e8;
   outline: none;
   border: none;
   transition: 0.1s;
@@ -510,7 +534,7 @@ a:hover {
 
 .button.primary {
   border: none;
-  color: #fff;
+  color: #e8e8e8;
   background-color: #d4a668;
 }
 
@@ -689,7 +713,7 @@ a:hover {
 .expend_content .expent_title li {
   width: 20%;
   text-align: center;
-  color: #fff;
+  color: #e8e8e8;
 }
 
 .expend_content .list_item {
@@ -700,7 +724,7 @@ a:hover {
 .expend_content .list_item li {
   width: 20%;
   text-align: center;
-  color: #fff;
+  color: #e8e8e8;
 }
 .expend_content .ant-list-split .ant-list-item {
   border-bottom: 1px solid #4f6f4f;
@@ -709,6 +733,19 @@ a:hover {
 .expend_content .ant-list-header {
   padding-bottom: 0;
   padding-top: 0;
+}
+
+/* 用户中心 */
+.user-cont .ant-table-expand-icon-th {
+  display: none;
+}
+
+.user-cont .ant-table-row-expand-icon-cell {
+  display: none;
+}
+
+.user-cont .ant-table-expanded-row td:nth-child(1) {
+  display: none;
 }
 
 /* 我的交易 */
@@ -735,44 +772,6 @@ a:hover {
 
 .trade_history .ant-table-expanded-row td:nth-child(1) {
   display: none;
-}
-
-/* 个人中心 */
-.user-cont .ant-tabs-tab {
-  color: #fff;
-}
-
-.user-cont .ant-steps-item .ant-steps-item-title {
-  color: #fff !important;
-}
-
-.user-cont .ant-form-item-required {
-  color: #fff;
-}
-
-.user-cont .steps-content {
-  background-color: #363c49;
-  color: #fff;
-}
-
-.user-cont .ant-table-expand-icon-th {
-  display: none;
-}
-
-.user-cont .ant-table-row-expand-icon-cell {
-  display: none;
-}
-
-.user-cont .ant-table-expanded-row td:nth-child(1) {
-  display: none;
-}
-
-.user-cont .ant-table-tbody > tr.ant-table-expanded-row {
-  background-color: #353c4a;
-}
-
-.user-cont .ant-table-tbody > tr.ant-table-expanded-row:hover > td {
-  background-color: #353c4a;
 }
 
 /* 谷歌验证绑定拦截弹框 */
@@ -823,7 +822,7 @@ a:hover {
   color: #d4a668;
 }
 .verification_modal p {
-  color: #fff;
+  color: #e8e8e8;
   display: flex;
   justify-content: center;
 }
@@ -841,7 +840,7 @@ a:hover {
   margin-right: 20px;
 }
 .verification_modal .ant-modal-close-x {
-  color: #fff;
+  color: #e8e8e8;
 }
 .verification_modal .ant-modal-close-x:hover {
   color: #d4a668;
@@ -866,18 +865,8 @@ a:hover {
   top: 0;
   text-align: left;
 }
-.trade-cont .ant-table-expanded-row {
-  background-color: #353c4a;
-}
-.trade-cont .ant-table-tbody > tr.ant-table-expanded-row:hover > td {
-  background-color: #353c4a;
-}
-.trade-cont tr.ant-table-expanded-row,
-.trade-cont tr.ant-table-expanded-row:hover {
-  background-color: #353c4a;
-}
 .trade-cont .payment-box .ant-tabs-tab {
-  color: #fff;
+  color: #e8e8e8;
 }
 .trade-cont .payment-box .ant-tabs-tab i {
   color: #d4a668;
@@ -886,7 +875,7 @@ a:hover {
   border-bottom: 1px solid #5f5f5f;
 }
 .trade-cont .payment-box .extra-cont {
-  color: #fff;
+  color: #e8e8e8;
 }
 
 .merge-dropdown .ant-select-dropdown-menu-item:hover,

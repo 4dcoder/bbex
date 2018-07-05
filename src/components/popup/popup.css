@@ -13,7 +13,7 @@
     left: 50%;
     min-width: 500px;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #e8e8e8;
     transform: translate3d(-50%, -50%, 0);
 }
 .popup-close {
@@ -64,7 +64,7 @@
     color: #333;
 }
 .popup-footer button.popup-confirm {
-    color: #fff;
+    color: #e8e8e8;
     border-color: #d4a668;
     background-color: #d4a668;
 }

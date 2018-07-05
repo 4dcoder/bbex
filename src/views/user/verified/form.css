@@ -1,5 +1,5 @@
 .ver_form .ant-form-item-label>label{
-  color: #fff;
+  color: #e8e8e8;
 }
 .ver_form .sex_item .ant-form-item-control{
   text-align: left;
@@ -7,7 +7,7 @@
   
 }
 .ver_form .sex_item .ant-form-item-control span{
-  color: #fff;
+  color: #e8e8e8;
 }
 .ver_form .ant-form-item-label{
   padding-right: 10px;
