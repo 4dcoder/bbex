@@ -144,4 +144,15 @@
     font-size: 20px;
     color: #fff;
 }
-
+.verified .ant-steps-item-process .ant-steps-item-icon{
+    color: #d4a668;
+}
+.verified .ant-steps-item-process .ant-steps-item-icon{
+    border-color: #d4a668;
+}
+.verified .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon{
+    color: #d4a668;
+}
+.verified .ant-steps-item-finish .ant-steps-item-icon{
+    border-color: #d4a668;
+}
