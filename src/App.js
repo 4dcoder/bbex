@@ -3,11 +3,12 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Spinners from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
+// import asyncComponent from './components/asyncComponent';
 
 import './App.css';
 import './assets/fonts/iconfont.css';
 
-const loadComponent = loader =>
+const asyncComponent = loader =>
   Loadable({
     loader,
     loading: ({ isLoading, timedOut, pastDelay, error }) => {
@@ -38,33 +39,33 @@ const loadComponent = loader =>
     timeout: 10000
   });
 
-const Home = loadComponent(() => import('./views/home'));
+const Home = asyncComponent(() => import('./views/home'));
 
-const Trade = loadComponent(() => import('./views/trade'));
+const Trade = asyncComponent(() => import('./views/trade'));
 
-const SignIn = loadComponent(() => import('./views/signin'));
+const SignIn = asyncComponent(() => import('./views/signin'));
 
-const SignUp = loadComponent(() => import('./views/signup'));
+const SignUp = asyncComponent(() => import('./views/signup'));
 
-const Reset = loadComponent(() => import('./views/reset'));
+const Reset = asyncComponent(() => import('./views/reset'));
 
-const ResetPassword = loadComponent(() => import('./views/reset/Password'));
+const ResetPassword = asyncComponent(() => import('./views/reset/Password'));
 
-const User = loadComponent(() => import('./views/user'));
+const User = asyncComponent(() => import('./views/user'));
 
-const Authentication = loadComponent(() => import('./views/authentication'));
+const Authentication = asyncComponent(() => import('./views/authentication'));
 
-const C2c = loadComponent(() => import('./views/c2c'));
+const C2c = asyncComponent(() => import('./views/c2c'));
 
-const Notice = loadComponent(() => import('./views/notice'));
+const Notice = asyncComponent(() => import('./views/notice'));
 
-const Detail = loadComponent(() => import('./views/notice/Detail'));
+const Detail = asyncComponent(() => import('./views/notice/Detail'));
 
-const Agreement = loadComponent(() => import('./views/links/Agreement'));
+const Agreement = asyncComponent(() => import('./views/links/Agreement'));
 
-const MyLink = loadComponent(() => import('./views/links/MyLink'));
+const MyLink = asyncComponent(() => import('./views/links/MyLink'));
 
-const NotFound = loadComponent(() => import('./views/404'));
+const NotFound = asyncComponent(() => import('./views/404'));
 
 const NormalRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
