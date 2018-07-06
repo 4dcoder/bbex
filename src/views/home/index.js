@@ -181,7 +181,7 @@ class Home extends Component {
     });
   };
 
-  jumpToTrade = record => {
+  handleGoToTrade = record => {
     sessionStorage.setItem(
       'tradePair',
       `${record.coinOther}_${record.coinMain}`
@@ -381,8 +381,11 @@ class Home extends Component {
                       dataSource={searchList ? searchList : pairList}
                       onChange={this.handleChange}
                       onRow={record => ({
-                        onClick: this.jumpToTrade.bind(this, record)
+                        onClick: this.handleGoToTrade.bind(this, record)
                       })}
+                      locale={{
+                        emptyText: localization['暂无数据']
+                      }}
                       pagination={false}
                     />
                   </TabPane>

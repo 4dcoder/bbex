@@ -30,7 +30,7 @@
     },
     "proxy": {
         "/bbex": {
-            "target": "http://192.168.2.184:8083",
+            "target": "http://www.uescoin.com",
             "changeOrigin": true,
             "ws": true
         }
