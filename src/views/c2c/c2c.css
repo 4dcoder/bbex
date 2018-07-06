@@ -3,7 +3,7 @@
 }
 .side-bar {
   flex: 0 0 200px;
-  height: 500px;
+  min-height: 500px;
   margin-right: 20px;
   color: #e8e8e8;
   background-color: #2e3442;
