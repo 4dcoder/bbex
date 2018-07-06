@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MAP</title>
+    <script src="map/echarts.min.js"></script>
+    <script src="map/data.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+    <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style media="screen">
+        body {
+            margin: 0 0;
+            min-width: 1200px;
+            min-height: 600px;
+            overflow: auto;
+            background-color: #3C4351;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="height:940px;"></div>
+    <script type="text/javascript">
+
+        var data = [
+
+        ];
+
+        //根据data得到每个data中城市的坐标
+        var convertData = function (data) {
+            var res = [];
+            for (var i = 0; i < data.length; i++) {
+                var geoCoord = geoCoordMap[data[i].name];
+                if (geoCoord) {
+                    res.push({
+                        name: data[i].name,
+                        value: geoCoord.concat(data[i].value)
+                    });
+                }
+            }
+            return res;
+        };
+
+
+        //已售区域
+        axios.get('/bbex/areaSell/findSold')
+            .then(function (response) {
+
+                response.data.data.forEach(item => {
+                    data.push({
+                        name: item.areaName,
+                        value: item.sellPriceLong / 20000,
+                    })
+                })
+                console.log(data);
+                // 基于准备好的dom，初始化echarts实例
+                var myChart = echarts.init(document.getElementById('main'));
+
+                //设置一些可选的参数
+                var option = {
+                    //设置背景颜色
+                    backgroundColor: '#404a59',
+                    //设置图片标题、子标题、文本颜色等等
+                    title: {
+                        text: `剩余 {${289 - response.data.data.length}} 个城市没有被点亮`,
+                        subtext: '',
+                        left: 'center',
+                        top: '10%',
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        y: 'bottom',
+                        x: 'right',
+                        data: ['pm2.5'],
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        show: false,
+                    },
+                    geo: {
+                        map: 'china',
+                        label: {
+                            emphasis: {
+                                show: false
+                            }
+                        },
+                        roam: true,
+                        itemStyle: {
+                            normal: {
+                                areaColor: '#323c48',
+                                borderColor: '#111'
+                            },
+                            emphasis: {
+                                areaColor: '#2a333d'
+                            }
+                        },
+                        regions: [{
+                            name: '广东',
+                            selected: false,
+                            itemStyle: {
+                                areaColor: '#2a333d',
+                            }
+                        }]
+                    },
+                    //series就是要绘制的地图的主体。是一个数组，也就是说可以有多个数据进行绘制。这里有两个，一个是两个城市的连线，一个是对两个城市进行高亮显示。其中的type是很重要的参数，主要有饼图、条形图、线、地图等等。具体的可以去参考官网上的配置手册。
+                    series:
+                        [
+                            {
+                                name: 'Top 5',
+                                type: 'effectScatter',
+                                coordinateSystem: 'geo',
+                                data: convertData(data),
+                                symbolSize: function (val) {
+                                    return val[2] / 10;
+                                },
+                                showEffectOn: 'render',
+                                rippleEffect: {
+                                    brushType: 'stroke'
+                                },
+                                hoverAnimation: true,
+                                label: {
+                                    normal: {
+                                        formatter: '{b}',
+                                        position: 'right',
+                                        show: true
+                                    }
+                                },
+                                itemStyle: {
+                                    normal: {
+                                        color: '#f4e925',
+                                        shadowBlur: 10,
+                                        shadowColor: '#333'
+                                    }
+                                },
+                                zlevel: 1,
+                                emphasis: {
+                                    label: {
+                                        show: false
+                                    }
+                                }
+                            },
+                        ]
+                };
+
+
+                myChart.setOption(option);
+
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+
+
+
+
+
+
+      // 使用刚指定的配置项和数据显示图表。
+
+
+
+
+    </script>
+</body>
+
+</html>
