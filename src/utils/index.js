@@ -123,4 +123,25 @@ function getQueryString(name) {
   return null;
 }
 
-export { fillZero, stampToDate, dateToStamp, copy, copyText, getQueryString };
+/**
+ * @author gm
+ * @description 获取几个数字 最大 小数位数
+ * @param name {array} 参数名
+ * @returns 
+ **/
+function getMaxPoint(numbers){
+  if(numbers.length>0){
+    let points = numbers.map((item)=>{
+      if((item+'').indexOf('.')>-1){
+        return (item+'').split('.')[1].length;
+      }else{
+        return 0;
+      }
+    });
+    return Math.max(...points);
+  }else{
+    return 0;
+  }
+}
+
+export { fillZero, stampToDate, dateToStamp, copy, copyText, getQueryString, getMaxPoint };
