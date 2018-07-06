@@ -11,7 +11,7 @@ import './assets/fonts/iconfont.css';
 const asyncComponent = loader =>
   Loadable({
     loader,
-    loading: ({ isLoading, timedOut, pastDelay, error }) => {
+    loading: ({ isLoading, timedOut, pastDelay }) => {
       if (isLoading) {
         if (timedOut) {
           return <div>Loader timed out!</div>;

@@ -76,7 +76,7 @@
     .hotlist-controls .button,
     .symbol-edit-widget .button {
       background: #2A2F3C;
-      border-color: #5a6069;
+      border-color: transparent;
       color: #666666;
     }
 
@@ -150,12 +150,23 @@
         display: none;
       }
     }
-    
+
+    .layout__area--top.header-chart-panel {
+      height: 40px!important;
+      border-bottom: 1px solid #b8b8b8;
+    }
+
+    .header-chart-panel-content .left {
+      display: flex;
+    }
+    .group.space-single {
+      flex: 1 1 50px;
+    }
     .group.space-single>.button:hover,
     .group.space-single>.button.select {
       color: #e8e8e8;
       background: #1b1b1b;
-      border-color: #b8b8b8;
+      border-color: #3f4451;
     }
   </style>
 </head>
