@@ -21,6 +21,9 @@ const ExpandComponent = ({
   handleAppeal
 }) => {
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
+  const handleCopy = (text) => {
+    copy(text).then(() => { message.success('复制成功！')});
+  }
   return (
     <div className="payment-box">
       <Tabs
@@ -63,21 +66,21 @@ const ExpandComponent = ({
                   <th>付款备注</th>
                 </tr>
                 <tr>
-                  <td onClick={copy}>
-                    {bankInfo.realName} <i className="iconfont icon-copy" />
+                  <td>
+                    {bankInfo.realName} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.realName)}/>
                   </td>
-                  <td onClick={copy}>
-                    {bankInfo.cardNo} <i className="iconfont icon-copy" />
+                  <td>
+                    {bankInfo.cardNo} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.cardNo)} />
                   </td>
-                  <td onClick={copy}>
+                  <td>
                     {bankInfo.bankName}/{bankInfo.branchBankName}{' '}
-                    <i className="iconfont icon-copy" />
+                    <i className="iconfont icon-copy" onClick={handleCopy.bind(this, `${bankInfo.bankName}/${bankInfo.branchBankName}`)} />
                   </td>
-                  <td onClick={copy}>
-                    {totalPrice} <i className="iconfont icon-copy" />
+                  <td>
+                    {totalPrice} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
                   </td>
-                  <td onClick={copy}>
-                    {radomNum} <i className="iconfont icon-copy" />
+                  <td>
+                    {radomNum} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
                   </td>
                 </tr>
               </tbody>
@@ -122,17 +125,17 @@ const ExpandComponent = ({
                     <th width="100px">付款备注</th>
                   </tr>
                   <tr>
-                    <td onClick={copy}>
-                      {bankInfo.realName} <i className="iconfont icon-copy" />
+                    <td>
+                      {bankInfo.realName} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.realName)} />
                     </td>
-                    <td onClick={copy}>
-                      {bankInfo.alipayNo} <i className="iconfont icon-copy" />
+                    <td>
+                      {bankInfo.alipayNo} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.alipayNo)} />
                     </td>
-                    <td onClick={copy}>
-                      {totalPrice} <i className="iconfont icon-copy" />
+                    <td>
+                      {totalPrice} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
                     </td>
-                    <td onClick={copy}>
-                      {radomNum} <i className="iconfont icon-copy" />
+                    <td>
+                      {radomNum} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
                     </td>
                   </tr>
                 </tbody>
@@ -178,17 +181,17 @@ const ExpandComponent = ({
                     <th width="100px">付款备注</th>
                   </tr>
                   <tr>
-                    <td onClick={copy}>
-                      {bankInfo.realName} <i className="iconfont icon-copy" />
+                    <td>
+                      {bankInfo.realName} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.realName)} />
                     </td>
-                    <td onClick={copy}>
-                      {bankInfo.wechatNo} <i className="iconfont icon-copy" />
+                    <td>
+                      {bankInfo.wechatNo} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.wechatNo)} />
                     </td>
-                    <td onClick={copy}>
-                      {totalPrice} <i className="iconfont icon-copy" />
+                    <td>
+                      {totalPrice} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
                     </td>
-                    <td onClick={copy}>
-                      {radomNum} <i className="iconfont icon-copy" />
+                    <td>
+                      {radomNum} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
                     </td>
                   </tr>
                 </tbody>

@@ -4,7 +4,7 @@ body {
   width: 100%;
   min-width: 1200px;
   min-height: 100%;
-  color: rgb(153, 153, 153);
+  color: #333;
 }
 
 #root {
@@ -26,6 +26,7 @@ body {
 .content-inner {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
   position: relative;
   width: 90%;
   min-width: 1200px;
@@ -117,10 +118,6 @@ a:hover {
 }
 :root .ant-steps-item .ant-steps-item-title {
   color: #fff !important;
-}
-
-:root .ant-form-item-required {
-  color: #e8e8e8;
 }
 
 :root .steps-content {

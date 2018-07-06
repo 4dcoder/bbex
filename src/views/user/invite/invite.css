@@ -1,0 +1,17 @@
+.user-cont.invite {
+}
+
+.invite-box {
+  margin-bottom: 20px;
+  background-color: #181b2a;
+}
+.invite-box .invite-box-tit {
+  padding: 0;
+  padding-left: 30px;
+  line-height: 48px;
+  color: #e8e8e8;
+  background-color: #1b1e2e;
+}
+.invite-box .invite-box-cont {
+  padding: 40px 30px;
+}

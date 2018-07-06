@@ -635,10 +635,6 @@ class Trade extends Component {
   handleMerge = value => {
     const { listType } = this.state;
     this.setState({ mergeNumber: value });
-    // this.requestMerge({
-    //   type: listType,
-    //   length: value
-    // });
   };
 
   requestMerge = ({ type = '', length }) => {
@@ -680,10 +676,6 @@ class Trade extends Component {
   // 切换买卖盘列表
   handleSwitchList = index => {
     this.setState({ listType: index - 1 });
-    // this.requestMerge({
-    //   type: index - 1,
-    //   length: this.state.mergeNumber
-    // });
   };
 
   //设置交易价格

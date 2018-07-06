@@ -6,7 +6,6 @@ import Container from './views/Container';
 // import asyncComponent from './components/asyncComponent';
 
 import './App.css';
-import './assets/fonts/iconfont.css';
 
 const asyncComponent = loader =>
   Loadable({

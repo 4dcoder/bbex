@@ -8,6 +8,7 @@ import Finance from './finance';
 import Address from './address';
 import Status from './status';
 import Security from './security';
+import Invite from './invite';
 import Verification from '../../components/verification';
 
 
@@ -108,6 +109,13 @@ class UserCenter extends Component {
               >
                 <i className="iconfont icon-navicon-fwdzpz" />地址管理
               </NavLink>
+              <NavLink
+                to={`${match.path}/invite`}
+                className="user-link"
+                activeClassName="active"
+              >
+                <i className="iconfont icon-yaoqingma" />我的邀请
+              </NavLink>
             </div>
           </div>
           <Route exact path={`${match.path}/`} component={Property} />
@@ -118,6 +126,7 @@ class UserCenter extends Component {
           <Route path={`${match.path}/address`} component={Address} />
           <Route path={`${match.path}/security`} component={Security} />
           <Route path={`${match.path}/status`} component={Status} />
+          <Route path={`${match.path}/invite`} component={Invite} />
         </div>
         {popup}
       </div>

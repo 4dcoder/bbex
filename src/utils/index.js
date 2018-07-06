@@ -50,36 +50,29 @@ function dateToStamp(dateStr) {
 
 /**
  * @author William Cui
- * @description 根据选择器复制元素的值或者文本
- * @param e {string || event} 元素的选择器 或者是 event对象
+ * @description 复制传入的text文本
+ * @param text { string }
  * @returns 没有返回值
  **/
-function copy(e) {
-  const ele = typeof e === 'string' ? document.querySelector(e) : e.currentTarget;
+function copy(text) {
+  return new Promise((resolve, reject) => {
+      const textArea = document.createElement('textarea');
+      textArea.style.position = 'fixed';
+      textArea.style.left = '-1000px';
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
 
-  if (ele.value) {
-    ele.select();
-  } else {
-    const text = ele.innerText.trim();
-    const textArea = document.createElement('textarea');
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-1000px';
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    setTimeout(() => {
+      try {
+          document.execCommand('copy');
+          resolve(true);
+      } catch (error) {
+          reject(error);
+          throw new Error('该浏览器不支持点击复制到剪贴板');
+      }
+      
       document.body.removeChild(textArea);
-    }, 200);
-  }
-
-  try {
-    document.execCommand('copy');
-    message.destroy();
-    message.success('复制成功!');
-  } catch (err) {
-    throw new Error('该浏览器不支持点击复制到剪贴板');
-  }
+  });
 }
 
 function copyText(e) {
