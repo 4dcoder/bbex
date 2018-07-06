@@ -133,6 +133,34 @@ a:hover {
 :root .ant-table-tbody > tr.ant-table-expanded-row:hover > td {
   background-color: #353c4a;
 }
+
+:root .ant-pagination-prev .ant-pagination-item-link{
+  color: #e8e8e8;
+  border-color: #5a5959;
+  background: #313643;
+}
+:root .ant-pagination-next .ant-pagination-item-link{
+  color: #e8e8e8;
+  border-color: #5a5959;
+  background: #313643;
+}
+
+:root .ant-pagination-item{
+  color: #e8e8e8;
+  border-color: #5a5959;
+  background: #313643;
+}
+:root .ant-pagination-item-active{
+  color: #e8e8e8;
+  border-color: #d4a668;
+  background: #313643;
+}
+:root .ant-pagination-item a{
+  color: #e8e8e8;
+}
+:root .ant-pagination-item-active a{
+  color: #d4a668;
+}
 /* 覆盖antd样式 */
 
 /* 公共样式 */

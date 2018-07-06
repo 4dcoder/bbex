@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
 import TransactionForm from './TransactionForm';
-import { stampToDate, copy } from '../../utils';
+import { stampToDate, copy, getMaxPoint } from '../../utils';
 import { IMAGES_ADDRESS, WS_PREFIX } from '../../utils/constants';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import AppealModal from './AppealModal';
@@ -1144,6 +1144,18 @@ class TradeContainer extends Component {
       }
     ];
 
+
+    // 买入数量默认值
+    let defaultVolum = 0;
+   
+    if(selectedCoin){
+      // 获取三个值  最大小数位数
+      let point = getMaxPoint([selectedCoin.volume, selectedCoin.lockVolume, selectedCoin.successVolume]);
+
+      defaultVolum = Number(selectedCoin.volume - selectedCoin.lockVolume - selectedCoin.successVolume).toFixed(point);
+      
+    }
+   
     return (
       <div className="trade-cont">
         <div className="trade-list">
@@ -1271,7 +1283,7 @@ class TradeContainer extends Component {
               coin={coin}
               exType={exType}
               price={selectedCoin.price}
-              volume={Number(selectedCoin.volume - selectedCoin.lockVolume - selectedCoin.successVolume)}
+              volume={defaultVolum}
               onSubmit={this.handleTransaction}
             />
           )}
