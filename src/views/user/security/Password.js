@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
 import { JSEncrypt } from '../../../utils/jsencrypt.js';
 import request from '../../../utils/request';
-import { PUBLI_KEY } from '../../../utils/constants'
+import { PUBLI_KEY, PWD_REGEX } from '../../../utils/constants';
+
 
 const FormItem = Form.Item;
 
@@ -102,6 +103,7 @@ class Password extends Component {
                         {getFieldDecorator('password', {
                             rules: [
                                 { required: true, message: '请输入新密码' },
+                                { pattern: PWD_REGEX, message: '输入8-20位密码'},
                                 { validator: this.validateToNextPassword }
                             ]
                         })(<Input type="password" />)}

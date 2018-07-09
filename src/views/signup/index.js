@@ -176,7 +176,7 @@ class SignUp extends Component {
                 placeholder="邮箱验证码"
               />
               <button className="inner-button" onClick={this.getValidCode}>
-                {count > 59 ? '获取验证码' : `${count}秒`}
+                {count > 59 ? '获取邮箱验证码' : `${count}秒`}
               </button>
             </li>
             <li>
