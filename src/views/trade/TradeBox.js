@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { message } from 'antd';
 import TradeForm from './TradeForm';
 
@@ -7,7 +6,6 @@ class TradeBox extends Component {
   state = {
     mainVolume: 0,
     coinVolume: 0,
-    
   };
 
   request = window.request;
@@ -85,24 +83,6 @@ class TradeBox extends Component {
     };
 
     return [
-      <div key="info" className="property-info">
-        <span>
-          {marketName} 可用 {mainVolume.toFixed(8)}
-          {false && (
-            <Link className="recharge-link" to="#">
-              充币
-            </Link>
-          )}
-        </span>
-        <span>
-          {coinName} 可用 {coinVolume.toFixed(8)}
-          {false && (
-            <Link className="recharge-link" to="#">
-              充币
-            </Link>
-          )}
-        </span>
-      </div>,
       <TradeForm key="buy" type="buy" {...tradeProps} />,
       <TradeForm key="sell" type="sell" {...tradeProps} />
     ];
