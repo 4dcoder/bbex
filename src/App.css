@@ -1,6 +1,7 @@
 /* 全局样式 */
 
-html, body {
+html,
+body {
   width: 100%;
   min-width: 1200px;
   min-height: 100%;
@@ -68,7 +69,8 @@ html, body {
   align-items: center;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   color: rgb(153, 153, 153);
   text-decoration: none !important;
 }
@@ -87,17 +89,18 @@ a:hover {
   color: #e8e8e8;
 }
 
-:root .ant-table-column-sorter .anticon-caret-up, :root .ant-table-column-sorter .anticon-caret-down {
+:root .ant-table-column-sorter .anticon-caret-up,
+:root .ant-table-column-sorter .anticon-caret-down {
   color: #e8e8e8;
 }
 
-:root .ant-table-thead>tr>th {
+:root .ant-table-thead > tr > th {
   color: #e8e8e8;
   border-bottom-color: #d4a668;
   background-color: #151a22;
 }
 
-:root .ant-table-tbody>tr>td {
+:root .ant-table-tbody > tr > td {
   border-bottom-color: #5a5959;
   background: #232a36;
 }
@@ -108,7 +111,7 @@ a:hover {
   border-bottom: 0;
 }
 
-:root .ant-table-tbody>tr.ant-table-row:hover>td {
+:root .ant-table-tbody > tr.ant-table-row:hover > td {
   cursor: pointer;
   background-color: #1b2029;
 }
@@ -134,11 +137,12 @@ a:hover {
   color: #e8e8e8;
 }
 
-:root .ant-table-tbody>tr.ant-table-expanded-row, :root .ant-table-tbody>tr.ant-table-expanded-row>td {
+:root .ant-table-tbody > tr.ant-table-expanded-row,
+:root .ant-table-tbody > tr.ant-table-expanded-row > td {
   background-color: #353c4a;
 }
 
-:root .ant-table-tbody>tr.ant-table-expanded-row:hover>td {
+:root .ant-table-tbody > tr.ant-table-expanded-row:hover > td {
   background-color: #353c4a;
 }
 
@@ -175,24 +179,70 @@ a:hover {
   color: #d4a668;
 }
 
-:root .ant-pagination-disabled a.ant-pagination-item-link, 
-:root .ant-pagination-disabled:hover a, 
-:root .ant-pagination-disabled:focus a, 
-:root .ant-pagination-disabled 
-:root .ant-pagination-item-link, 
-:root .ant-pagination-disabled:hover 
-:root .ant-pagination-item-link, 
-:root .ant-pagination-disabled:focus 
-:root .ant-pagination-item-link {
+:root .ant-pagination-disabled a.ant-pagination-item-link,
+:root .ant-pagination-disabled:hover a,
+:root .ant-pagination-disabled:focus a,
+:root .ant-pagination-disabled :root .ant-pagination-item-link,
+:root .ant-pagination-disabled:hover :root .ant-pagination-item-link,
+:root .ant-pagination-disabled:focus :root .ant-pagination-item-link {
   color: #5a5959;
   border-color: #5a5959;
   background: #313643;
 }
 
+:root .ant-input {
+  color: #e8e8e8;
+  background-color: #292f3d;
+}
+
+:root .ant-input-search-icon {
+  color: #e8e8e8;
+}
+
+:root .ant-input-group-addon {
+  color: #e8e8e8;
+  cursor: pointer;
+  background-color: #d4a668;
+}
+
+:root .ant-select .ant-select-selection {
+  color: rgb(238, 238, 238);
+  font-size: 12px;
+  background-color: #252b36;
+}
+:root .ant-select .ant-select-arrow {
+  color: #e8e8e8;
+}
+
+:root .ant-select-open .ant-select-arrow,
+:root .ant-select:hover .ant-select-arrow {
+  color: #d4a668;
+}
+
+:root .ant-select-dropdown-menu {
+  border: 1px solid #585858;
+  background-color: #252b36 !important;
+}
+
+:root .ant-select-dropdown-menu-item {
+  color: #e8e8e8;
+  padding: 10px 12px;
+  background-color: #252b36;
+}
+
+:root .ant-select-dropdown-menu-item-active {
+  color: #d4a668;
+  background-color: #434447;
+}
+
+:root .ant-select-dropdown-menu-item:hover,
+:root .ant-select-dropdown-menu-item-selected {
+  color: #d4a668;
+  background-color: #434447;
+}
 /* 覆盖antd样式 */
 
 /* 公共样式 */
-
 .header {
   z-index: 10;
   position: relative;
@@ -324,7 +374,7 @@ a:hover {
   color: rgb(235, 235, 235);
 }
 
-.select-list li>a {
+.select-list li > a {
   display: block;
   width: 100%;
   height: 100%;
@@ -370,7 +420,7 @@ a:hover {
   align-items: center;
 }
 
-.footer-nav>a {
+.footer-nav > a {
   min-width: 150px;
   line-height: 30px;
 }
@@ -408,7 +458,7 @@ a:hover {
   color: rgb(153, 153, 153);
 }
 
-.footer-contact li>a {
+.footer-contact li > a {
   padding-right: 20px;
 }
 
@@ -431,7 +481,43 @@ a:hover {
   color: #d42f2f;
 }
 
+.font-color-primary {
+  color: #d4a668;
+}
+
+.font-color-green {
+  color: #13ae50;
+}
+
+.font-color-red {
+  color: #f51726;
+}
+
+.ant-btn-buy {
+  color: #fff !important;
+  border-color: #13ae50 !important;
+  background-color: #13ae50 !important;
+}
+
+.ant-btn-buy:hover {
+  border-color: #87d068 !important;
+  background-color: #87d068 !important;
+}
+
+.ant-btn-sell {
+  color: #fff !important;
+  border-color: #f51726 !important;
+  background-color: #f51726 !important;
+}
+
+.ant-btn-sell:hover {
+  border-color: #f50 !important;
+  background-color: #f50 !important;
+}
+
 /* 公共样式 */
+
+/* 登录注册 */
 
 .form-box {
   width: 460px;
@@ -531,7 +617,8 @@ a:hover {
   margin-right: 8px;
 }
 
-.form-list a:link, .form-list a:visited {
+.form-list a:link,
+.form-list a:visited {
   color: #d4a668;
 }
 
@@ -613,7 +700,8 @@ a:hover {
   z-index: 100000 !important;
 }
 
-.graphic-popup .form-list, .graphic-popup .error-tip {
+.graphic-popup .form-list,
+.graphic-popup .error-tip {
   width: 400px;
   margin: 0 auto;
 }
@@ -628,39 +716,7 @@ a:hover {
   transform: translateY(-50%);
 }
 
-.font-color-primary {
-  color: #d4a668;
-}
-
-.font-color-green {
-  color: #13ae50;
-}
-
-.font-color-red {
-  color: #f51726;
-}
-
-.ant-btn-buy {
-  color: #fff !important;
-  border-color: #13ae50 !important;
-  background-color: #13ae50 !important;
-}
-
-.ant-btn-buy:hover {
-  border-color: #87d068 !important;
-  background-color: #87d068 !important;
-}
-
-.ant-btn-sell {
-  color: #fff !important;
-  border-color: #f51726 !important;
-  background-color: #f51726 !important;
-}
-
-.ant-btn-sell:hover {
-  border-color: #f50 !important;
-  background-color: #f50 !important;
-}
+/* 登录注册 */
 
 /* 广告条 */
 
@@ -669,7 +725,6 @@ a:hover {
   height: 40px;
   width: 100%;
   margin-top: 10px;
-  border-radius: 4px;
   overflow: hidden;
   box-shadow: rgba(35, 31, 32, 0.4) 0px 3px 7px 0px;
   background-color: rgb(45, 52, 67);
@@ -688,7 +743,8 @@ a:hover {
   margin: 0 auto;
 }
 
-.scroll-notice .notice-more, .scroll-notice a {
+.scroll-notice .notice-more,
+.scroll-notice a {
   display: block;
   line-height: 40px;
   color: #c9d2a6;
@@ -702,13 +758,16 @@ a:hover {
   transform: translateY(-50%);
 }
 
-.scroll-notice .slick-list, .scroll-notice .slick-track, .scroll-notice .slick-slider {
+.scroll-notice .slick-list,
+.scroll-notice .slick-track,
+.scroll-notice .slick-slider {
   height: 40px !important;
 }
 
 /* 广告条 */
 
-.ant-btn-introduction, .ant-btn-introduction:hover {
+.ant-btn-introduction,
+.ant-btn-introduction:hover {
   height: 30px;
   padding: 0 12px;
   border: none;
@@ -851,7 +910,8 @@ a:hover {
   color: #ea0053;
 }
 
-.verification-popup .input-verification:link, .verification-popup .input-verification:visited {
+.verification-popup .input-verification:link,
+.verification-popup .input-verification:visited {
   display: block;
   height: 78px;
   margin: 10px 0;
@@ -904,7 +964,6 @@ a:hover {
 .verification_modal .footer_btn button {
   width: 100px;
   height: 40px;
-  border-radius: 4px;
 }
 
 .verification_modal .footer_btn button:nth-child(1) {
@@ -955,7 +1014,8 @@ a:hover {
   color: #e8e8e8;
 }
 
-.merge-dropdown .ant-select-dropdown-menu-item:hover, .merge-dropdown .ant-select-dropdown-menu-item-selected {
+.merge-dropdown .ant-select-dropdown-menu-item:hover,
+.merge-dropdown .ant-select-dropdown-menu-item-selected {
   color: #d4a668;
   background-color: #434447;
 }

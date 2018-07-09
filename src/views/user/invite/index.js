@@ -79,21 +79,29 @@ class Invite extends Component {
           <h2 className="invite-box-tit">我的邀请方式</h2>
           <div className="invite-box-cont">
             <Row gutter={16}>
-              <Col className="gutter-row" span={4}>
-                <Input defaultValue={inviteCode} disabled />
+              <Col className="gutter-row" span={7}>
+                <Input
+                  addonAfter={
+                    <span onClick={this.handleCopy.bind(this, inviteCode)}>
+                      复制邀请码
+                    </span>
+                  }
+                  size="large"
+                  defaultValue={inviteCode}
+                  disabled
+                />
               </Col>
-              <Col className="gutter-row" span={4}>
-                <Button type="primary" onClick={this.handleCopy.bind(this, inviteCode)}>
-                  复制邀请码
-                </Button>
-              </Col>
-              <Col className="gutter-row" span={12}>
-                <Input defaultValue={inviteLink} disabled />
-              </Col>
-              <Col className="gutter-row" span={4}>
-                <Button type="primary" onClick={this.handleCopy.bind(this, inviteLink)}>
-                  复制邀请链接
-                </Button>
+              <Col className="gutter-row" span={15} offset={2}>
+                <Input
+                  addonAfter={
+                    <span onClick={this.handleCopy.bind(this, inviteLink)}>
+                      复制邀请链接
+                    </span>
+                  }
+                  size="large"
+                  defaultValue={inviteLink}
+                  disabled
+                />
               </Col>
             </Row>
           </div>

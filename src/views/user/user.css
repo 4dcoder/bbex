@@ -54,39 +54,3 @@
 .payment-cell-form .ant-form-item-label > label {
   color: #e8e8e8;
 }
-
-.user-cont .ant-input {
-  border: 1px solid #cfd2a6;
-  border-radius: 4px;
-  color: #e8e8e8;
-  background-color: #292f3d;
-}
-
-.user-cont .ant-select .ant-select-selection {
-  border-color: #cfd2a6;
-  color: rgb(238, 238, 238);
-  font-size: 12px;
-  border-radius: 4px;
-  background-color: #252b36;
-}
-.user-cont .ant-select .ant-select-arrow {
-  color: #cfd2a6;
-}
-.ant-select-dropdown-menu {
-  border: 1px solid #585858;
-  background-color: #252b36 !important;
-}
-.ant-select-dropdown-menu-item {
-  color: #e8e8e8;
-  padding: 10px 12px;
-  background-color: #252b36;
-}
-.ant-select-dropdown-menu-item-active {
-  color: #d4a668;
-  background-color: #434447;
-}
-.ant-select-dropdown-menu-item:hover,
-.ant-select-dropdown-menu-item-selected {
-  color: #d4a668;
-  background-color: #434447;
-}

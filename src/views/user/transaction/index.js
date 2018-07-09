@@ -498,12 +498,12 @@ class Transaction extends Component {
                 value={currency}
                 onChange={this.currencyChange}
                 placeholder="币种"
-                style={{ width: 80, borderRadius: 4 }}
+                style={{ width: 100 }}
               />
               <span className="line">/</span>
               <Select
                 value={coin}
-                style={{ width: 100, borderRadius: 4 }}
+                style={{ width: 100 }}
                 onChange={this.coinSelectChange}
               >
                 {coinList.map(item => {
@@ -517,7 +517,7 @@ class Transaction extends Component {
               <Button
                 type="primary"
                 onClick={this.searchClick}
-                style={{ marginLeft: 10, borderRadius: 4 }}
+                style={{ width: 80, marginLeft: 20 }}
               >
                 搜索
               </Button>

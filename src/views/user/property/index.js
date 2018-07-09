@@ -9,327 +9,364 @@ const TabPane = Tabs.TabPane;
 const Search = Input.Search;
 
 class Property extends Component {
-    state = {
-        modalTit: '',
-        showModal: false,
-        actionType: '',
-        availableC2c: 0,
-        handleCoin: null,
-        handleVolume: 0,
-        c2cData: null,
-        normalData: null,
-        normalAllData: null,
-        expandedRowKey: "",
-        expendedFlag: '',
-        currencyName:''
-    }
+  state = {
+    modalTit: '',
+    showModal: false,
+    actionType: '',
+    availableC2c: 0,
+    handleCoin: null,
+    handleVolume: 0,
+    c2cData: null,
+    normalData: null,
+    normalAllData: null,
+    expandedRowKey: '',
+    expendedFlag: '',
+    currencyName: ''
+  };
 
-    request = window.request;
+  request = window.request;
 
-    componentWillMount() {
-        this.getNormalData();
-    }
+  componentWillMount() {
+    this.getNormalData();
+  }
 
-    inputVolume = (e) => {
-        this.setState({ handleVolume: e.target.value });
-    }
+  inputVolume = e => {
+    this.setState({ handleVolume: e.target.value });
+  };
 
-    tabChange = (key) => {
-        if(key==="routine"){
-            this.getNormalData();
-            this.setState({currencyName: ''})
-        } else if(key==="c2c"){
-            this.getC2cData();
-        }else{
-
-        }
+  tabChange = key => {
+    if (key === 'routine') {
+      this.getNormalData();
+      this.setState({ currencyName: '' });
+    } else if (key === 'c2c') {
+      this.getC2cData();
+    } else {
     }
-    getC2cData = () => {
-        this.request('/offline/volume/list', {
-            method: 'GET'
-        }).then(json => {
-            if (json.code === 10000000) {
-                const c2cData = json.data.map(item => {
-                    item.key = item.coinId;
-                    item.volume = item.volume || '0.00000000';
-                    item.advertVolume = item.advertVolume || '0.00000000';
-                    item.lockVolume = item.lockVolume || '0.00000000';
-                    item.totalPrice = (Number(item.volume) + Number(item.advertVolume) + Number(item.lockVolume)).toFixed(8);
-                    return item;
-                })
-                this.setState({ c2cData });
-            } else {
-                message.error(json.msg);
-            }
-        })
-    }
-    getNormalData =  () => {
-        this.request('/coin/volume/list', {
-            method: 'GET'
-        }).then(json => {
-            if (json.code === 10000000) {
-                const normalData = json.data.map((item)=>{
-                    let totalPrice = 0;
-                    let {id, name, volume, lockVolume, tokenStatus, withdrawFee, withdrawFeeType, withdrawMaxVolume, withdrawMinVolume } = item;
-                    volume = volume || '0.00000000';
-                    lockVolume = lockVolume || '0.00000000';
-                    totalPrice = (Number(volume) + Number(lockVolume)).toFixed(8)
-                    withdrawFee = withdrawFee || '0.00000000';
-                    return {
-                        key: id,
-                        id,
-                        name,
-                        volume,
-                        lockVolume,
-                        totalPrice,
-                        tokenStatus,
-                        withdrawFee,
-                        withdrawFeeType,
-                        withdrawMaxVolume,
-                        withdrawMinVolume
-                    }
-                });
-                this.setState({normalData, normalAllData: normalData});
-            } else {
-                message.error(json.msg);
-            }
-        })
-    }
-
-    handleZero = (e) => {
-        console.log(e.target.checked);
-    }
-
-    handleRecharge = (record) => {
-        this.setState({
-            expandedRowKey: record.key,
-            expendedFlag: 'recharge'
+  };
+  getC2cData = () => {
+    this.request('/offline/volume/list', {
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        const c2cData = json.data.map(item => {
+          item.key = item.coinId;
+          item.volume = item.volume || '0.00000000';
+          item.advertVolume = item.advertVolume || '0.00000000';
+          item.lockVolume = item.lockVolume || '0.00000000';
+          item.totalPrice = (
+            Number(item.volume) +
+            Number(item.advertVolume) +
+            Number(item.lockVolume)
+          ).toFixed(8);
+          return item;
         });
-    }
-    handleWithdraw = (record) => {
-        this.setState({
-            expandedRowKey: record.key,
-            expendedFlag: 'withdraw'
+        this.setState({ c2cData });
+      } else {
+        message.error(json.msg);
+      }
+    });
+  };
+  getNormalData = () => {
+    this.request('/coin/volume/list', {
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        const normalData = json.data.map(item => {
+          let totalPrice = 0;
+          let {
+            id,
+            name,
+            volume,
+            lockVolume,
+            tokenStatus,
+            withdrawFee,
+            withdrawFeeType,
+            withdrawMaxVolume,
+            withdrawMinVolume
+          } = item;
+          volume = volume || '0.00000000';
+          lockVolume = lockVolume || '0.00000000';
+          totalPrice = (Number(volume) + Number(lockVolume)).toFixed(8);
+          withdrawFee = withdrawFee || '0.00000000';
+          return {
+            key: id,
+            id,
+            name,
+            volume,
+            lockVolume,
+            totalPrice,
+            tokenStatus,
+            withdrawFee,
+            withdrawFeeType,
+            withdrawMaxVolume,
+            withdrawMinVolume
+          };
         });
-    }
+        this.setState({ normalData, normalAllData: normalData });
+      } else {
+        message.error(json.msg);
+      }
+    });
+  };
 
-    handleSearch = (e) => {
-        let value = e.target.value;
-        if(value.length<16){
-            let {normalAllData} = this.state;
-            let target = value.toUpperCase();
-            let normalData = normalAllData.filter((item)=>{
-                return item.name.indexOf(target)>-1;
-            })
-            this.setState({currencyName: value, normalData});
+  handleZero = e => {
+    console.log(e.target.checked);
+  };
+
+  handleRecharge = record => {
+    this.setState({
+      expandedRowKey: record.key,
+      expendedFlag: 'recharge'
+    });
+  };
+  handleWithdraw = record => {
+    this.setState({
+      expandedRowKey: record.key,
+      expendedFlag: 'withdraw'
+    });
+  };
+
+  handleSearch = e => {
+    let value = e.target.value;
+    if (value.length < 16) {
+      let { normalAllData } = this.state;
+      let target = value.toUpperCase();
+      let normalData = normalAllData.filter(item => {
+        return item.name.indexOf(target) > -1;
+      });
+      this.setState({ currencyName: value, normalData });
+    }
+  };
+
+  triggerAction = ({ type, coin }) => {
+    const typeToTit = {
+      turnIn: '从常规账户转入到C2C账户',
+      turnOut: '从C2C账户转出到常规账户'
+    };
+    let url;
+    if (type.indexOf('turn') > -1) {
+      url = `/${type === 'turnIn' ? 'coin' : 'offline'}/volume/${coin.coinId}`;
+    }
+    this.request(url, {
+      method: 'GET'
+    }).then(json => {
+      if (json.code === 10000000) {
+        if (!json.data) {
+          message.info('您没有该币种资产！');
+          return;
         }
-    }
-
-    triggerAction = ({ type, coin }) => {
-        const typeToTit = {
-            'turnIn': '从常规账户转入到C2C账户',
-            'turnOut': '从C2C账户转出到常规账户',
-        }
-        let url;
-        if(type.indexOf('turn') > -1) {
-            url = `/${type === 'turnIn' ? 'coin' : 'offline'}/volume/${coin.coinId}`;
-        }
-        this.request(url, {
-            method: 'GET'
-        }).then(json => {
-            if (json.code === 10000000) {
-                if(!json.data) {
-                    message.info('您没有该币种资产！');
-                    return;
-                }
-                this.setState({
-                    modalTit: typeToTit[type],
-                    showModal: true,
-                    actionType: type,
-                    handleCoin: coin,
-                    availableC2c: json.data.volume,
-                });
-            } else {
-                message.error(json.msg)
-            }
-        }); 
-        
-    }
-
-    turnAction = (type) => {
-        const { handleCoin, handleVolume } = this.state;
-        this.request(`/offline/volume/${type.substr(4).toLowerCase()}`, {
-            body: {
-                coinId: handleCoin.coinId,
-                symbol: handleCoin.symbol,
-                volume: handleVolume,
-            }
-        }).then(json => {
-            if (json.code === 10000000) {
-                this.getC2cData();
-                message.success('操作成功！');
-                this.hideModal();
-            } else {
-                message.error(json.msg);
-            }
-        })
-    }
-
-    handelOutto = () => {
-
-    }
-
-    hideModal = () => {
         this.setState({
-            modalTit: '',
-            showModal: false,
-            handleVolume: 0,
-            availableC2c: 0,
+          modalTit: typeToTit[type],
+          showModal: true,
+          actionType: type,
+          handleCoin: coin,
+          availableC2c: json.data.volume
         });
-    }
+      } else {
+        message.error(json.msg);
+      }
+    });
+  };
 
-    render() {
-        const {
-            modalTit,
-            showModal,
-            actionType,
-            availableC2c,
-            handleCoin,
-            handleVolume,
-            c2cData,
-            normalData,
-            expandedRowKey,
-            expendedFlag,
-            currencyName
-        } = this.state;
+  turnAction = type => {
+    const { handleCoin, handleVolume } = this.state;
+    this.request(`/offline/volume/${type.substr(4).toLowerCase()}`, {
+      body: {
+        coinId: handleCoin.coinId,
+        symbol: handleCoin.symbol,
+        volume: handleVolume
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        this.getC2cData();
+        message.success('操作成功！');
+        this.hideModal();
+      } else {
+        message.error(json.msg);
+      }
+    });
+  };
 
-        const routineColumns = [{
-            title: '资金名称',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text, record) => {
-                const type = text.toLowerCase();
-                return <div>
-                    <span className={`currency-logo ${type}`}></span>{text}
-                </div>
-            },
-        }, {
-            title: '可用资金',
-            dataIndex: 'volume',
-            key: 'volume',
-            render: (text)=>{
-                return <div>{Number(text).toFixed(8)}</div>
-            }
-        }, {
-            title: '挂单金额',
-            dataIndex: 'lockVolume',
-            key: 'lockVolume',
-            render: (text)=>{
-                return <div>{Number(text).toFixed(8)}</div>
-            }
-        }, {
-            title: '总计',
-            dataIndex: 'totalPrice',
-            key: 'totalPrice',
-            render: (text)=>{
-                return <div>{text}</div>
-            }
-        }, {
-            title: '操作',
-            dataIndex: 'action',
-            key: 'action',
-            render: (text, record) => (
-                <div className="property-action">
-                    { (record.tokenStatus==1 || record.tokenStatus==2) && <Button
-                        type="primary"
-                        onClick={()=>{this.handleRecharge(record)}}
-                    >
-                        充币
-                    </Button>}
-                    { (record.tokenStatus==1 || record.tokenStatus==3) && <Button
-                        type="primary"
-                        onClick={()=>{this.handleWithdraw(record)}}
-                    >
-                        提币
-                    </Button>}
-                </div>
-            )
-        }]
+  handelOutto = () => {};
 
-        const c2cColumns = [{
-            title: '资金名称',
-            dataIndex: 'symbol',
-            key: 'symbol',
-            render: (text, record) => {
-                const type = text.toLowerCase();
-                return <div>
-                    <span className={`currency-logo ${type}`}></span>{text}
-                </div>
-            },
-        }, {
-            title: '可用资金',
-            dataIndex: 'volume',
-            key: 'volume',
-            render: (text, record) => {
-                return <div className="available-col">
-                    <i className="iconfont icon-qianbao"></i> {Number(text).toFixed(8)}
-                </div>
-            }
-        }, {
-            title: '广告冻结',
-            dataIndex: 'advertVolume',
-            key: 'advertVolume',
-            render: (text)=>{
-                return <div>{Number(text).toFixed(8)}</div>
-            }
-        }, {
-            title: '交易冻结',
-            dataIndex: 'lockVolume',
-            key: 'lockVolume',
-            render: (text)=>{
-                return <div>{Number(text).toFixed(8)}</div>
-            }
-        }, {
-            title: '总计',
-            dataIndex: 'totalPrice',
-            key: 'totalPrice',
-            render: (text)=>{
-                return <div>{text}</div>
-            }
-        }, {
-            title: '操作',
-            dataIndex: 'action',
-            key: 'action',
-            render: (text, record) => (
-                <div className="property-action">
-                    <Button
-                        type="primary"
-                        onClick={this.triggerAction.bind(this, { type: 'turnIn', coin: record})}
-                    >
-                        转入
-                    </Button>
-                    <Button
-                        type="normal"
-                        onClick={this.triggerAction.bind(this, { type: 'turnOut', coin: record})}
-                    >
-                        转出
-                    </Button>
-                </div>
-            )
-        }]
+  hideModal = () => {
+    this.setState({
+      modalTit: '',
+      showModal: false,
+      handleVolume: 0,
+      availableC2c: 0
+    });
+  };
 
-        return (
-            <div className="user-cont property">
-                <Tabs defaultActiveKey="routine" onChange={this.tabChange}>
-                    <TabPane tab="常规账户" key="routine">
-                        <header className="property-header clear">
-                            <h2 className="pull-left">
-                                我的资金一览表
-                            </h2>
-                            <div className="header_search">
-                                <Search value={currencyName} onChange={this.handleSearch} style={{width:180}}/>
-                            </div>
-                            {/* <ul className="pull-right">
+  render() {
+    const {
+      modalTit,
+      showModal,
+      actionType,
+      availableC2c,
+      handleCoin,
+      handleVolume,
+      c2cData,
+      normalData,
+      expandedRowKey,
+      expendedFlag,
+      currencyName
+    } = this.state;
+
+    const routineColumns = [
+      {
+        title: '资金名称',
+        dataIndex: 'name',
+        key: 'name',
+        render: (text, record) => {
+          const type = text.toLowerCase();
+          return (
+            <div>
+              <span className={`currency-logo ${type}`} />
+              {text}
+            </div>
+          );
+        }
+      },
+      {
+        title: '可用资金',
+        dataIndex: 'volume',
+        key: 'volume',
+        render: text => {
+          return <div>{Number(text).toFixed(8)}</div>;
+        }
+      },
+      {
+        title: '挂单金额',
+        dataIndex: 'lockVolume',
+        key: 'lockVolume',
+        render: text => {
+          return <div>{Number(text).toFixed(8)}</div>;
+        }
+      },
+      {
+        title: '总计',
+        dataIndex: 'totalPrice',
+        key: 'totalPrice',
+        render: text => {
+          return <div>{text}</div>;
+        }
+      },
+      {
+        title: '操作',
+        dataIndex: 'action',
+        key: 'action',
+        render: (text, record) => (
+          <div className="property-action">
+            {(record.tokenStatus == 1 || record.tokenStatus == 2) && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.handleRecharge(record);
+                }}
+              >
+                充币
+              </Button>
+            )}
+            {(record.tokenStatus == 1 || record.tokenStatus == 3) && (
+              <Button
+                type="primary"
+                onClick={() => {
+                  this.handleWithdraw(record);
+                }}
+              >
+                提币
+              </Button>
+            )}
+          </div>
+        )
+      }
+    ];
+
+    const c2cColumns = [
+      {
+        title: '资金名称',
+        dataIndex: 'symbol',
+        key: 'symbol',
+        render: (text, record) => {
+          const type = text.toLowerCase();
+          return (
+            <div>
+              <span className={`currency-logo ${type}`} />
+              {text}
+            </div>
+          );
+        }
+      },
+      {
+        title: '可用资金',
+        dataIndex: 'volume',
+        key: 'volume',
+        render: (text, record) => {
+          return (
+            <div className="available-col">
+              <i className="iconfont icon-qianbao" /> {Number(text).toFixed(8)}
+            </div>
+          );
+        }
+      },
+      {
+        title: '广告冻结',
+        dataIndex: 'advertVolume',
+        key: 'advertVolume',
+        render: text => {
+          return <div>{Number(text).toFixed(8)}</div>;
+        }
+      },
+      {
+        title: '交易冻结',
+        dataIndex: 'lockVolume',
+        key: 'lockVolume',
+        render: text => {
+          return <div>{Number(text).toFixed(8)}</div>;
+        }
+      },
+      {
+        title: '总计',
+        dataIndex: 'totalPrice',
+        key: 'totalPrice',
+        render: text => {
+          return <div>{text}</div>;
+        }
+      },
+      {
+        title: '操作',
+        dataIndex: 'action',
+        key: 'action',
+        render: (text, record) => (
+          <div className="property-action">
+            <Button
+              type="primary"
+              onClick={this.triggerAction.bind(this, { type: 'turnIn', coin: record })}
+            >
+              转入
+            </Button>
+            <Button
+              type="normal"
+              onClick={this.triggerAction.bind(this, { type: 'turnOut', coin: record })}
+            >
+              转出
+            </Button>
+          </div>
+        )
+      }
+    ];
+
+    return (
+      <div className="user-cont property">
+        <Tabs defaultActiveKey="routine" onChange={this.tabChange}>
+          <TabPane tab="常规账户" key="routine">
+            <header className="property-header clear">
+              <h2 className="pull-left">我的资金一览表</h2>
+              <div className="header_search">
+                <Search value={currencyName} onChange={this.handleSearch} style={{ width: 100 }} />
+              </div>
+              {/* <ul className="pull-right">
                                 <li className="assets-estimate">資產估算：0.000000 BTC</li>
                                 <li>
                                     <span>
@@ -341,89 +378,78 @@ class Property extends Component {
                                     <span>今日已用：0.000000BTC</span>
                                 </li>
                             </ul> */}
-                        </header>
-                        <Table
-                            dataSource={normalData}
-                            columns={routineColumns}
-                            pagination={false}
-                            expandedRowRender={(record)=>{ 
-                                
-                                if(expendedFlag==='recharge'){
-                                    return <Recharge {...record}/>
-                                }else if(expendedFlag==='withdraw'){
-                                    return <Withdraw {...record}/>
-                                }else {
-                                    
-                                }
-                            }}
-                            expandedRowKeys={[expandedRowKey]}
-                        />
-                    </TabPane>
-                    <TabPane tab="C2C账户" key="c2c">
-                        <header className="property-header clear">
-                            <h2 className="pull-left">
-                                我的资金一览表
-                            </h2>
-                            <ul className="pull-right">
-                                <li>&nbsp;</li>
-                                {/* <li className="assets-estimate">资产估算：0.000000 BTC</li> */}
-                            </ul>
-                        </header>
-                        <Table
-                            dataSource={c2cData}
-                            columns={c2cColumns}
-                            pagination={false}
-                        />
-                    </TabPane>
-                </Tabs>
-                <Modal
-                    title={modalTit}
-                    wrapClassName="property-modal"
-                    visible={showModal}
-                    onCancel={this.hideModal}
-                    footer={null}
-                >
-                    {((actionType) => {
-                        if (actionType.indexOf('turn') > -1) {
-                            //转入转出C2C
-                            return <ul className="c2c-form">
-                                <li>
-                                    <Input
-                                        addonBefore="币种名称"
-                                        size="large"
-                                        value={handleCoin.symbol}
-                                        disabled
-                                    />
-                                </li>
-                                <li className="line_li">
-                                    <Input
-                                        addonBefore='输入划转数量'
-                                        size="large"
-                                        value={handleVolume}
-                                        onChange={this.inputVolume}
-                                    />
-                                </li>
-                                <li className='aviable_symbol'>
-                                    可用：{availableC2c}  {handleCoin.symbol}
-                                </li>
-                                <li className='c2c_submit'>
-                                    <Button
-                                        type='primary'
-                                        size='large'
-                                        onClick={this.turnAction.bind(this, actionType)}
-                                    >
-                                       立即转{actionType === 'turnIn' ? '入' : '出'}
-                                    </Button>
-                                </li>
-                            </ul>
-                        } else if (actionType === 'recharge') {
-                            return '充值';
-                        }
-                    })(actionType)}
-                </Modal>
-            </div>
-        )
-    }
+            </header>
+            <Table
+              dataSource={normalData}
+              columns={routineColumns}
+              pagination={false}
+              expandedRowRender={record => {
+                if (expendedFlag === 'recharge') {
+                  return <Recharge {...record} />;
+                } else if (expendedFlag === 'withdraw') {
+                  return <Withdraw {...record} />;
+                } else {
+                }
+              }}
+              expandedRowKeys={[expandedRowKey]}
+            />
+          </TabPane>
+          <TabPane tab="C2C账户" key="c2c">
+            <header className="property-header clear">
+              <h2 className="pull-left">我的资金一览表</h2>
+              <ul className="pull-right">
+                <li>&nbsp;</li>
+                {/* <li className="assets-estimate">资产估算：0.000000 BTC</li> */}
+              </ul>
+            </header>
+            <Table dataSource={c2cData} columns={c2cColumns} pagination={false} />
+          </TabPane>
+        </Tabs>
+        <Modal
+          title={modalTit}
+          wrapClassName="property-modal"
+          visible={showModal}
+          onCancel={this.hideModal}
+          footer={null}
+        >
+          {(actionType => {
+            if (actionType.indexOf('turn') > -1) {
+              //转入转出C2C
+              return (
+                <ul className="c2c-form">
+                  <li>
+                    <Input addonBefore="币种名称" size="large" value={handleCoin.symbol} disabled />
+                  </li>
+                  <li className="line_li">
+                    <Input
+                      addonBefore="输入划转数量"
+                      size="large"
+                      value={handleVolume}
+                      onChange={this.inputVolume}
+                    />
+                  </li>
+                  <li className="aviable_symbol">
+                    可用：{availableC2c} {handleCoin.symbol}
+                  </li>
+                  <li className="c2c_submit">
+                    <Button
+                      type="primary"
+                      size="large"
+                      onClick={this.turnAction.bind(this, actionType)}
+                    >
+                      立即转{actionType === 'turnIn' ? '入' : '出'}
+                    </Button>
+                  </li>
+                </ul>
+              );
+            } else if (actionType === 'recharge') {
+              return '充值';
+            }
+          })(actionType)}
+        </Modal>
+      </div>
+    );
+  }
 }
 
 export default Property;
