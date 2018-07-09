@@ -109,7 +109,7 @@ submit = () => {
                 <div className='step_title'><span>第一步: </span> 下载并安装谷歌验证器APP</div>
                 <div className='step_content'>
                   <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" className="down-btn apple" target="_blank" > </a>
-                  <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" className="down-btn google" target="_blank"> </a>
+                  <a href="http://sj.qq.com/myapp/detail.htm?apkName=com.google.android.apps.authenticator2" className="down-btn google" target="_blank"> </a>
                 </div>
             </div>
             <div>

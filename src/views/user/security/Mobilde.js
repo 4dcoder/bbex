@@ -58,7 +58,7 @@ class Mobile extends Component {
   // 点击绑定手机
   getMobileCode = () => {
     const mobile = this.props.form.getFieldsValue().mobile;
-    if(/^1\d{10}$/.test(mobile)){
+    if(/^1[34578][0-9]{9}$/.test(mobile)){
 
       this.sendMobileSms(mobile);
 
@@ -77,11 +77,7 @@ class Mobile extends Component {
               this.setState({ number: number - 1 });
           }
       }, 1000);
-    }else{
-      message.destroy();
-      message.warn('请输入正确手机号',1);
     }
-   
   }
 
   handleSubmit = e => {
@@ -131,8 +127,11 @@ class Mobile extends Component {
             <Form onSubmit={this.handleSubmit} className="change_password">
                 <FormItem {...formLayoutMobile} label="手机号">
                     {getFieldDecorator('mobile', {
-                        rules: [{ required: true, message: '请输入手机号' }]
-                    })(<Input  />)}
+                        rules: [
+                            { required: true, message: '请输入手机号' },
+                            { pattern: /^1[34578][0-9]{9}$/, message:'手机号不正确' }
+                        ]
+                    })(<Input />)}
                     <Button 
                       onClick={this.getMobileCode} 
                       className='get_mobile_code' 
@@ -140,13 +139,14 @@ class Mobile extends Component {
                       disabled={disabled}
                       style={{   width: 100,height: 36,borderRadius: 4}}
                     >
-                        {!disabled ? '获取短信码' : number + 's'}
+                        {!disabled ? '获取验证码' : number + 's'}
                     </Button>
                 </FormItem>
-                <FormItem {...formItemLayout} label="短信码">
+                <FormItem {...formItemLayout} label="短信验证码">
                     {getFieldDecorator('code', {
                         rules: [
-                            { required: true, message: '请输入手机短信码' },
+                            { required: true, message: '请输入手机验证码' },
+                            { pattern: /^\d{6}$/, message:'请输入6位数字验证码' }
                         ]
                     })(<Input  />)}
                 </FormItem>
@@ -154,6 +154,7 @@ class Mobile extends Component {
                     {getFieldDecorator('googleCode', {
                         rules: [
                             { required: true, message: '请输入谷歌验证码' },
+                            { pattern: /^\d{6}$/, message:'请输入6位数字谷歌验证码' }
                         ]
                     })(<Input />)}
                 </FormItem>
