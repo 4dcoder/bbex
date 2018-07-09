@@ -12,3 +12,6 @@
 .invite-box .invite-box-cont {
   padding: 40px 30px;
 }
+.invite-box .ant-input-group-addon {
+  cursor: pointer;
+}

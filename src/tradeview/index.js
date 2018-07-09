@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import datafeeds from '../datafeed/datafeed.js';
 import tradeviewPageUtil from './TradeviewPageUtil';
 import { WS_PREFIX } from '../utils/constants';
-import { onready, widget } from './ChartingLlibrary';
+import { onready, widget } from './ChartingLibrary';
 import ReconnectingWebSocket from '../utils/ReconnectingWebSocket';
 
 class TradeviewPage extends Component {

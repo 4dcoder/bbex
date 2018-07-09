@@ -131,6 +131,10 @@ a:hover {
   color: #e8e8e8;
 }
 
+:root .ant-tabs-bar {
+  border-bottom-color: #636468;
+}
+
 :root .ant-steps-item .ant-steps-item-title {
   color: #fff !important;
 }
@@ -185,9 +189,9 @@ a:hover {
 :root .ant-pagination-disabled a.ant-pagination-item-link,
 :root .ant-pagination-disabled:hover a,
 :root .ant-pagination-disabled:focus a,
-:root .ant-pagination-disabled :root .ant-pagination-item-link,
-:root .ant-pagination-disabled:hover :root .ant-pagination-item-link,
-:root .ant-pagination-disabled:focus :root .ant-pagination-item-link {
+:root .ant-pagination-disabled .ant-pagination-item-link,
+:root .ant-pagination-disabled:hover .ant-pagination-item-link,
+:root .ant-pagination-disabled:focus .ant-pagination-item-link {
   color: #5a5959;
   border-color: #5a5959;
   background: #313643;
@@ -204,7 +208,6 @@ a:hover {
 
 :root .ant-input-group-addon {
   color: #e8e8e8;
-  cursor: pointer;
   background-color: #d4a668;
 }
 
@@ -271,6 +274,13 @@ a:hover {
 }
 :root .ant-list-empty-text {
   color: #e8e8e8;
+}
+:root .ant-btn-normal,
+:root .ant-btn-normal:hover,
+:root .ant-btn-normal:focus {
+  color: #c08b47;
+  border-color: transparent;
+  background-color: rgb(59, 74, 97)
 }
 /* 覆盖antd样式 */
 
