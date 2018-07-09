@@ -1402,6 +1402,9 @@ class Trade extends Component {
                     dataSource={pendingOrderList}
                     loading={!pendingOrderList}
                     pagination={false}
+                    locale={{
+                      emptyText: localization['暂无数据']
+                    }}
                   />
                 </Scrollbars>
               </TabPane>
@@ -1413,6 +1416,9 @@ class Trade extends Component {
                     dataSource={completedOrderList}
                     loading={!completedOrderList}
                     pagination={false}
+                    locale={{
+                      emptyText: localization['暂无数据']
+                    }}
                     expandedRowKeys={[historyExpendKey]}
                     expandedRowRender={record => {
                       return (

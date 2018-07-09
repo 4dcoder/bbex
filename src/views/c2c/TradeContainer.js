@@ -21,16 +21,19 @@ const ExpandComponent = ({
   handleAppeal
 }) => {
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
-  const handleCopy = (text) => {
-    copy(text).then(() => { message.success('复制成功！')});
-  }
+  const handleCopy = text => {
+    copy(text).then(() => {
+      message.success('复制成功！');
+    });
+  };
   return (
     <div className="payment-box">
       <Tabs
         tabBarExtraContent={
           <div className="extra-cont">
             <span>
-              <i className="iconfont icon-phone" />{remarks === 'buy'? '卖': '买'}家：{bankInfo.mobile}
+              <i className="iconfont icon-phone" />
+              {remarks === 'buy' ? '卖' : '买'}家：{bankInfo.mobile}
             </span>
             <a href="javascript:;" onClick={handleAppeal}>
               <i className="iconfont icon-kefu" />申请客服处理
@@ -41,7 +44,8 @@ const ExpandComponent = ({
         <TabPane
           tab={
             <span>
-              <i className="iconfont icon-yinhangqia" />{remarks === 'buy'? '卖': '买'}家银行卡信息
+              <i className="iconfont icon-yinhangqia" />
+              {remarks === 'buy' ? '卖' : '买'}家银行卡信息
             </span>
           }
           key="bank"
@@ -67,20 +71,42 @@ const ExpandComponent = ({
                 </tr>
                 <tr>
                   <td>
-                    {bankInfo.realName} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.realName)}/>
+                    {bankInfo.realName}{' '}
+                    <i
+                      className="iconfont icon-copy"
+                      onClick={handleCopy.bind(this, bankInfo.realName)}
+                    />
                   </td>
                   <td>
-                    {bankInfo.cardNo} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.cardNo)} />
+                    {bankInfo.cardNo}{' '}
+                    <i
+                      className="iconfont icon-copy"
+                      onClick={handleCopy.bind(this, bankInfo.cardNo)}
+                    />
                   </td>
                   <td>
                     {bankInfo.bankName}/{bankInfo.branchBankName}{' '}
-                    <i className="iconfont icon-copy" onClick={handleCopy.bind(this, `${bankInfo.bankName}/${bankInfo.branchBankName}`)} />
+                    <i
+                      className="iconfont icon-copy"
+                      onClick={handleCopy.bind(
+                        this,
+                        `${bankInfo.bankName}/${bankInfo.branchBankName}`
+                      )}
+                    />
                   </td>
                   <td>
-                    {totalPrice} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
+                    {totalPrice}{' '}
+                    <i
+                      className="iconfont icon-copy"
+                      onClick={handleCopy.bind(this, totalPrice)}
+                    />
                   </td>
                   <td>
-                    {radomNum} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
+                    {radomNum}{' '}
+                    <i
+                      className="iconfont icon-copy"
+                      onClick={handleCopy.bind(this, radomNum)}
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -90,7 +116,8 @@ const ExpandComponent = ({
         <TabPane
           tab={
             <span>
-              <i className="iconfont icon-zhifubao" />{remarks === 'buy'? '卖': '买'}家支付宝信息
+              <i className="iconfont icon-zhifubao" />
+              {remarks === 'buy' ? '卖' : '买'}家支付宝信息
             </span>
           }
           key="alipay"
@@ -126,16 +153,32 @@ const ExpandComponent = ({
                   </tr>
                   <tr>
                     <td>
-                      {bankInfo.realName} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.realName)} />
+                      {bankInfo.realName}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, bankInfo.realName)}
+                      />
                     </td>
                     <td>
-                      {bankInfo.alipayNo} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.alipayNo)} />
+                      {bankInfo.alipayNo}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, bankInfo.alipayNo)}
+                      />
                     </td>
                     <td>
-                      {totalPrice} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
+                      {totalPrice}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, totalPrice)}
+                      />
                     </td>
                     <td>
-                      {radomNum} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
+                      {radomNum}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, radomNum)}
+                      />
                     </td>
                   </tr>
                 </tbody>
@@ -146,7 +189,8 @@ const ExpandComponent = ({
         <TabPane
           tab={
             <span>
-              <i className="iconfont icon-wxpay" />{remarks === 'buy'? '卖': '买'}家微信支付信息
+              <i className="iconfont icon-wxpay" />
+              {remarks === 'buy' ? '卖' : '买'}家微信支付信息
             </span>
           }
           key="wechat"
@@ -182,16 +226,32 @@ const ExpandComponent = ({
                   </tr>
                   <tr>
                     <td>
-                      {bankInfo.realName} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.realName)} />
+                      {bankInfo.realName}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, bankInfo.realName)}
+                      />
                     </td>
                     <td>
-                      {bankInfo.wechatNo} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, bankInfo.wechatNo)} />
+                      {bankInfo.wechatNo}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, bankInfo.wechatNo)}
+                      />
                     </td>
                     <td>
-                      {totalPrice} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
+                      {totalPrice}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, totalPrice)}
+                      />
                     </td>
                     <td>
-                      {radomNum} <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
+                      {radomNum}{' '}
+                      <i
+                        className="iconfont icon-copy"
+                        onClick={handleCopy.bind(this, radomNum)}
+                      />
                     </td>
                   </tr>
                 </tbody>
@@ -201,26 +261,24 @@ const ExpandComponent = ({
         </TabPane>
       </Tabs>
       <div className="payment-box-action">
-        {remarks === 'buy' &&  status === 0 && (
-          <Button
-            type="primary"
-            size="large"
-            onClick={() => {
-              confirmPay(record);
-            }}
-          >
-            我已付款给卖家
-          </Button>
-        )}
-        {remarks === 'buy' &&  status === 1 && (
-          <Button
-            type="primary"
-            size="large"
-            disabled
-          >
-            我已付款给卖家
-          </Button>
-        )}
+        {remarks === 'buy' &&
+          status === 0 && (
+            <Button
+              type="primary"
+              size="large"
+              onClick={() => {
+                confirmPay(record);
+              }}
+            >
+              我已付款给卖家
+            </Button>
+          )}
+        {remarks === 'buy' &&
+          status === 1 && (
+            <Button type="primary" size="large" disabled>
+              我已付款给卖家
+            </Button>
+          )}
         {remarks === 'sell' &&
           status === 0 && (
             <Button size="large" disabled>
@@ -291,7 +349,7 @@ class TradeContainer extends Component {
     previewImage: '',
     ws: null,
     appealList: null, //我的申诉
-    showAppeal: '', //显示申诉弹窗
+    showAppeal: '' //显示申诉弹窗
   };
 
   request = window.request;
@@ -302,12 +360,11 @@ class TradeContainer extends Component {
 
   componentWillMount() {
     this.getAdvertList(1);
-   
 
     if (sessionStorage.getItem('account')) {
       this.getMyOrderList();
       this.getMyAdvertList();
-       //获取申诉
+      //获取申诉
       this.getAppealList();
     }
   }
@@ -365,7 +422,7 @@ class TradeContainer extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval( this.timer);
+    clearInterval(this.timer);
     this.state.ws && this.state.ws.close();
   }
 
@@ -447,7 +504,7 @@ class TradeContainer extends Component {
             this.props.history.push('/user/payment');
           }
         });
-      }else{
+      } else {
         message.destroy();
         message.warn(json.msg, 1);
       }
@@ -722,16 +779,16 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        callback(true)
-      }else{
+        callback(true);
+      } else {
         message.destroy();
         message.warn(json.msg, 1);
         callback(false);
       }
     });
-  }
+  };
   // 撤销申诉
-  cancelAppeal = (appealId) => {
+  cancelAppeal = appealId => {
     this.request('/offline/appeal/cancel', {
       method: 'POST',
       body: {
@@ -741,17 +798,17 @@ class TradeContainer extends Component {
       if (json.code === 10000000) {
         message.success('撤销申诉成功');
         this.getAppealList();
-      }else{
+      } else {
         message.destroy();
         message.warn(json.msg, 1);
       }
     });
-  }
+  };
 
   // 点击撤销申诉
-  handleCancel = (appealId) =>{
+  handleCancel = appealId => {
     this.cancelAppeal(appealId);
-  }
+  };
 
   // 获取申诉列表
   getAppealList = () => {
@@ -759,17 +816,17 @@ class TradeContainer extends Component {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        let appealList = json.data.map((item)=>{
+        let appealList = json.data.map(item => {
           item.key = item.id;
           return item;
-        })
-        this.setState({appealList})
+        });
+        this.setState({ appealList });
       }
     });
-  }
+  };
 
-   // 提交申诉
-   submitAppeal = (subOrderId, appealType, reason) =>{
+  // 提交申诉
+  submitAppeal = (subOrderId, appealType, reason) => {
     this.request('/offline/appeal/doappeal', {
       body: {
         subOrderId,
@@ -781,41 +838,42 @@ class TradeContainer extends Component {
         message.success('提交成功', 1);
         this.closeAppealModal();
         this.getAppealList();
-      }else{
+      } else {
         message.destroy();
         message.warn(json.msg, 1);
       }
     });
-  }
+  };
 
   closeAppealModal = () => {
-    this.setState({showAppeal:''})
-  }
+    this.setState({ showAppeal: '' });
+  };
 
   //点击申请客服处理
-  handleAppeal = (record) => {
-    const {subOrderId} = record;
+  handleAppeal = record => {
+    const { subOrderId } = record;
 
     //检查是否可以申诉
-    this.checkAppeal(subOrderId, (check)=>{
-      if(check){
+    this.checkAppeal(subOrderId, check => {
+      if (check) {
         this.setState({
-          showAppeal: <AppealModal
-            onCancel={()=>{
-             this.closeAppealModal();
-            }}
-            onOk={(appealType, reason)=>{
-              this.submitAppeal(subOrderId,appealType,reason);
-            }}
-          />
-        })
+          showAppeal: (
+            <AppealModal
+              onCancel={() => {
+                this.closeAppealModal();
+              }}
+              onOk={(appealType, reason) => {
+                this.submitAppeal(subOrderId, appealType, reason);
+              }}
+            />
+          )
+        });
       }
-    })
-    
-  }
+    });
+  };
 
   render() {
-    const { exType, coin } = this.props;
+    const { exType, coin, localization } = this.props;
     const typeText = {
       buy: '买入',
       sell: '卖出'
@@ -839,7 +897,9 @@ class TradeContainer extends Component {
     let undoneOrderList, completedOrderList, cancelledOrderList;
     if (myOrderList) {
       //未完成订单列表
-      undoneOrderList = myOrderList.filter(order => order.status === 0 || order.status === 1);
+      undoneOrderList = myOrderList.filter(
+        order => order.status === 0 || order.status === 1
+      );
 
       //已完成订单列表
       completedOrderList = myOrderList.filter(order => order.status === 2);
@@ -902,12 +962,14 @@ class TradeContainer extends Component {
         title: '支付方式',
         dataIndex: 'wechatNo',
         key: 'wechatNo',
-        render: (text, record)=>{
-          return <div className='pay_list_icon'>
-            {record.cardNo && <i className='iconfont icon-yinhangqia'></i>}
-            {record.alipayNo && <i className='iconfont icon-zhifubao'></i>}
-            {record.wechatNo && <i className='iconfont icon-wxpay'></i>}
-          </div>
+        render: (text, record) => {
+          return (
+            <div className="pay_list_icon">
+              {record.cardNo && <i className="iconfont icon-yinhangqia" />}
+              {record.alipayNo && <i className="iconfont icon-zhifubao" />}
+              {record.wechatNo && <i className="iconfont icon-wxpay" />}
+            </div>
+          );
         }
       },
       {
@@ -916,57 +978,74 @@ class TradeContainer extends Component {
         key: 'action',
         render: (text, record) => {
           // console.log(text, record)
-          if(Number(record.volume-record.lockVolume-record.successVolume)>0){
-           return <Button type={exType} onClick={this.triggerTransaction.bind(this, { exType, record })}>
-              {typeText[exType]}
-            </Button>
-          }else{
+          if (
+            Number(record.volume - record.lockVolume - record.successVolume) > 0
+          ) {
+            return (
+              <Button
+                type={exType}
+                onClick={this.triggerTransaction.bind(this, { exType, record })}
+              >
+                {typeText[exType]}
+              </Button>
+            );
+          } else {
             return '';
           }
         }
-      },
+      }
     ];
 
     const appealColumns = [
       {
         title: '订单号',
         dataIndex: 'subOrderId',
-        key: 'subOrderId',
+        key: 'subOrderId'
       },
       {
         title: '时间',
         dataIndex: 'createDate',
         key: 'createDate',
-        render: (text)=>{
-          return stampToDate(text*1)
+        render: text => {
+          return stampToDate(text * 1);
         }
       },
-      { 
+      {
         title: '申诉类型',
         dataIndex: 'appealType',
         key: 'appealType'
       },
-      { 
+      {
         title: '申诉理由',
         dataIndex: 'reason',
         key: 'reason'
       },
-      { 
+      {
         title: '操作',
         dataIndex: 'status',
         key: 'status',
-        render: (text,record)=>{
-          switch(text){
+        render: (text, record) => {
+          switch (text) {
             case '1':
-            return <Button type="primary" onClick={()=>{this.handleCancel(record.id)}} style={{borderRadius:4}}>撤销申诉</Button>;
+              return (
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    this.handleCancel(record.id);
+                  }}
+                  style={{ borderRadius: 4 }}
+                >
+                  撤销申诉
+                </Button>
+              );
             case '2':
-            return <div>客服已处理完</div>;
+              return <div>客服已处理完</div>;
             case '3':
-            return <div>已撤销</div>
+              return <div>已撤销</div>;
           }
         }
       }
-    ]
+    ];
 
     const orderColumns = [
       {
@@ -984,7 +1063,7 @@ class TradeContainer extends Component {
       {
         title: '订单号',
         dataIndex: 'subOrderId',
-        key: 'subOrderId',
+        key: 'subOrderId'
       },
       {
         title: '价格(CNY)',
@@ -1005,8 +1084,8 @@ class TradeContainer extends Component {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
-        render: (text) => {
-          switch(text){
+        render: text => {
+          switch (text) {
             case 0:
               return '已挂单';
             case 1:
@@ -1022,7 +1101,7 @@ class TradeContainer extends Component {
             case 9:
               return '取消';
             default:
-              return ''
+              return '';
           }
         }
       },
@@ -1045,7 +1124,10 @@ class TradeContainer extends Component {
           if (record.status === 0) {
             if (record.remarks === 'buy') {
               return (
-                <Button type="primary" onClick={this.confirmPay.bind(this, record)}>
+                <Button
+                  type="primary"
+                  onClick={this.confirmPay.bind(this, record)}
+                >
                   我已付款给卖家
                 </Button>
               );
@@ -1057,7 +1139,10 @@ class TradeContainer extends Component {
               return '已付款';
             } else {
               return (
-                <Button type="primary" onClick={this.confirmReceipt.bind(this, record)}>
+                <Button
+                  type="primary"
+                  onClick={this.confirmReceipt.bind(this, record)}
+                >
                   确认收款
                 </Button>
               );
@@ -1105,8 +1190,8 @@ class TradeContainer extends Component {
         title: '状态',
         dataIndex: 'status',
         key: 'status',
-        render: (text)=>{
-          switch(text){
+        render: text => {
+          switch (text) {
             case 0:
               return '已挂单';
             case 1:
@@ -1122,7 +1207,7 @@ class TradeContainer extends Component {
             case 9:
               return '取消';
             default:
-              return ''
+              return '';
           }
         }
       },
@@ -1133,7 +1218,10 @@ class TradeContainer extends Component {
         render: (text, record) => {
           if (record.status === 0 || record.status === 2) {
             return (
-              <Button type="primary" onClick={this.cancelAdvert.bind(this, record)}>
+              <Button
+                type="primary"
+                onClick={this.cancelAdvert.bind(this, record)}
+              >
                 撤销广告
               </Button>
             );
@@ -1144,18 +1232,24 @@ class TradeContainer extends Component {
       }
     ];
 
-
     // 买入数量默认值
     let defaultVolum = 0;
-   
-    if(selectedCoin){
-      // 获取三个值  最大小数位数
-      let point = getMaxPoint([selectedCoin.volume, selectedCoin.lockVolume, selectedCoin.successVolume]);
 
-      defaultVolum = Number(selectedCoin.volume - selectedCoin.lockVolume - selectedCoin.successVolume).toFixed(point);
-      
+    if (selectedCoin) {
+      // 获取三个值  最大小数位数
+      let point = getMaxPoint([
+        selectedCoin.volume,
+        selectedCoin.lockVolume,
+        selectedCoin.successVolume
+      ]);
+
+      defaultVolum = Number(
+        selectedCoin.volume -
+          selectedCoin.lockVolume -
+          selectedCoin.successVolume
+      ).toFixed(point);
     }
-   
+
     return (
       <div className="trade-cont">
         <div className="trade-list">
@@ -1209,29 +1303,34 @@ class TradeContainer extends Component {
               current,
               pageSize,
               total: advertList && advertList.count,
-              onChange: (page, pageSize) => {
-                this.getAdvertList(page);
-              }
+              onChange: this.getAdvertList
+            }}
+            locale={{
+              emptyText: localization['暂无数据']
             }}
           />
         </div>
         <div className="trade-record">
           <ul className="trade-record-nav">
-            {['我的未完成订单', '我发布的广告', '我的已完成订单', '我的已取消订单', '我的申诉'].map(
-              (text, index) => {
-                return (
-                  <li
-                    key={text}
-                    className={classnames({
-                      active: recordIndex === index
-                    })}
-                    onClick={this.switchRecord.bind(this, index)}
-                  >
-                    {text}
-                  </li>
-                );
-              }
-            )}
+            {[
+              '我的未完成订单',
+              '我发布的广告',
+              '我的已完成订单',
+              '我的已取消订单',
+              '我的申诉'
+            ].map((text, index) => {
+              return (
+                <li
+                  key={text}
+                  className={classnames({
+                    active: recordIndex === index
+                  })}
+                  onClick={this.switchRecord.bind(this, index)}
+                >
+                  {text}
+                </li>
+              );
+            })}
           </ul>
           <div className="trade-record-cont">
             {recordIndex === 0 && (
@@ -1240,6 +1339,9 @@ class TradeContainer extends Component {
                 columns={orderColumns}
                 onExpand={this.handleExpand}
                 pagination={false}
+                locale={{
+                  emptyText: localization['暂无数据']
+                }}
                 expandedRowRender={record =>
                   record.bankInfo ? (
                     <ExpandComponent
@@ -1250,23 +1352,53 @@ class TradeContainer extends Component {
                       confirmPay={this.confirmPay}
                       cancelPay={this.cancelPay}
                       confirmReceipt={this.confirmReceipt}
-                      handleAppeal={()=>{this.handleAppeal(record)}}
+                      handleAppeal={() => {
+                        this.handleAppeal(record);
+                      }}
                     />
                   ) : null
                 }
               />
             )}
             {recordIndex === 1 && (
-              <Table dataSource={myAdvertList} columns={advertColumns} pagination={false} />
+              <Table
+                dataSource={myAdvertList}
+                columns={advertColumns}
+                pagination={false}
+                locale={{
+                  emptyText: localization['暂无数据']
+                }}
+              />
             )}
             {recordIndex === 2 && (
-              <Table dataSource={completedOrderList} columns={orderColumns} pagination={false} />
+              <Table
+                dataSource={completedOrderList}
+                columns={orderColumns}
+                pagination={false}
+                locale={{
+                  emptyText: localization['暂无数据']
+                }}
+              />
             )}
             {recordIndex === 3 && (
-              <Table dataSource={cancelledOrderList} columns={orderColumns} pagination={false} />
+              <Table
+                dataSource={cancelledOrderList}
+                columns={orderColumns}
+                pagination={false}
+                locale={{
+                  emptyText: localization['暂无数据']
+                }}
+              />
             )}
-             {recordIndex === 4 && (
-              <Table dataSource={appealList} columns={appealColumns} pagination={false} />
+            {recordIndex === 4 && (
+              <Table
+                dataSource={appealList}
+                columns={appealColumns}
+                pagination={false}
+                locale={{
+                  emptyText: localization['暂无数据']
+                }}
+              />
             )}
           </div>
         </div>

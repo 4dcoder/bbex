@@ -38,6 +38,7 @@ class C2c extends Component {
   };
 
   render() {
+    const { localization } = this.props;
     const { currentType, currentCoin, coinList } = this.state;
     return (
       <div className="content c2c">
@@ -79,7 +80,11 @@ class C2c extends Component {
           </div>
           {currentType &&
             currentCoin && (
-              <TradeContainer exType={currentType} coin={currentCoin} />
+              <TradeContainer
+                exType={currentType}
+                coin={currentCoin}
+                localization={localization}
+              />
             )}
         </div>
       </div>
