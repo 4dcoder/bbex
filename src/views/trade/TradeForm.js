@@ -107,7 +107,7 @@ class TradeForm extends Component {
 
     const { type, tradeType, marketName, coinName, mainVolume, coinVolume } = this.props;
 
-    const { triggerPrice, price, volume, totalPrice, pending, tradeAmount } = this.state;
+    const { triggerPrice, price, volume, totalPrice, pending } = this.state;
 
     const isLogin = sessionStorage.getItem('account');
 

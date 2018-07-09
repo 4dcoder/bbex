@@ -13,7 +13,7 @@ class SignUp extends Component {
     password: '',
     repassword: '',
     vaildCode: '',
-    inviteCode: getQueryString('inviteCode'),
+    inviteCode: getQueryString('inviteCode') || '',
     agree: false,
     graphicCode: '',
     errorTip: '',
