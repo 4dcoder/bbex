@@ -107,3 +107,7 @@
 .partner .partner-inner .content-inner>li>a:hover {
   opacity: 1;
 }
+
+.coins-market .ant-table-tbody > tr.ant-table-row:hover > td {
+  cursor: pointer;
+}
