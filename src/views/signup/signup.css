@@ -3,10 +3,17 @@
   padding: 80px 0;
 }
 .signup_form{
-  padding: 80px 50px;
+  padding: 20px 50px 80px;
   width: 500px;
   background: #2c3644;
   margin: 0 auto;
+}
+.signup_form h4{
+  color: #e8e8ee;
+  font-size: 20px;
+  text-align: center;
+  height: 70px;
+  line-height: 60px;
 }
 .signup_form .iconfont{
   color: #fff;

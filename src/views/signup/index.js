@@ -143,6 +143,7 @@ class SignUp extends Component {
     return (
       <div className="sign_up">
         <Form onSubmit={this.handleSubmit} className="signup_form">
+					<h4>用户注册</h4>
           <FormItem>
             {getFieldDecorator('mail', {
                 rules: [
