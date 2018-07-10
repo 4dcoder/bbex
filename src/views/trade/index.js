@@ -580,7 +580,7 @@ class Trade extends Component {
 
   // 切换市场
   handleSwitchMarket = market => {
-    this.setState({ market, searchValue: '', searchList: [] });
+    this.setState({ market, searchValue: '' });
   };
 
   // 搜索币

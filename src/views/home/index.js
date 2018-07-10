@@ -294,7 +294,7 @@ class Home extends Component {
                 target: banner.link && '_blank'
               };
               return (
-                <a key={banner.id} href={banner.link || banner.id} {...props}>
+                <a key={banner.id} href={banner.link || `/link/${banner.id}`} {...props}>
                   <img key={banner.id} src={banner.image} alt="" />
                 </a>
               );
