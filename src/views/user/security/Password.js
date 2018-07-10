@@ -89,7 +89,7 @@ class Password extends Component {
                 title="修改密码"
                 visible
                 width={420}
-                wrapClassName="change_pwd_modal"
+                wrapClassName="change_pwd_modal v_center_modal"
                 onCancel={this.props.closeModal}
                 footer={null}
             >

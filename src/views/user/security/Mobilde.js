@@ -120,7 +120,7 @@ class Mobile extends Component {
             title="绑定手机号"
             visible
             width={440}
-            wrapClassName="change_pwd_modal"
+            wrapClassName="change_pwd_modal v_center_modal"
             onCancel={this.props.closeModal}
             footer={null}
         >
@@ -137,7 +137,7 @@ class Mobile extends Component {
                       className='get_mobile_code' 
                       type="primary"
                       disabled={disabled}
-                      style={{   width: 100,height: 36,borderRadius: 4}}
+                      style={{ width: 100 }}
                     >
                         {!disabled ? '获取验证码' : number + 's'}
                     </Button>

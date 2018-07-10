@@ -4,8 +4,11 @@
 // eco  www.ecoexc.com
 // ues www.uescoin.com
 
-// 密码正则表达式是
+// 密码正则表达式
 export const PWD_REGEX = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/;
+
+// 邮箱正则
+export const MAIL_REGEX  = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
 // 公钥
 export const PUBLI_KEY =
