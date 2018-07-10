@@ -199,21 +199,23 @@ class Trade extends Component {
       // 如果有推送就更新
       const { tradeExpair } = this.state;
       const updateExPair = JSON.parse(evt.data);
-      Object.keys(updateExPair).forEach(key => {
-        updateExPair[key].forEach(coin => {
-          const expair = `${coin.coinOther}/${coin.coinMain}`;
-          tradeExpair[key][expair] = {
-            ...coin,
-            rise: coin.rise || '0.00%',
-            latestPrice: (coin.latestPrice || 0).toFixed(8),
-            highestPrice: (coin.highestPrice || 0).toFixed(8),
-            lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-            dayCount: (coin.dayCount || 0).toFixed(8)
-          };
+      if (tradeExpair && Object.keys(tradeExpair).length > 0) {
+        Object.keys(updateExPair).forEach(key => {
+          updateExPair[key].forEach(coin => {
+            const expair = `${coin.coinOther}/${coin.coinMain}`;
+            tradeExpair[key][expair] = {
+              ...coin,
+              rise: coin.rise || '0.00%',
+              latestPrice: (coin.latestPrice || 0).toFixed(8),
+              highestPrice: (coin.highestPrice || 0).toFixed(8),
+              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+              dayCount: (coin.dayCount || 0).toFixed(8)
+            };
+          });
         });
-      });
 
-      this.setState({ tradeExpair });
+        this.setState({ tradeExpair });
+      }
     };
 
     marketWS.onclose = evt => {
@@ -433,8 +435,8 @@ class Trade extends Component {
                   8
                 );
               } else {
-                order.price=orderVo.price;
-                order.volume=orderVo.volume;
+                order.price = orderVo.price;
+                order.volume = orderVo.volume;
                 order.successVolume = orderVo.successVolume;
               }
             }
