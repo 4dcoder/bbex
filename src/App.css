@@ -1053,3 +1053,32 @@ a:hover {
   right: -110px;
   top: -6px;
 }
+
+/* 弹窗垂直居中 */
+.v_center_modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.v_center_modal .ant-modal {
+  top: 0;
+}
+.v_center_modal .ant-modal-content{
+  background: #313643;
+  color: #e8e8e8;
+}
+.v_center_modal .ant-modal-header{
+  background: #313643;
+  color: #e8e8e8;
+  border-bottom: 1px solid #d4a668;
+}
+.v_center_modal .ant-modal-title{
+  color: #e8e8e8;
+  text-align: center;
+}
+.v_center_modal .ant-form-item-required{
+  color: #e8e8e8;
+}
+.v_center_modal .ant-modal-close-x{
+  color: #e8e8e8;
+}
