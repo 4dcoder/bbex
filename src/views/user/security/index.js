@@ -221,15 +221,9 @@ class Security extends Component {
                     </li>
                   </ul>
                   <div className="auth-direction">
-                    <button
-                      className={classnames({
-                        'button primary submit': true,
-                        disabled: !code
-                      })}
-                      onClick={this.submit}
-                    >
+                    <Button type="primary" size="large" onClick={this.submit} disabled={!code}>
                       提交
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

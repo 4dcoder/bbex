@@ -284,11 +284,30 @@ a:hover {
 }
 
 :root .ant-btn-normal,
-:root .ant-btn-normal:hover,
 :root .ant-btn-normal:focus {
-  color: #c08b47;
-  border-color: transparent;
-  background-color: rgb(59, 74, 97);
+  color: #e8e8e8;
+  border-color: #e8e8e8;
+  background-color: transparent;
+}
+
+:root .ant-btn-normal:hover {
+  color: #d4a668;
+  border-color: #d4a668;
+}
+
+:root .ant-btn-primary.disabled, 
+:root .ant-btn-primary[disabled], 
+:root .ant-btn-primary.disabled:hover, 
+:root .ant-btn-primary[disabled]:hover, 
+:root .ant-btn-primary.disabled:focus, 
+:root .ant-btn-primary[disabled]:focus, 
+:root .ant-btn-primary.disabled:active, 
+:root .ant-btn-primary[disabled]:active, 
+:root .ant-btn-primary.disabled.active, 
+:root .ant-btn-primary[disabled].active {
+  color: #666;
+  border-color: #666;
+  background-color: transparent;
 }
 
 :root .ant-pagination-jump-prev:after,
