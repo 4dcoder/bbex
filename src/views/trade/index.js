@@ -423,7 +423,7 @@ class Trade extends Component {
       // 当推的数据是挂单，更新用户挂单列表
       if (orderVo) {
         let { pendingOrderList } = this.state;
-        let isNewRecord = orderVo.status === 0; // 如果status不等于2就是新记录
+        let isNewRecord = orderVo.status === 0; // 如果status等于0就是新记录
         pendingOrderList =
           pendingOrderList &&
           pendingOrderList.filter(order => {
