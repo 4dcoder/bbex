@@ -1076,8 +1076,8 @@ class Trade extends Component {
                                   >
                                     {stampToDate(Number(stream.date), 'hh:mm:ss')}
                                   </td>
-                                  <td>{stream.price.toFixed(8)}</td>
-                                  <td>{stream.volume.toFixed(8)}</td>
+                                  <td>{Number(stream.price).toFixed(8)}</td>
+                                  <td>{Number(stream.volume).toFixed(8)}</td>
                                 </tr>
                               );
                             }
@@ -1137,9 +1137,9 @@ class Trade extends Component {
                 <span
                   className="trade-plate-header-price"
                   dangerouslySetInnerHTML={{
-                    __html: `${currentCoin.latestPrice.toFixed(
+                    __html: `${Number(currentCoin.latestPrice).toFixed(
                       8
-                    )} &asymp; ￥${currentCoin.toCNY.toFixed(8)}`
+                    )} &asymp; ￥${Number(currentCoin.toCNY).toFixed(8)}`
                   }}
                 />
                 <div className="trade-plate-header-right">
@@ -1150,18 +1150,18 @@ class Trade extends Component {
               </header>
               <div className="trade-plate-tit Kline">
                 <div className="trade-plate-tit-cell">
-                  最高<strong>{currentCoin.highestPrice.toFixed(8)}</strong>
+                  最高<strong>{Number(currentCoin.highestPrice).toFixed(8)}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  最低<strong>{currentCoin.lowerPrice.toFixed(8)}</strong>
+                  最低<strong>{Number(currentCoin.lowerPrice).toFixed(8)}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  成交量<strong>{currentCoin.dayCount.toFixed(8)}</strong>
+                  成交量<strong>{Number(currentCoin.dayCount).toFixed(8)}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
                   涨跌幅
                   <strong className={`font-color-${currentCoin.trend}`}>
-                    {currentCoin.change.toFixed(2)}%
+                    {Number(currentCoin.change).toFixed(2)}%
                   </strong>
                 </div>
               </div>
@@ -1272,8 +1272,8 @@ class Trade extends Component {
                                     <td className="font-color-red">
                                       卖出{visibleLength - index + startIndex}
                                     </td>
-                                    <td>{record.price.toFixed(8)}</td>
-                                    <td>{record.volume.toFixed(8)}</td>
+                                    <td>{Number(record.price).toFixed(8)}</td>
+                                    <td>{Number(record.volume).toFixed(8)}</td>
                                     {false && <td className="font-color-red">{record.sumTotal}</td>}
                                   </tr>
                                 )
@@ -1336,8 +1336,8 @@ class Trade extends Component {
                                     onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
                                   >
                                     <td className="font-color-green">买入{index + 1}</td>
-                                    <td>{record.price.toFixed(8)}</td>
-                                    <td>{record.volume.toFixed(8)}</td>
+                                    <td>{Number(record.price).toFixed(8)}</td>
+                                    <td>{Number(record.volume).toFixed(8)}</td>
                                     {false && (
                                       <td className="font-color-green">{record.sumTotal}</td>
                                     )}
@@ -1378,8 +1378,8 @@ class Trade extends Component {
                                     {actionName}
                                     {index + 1}
                                   </td>
-                                  <td>{record.price.toFixed(8)}</td>
-                                  <td>{record.volume.toFixed(8)}</td>
+                                  <td>{Number(record.price).toFixed(8)}</td>
+                                  <td>{Number(record.volume).toFixed(8)}</td>
                                   {false && (
                                     <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
                                   )}

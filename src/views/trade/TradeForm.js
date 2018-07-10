@@ -129,7 +129,7 @@ class TradeForm extends Component {
         {type === 'buy' && (
           <li key="info" className="property-info">
             <span>
-              {marketName} 可用 {mainVolume.toFixed(8)}
+              {marketName} 可用 {Number(mainVolume).toFixed(8)}
               {false && (
                 <Link className="recharge-link" to="#">
                   充币
@@ -141,7 +141,7 @@ class TradeForm extends Component {
         {type === 'sell' && (
           <li key="info" className="property-info">
             <span>
-              {coinName} 可用 {coinVolume.toFixed(8)}
+              {coinName} 可用 {Number(coinVolume).toFixed(8)}
               {false && (
                 <Link className="recharge-link" to="#">
                   充币
