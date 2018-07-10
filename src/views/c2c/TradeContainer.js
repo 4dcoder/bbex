@@ -96,17 +96,11 @@ const ExpandComponent = ({
                   </td>
                   <td>
                     {totalPrice}{' '}
-                    <i
-                      className="iconfont icon-copy"
-                      onClick={handleCopy.bind(this, totalPrice)}
-                    />
+                    <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
                   </td>
                   <td>
                     {radomNum}{' '}
-                    <i
-                      className="iconfont icon-copy"
-                      onClick={handleCopy.bind(this, radomNum)}
-                    />
+                    <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
                   </td>
                 </tr>
               </tbody>
@@ -175,10 +169,7 @@ const ExpandComponent = ({
                     </td>
                     <td>
                       {radomNum}{' '}
-                      <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, radomNum)}
-                      />
+                      <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
                     </td>
                   </tr>
                 </tbody>
@@ -248,10 +239,7 @@ const ExpandComponent = ({
                     </td>
                     <td>
                       {radomNum}{' '}
-                      <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, radomNum)}
-                      />
+                      <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
                     </td>
                   </tr>
                 </tbody>
@@ -297,16 +285,17 @@ const ExpandComponent = ({
               确认收款
             </Button>
           )}
-        <Button
-          type="normal"
-          size="large"
-          disabled={remarks === 'sell'}
-          onClick={() => {
-            cancelPay(record);
-          }}
-        >
-          取消订单
-        </Button>
+        {remarks !== 'sell' && (
+          <Button
+            type="normal"
+            size="large"
+            onClick={() => {
+              cancelPay(record);
+            }}
+          >
+            取消订单
+          </Button>
+        )}
       </div>
       <div className="payment-box-notice">
         <h3>交易须知：</h3>
@@ -897,9 +886,7 @@ class TradeContainer extends Component {
     let undoneOrderList, completedOrderList, cancelledOrderList;
     if (myOrderList) {
       //未完成订单列表
-      undoneOrderList = myOrderList.filter(
-        order => order.status === 0 || order.status === 1
-      );
+      undoneOrderList = myOrderList.filter(order => order.status === 0 || order.status === 1);
 
       //已完成订单列表
       completedOrderList = myOrderList.filter(order => order.status === 2);
@@ -978,9 +965,7 @@ class TradeContainer extends Component {
         key: 'action',
         render: (text, record) => {
           // console.log(text, record)
-          if (
-            Number(record.volume - record.lockVolume - record.successVolume) > 0
-          ) {
+          if (Number(record.volume - record.lockVolume - record.successVolume) > 0) {
             return (
               <Button
                 type={exType}
@@ -1124,10 +1109,7 @@ class TradeContainer extends Component {
           if (record.status === 0) {
             if (record.remarks === 'buy') {
               return (
-                <Button
-                  type="primary"
-                  onClick={this.confirmPay.bind(this, record)}
-                >
+                <Button type="primary" onClick={this.confirmPay.bind(this, record)}>
                   我已付款给卖家
                 </Button>
               );
@@ -1139,10 +1121,7 @@ class TradeContainer extends Component {
               return '已付款';
             } else {
               return (
-                <Button
-                  type="primary"
-                  onClick={this.confirmReceipt.bind(this, record)}
-                >
+                <Button type="primary" onClick={this.confirmReceipt.bind(this, record)}>
                   确认收款
                 </Button>
               );
@@ -1218,10 +1197,7 @@ class TradeContainer extends Component {
         render: (text, record) => {
           if (record.status === 0 || record.status === 2) {
             return (
-              <Button
-                type="primary"
-                onClick={this.cancelAdvert.bind(this, record)}
-              >
+              <Button type="primary" onClick={this.cancelAdvert.bind(this, record)}>
                 撤销广告
               </Button>
             );
@@ -1244,9 +1220,7 @@ class TradeContainer extends Component {
       ]);
 
       defaultVolum = Number(
-        selectedCoin.volume -
-          selectedCoin.lockVolume -
-          selectedCoin.successVolume
+        selectedCoin.volume - selectedCoin.lockVolume - selectedCoin.successVolume
       ).toFixed(point);
     }
 
@@ -1312,25 +1286,21 @@ class TradeContainer extends Component {
         </div>
         <div className="trade-record">
           <ul className="trade-record-nav">
-            {[
-              '我的未完成订单',
-              '我发布的广告',
-              '我的已完成订单',
-              '我的已取消订单',
-              '我的申诉'
-            ].map((text, index) => {
-              return (
-                <li
-                  key={text}
-                  className={classnames({
-                    active: recordIndex === index
-                  })}
-                  onClick={this.switchRecord.bind(this, index)}
-                >
-                  {text}
-                </li>
-              );
-            })}
+            {['我的未完成订单', '我发布的广告', '我的已完成订单', '我的已取消订单', '我的申诉'].map(
+              (text, index) => {
+                return (
+                  <li
+                    key={text}
+                    className={classnames({
+                      active: recordIndex === index
+                    })}
+                    onClick={this.switchRecord.bind(this, index)}
+                  >
+                    {text}
+                  </li>
+                );
+              }
+            )}
           </ul>
           <div className="trade-record-cont">
             {recordIndex === 0 && (

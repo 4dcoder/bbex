@@ -176,6 +176,7 @@ const chartReady = widget => {
   let btn = {};
 
   let handleClick = (e, value) => {
+    console.log("set++++++++++++++++++++++: ", value);
     widget.chart().setResolution(value);
     $(e.target)
       .addClass('select')

@@ -278,14 +278,14 @@ class Trade extends Component {
               ) {
                 const streamVO = matchStreamVO;
                 let { tradeExpair, streamList, marketName } = this.state;
-                tradeExpair[marketName] = tradeExpair[marketName].map(item => {
-                  if (streamVO.coinOther === item.coinOther) {
-                    if (item.firstPrice == 0) {
-                      item.firstPrice = item.latestPrice;
+                Object.keys(tradeExpair[marketName]).forEach(key => {
+                  if (streamVO.coinOther === tradeExpair[marketName][key].coinOther) {
+                    if (tradeExpair[marketName][key].firstPrice == 0) {
+                      tradeExpair[marketName][key].firstPrice =
+                        tradeExpair[marketName][key].latestPrice;
                     }
-                    item.latestPrice = streamVO.price;
+                    tradeExpair[marketName][key].latestPrice = streamVO.price;
                   }
-                  return item;
                 });
 
                 tradeList.buyOrderVOList =
@@ -405,67 +405,70 @@ class Trade extends Component {
     };
 
     userWS.onmessage = evt => {
-      let current = new Date().getTime();
+      // let current = new Date().getTime();
 
       if (evt.data === 'pong') {
         //console.log('user: ', evt.data);
         return;
       }
 
-      if (current - this.timer3 > 1000) {
-        this.timer3 = current;
+      // if (current - this.timer3 > 1000) {
+      // this.timer3 = current;
 
-        const { orderVo, coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
-        //console.log('======user record: ', JSON.parse(evt.data));
+      const { orderVo, coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
+      //console.log('======user record: ', JSON.parse(evt.data));
 
-        // 当推的数据是挂单，更新用户挂单列表
-        if (orderVo) {
-          let { pendingOrderList } = this.state;
-          let isNewRecord = true;
-          pendingOrderList =
-            pendingOrderList &&
-            pendingOrderList.filter(order => {
-              if (order.orderNo === orderVo.orderNo) {
-                isNewRecord = false;
-                order.status = orderVo.status;
-                order.exType = orderVo.exType;
-                if (orderVo.status === 1) {
-                  order.successVolume = (
-                    Number(order.successVolume) + orderVo.successVolume
-                  ).toFixed(8);
-                } else {
-                  order.successVolume = orderVo.successVolume;
-                }
-              }
-              return order.status !== 2;
-            });
-
-          if (isNewRecord) {
-            orderVo.key = orderVo.orderNo;
-            orderVo.price = orderVo.price && orderVo.price.toFixed(8);
-            orderVo.volume = orderVo.volume && orderVo.volume.toFixed(8);
-            orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
-            if (pendingOrderList && pendingOrderList.length > 0) {
-              pendingOrderList.unshift(orderVo);
-              let target = pendingOrderList.slice(0, 50);
-              pendingOrderList = target;
+      // 当推的数据是挂单，更新用户挂单列表
+      if (orderVo) {
+        let { pendingOrderList } = this.state;
+        let isNewRecord = true;
+        pendingOrderList =
+          pendingOrderList &&
+          pendingOrderList.filter(order => {
+            //如果有相同的orderNo或者是status等于2
+            if (order.orderNo === orderVo.orderNo || orderVo.status === 2) {
+              isNewRecord = false;
             }
+            if (order.orderNo === orderVo.orderNo) {
+              order.status = orderVo.status;
+              order.exType = orderVo.exType;
+              if (orderVo.status === 1) {
+                order.successVolume = (Number(order.successVolume) + orderVo.successVolume).toFixed(
+                  8
+                );
+              } else {
+                order.successVolume = orderVo.successVolume;
+              }
+            }
+            return order.status !== 2;
+          });
+          
+        if (isNewRecord) {
+          orderVo.key = orderVo.orderNo;
+          orderVo.price = orderVo.price && orderVo.price.toFixed(8);
+          orderVo.volume = orderVo.volume && orderVo.volume.toFixed(8);
+          orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
+          if (pendingOrderList && pendingOrderList.length > 0) {
+            pendingOrderList.unshift(orderVo);
+            let target = pendingOrderList.slice(0, 50);
+            pendingOrderList = target;
           }
-
-          this.setState({ pendingOrderList });
         }
 
-        const { mainVolume, coinVolume } = this.state;
-        // 当推的数据有主币而且跟当前不相等，就更新主币资产
-        if (coinMainVolume && coinMainVolume.volume !== mainVolume) {
-          this.setState({ mainVolume: coinMainVolume.volume });
-        }
-
-        // 当推的数据有副币而且跟当前不相等，就更新副币资产
-        if (coinOtherVolume && coinOtherVolume.volume !== coinVolume) {
-          this.setState({ coinVolume: coinOtherVolume.volume });
-        }
+        this.setState({ pendingOrderList });
       }
+
+      const { mainVolume, coinVolume } = this.state;
+      // 当推的数据有主币而且跟当前不相等，就更新主币资产
+      if (coinMainVolume && coinMainVolume.volume !== mainVolume) {
+        this.setState({ mainVolume: coinMainVolume.volume });
+      }
+
+      // 当推的数据有副币而且跟当前不相等，就更新副币资产
+      if (coinOtherVolume && coinOtherVolume.volume !== coinVolume) {
+        this.setState({ coinVolume: coinOtherVolume.volume });
+      }
+      // }
     };
 
     userWS.onclose = evt => {
