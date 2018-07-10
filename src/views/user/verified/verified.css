@@ -144,18 +144,3 @@
     font-size: 20px;
     color: #e8e8e8;
 }
-.verified .ant-steps-item-process .ant-steps-item-icon{
-    color: #d4a668;
-}
-.verified .ant-steps-item-process .ant-steps-item-icon{
-    border-color: #d4a668;
-}
-.verified .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon{
-    color: #d4a668;
-}
-.verified .ant-steps-item-finish .ant-steps-item-icon{
-    border-color: #d4a668;
-}
-.verified .ant-steps-item-process .ant-steps-item-icon{
-    color: #d4a668;
-}

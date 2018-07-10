@@ -272,15 +272,47 @@ a:hover {
   border: none;
   box-shadow: 0 0 10px #fff, 0 0 10px #fff;
 }
+
 :root .ant-list-empty-text {
   color: #e8e8e8;
 }
+
 :root .ant-btn-normal,
 :root .ant-btn-normal:hover,
 :root .ant-btn-normal:focus {
   color: #c08b47;
   border-color: transparent;
-  background-color: rgb(59, 74, 97)
+  background-color: rgb(59, 74, 97);
+}
+
+:root .ant-pagination-jump-prev:after,
+:root .ant-pagination-jump-next:after {
+  color: #e8e8e8;
+}
+
+:root .ant-steps-item-process .ant-steps-item-icon {
+  color: #d4a668;
+}
+:root .ant-steps-item-process .ant-steps-item-icon {
+  border-color: #d4a668;
+}
+:root .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
+  color: #d4a668;
+}
+:root .ant-steps-item-finish .ant-steps-item-icon {
+  border-color: #d4a668;
+  background-color: transparent;
+}
+:root .ant-steps-item-process .ant-steps-item-icon {
+  color: #d4a668;
+  background-color: #d4a668;
+}
+:root .ant-steps-item-wait .ant-steps-item-icon {
+  border-color: #e8e8e8;
+  background-color: transparent;
+}
+:root .ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon {
+  color: #e8e8e8;
 }
 /* 覆盖antd样式 */
 
@@ -519,8 +551,17 @@ a:hover {
   padding: 15px 0;
 }
 
+/* 注意事项icon */
 .icon-zhuyishixiang {
   color: #d42f2f;
+}
+
+/* 暂无数据icon */
+.icon-zanwushuju {
+  display: block;
+}
+.icon-zanwushuju::before {
+  font-size: 32px;
 }
 
 .font-color-primary {
@@ -555,6 +596,18 @@ a:hover {
 .ant-btn-sell:hover {
   border-color: #f50 !important;
   background-color: #f50 !important;
+}
+
+.empty-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 /* 公共样式 */
@@ -1079,22 +1132,22 @@ a:hover {
 .v_center_modal .ant-modal {
   top: 0;
 }
-.v_center_modal .ant-modal-content{
+.v_center_modal .ant-modal-content {
   background: #313643;
   color: #e8e8e8;
 }
-.v_center_modal .ant-modal-header{
+.v_center_modal .ant-modal-header {
   background: #313643;
   color: #e8e8e8;
   border-bottom: 1px solid #d4a668;
 }
-.v_center_modal .ant-modal-title{
+.v_center_modal .ant-modal-title {
   color: #e8e8e8;
   text-align: center;
 }
-.v_center_modal .ant-form-item-required{
+.v_center_modal .ant-form-item-required {
   color: #e8e8e8;
 }
-.v_center_modal .ant-modal-close-x{
+.v_center_modal .ant-modal-close-x {
   color: #e8e8e8;
 }
