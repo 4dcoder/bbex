@@ -43,12 +43,13 @@
   color: #d9d9d9;
 }
 
-.coins-market .icon-shoucang, 
-.coins-market .icon-shoucang-active {
+.coins-market .icon-shoucang, .coins-market .icon-shoucang-active {
+  display: inline-block;
+  margin-top: -2px;
   margin-right: 10px;
-  font-size: 20px;
-  vertical-align: baseline;
+  font-size: 18px;
 }
+
 .coins-market .icon-shoucang-active {
   color: #d4a668;
 }
@@ -57,11 +58,18 @@
   color: #d4a668;
 }
 
+.coins-market .name-wrap {
+  display: inline-block;
+  position: relative;
+}
+
 .coins-market .name-wrap .anticon {
+  display: inline-block;
+  margin-top: -5px;
   margin-right: 10px;
 }
 
-.coins-market .name-wrap.attention .anticon {
+.coins-market .name-wrap .anticon {
   color: #d4a668;
 }
 
@@ -106,4 +114,8 @@
 
 .partner .partner-inner .content-inner>li>a:hover {
   opacity: 1;
+}
+
+.coins-market .ant-table-tbody>tr.ant-table-row:hover>td {
+  cursor: pointer;
 }

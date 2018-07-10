@@ -184,7 +184,7 @@ class Withdraw extends Component {
         </ul>
         
         <div className="btn">
-            <Button onClick={this.withdrawClick} type="primary" style={{width: 140,height: 50, borderRadius: 4}}>提币</Button>
+            <Button onClick={this.withdrawClick} type="primary" size="large" style={{width: 100}}>提币</Button>
         </div>
       </div>
 

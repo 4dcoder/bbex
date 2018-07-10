@@ -94,7 +94,7 @@ class Security extends Component {
             </Col>
           ) : (
             <Col span={20} className="col_content">
-              <Button onClick={this.handleBind} type="primary" style={{ borderRadius: 4 }}>
+              <Button onClick={this.handleBind} type="primary">
                 绑定手机号
               </Button>
             </Col>
@@ -106,7 +106,7 @@ class Security extends Component {
           </Col>
           <Col span={20} className="pwd_btn">
             {' '}
-            <Button onClick={this.showDialog} type="primary" style={{ borderRadius: 4 }}>
+            <Button onClick={this.showDialog} type="primary">
               修改密码
             </Button>
           </Col>

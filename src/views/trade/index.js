@@ -1139,7 +1139,7 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="introduction">币种介绍</Button>
+                    <Button type="normal">币种介绍</Button>
                   </Tooltip>
                 </div>
               </header>

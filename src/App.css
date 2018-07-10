@@ -89,6 +89,10 @@ a:hover {
   color: #e8e8e8;
 }
 
+:root .ant-table-thead > tr > th.ant-table-column-sort {
+  background-color: #151a22;
+}
+
 :root .ant-table-column-sorter .anticon-caret-up,
 :root .ant-table-column-sorter .anticon-caret-down {
   color: #e8e8e8;
@@ -112,7 +116,6 @@ a:hover {
 }
 
 :root .ant-table-tbody > tr.ant-table-row:hover > td {
-  cursor: pointer;
   background-color: #1b2029;
 }
 
@@ -126,6 +129,10 @@ a:hover {
 
 :root .ant-tabs-tab {
   color: #e8e8e8;
+}
+
+:root .ant-tabs-bar {
+  border-bottom-color: #636468;
 }
 
 :root .ant-steps-item .ant-steps-item-title {
@@ -182,9 +189,9 @@ a:hover {
 :root .ant-pagination-disabled a.ant-pagination-item-link,
 :root .ant-pagination-disabled:hover a,
 :root .ant-pagination-disabled:focus a,
-:root .ant-pagination-disabled :root .ant-pagination-item-link,
-:root .ant-pagination-disabled:hover :root .ant-pagination-item-link,
-:root .ant-pagination-disabled:focus :root .ant-pagination-item-link {
+:root .ant-pagination-disabled .ant-pagination-item-link,
+:root .ant-pagination-disabled:hover .ant-pagination-item-link,
+:root .ant-pagination-disabled:focus .ant-pagination-item-link {
   color: #5a5959;
   border-color: #5a5959;
   background: #313643;
@@ -201,7 +208,6 @@ a:hover {
 
 :root .ant-input-group-addon {
   color: #e8e8e8;
-  cursor: pointer;
   background-color: #d4a668;
 }
 
@@ -265,6 +271,16 @@ a:hover {
 :root .ant-slider-handle {
   border: none;
   box-shadow: 0 0 10px #fff, 0 0 10px #fff;
+}
+:root .ant-list-empty-text {
+  color: #e8e8e8;
+}
+:root .ant-btn-normal,
+:root .ant-btn-normal:hover,
+:root .ant-btn-normal:focus {
+  color: #c08b47;
+  border-color: transparent;
+  background-color: rgb(59, 74, 97)
 }
 /* 覆盖antd样式 */
 
@@ -848,7 +864,7 @@ a:hover {
 }
 
 .expend_content .ant-list-split .ant-list-header {
-  border-bottom: 1px solid #4f6f4f;
+  border-bottom: 1px solid #4c525e;
 }
 
 .expend_content .expent_title li {

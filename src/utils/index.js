@@ -19,8 +19,7 @@ function fillZero(number, n) {
 * @returns {string} 格式化后的日期时间字符串
 Y: 代表年份， M: 代表月份， D: 代表一个月中的第几天， h: 代表小时， m: 代表分, s: 代表秒
 **/
-function stampToDate(timestamp, patternStr) {
-  patternStr = patternStr || 'YYYY-MM-DD hh:mm:ss';
+function stampToDate(timestamp, patternStr = 'YYYY-MM-DD hh:mm:ss') {
   const patternArray = patternStr.match(/\w+/g);
   const date = new Date(timestamp);
   const dateObj = {
@@ -56,22 +55,22 @@ function dateToStamp(dateStr) {
  **/
 function copy(text) {
   return new Promise((resolve, reject) => {
-      const textArea = document.createElement('textarea');
-      textArea.style.position = 'fixed';
-      textArea.style.left = '-1000px';
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
+    const textArea = document.createElement('textarea');
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-1000px';
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
 
-      try {
-          document.execCommand('copy');
-          resolve(true);
-      } catch (error) {
-          reject(error);
-          throw new Error('该浏览器不支持点击复制到剪贴板');
-      }
-      
-      document.body.removeChild(textArea);
+    try {
+      document.execCommand('copy');
+      resolve(true);
+    } catch (error) {
+      reject(error);
+      throw new Error('该浏览器不支持点击复制到剪贴板');
+    }
+
+    document.body.removeChild(textArea);
   });
 }
 
@@ -120,19 +119,19 @@ function getQueryString(name) {
  * @author gm
  * @description 获取几个数字 最大 小数位数
  * @param name {array} 参数名
- * @returns 
+ * @returns
  **/
-function getMaxPoint(numbers){
-  if(numbers.length>0){
-    let points = numbers.map((item)=>{
-      if((item+'').indexOf('.')>-1){
-        return (item+'').split('.')[1].length;
-      }else{
+function getMaxPoint(numbers) {
+  if (numbers.length > 0) {
+    let points = numbers.map(item => {
+      if ((item + '').indexOf('.') > -1) {
+        return (item + '').split('.')[1].length;
+      } else {
         return 0;
       }
     });
     return Math.max(...points);
-  }else{
+  } else {
     return 0;
   }
 }

@@ -237,8 +237,7 @@ class Home extends Component {
         render: (text, record) => (
           <span
             className={classnames({
-              'name-wrap': true,
-              attention: true
+              'name-wrap': true
             })}
           >
             <i
