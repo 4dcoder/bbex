@@ -421,28 +421,26 @@ class Trade extends Component {
       // 当推的数据是挂单，更新用户挂单列表
       if (orderVo) {
         let { pendingOrderList } = this.state;
-        let isNewRecord = true;
+        let isNewRecord = orderVo.status === 0; // 如果status不等于2就是新记录
         pendingOrderList =
           pendingOrderList &&
           pendingOrderList.filter(order => {
-            //如果有相同的orderNo或者是status等于2
-            if (order.orderNo === orderVo.orderNo || orderVo.status === 2) {
-              isNewRecord = false;
-            }
             if (order.orderNo === orderVo.orderNo) {
+              isNewRecord = false; //如果有相同的orderNo就不是新的记录
               order.status = orderVo.status;
-              order.exType = orderVo.exType;
-              if (orderVo.status === 1) {
+              if (order.status === 1) {
                 order.successVolume = (Number(order.successVolume) + orderVo.successVolume).toFixed(
                   8
                 );
               } else {
+                order.price=orderVo.price;
+                order.volume=orderVo.volume;
                 order.successVolume = orderVo.successVolume;
               }
             }
             return order.status !== 2;
           });
-          
+
         if (isNewRecord) {
           orderVo.key = orderVo.orderNo;
           orderVo.price = orderVo.price && orderVo.price.toFixed(8);
@@ -870,12 +868,13 @@ class Trade extends Component {
       trend: 'green'
     };
 
-    if (tradeExpair && tradeExpair[marketName] && tradeExpair[marketName].length > 0) {
-      tradeExpair[marketName].forEach(coin => {
+    if (tradeExpair && tradeExpair[marketName] && Object.keys(tradeExpair[marketName]).length > 0) {
+      Object.keys(tradeExpair[marketName]).forEach(key => {
+        const coin = tradeExpair[marketName][key];
         if (coin.coinOther === coinName) {
           // 更新当前选中交易对数据
 
-          const latestPrice = coin.latestPrice || 0; //最新价
+          const latestPrice = Number(coin.latestPrice) || 0; //最新价
 
           let toCNY = 0; //当前最新价的折合人民币
           const usdtToCnyRate = 6.5;
@@ -905,9 +904,9 @@ class Trade extends Component {
             trend,
             toCNY,
             latestPrice,
-            highestPrice: coin.highestPrice || 0,
-            lowerPrice: coin.lowerPrice || 0,
-            dayCount: coin.dayCount || 0
+            highestPrice: Number(coin.highestPrice) || 0,
+            lowerPrice: Number(coin.lowerPrice) || 0,
+            dayCount: Number(coin.dayCount) || 0
           };
         }
       });
