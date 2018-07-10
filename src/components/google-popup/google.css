@@ -1,19 +1,19 @@
-.google_popup{
+.google-popup{
   padding: 10px 20px 10px;
 }
-.google_popup .google_btn{
+.google-popup .google-btn{
   margin-top: 30px;
   text-align: center;
 }
 
-.google_popup .google_btn button{
+.google-popup .google-btn button{
   width: 100px;
   height: 36px;
 }
-.google_popup .google_btn button:nth-child(1){
+.google-popup .google-btn button:nth-child(1){
   margin-right: 30px;
 }
-.google_popup .error_tip{
+.google-popup .error-tip{
   height: 40px;
   line-height: 40px;
   color: #d42f2f;

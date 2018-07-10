@@ -166,7 +166,7 @@ class Address extends Component {
       }
     ];
     return (
-      <div className="address_manger user-cont">
+      <div className="address-manger user-cont">
         <ul>
           <li>
             <h4>币种</h4>
@@ -189,16 +189,16 @@ class Address extends Component {
               })}
             </Select>
           </li>
-          <li className="li_item">
+          <li className="li-item">
             <h4>提币地址</h4>
             <Input size="large" value={address} onChange={this.addressChange} />
           </li>
-          <li className="li_item">
+          <li className="li-item">
             <h4>备注</h4>
             <Input size="large" value={remark} onChange={this.remarkChange} />
           </li>
         </ul>
-        <div className="btn_block">
+        <div className="btn-block">
           <Button type="primary" size="large" onClick={this.addClick} style={{ width: 120 }}>
             添加
           </Button>

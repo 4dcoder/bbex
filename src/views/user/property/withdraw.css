@@ -1,61 +1,61 @@
 
 
-.withdraw_content .wi_number{
+.withdraw-content .wi-number{
   position: relative;
 }
-.withdraw_content .my_count{
+.withdraw-content .my-count{
   display: flex;
   justify-content: space-between;
 }
-.withdraw_content .my_count li{
+.withdraw-content .my-count li{
   width: 45%;
 }
-.withdraw_content .my_count .title{
+.withdraw-content .my-count .title{
   line-height: 30px;
 }
-.withdraw_content .my_count .money{
+.withdraw-content .my-count .money{
   position: relative;
 }
 
-.withdraw_content .my_count .number{
+.withdraw-content .my-count .number{
   position: relative;
 }
-.withdraw_content .my_count .money span, .my_count .number span{
+.withdraw-content .my-count .money span, .my-count .number span{
   position: absolute;
   right: 10px;
   top: 8px;
 }
-.withdraw_content .btn_block{
+.withdraw-content .btn-block{
   display: flex;
   justify-content: space-between;
   color: #e8e8e8;
 }
-.withdraw_content .btn_block .btn{
+.withdraw-content .btn-block .btn{
   width: 300px;
   padding: 20px 0 0 20px;;
 }
-.withdraw_content{
+.withdraw-content{
   padding-left: 20px;
 }
-.withdraw_content .title{
+.withdraw-content .title{
   line-height: 30px;
 }
-.withdraw_content .count_top{
+.withdraw-content .count-top{
   display: flex;
   justify-content: space-between;
   margin-top: 10px;
 }
-.withdraw_content .rest_number{
+.withdraw-content .rest-number{
   color: #e0c192;
   margin: 0 30px 0 10px;
   font-weight: 600;
 }
-.withdraw_content .limite_number{
+.withdraw-content .limite-number{
   color: #e0c192;
   margin: 0 30px 0 10px;
   font-weight: 600;
 }
-.withdraw_content .min_withdraw{
+.withdraw-content .min-withdraw{
   color: #e0c192;
   margin: 0 20px;
   font-weight: 600;

@@ -9,7 +9,7 @@
 .property-header h2 .ant-checkbox-wrapper {
     margin-left: 20px;
 }
-.property-header .header_search{
+.property-header .header-search{
     position: absolute;
     z-index: 1;
     top: 8px;
@@ -17,7 +17,7 @@
     display: flex;
     justify-content: space-between;
 }
-.property-header .header_search .ant-input-search-icon{
+.property-header .header-search .ant-input-search-icon{
     color: #e8e8e8;
 }
 .property-header .pull-right {
@@ -48,7 +48,7 @@
     height: 15px;
     margin-right: 5px;
     vertical-align: middle;
-    background-image: url(../../../assets/images/coin_logos.png);
+    background-image: url(../../../assets/images/coin-logos.png);
     background-repeat: no-repeat;
 }
 .currency-logo.btc {

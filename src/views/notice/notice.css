@@ -1,4 +1,4 @@
-.bbex_notice{
+.bbex-notice{
   padding: 20px;
   background-color: #2c3644;
   min-height: 400px;
@@ -13,20 +13,20 @@
   display: flex;
   justify-content: center;
 }
-.notice_item div{
+.notice-item div{
   display: flex;
   justify-content: space-between;
 }
-.notice_title{
+.notice-title{
   text-align: center;
   padding-bottom: 6px;
   font-size: 24px;
 }
-.bbex_notice .notice_item{
+.bbex-notice .notice-item{
   border-bottom: 1px solid #5f5f5f;
   height: 50px;
   cursor: pointer;
 }
-.bbex_notice .notice_item:last-child{
+.bbex-notice .notice-item:last-child{
   border-bottom: 1px solid #5f5f5f;
 }

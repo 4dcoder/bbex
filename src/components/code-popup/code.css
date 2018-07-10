@@ -1,39 +1,39 @@
-.graphic_popup{
+.graphic-popup{
   padding: 10px 10px 10px;
 }
-.graphic_popup .iconfont{
+.graphic-popup .iconfont{
   color: #fff;
 }
-.graphic_popup .ant-input-affix-wrapper .ant-input:not(:first-child){
+.graphic-popup .ant-input-affix-wrapper .ant-input:not(:first-child){
   padding-left: 40px;
 }
-.graphic_popup .error_tip{
+.graphic-popup .error-tip{
   color: #d42f2f;
   line-height: 30px;
   height: 30px;
 }
-.graphic_popup .graphic_content{
+.graphic-popup .graphic-content{
   display: flex;
 }
-.graphic_popup .graphic_content img{
+.graphic-popup .graphic-content img{
   border: 1px solid #e8e8e8;
   cursor: pointer;
   border-left: 0;
   height: 42px;
   width: 120px;
 }
-.graphic_popup .graphic_btn{
+.graphic-popup .graphic-btn{
   margin-top: 30px;
   text-align: center;
 }
-.graphic_popup .graphic_btn button{
+.graphic-popup .graphic-btn button{
   width: 100px;
   height: 36px;
 }
-.graphic_popup .graphic_btn button:nth-child(1){
+.graphic-popup .graphic-btn button:nth-child(1){
   margin-right: 20px;
 }
-.graphic_popup .graphic_img_text{
+.graphic-popup .graphic-img-text{
   color: #e8e8e8;
   height: 30px;
   line-height: 30px;

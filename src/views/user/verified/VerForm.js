@@ -31,7 +31,7 @@ class VerForm extends Component{
         },
       };
 
-      return <Form onSubmit={this.handleSubmit} className="ver_form">
+      return <Form onSubmit={this.handleSubmit} className="ver-form">
           <FormItem
             {...formItemLayout}
             label="身份证号"
@@ -73,7 +73,7 @@ class VerForm extends Component{
           <FormItem
             {...formItemLayout}
             label="性别"
-            className='sex_item'
+            className='sex-item'
           >
           {getFieldDecorator('sex',{
             rules: [{required: true, message: '请选择性别',}]

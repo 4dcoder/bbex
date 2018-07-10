@@ -51,16 +51,16 @@ class GooglePopup extends Component {
     return <Modal
       title="谷歌验证码"
       visible={true}
-      wrapClassName='v_center_modal'
+      wrapClassName='v-center-modal'
       maskClosable={false}
       width={400}
       footer={null}
       onCancel={this.handleCancel}
   >
-    <div className='google_popup'>
-      <div className='error_tip'>{errorTip}</div>
+    <div className='google-popup'>
+      <div className='error-tip'>{errorTip}</div>
       <Input size='large' value={code} placeholder='谷歌验证码' onChange={this.codeOnchange}/>
-      <div className='google_btn'>
+      <div className='google-btn'>
         <Button type='normal' onClick={this.handleCancel}>取消</Button>
         <Button onClick={this.handleOk} type='primary'>确定</Button>
       </div>

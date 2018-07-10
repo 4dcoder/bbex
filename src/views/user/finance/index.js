@@ -389,7 +389,7 @@ class Finance extends Component {
             expendKey
         } = this.state;
         return (
-            <ul className="finance_content user-cont">
+            <ul className="finance-content user-cont">
                 <Tabs
                     value={currentTab}
                     tabBarExtraContent={
@@ -440,7 +440,7 @@ class Finance extends Component {
                                 if(txId && txId.length>40){
                                     txId = txId.subString(0,40)+'...';
                                 }
-                                return <ul className='withdraw_expend'>
+                                return <ul className='withdraw-expend'>
                                     <li>
                                         <div> <span className="title">钱包处理时间 : </span>{updateDate && stampToDate(updateDate*1)}</div>
                                         <div> <span className="title">手续费 : </span>{(fee*1).toFixed(8)}</div>

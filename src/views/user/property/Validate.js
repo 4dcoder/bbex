@@ -99,7 +99,7 @@ class Validate extends Component {
         visible={true}
         width={400}
         cancelText="取消"
-        wrapClassName="v_center_modal"
+        wrapClassName="v-center-modal"
         okText="确认"
         onOk={() => {
           let id = this.props.id;

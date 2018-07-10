@@ -89,11 +89,11 @@ class Password extends Component {
                 title="修改密码"
                 visible
                 width={420}
-                wrapClassName="change_pwd_modal v_center_modal"
+                wrapClassName="change-pwd-modal v-center-modal"
                 onCancel={this.props.closeModal}
                 footer={null}
             >
-                <Form onSubmit={this.handleSubmit} className="change_password">
+                <Form onSubmit={this.handleSubmit} className="change-password">
                     <FormItem {...formItemLayout} label="原密码">
                         {getFieldDecorator('oldPassword', {
                             rules: [{ required: true, message: '请输入原密码' }]

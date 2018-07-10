@@ -1,10 +1,10 @@
-.transation_content{
+.transation-content{
   box-sizing: border-box;
   position: relative;
   min-width: 500px;
 }
 
-.transation_content .line{
+.transation-content .line{
   padding: 0 6px;
   color: #e8e8e8;
 }

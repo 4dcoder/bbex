@@ -29,10 +29,10 @@ class Recharge extends Component {
         const { address, show } = this.state;
         const { name } = this.props;
         return (
-            <div className="recharge_content">
+            <div className="recharge-content">
                 <div>充币地址</div>
                 <ul className="address">
-                    <li id="re_address">{address}</li>
+                    <li id="re-address">{address}</li>
                     <li className="copy" data-address={address} onClick={copyText}>
                         复制
                     </li>

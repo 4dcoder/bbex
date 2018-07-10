@@ -1,4 +1,4 @@
-.notice_detail{
+.notice-detail{
   width: 100%;
   padding: 30px;
   min-height: 400px;
@@ -6,7 +6,7 @@
   color: #e8e8e8;
   margin-top: 0;
 }
-.notice_detail div{
+.notice-detail div{
   width: 100%;
   text-align: center;
 }

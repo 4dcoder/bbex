@@ -1436,7 +1436,7 @@ class Trade extends Component {
               <TabPane tab="成交历史" key="1">
                 <Scrollbars>
                   <Table
-                    className="trade_history"
+                    className="trade-history"
                     columns={orderColumns}
                     dataSource={completedOrderList}
                     loading={!completedOrderList}
@@ -1452,11 +1452,11 @@ class Trade extends Component {
                     expandedRowKeys={[historyExpendKey]}
                     expandedRowRender={record => {
                       return (
-                        <div className="expend_content">
+                        <div className="expend-content">
                           <List
                             size="small"
                             header={
-                              <ul className="expent_title">
+                              <ul className="expent-title">
                                 <li>时间</li>
                                 <li>价格</li>
                                 <li>数量</li>
@@ -1466,8 +1466,8 @@ class Trade extends Component {
                             }
                             dataSource={historyDetails}
                             renderItem={item => (
-                              <List.Item className="list_lis">
-                                <ul className="list_item">
+                              <List.Item className="list-lis">
+                                <ul className="list-item">
                                   <li>{stampToDate(item.createDate * 1)}</li>
                                   <li>{Number(item.price).toFixed(8)}</li>
                                   <li>{Number(item.successVolume).toFixed(8)}</li>

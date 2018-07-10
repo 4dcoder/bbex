@@ -489,7 +489,7 @@ class Transaction extends Component {
       recordAllDetail
     } = this.state;
     return (
-      <div className="transation_content user-cont">
+      <div className="transation-content user-cont">
         <Tabs
           defaultActiveKey="current"
           tabBarExtraContent={
@@ -557,11 +557,11 @@ class Transaction extends Component {
               }}
               expandedRowRender={record => {
                 return (
-                  <div className="expend_content">
+                  <div className="expend-content">
                     <List
                       size="small"
                       header={
-                        <ul className="expent_title">
+                        <ul className="expent-title">
                           <li>时间</li>
                           <li>价格</li>
                           <li>数量</li>
@@ -571,8 +571,8 @@ class Transaction extends Component {
                       }
                       dataSource={recordAllDetail}
                       renderItem={item => (
-                        <List.Item className="list_lis">
-                          <ul className="list_item">
+                        <List.Item className="list-lis">
+                          <ul className="list-item">
                             <li>{stampToDate(item.createDate * 1)}</li>
                             <li>{Number(item.price).toFixed(8)}</li>
                             <li>{Number(item.successVolume).toFixed(8)}</li>

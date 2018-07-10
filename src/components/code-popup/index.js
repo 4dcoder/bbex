@@ -83,15 +83,15 @@ class CodePopup extends Component {
     return <Modal
       title="验证码"
       visible={true}
-      wrapClassName='v_center_modal'
+      wrapClassName='v-center-modal'
       maskClosable={false}
       width={400}
       footer={null}
       onCancel={this.handleCancel}
     >
-    <div className='graphic_popup'>
-      <div className='error_tip'>{errorTip}</div>
-      <div className='graphic_content'>
+    <div className='graphic-popup'>
+      <div className='error-tip'>{errorTip}</div>
+      <div className='graphic-content'>
         <Input
           value={code}
           placeholder='图形验证码'
@@ -100,13 +100,13 @@ class CodePopup extends Component {
         />
         {imgName && <img
           src={`${IMAGES_ADDRESS}/image/view/${imgName}`}
-          className="graphic_img"
+          className="graphic-img"
           alt="图形验证码"
           onClick={this.getValidImg}
         />}
       </div>
-      <div className='graphic_img_text'>点击图片刷新验证码</div>
-      <div className='graphic_btn'>
+      <div className='graphic-img-text'>点击图片刷新验证码</div>
+      <div className='graphic-btn'>
         <Button onClick={this.handleCancel}>取消</Button>
         <Button type='primary' onClick={this.handleOk}>确认</Button>
       </div>

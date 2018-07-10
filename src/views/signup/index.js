@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { getQueryString } from '../../utils';
 import { JSEncrypt } from '../../utils/jsencrypt.js';
 import { PUBLI_KEY, PWD_REGEX, MAIL_REGEX } from '../../utils/constants';
-import CodePopup from '../../components/code_popup';
+import CodePopup from '../../components/code-popup';
 import './signup.css';
 
 const FormItem = Form.Item;
@@ -141,8 +141,8 @@ class SignUp extends Component {
     const { disabled, number, popup, inviteCode } = this.state;
 
     return (
-      <div className="sign_up">
-        <Form onSubmit={this.handleSubmit} className="signup_form">
+      <div className="sign-up">
+        <Form onSubmit={this.handleSubmit} className="signup-form">
 					<h4>用户注册</h4>
           <FormItem>
             {getFieldDecorator('mail', {
@@ -194,7 +194,7 @@ class SignUp extends Component {
               />
             )}
           </FormItem>
-          <FormItem className="mail_code">
+          <FormItem className="mail-code">
             {getFieldDecorator('code', {
                 rules: [
 										{ required: true, message: '请输入邮箱验证码' },
@@ -213,7 +213,7 @@ class SignUp extends Component {
               onClick={this.getMailCode}
               type="primary"
               disabled={disabled}
-              className="mail_code_btn"
+              className="mail-code-btn"
             >
               {!disabled ? '获取邮箱验证码' : number + 's'}
             </Button>
@@ -237,13 +237,13 @@ class SignUp extends Component {
 							valuePropName: 'checked',
 							initialValue: true,
 						})(
-							<Checkbox className="agree_text">我已阅读并同意</Checkbox>
+							<Checkbox className="agree-text">我已阅读并同意</Checkbox>
 						)}
-						<Link to="/agreement" className='link_agree' target="_blank">
+						<Link to="/agreement" className='link-agree' target="_blank">
 							服务条款
 						</Link>
 					</FormItem>
-        <div className='submit_btn' style={{ display: 'flex', justifyContent: 'center' }}>
+        <div className='submit-btn' style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               type="primary"
               htmlType="submit"

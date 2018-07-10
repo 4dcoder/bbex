@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input, Select, Button, message } from 'antd';
 import { withRouter } from 'react-router-dom';
 import Validate from './Validate';
-import CodePopup from '../../../components/code_popup';
+import CodePopup from '../../../components/code-popup';
 import './withdraw.css';
 
 const Option = Select.Option;
@@ -148,7 +148,7 @@ class Withdraw extends Component {
     }
 
     return (
-      <div className="withdraw_content">
+      <div className="withdraw-content">
         <div className="title">提币地址</div>
         <div>
           <Select
@@ -167,11 +167,11 @@ class Withdraw extends Component {
             })}
           </Select>
         </div>
-        <ul className="count_top">
+        <ul className="count-top">
           <li className="title">数量</li>
           <li className="title">
-            可用余额： <span className="rest_number">{volume}</span>限额：{' '}
-            <span className="limite_number">{withdrawMaxVolume}</span>
+            可用余额： <span className="rest-number">{volume}</span>限额：{' '}
+            <span className="limite-number">{withdrawMaxVolume}</span>
           </li>
         </ul>
         <Input
@@ -181,7 +181,7 @@ class Withdraw extends Component {
           size="large"
         />
 
-        <ul className="my_count">
+        <ul className="my-count">
           <li>
             <div className="title">手续费</div>
             <div className="money">
@@ -197,12 +197,12 @@ class Withdraw extends Component {
             </div>
           </li>
         </ul>
-        <div className="btn_block">
+        <div className="btn-block">
           <ul>
             <li>温馨提示</li>
             <li>
               {' '}
-              最小提币数量为：<span className="min_withdraw">{withdrawMinVolume}</span>
+              最小提币数量为：<span className="min-withdraw">{withdrawMinVolume}</span>
               {name}
             </li>
             <li>

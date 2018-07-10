@@ -12,9 +12,9 @@ class Status extends Component{
   }
   render(){
     const { name, address, myVolume } = this.props.location.state;
-    return <div className="order_status user-cont">
+    return <div className="order-status user-cont">
       <h4>提币订单已提交，请耐心等待</h4>
-      <div className="step_block">
+      <div className="step-block">
           <Steps current={2}>
             <Step title="提交" status="process" />
             <Step title="审核" status="wait" />
@@ -22,7 +22,7 @@ class Status extends Component{
             <Step title="完成" status="wait" />
           </Steps>
       </div>
-      <ul className="order_content">
+      <ul className="order-content">
         <li>
           <div className="title">币种：</div>
           <div>{name}</div>
