@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Input, Select, Button, message } from 'antd';
 import { withRouter } from 'react-router-dom';
 import Validate from './Validate';
-import GraphicPopup from '../../../components/graphic-popup';
+import CodePopup from '../../../components/code_popup';
 import './withdraw.css';
 
 const Option = Select.Option;
@@ -12,9 +12,7 @@ class Withdraw extends Component {
   constructor(props){
     super(props);
     this.state = {
-      addressHistory: [
-        
-      ],
+      addressHistory: [],
       myCoinCount: "",
       address:'',
       fee: 0,
@@ -62,15 +60,17 @@ class Withdraw extends Component {
           }} getCode={()=>{
 
             this.setState({
-              vmodal: <GraphicPopup
-                  mail={mail}
-                  type="withdraw"
-                  cancelHandle={this.closeModal}
-                  confirmHandle={this.closeModal}
-              >
-              </GraphicPopup>
+              vmodal:  <CodePopup
+              mail={mail}
+              type="withdraw"
+              onCancel={() => {
+                this.closeModal();
+              }}
+              onOk={() => {
+                this.closeModal();
+              }}
+            />
             })
-
           }}/>
         })
       }else {

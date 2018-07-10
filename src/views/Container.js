@@ -4,9 +4,8 @@ import { Input } from 'antd';
 import { message } from 'antd';
 import classnames from 'classnames';
 import request from '../utils/request';
-import logo1 from '../logo.png';
-import Popup from '../components/popup';
 import Verification from '../components/verification';
+import GooglePopup from '../components/google_popup';
 
 // 设置全局消息
 message.config({
@@ -42,12 +41,10 @@ class Container extends Component {
                 // 如果已经谷歌绑定了，去输入谷歌验证码
                 this.setState({
                   popup: (
-                    <Popup cancelHandle={this.closePopup} confirmHandle={this.handleGoogleValid}>
-                      <div>
-                        <label htmlFor="">谷歌验证码：</label>
-                        <Input onChange={this.inputGoogleCode} />
-                      </div>
-                    </Popup>
+                    <GooglePopup
+                      cancelHandle={this.closePopup} 
+                      confirmHandle={this.closePopup}
+                    />
                   )
                 });
               } else {
@@ -67,7 +64,6 @@ class Container extends Component {
                   )
                 });
               }
-
               reject(error);
             }
           });
@@ -93,29 +89,7 @@ class Container extends Component {
     this.setState({ popup: false });
   };
 
-  inputGoogleCode = e => {
-    this.setState({ googleCode: e.target.value });
-  };
-
-  // 谷歌验证
-  handleGoogleValid = () => {
-    const { googleCode } = this.state;
-    if (googleCode) {
-      this.request('/user/googleValid', {
-        body: { code: googleCode }
-      }).then(json => {
-        if (json.code === 10000000) {
-          this.closePopup();
-          message.success('谷歌验证成功！');
-        } else {
-          message.error(json.msg);
-        }
-      });
-    } else {
-      message.error('请输入谷歌验证码');
-    }
-  };
-
+  
   // 获取link列表
   getIntroduce = () => {
     this.request('/cms/introduce/list', {

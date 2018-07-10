@@ -1264,7 +1264,7 @@ class TradeContainer extends Component {
             </Button>
             <Modal
               title="发布广告"
-              wrapClassName="c2c-modal"
+              wrapClassName="c2c-modal v_center_modal"
               visible={releaseVisible}
               onCancel={this.hideModal.bind(this, 'releaseVisible')}
               footer={null}
@@ -1404,7 +1404,7 @@ class TradeContainer extends Component {
         </div>
         <Modal
           title={`${typeText[exType]}${coin.symbol}`}
-          wrapClassName="c2c-modal"
+          wrapClassName="c2c-modal v_center_modal"
           visible={transactionVisible}
           onCancel={this.hideModal.bind(this, 'transactionVisible')}
           footer={null}

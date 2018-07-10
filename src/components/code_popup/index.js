@@ -85,7 +85,7 @@ class CodePopup extends Component {
       visible={true}
       wrapClassName='v_center_modal'
       maskClosable={false}
-      width={500}
+      width={400}
       footer={null}
       onCancel={this.handleCancel}
     >
@@ -94,6 +94,7 @@ class CodePopup extends Component {
       <div className='graphic_content'>
         <Input
           value={code}
+          placeholder='图形验证码'
           onChange={this.codeChange}
           prefix={<i className="iconfont icon-yanzhengma1"></i>}
         />

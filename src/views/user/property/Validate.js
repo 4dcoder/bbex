@@ -97,7 +97,9 @@ class Validate extends Component {
                 title="提币验证"
                 maskClosable={false}
                 visible={true}
+                width={400}
                 cancelText="取消"
+                wrapClassName='v_center_modal'
                 okText="确认"
                 onOk={() => {
                     let id = this.props.id;
@@ -107,7 +109,6 @@ class Validate extends Component {
             >
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Input
-                        style={{ borderRadius: 4 }}
                         value={emailCode}
                         onChange={this.codeChange}
                         size="large"
@@ -117,14 +118,13 @@ class Validate extends Component {
                         onClick={this.getCodeClick}
                         disabled={disabled}
                         type="primary"
-                        style={{ width: 100, height: 36, marginLeft: 20, borderRadius: 4 }}
+                        style={{ width: 100, height: 40}}
                     >
                         {!disabled ? '获取验证码' : number + 's'}
                     </Button>
                 </div>
                 <div style={{ marginTop: 20 }}>
                     <Input
-                        style={{ borderRadius: 4 }}
                         value={googleCode}
                         size="large"
                         onChange={this.googleChange}

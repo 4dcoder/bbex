@@ -46,7 +46,7 @@ class AppealModal extends Component{
       title="订单申诉"
       visible
       width={500}
-      wrapClassName="appeal_modal"
+      wrapClassName="appeal_modal v_center_modal"
       okText='确认'
       cancelText='取消'
       onCancel={this.props.onCancel}
@@ -54,13 +54,13 @@ class AppealModal extends Component{
     >
       <div className='appeal_content'>
         <p>提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者将会被冻结账户。付款成功或者取消申诉后5分钟才可发起申诉</p>
-        <h4 style={{margin: '8px 0'}}>申诉类型</h4>
+        <h4 style={{margin: '8px 0', color: '#e8e8e8'}}>申诉类型</h4>
         <Select value={appealType} onChange={this.handleChange} style={{width:450}}>
           {list.map((item, index)=>{
             return  <Option value={item} key={index}>{item}</Option>
           })}
         </Select>
-        <h4 style={{margin: '8px 0'}}>申诉理由</h4>
+        <h4 style={{margin: '8px 0', color: '#e8e8e8'}}>申诉理由</h4>
         <TextArea rows={5} value={reason} onChange={this.desChange}/>
       </div>
     </Modal>

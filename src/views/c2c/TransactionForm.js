@@ -98,7 +98,7 @@ class TransactionForm extends Component {
             {`${typeText[exType]}${coin.symbol}`}
           </Button>
         </li>
-        <li>费率0%</li>
+        <li style={{color: '#e8e8e8'}}>费率0%</li>
       </ul>
     );
   }

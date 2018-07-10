@@ -1098,3 +1098,6 @@ a:hover {
 .v_center_modal .ant-modal-close-x{
   color: #e8e8e8;
 }
+.v_center_modal .ant-modal-footer{
+  border-top: none;
+}
