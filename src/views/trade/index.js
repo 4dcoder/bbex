@@ -41,7 +41,6 @@ class Trade extends Component {
     this.state = {
       market: this.marketName || 'USDT',
       tradeExpair: {},
-      searchList: [],
       searchValue: '',
       marketName: this.marketName || 'USDT',
       coinName: '',
@@ -198,20 +197,23 @@ class Trade extends Component {
       }
 
       // 如果有推送就更新
-      const market = JSON.parse(evt.data);
-      if (market) {
-        const { tradeExpair } = this.state;
-        Object.keys(tradeExpair).forEach(key => {
-          if (market[key]) {
-            tradeExpair[key] = market[key].map(coin => {
-              coin.key = `${coin.coinMain}.${coin.coinOther}`;
-              return coin;
-            });
-          }
+      const { tradeExpair } = this.state;
+      const updateExPair = JSON.parse(evt.data);
+      Object.keys(updateExPair).forEach(key => {
+        updateExPair[key].forEach(coin => {
+          const expair = `${coin.coinOther}/${coin.coinMain}`;
+          tradeExpair[key][expair] = {
+            ...coin,
+            rise: coin.rise || '0.00%',
+            latestPrice: (coin.latestPrice || 0).toFixed(8),
+            highestPrice: (coin.highestPrice || 0).toFixed(8),
+            lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+            dayCount: (coin.dayCount || 0).toFixed(8)
+          };
         });
+      });
 
-        this.setState({ tradeExpair });
-      }
+      this.setState({ tradeExpair });
     };
 
     marketWS.onclose = evt => {
@@ -449,17 +451,18 @@ class Trade extends Component {
               pendingOrderList = target;
             }
           }
+
           this.setState({ pendingOrderList });
         }
 
         const { mainVolume, coinVolume } = this.state;
         // 当推的数据有主币而且跟当前不相等，就更新主币资产
-        if (coinMainVolume && coinMainVolume.volume && coinMainVolume.volume !== mainVolume) {
+        if (coinMainVolume && coinMainVolume.volume !== mainVolume) {
           this.setState({ mainVolume: coinMainVolume.volume });
         }
 
         // 当推的数据有副币而且跟当前不相等，就更新副币资产
-        if (coinOtherVolume && coinOtherVolume.volume && coinOtherVolume.volume !== coinVolume) {
+        if (coinOtherVolume && coinOtherVolume.volume !== coinVolume) {
           this.setState({ coinVolume: coinOtherVolume.volume });
         }
       }
@@ -503,10 +506,17 @@ class Trade extends Component {
 
         const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
-          tradeExpair[key] = json.data[key].map(coin => {
-            coin.key = `${coin.coinOther}/${coin.coinMain}`;
-            coin.latestPrice = coin.latestPrice || 0;
-            return coin;
+          tradeExpair[key] = {};
+          json.data[key].forEach(coin => {
+            const expair = `${coin.coinOther}/${coin.coinMain}`;
+            tradeExpair[key][expair] = {
+              ...coin,
+              rise: coin.rise || '0.00%',
+              latestPrice: (coin.latestPrice || 0).toFixed(8),
+              highestPrice: (coin.highestPrice || 0).toFixed(8),
+              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+              dayCount: (coin.dayCount || 0).toFixed(8)
+            };
           });
         });
         this.setState({ tradeExpair });
@@ -572,34 +582,7 @@ class Trade extends Component {
 
   // 搜索币
   handleSearch = event => {
-    const { tradeExpair, market, favoriteCoins } = this.state;
-    const searchValue = event.target.value.trim();
-
-    let searchList = [];
-    if (searchValue) {
-      if (market === 'optional') {
-        Object.values(tradeExpair).forEach(tradeList => {
-          tradeList.forEach(expair => {
-            if (
-              expair.coinOther.indexOf(searchValue.toUpperCase()) > -1 &&
-              favoriteCoins.includes(expair.key)
-            ) {
-              searchList.push(expair);
-            }
-          });
-        });
-      } else {
-        tradeExpair &&
-          tradeExpair[market] &&
-          tradeExpair[market].forEach(expair => {
-            if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
-              searchList.push(expair);
-            }
-          });
-      }
-    }
-
-    this.setState({ searchList, searchValue });
+    this.setState({ searchValue: event.target.value.trim() });
   };
 
   //收藏币种
@@ -699,12 +682,12 @@ class Trade extends Component {
     }
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(prevProps, prevState) {
     if (
-      this.state.marketName !== nextState.marketName ||
-      this.state.coinName !== nextState.coinName
+      this.state.marketName !== prevState.marketName ||
+      this.state.coinName !== prevState.coinName
     ) {
-      const { marketName, coinName, streamWS } = nextState;
+      const { marketName, coinName } = this.state;
       this.getStream({
         coinMain: marketName,
         coinOther: coinName
@@ -717,8 +700,8 @@ class Trade extends Component {
       localStorage.setItem('tradePair', `${coinName}_${marketName}`);
     }
 
-    if (this.state.coinName !== nextState.coinName) {
-      const { marketName, coinName, orderStatus } = nextState;
+    if (this.state.coinName !== prevState.coinName) {
+      const { marketName, coinName, orderStatus } = this.state;
 
       this.getCoinDetail(coinName);
 
@@ -753,7 +736,6 @@ class Trade extends Component {
       market,
       favoriteCoins,
       tradeExpair,
-      searchList,
       searchValue,
       marketName,
       coinName,
@@ -773,16 +755,36 @@ class Trade extends Component {
       historyExpendKey
     } = this.state;
 
-    let pairList = []; //当前交易市场的币种列表
-    if (tradeExpair) {
+    let pairList = [];
+    let allTradeMarket = [];
+    if (tradeExpair && Object.keys(tradeExpair).length > 0) {
+      allTradeMarket = Object.keys(tradeExpair);
+      allTradeMarket.push('optional');
       if (market === 'optional') {
-        Object.values(tradeExpair).forEach(coins => {
-          coins = coins.filter(coin => favoriteCoins.includes(coin.key));
+        Object.keys(tradeExpair).forEach(market => {
+          const coins = Object.keys(tradeExpair[market]).map((key, value) => {
+            tradeExpair[market][key].key = key;
+            return tradeExpair[market][key];
+          });
           pairList = [...pairList, ...coins];
         });
+        pairList = pairList.filter(coin => {
+          return favoriteCoins.includes(coin.key);
+        });
       } else {
-        pairList = tradeExpair[market] || [];
+        pairList = tradeExpair[market]
+          ? Object.keys(tradeExpair[market]).map(key => {
+              tradeExpair[market][key].key = key;
+              return tradeExpair[market][key];
+            })
+          : [];
       }
+    }
+
+    if (searchValue) {
+      pairList = pairList.filter(coin => {
+        return coin.coinOther.indexOf(searchValue.toLocaleUpperCase()) !== -1;
+      });
     }
 
     const orderColumns = [
@@ -925,11 +927,12 @@ class Trade extends Component {
       </div>
     );
 
-    let allTradeMarket = [];
-    if (tradeExpair) {
-      allTradeMarket = Object.keys(tradeExpair);
-      allTradeMarket.push('optional');
-    }
+    const emptyHandle = (
+      <div className="empty-handle">
+        <i className="iconfont icon-zanwushuju" />
+        {localization['暂无数据']}
+      </div>
+    );
 
     return (
       <div className="content trade">
@@ -998,49 +1001,43 @@ class Trade extends Component {
               </div>
               <div className="trade-plate-container market" style={{ height: 345 }}>
                 {tradeExpair ? (
-                  <Scrollbars>
-                    <table>
-                      <tbody>
-                        {(searchValue ? searchList : pairList).map(coin => {
-                          const latestPrice = coin.latestPrice || 0;
-                          const firstPrice = coin.firstPrice || 0;
-                          let change = 0;
-                          if (firstPrice > 0) {
-                            change = (latestPrice - firstPrice) / firstPrice;
-                          }
-                          if (isNaN(change)) {
-                            change = 0;
-                          }
-                          const trend = change > 0 ? 'green' : 'red';
-                          return (
-                            <tr
-                              key={coin.key}
-                              onClick={this.handleSelectCoin.bind(this, coin)}
-                              className={classnames({
-                                selected:
-                                  coin.coinMain === marketName && coin.coinOther === coinName
-                              })}
-                            >
-                              <td>
-                                <i
-                                  className={`iconfont icon-shoucang${
-                                    favoriteCoins.includes(coin.key) ? '-active' : ''
-                                  }`}
-                                  onClick={this.handleCollect.bind(this, coin)}
-                                />
-                                {coin.coinOther}
-                                {market === 'optional' && `/${coin.coinMain}`}
-                              </td>
-                              <td>{coin.latestPrice.toFixed(8)}</td>
-                              <td className={`font-color-${trend}`}>
-                                {(change * 100).toFixed(2)}%
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </Scrollbars>
+                  pairList.length > 0 ? (
+                    <Scrollbars>
+                      <table>
+                        <tbody>
+                          {pairList.map(coin => {
+                            const trend =
+                              coin.rise && coin.rise.indexOf('-') === 0 ? 'red' : 'green';
+                            return (
+                              <tr
+                                key={coin.key}
+                                onClick={this.handleSelectCoin.bind(this, coin)}
+                                className={classnames({
+                                  selected:
+                                    coin.coinMain === marketName && coin.coinOther === coinName
+                                })}
+                              >
+                                <td>
+                                  <i
+                                    className={`iconfont icon-shoucang${
+                                      favoriteCoins.includes(coin.key) ? '-active' : ''
+                                    }`}
+                                    onClick={this.handleCollect.bind(this, coin)}
+                                  />
+                                  {coin.coinOther}
+                                  {market === 'optional' && `/${coin.coinMain}`}
+                                </td>
+                                <td>{coin.latestPrice}</td>
+                                <td className={`font-color-${trend}`}>{coin.rise}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </Scrollbars>
+                  ) : (
+                    emptyHandle
+                  )
                 ) : (
                   loading
                 )}
@@ -1059,30 +1056,34 @@ class Trade extends Component {
               </div>
               <div className="trade-plate-container stream">
                 {streamList ? (
-                  <Scrollbars>
-                    <table>
-                      <tbody>
-                        {streamList.map((stream, index) => {
-                          if (stream) {
-                            const trend = stream.type == 0 ? 'green' : 'red';
-                            return (
-                              <tr key={stream.date + index} className={`font-color-${trend}`}>
-                                <td
-                                  style={{
-                                    paddingLeft: 25
-                                  }}
-                                >
-                                  {stampToDate(Number(stream.date), 'hh:mm:ss')}
-                                </td>
-                                <td>{stream.price.toFixed(8)}</td>
-                                <td>{stream.volume.toFixed(8)}</td>
-                              </tr>
-                            );
-                          }
-                        })}
-                      </tbody>
-                    </table>
-                  </Scrollbars>
+                  streamList.length > 0 ? (
+                    <Scrollbars>
+                      <table>
+                        <tbody>
+                          {streamList.map((stream, index) => {
+                            if (stream) {
+                              const trend = stream.type == 0 ? 'green' : 'red';
+                              return (
+                                <tr key={stream.date + index} className={`font-color-${trend}`}>
+                                  <td
+                                    style={{
+                                      paddingLeft: 25
+                                    }}
+                                  >
+                                    {stampToDate(Number(stream.date), 'hh:mm:ss')}
+                                  </td>
+                                  <td>{stream.price.toFixed(8)}</td>
+                                  <td>{stream.volume.toFixed(8)}</td>
+                                </tr>
+                              );
+                            }
+                          })}
+                        </tbody>
+                      </table>
+                    </Scrollbars>
+                  ) : (
+                    emptyHandle
+                  )
                 ) : (
                   loading
                 )}
@@ -1252,29 +1253,33 @@ class Trade extends Component {
                 <div className="trade-plate-list">
                   <div className="trade-plate-list-wrap">
                     {tradeList && tradeList.sellOrderVOList ? (
-                      <table>
-                        <tbody>
-                          {tradeList.sellOrderVOList.map((record, index, arr) => {
-                            const visibleLength = arr.length < 15 ? arr.length : 15;
-                            const startIndex = arr.length - visibleLength;
-                            return (
-                              index > startIndex - 1 && (
-                                <tr
-                                  key={index}
-                                  onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
-                                >
-                                  <td className="font-color-red">
-                                    卖出{visibleLength - index + startIndex}
-                                  </td>
-                                  <td>{record.price.toFixed(8)}</td>
-                                  <td>{record.volume.toFixed(8)}</td>
-                                  {false && <td className="font-color-red">{record.sumTotal}</td>}
-                                </tr>
-                              )
-                            );
-                          })}
-                        </tbody>
-                      </table>
+                      tradeList.sellOrderVOList.length > 0 ? (
+                        <table>
+                          <tbody>
+                            {tradeList.sellOrderVOList.map((record, index, arr) => {
+                              const visibleLength = arr.length < 15 ? arr.length : 15;
+                              const startIndex = arr.length - visibleLength;
+                              return (
+                                index > startIndex - 1 && (
+                                  <tr
+                                    key={index}
+                                    onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
+                                  >
+                                    <td className="font-color-red">
+                                      卖出{visibleLength - index + startIndex}
+                                    </td>
+                                    <td>{record.price.toFixed(8)}</td>
+                                    <td>{record.volume.toFixed(8)}</td>
+                                    {false && <td className="font-color-red">{record.sumTotal}</td>}
+                                  </tr>
+                                )
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      ) : (
+                        emptyHandle
+                      )
                     ) : (
                       loading
                     )}
@@ -1316,25 +1321,31 @@ class Trade extends Component {
                   </div>
                   <div className="trade-plate-list-wrap">
                     {tradeList && tradeList.buyOrderVOList ? (
-                      <table>
-                        <tbody>
-                          {tradeList.buyOrderVOList.map((record, index) => {
-                            return (
-                              index < 15 && (
-                                <tr
-                                  key={index}
-                                  onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
-                                >
-                                  <td className="font-color-green">买入{index + 1}</td>
-                                  <td>{record.price.toFixed(8)}</td>
-                                  <td>{record.volume.toFixed(8)}</td>
-                                  {false && <td className="font-color-green">{record.sumTotal}</td>}
-                                </tr>
-                              )
-                            );
-                          })}
-                        </tbody>
-                      </table>
+                      tradeList.buyOrderVOList.length > 0 ? (
+                        <table>
+                          <tbody>
+                            {tradeList.buyOrderVOList.map((record, index) => {
+                              return (
+                                index < 15 && (
+                                  <tr
+                                    key={index}
+                                    onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
+                                  >
+                                    <td className="font-color-green">买入{index + 1}</td>
+                                    <td>{record.price.toFixed(8)}</td>
+                                    <td>{record.volume.toFixed(8)}</td>
+                                    {false && (
+                                      <td className="font-color-green">{record.sumTotal}</td>
+                                    )}
+                                  </tr>
+                                )
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      ) : (
+                        emptyHandle
+                      )
                     ) : (
                       loading
                     )}
@@ -1343,35 +1354,40 @@ class Trade extends Component {
               ) : (
                 <div className="trade-plate-list">
                   {tradeList && (tradeList.sellOrderVOList || tradeList.buyOrderVOList) ? (
-                    <Scrollbars>
-                      <table>
-                        <tbody>
-                          {(listType === 1
-                            ? tradeList.sellOrderVOList
-                            : tradeList.buyOrderVOList
-                          ).map((record, index) => {
-                            const colorName = listType === 0 ? 'green' : 'red';
-                            const actionName = listType === 0 ? '买入' : '卖出';
-                            return (
-                              <tr
-                                key={index}
-                                onClick={this.handleTradePrice.bind(this, record.price)}
-                              >
-                                <td className={`font-color-${colorName}`}>
-                                  {actionName}
-                                  {index + 1}
-                                </td>
-                                <td>{record.price.toFixed(8)}</td>
-                                <td>{record.volume.toFixed(8)}</td>
-                                {false && (
-                                  <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
-                                )}
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </Scrollbars>
+                    (listType === 1 ? tradeList.sellOrderVOList : tradeList.buyOrderVOList).length >
+                    0 ? (
+                      <Scrollbars>
+                        <table>
+                          <tbody>
+                            {(listType === 1
+                              ? tradeList.sellOrderVOList
+                              : tradeList.buyOrderVOList
+                            ).map((record, index) => {
+                              const colorName = listType === 0 ? 'green' : 'red';
+                              const actionName = listType === 0 ? '买入' : '卖出';
+                              return (
+                                <tr
+                                  key={index}
+                                  onClick={this.handleTradePrice.bind(this, record.price)}
+                                >
+                                  <td className={`font-color-${colorName}`}>
+                                    {actionName}
+                                    {index + 1}
+                                  </td>
+                                  <td>{record.price.toFixed(8)}</td>
+                                  <td>{record.volume.toFixed(8)}</td>
+                                  {false && (
+                                    <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
+                                  )}
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
+                      </Scrollbars>
+                    ) : (
+                      emptyHandle
+                    )
                   ) : (
                     loading
                   )}
@@ -1403,7 +1419,12 @@ class Trade extends Component {
                     loading={!pendingOrderList}
                     pagination={false}
                     locale={{
-                      emptyText: localization['暂无数据']
+                      emptyText: (
+                        <span>
+                          <i className="iconfont icon-zanwushuju" />
+                          {localization['暂无数据']}
+                        </span>
+                      )
                     }}
                   />
                 </Scrollbars>
@@ -1417,7 +1438,12 @@ class Trade extends Component {
                     loading={!completedOrderList}
                     pagination={false}
                     locale={{
-                      emptyText: localization['暂无数据']
+                      emptyText: (
+                        <span>
+                          <i className="iconfont icon-zanwushuju" />
+                          {localization['暂无数据']}
+                        </span>
+                      )
                     }}
                     expandedRowKeys={[historyExpendKey]}
                     expandedRowRender={record => {

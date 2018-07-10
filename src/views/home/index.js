@@ -82,9 +82,9 @@ class Home extends Component {
               highestPrice: (coin.highestPrice || 0).toFixed(8),
               lowerPrice: (coin.lowerPrice || 0).toFixed(8),
               dayCount: (coin.dayCount || 0).toFixed(8)
-            };  
-          })
-        })
+            };
+          });
+        });
 
         this.setState({ tradeExpair });
       }
@@ -125,7 +125,7 @@ class Home extends Component {
 
   // 市场币种列表
   getTradeExpair = () => {
-    this.setState({ tradeExpair: {} });
+    this.setState({ tradeExpair: null });
     this.request('/index/allTradeExpair', {
       method: 'GET'
     }).then(json => {
@@ -193,7 +193,10 @@ class Home extends Component {
     sortedInfo = sortedInfo || {};
 
     let pairList = [];
-    if (Object.keys(tradeExpair).length > 0) {
+    let allTradeMarket = [];
+    if (tradeExpair && Object.keys(tradeExpair).length > 0) {
+      allTradeMarket = Object.keys(tradeExpair);
+      allTradeMarket.unshift('optional');
       if (market === 'optional') {
         Object.keys(tradeExpair).forEach(market => {
           const coins = Object.keys(tradeExpair[market]).map((key, value) => {
@@ -215,16 +218,10 @@ class Home extends Component {
       }
     }
 
-    if(searchValue) {
+    if (searchValue) {
       pairList = pairList.filter(coin => {
         return coin.coinOther.indexOf(searchValue.toLocaleUpperCase()) !== -1;
       });
-    }
-
-    let allTradeMarket = [];
-    if (Object.keys(tradeExpair).length > 0) {
-      allTradeMarket = Object.keys(tradeExpair);
-      allTradeMarket.unshift('optional');
     }
 
     const columns = [
@@ -347,7 +344,7 @@ class Home extends Component {
                         onClick: this.handleGoToTrade.bind(this, record)
                       })}
                       locale={{
-                        emptyText: localization['暂无数据']
+                        emptyText: <span><i className="iconfont icon-zanwushuju"></i>{localization['暂无数据']}</span>
                       }}
                       pagination={false}
                     />
