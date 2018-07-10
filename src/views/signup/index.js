@@ -148,7 +148,8 @@ class SignUp extends Component {
                 rules: [
 									{ required: true, message: '请输入邮箱' },
 									{ pattern: MAIL_REGEX, message: '邮箱格式不正确'},
-								]
+								],
+								validateTrigger: 'onBlur'
             })(
             <Input
                 size='large'
@@ -163,7 +164,8 @@ class SignUp extends Component {
                     { required: true, message: '请输入密码' },
                     { pattern: PWD_REGEX, message: '输入8-20位密码'},
                     { validator: this.validateToNextPassword }
-                ]
+								],
+								validateTrigger: 'onBlur'
             })(
             <Input 
                 size='large'
@@ -177,7 +179,8 @@ class SignUp extends Component {
                 rules: [
                     { required: true, message: '请输入确认密码' },
                     { validator: this.comparePassword }
-                ]
+								],
+								validateTrigger: 'onBlur'
             })(
 						<Input
 							size='large'
@@ -192,7 +195,8 @@ class SignUp extends Component {
                 rules: [
 										{ required: true, message: '请输入邮箱验证码' },
 										{ pattern: /^\w{6}$/, message: '请输入6位验证码'},
-                ]
+								],
+								validateTrigger: 'onBlur'
             })(
 						<Input
 							size='large'
@@ -215,7 +219,8 @@ class SignUp extends Component {
 							initialValue: inviteCode,
 							rules: [
 								{ pattern: /^\w{4}$/, message: '请输入4位邀请码'},
-						]
+							],
+							validateTrigger: 'onBlur'
 						})(
 						<Input
 							size='large'
