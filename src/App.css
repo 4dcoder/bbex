@@ -428,12 +428,12 @@ a:hover {
   right: 20px;
 }
 
-.select-bar .icon-jiantou-down:before {
+.select-bar .icon-jiantou_down:before {
   display: inline-block;
   transition: 0.2s ease-in;
 }
 
-.select-bar:hover .icon-jiantou-down:before {
+.select-bar:hover .icon-jiantou_down:before {
   transform: rotate(180deg);
 }
 
@@ -442,7 +442,7 @@ a:hover {
   margin-left: 5px;
 }
 
-.select-bar .icon-jiantou-down {
+.select-bar .icon-jiantou_down {
   float: right;
   margin-right: 5px;
 }
