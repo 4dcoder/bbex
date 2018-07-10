@@ -290,7 +290,7 @@ class Transaction extends Component {
         key: 'toCoinVolume',
         render: (text, record) => {
           return (
-            <Button type="primary" style={{ borderRadius: 4 }} onClick={()=>{this.handleCancelTrade(record)}}>
+            <Button type="primary" onClick={()=>{this.handleCancelTrade(record)}}>
               撤单
             </Button>
           );

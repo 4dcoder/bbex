@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Tabs, Input, Table, message } from 'antd';
 import { Carousel } from 'react-responsive-carousel';
 import classnames from 'classnames';
@@ -24,10 +23,9 @@ class Home extends Component {
     market: 'USDT',
     sortedInfo: null,
     tradeExpair: null,
-    searchList: null,
     searchValue: '',
-    favoriteCoins: sessionStorage.getItem('favoriteCoins')
-      ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
+    favoriteCoins: localStorage.getItem('favoriteCoins')
+      ? JSON.parse(localStorage.getItem('favoriteCoins'))
       : [],
     homeWS: null
   };
@@ -72,27 +70,21 @@ class Home extends Component {
       if (current - this.timer1 > 1000) {
         this.timer1 = current;
 
-        const markPair = JSON.parse(evt.data);
-        const socketMarket = Object.keys(markPair)[0];
-
-        markPair[socketMarket] = markPair[socketMarket].map(coin => {
-          coin.key = `${coin.coinMain}.${coin.coinOther}`;
-          coin.latestPrice = (coin.latestPrice || 0).toFixed(8);
-          coin.highestPrice = (coin.highestPrice || 0).toFixed(8);
-          coin.lowerPrice = (coin.lowerPrice || 0).toFixed(8);
-          coin.dayCount = (coin.dayCount || 0).toFixed(8);
-          return coin;
-        });
-
-        let { tradeExpair, searchList, searchValue } = this.state;
-
-        if (searchValue) {
-          searchList = markPair[socketMarket].filter(expair => {
-            return expair.coinOther.indexOf(searchValue.toUpperCase()) > -1;
-          });
-          this.setState({ searchList });
-        }
-        tradeExpair[socketMarket] = markPair[socketMarket];
+        const { tradeExpair } = this.state;
+        const updateExPair = JSON.parse(evt.data);
+        Object.keys(updateExPair).forEach(key => {
+          updateExPair[key].forEach(coin => {
+            const expair = `${coin.coinOther}/${coin.coinMain}`;
+            tradeExpair[key][expair] = {
+              ...coin,
+              rise: coin.rise || '0.00%',
+              latestPrice: (coin.latestPrice || 0).toFixed(8),
+              highestPrice: (coin.highestPrice || 0).toFixed(8),
+              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+              dayCount: (coin.dayCount || 0).toFixed(8)
+            };  
+          })
+        })
 
         this.setState({ tradeExpair });
       }
@@ -140,13 +132,17 @@ class Home extends Component {
       if (json.code === 10000000) {
         const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
-          tradeExpair[key] = json.data[key].map(coin => {
-            coin.key = `${coin.coinMain}.${coin.coinOther}`;
-            coin.latestPrice = (coin.latestPrice || 0).toFixed(8);
-            coin.highestPrice = (coin.highestPrice || 0).toFixed(8);
-            coin.lowerPrice = (coin.lowerPrice || 0).toFixed(8);
-            coin.dayCount = (coin.dayCount || 0).toFixed(8);
-            return coin;
+          tradeExpair[key] = {};
+          json.data[key].forEach(coin => {
+            const expair = `${coin.coinOther}/${coin.coinMain}`;
+            tradeExpair[key][expair] = {
+              ...coin,
+              rise: coin.rise || '0.00%',
+              latestPrice: (coin.latestPrice || 0).toFixed(8),
+              highestPrice: (coin.highestPrice || 0).toFixed(8),
+              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+              dayCount: (coin.dayCount || 0).toFixed(8)
+            };
           });
         });
         this.setState({ tradeExpair });
@@ -171,7 +167,7 @@ class Home extends Component {
       favoriteCoins.push(record.key);
     }
     this.setState({ favoriteCoins });
-    sessionStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
+    localStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
   };
 
   handleChange = (pagination, filters, sorter) => {
@@ -182,73 +178,51 @@ class Home extends Component {
   };
 
   handleGoToTrade = record => {
-    sessionStorage.setItem(
-      'tradePair',
-      `${record.coinOther}_${record.coinMain}`
-    );
+    localStorage.setItem('tradePair', `${record.coinOther}_${record.coinMain}`);
     this.props.history.push('/trade');
   };
 
   // 搜索币
   handleSearch = event => {
-    const { tradeExpair, market, favoriteCoins } = this.state;
-    const searchValue = event.target.value;
-
-    let searchList = null;
-
-    if (searchValue) {
-      searchList = [];
-      if (market === 'optional') {
-        Object.values(tradeExpair).forEach(tradeList => {
-          tradeList.forEach(expair => {
-            if (
-              expair.coinOther.indexOf(searchValue.toUpperCase()) > -1 &&
-              favoriteCoins.includes(expair.key)
-            ) {
-              searchList.push(expair);
-            }
-          });
-        });
-      } else {
-        tradeExpair[market] &&
-          tradeExpair[market].forEach(expair => {
-            if (expair.coinOther.indexOf(searchValue.toUpperCase()) > -1) {
-              searchList.push(expair);
-            }
-          });
-      }
-    }
-
-    this.setState({ searchList, searchValue });
+    this.setState({ searchValue: event.target.value });
   };
 
   render() {
     const { localization } = this.props;
-    let {
-      banners,
-      market,
-      sortedInfo,
-      tradeExpair,
-      searchList,
-      searchValue,
-      favoriteCoins
-    } = this.state;
+    let { banners, market, sortedInfo, tradeExpair, searchValue, favoriteCoins } = this.state;
     sortedInfo = sortedInfo || {};
 
     let pairList = [];
-    if (tradeExpair) {
+    if (Object.keys(tradeExpair).length > 0) {
       if (market === 'optional') {
-        Object.values(tradeExpair).forEach(coins => {
-          coins = coins.filter(coin => favoriteCoins.includes(coin.key));
+        Object.keys(tradeExpair).forEach(market => {
+          const coins = Object.keys(tradeExpair[market]).map((key, value) => {
+            tradeExpair[market][key].key = key;
+            return tradeExpair[market][key];
+          });
           pairList = [...pairList, ...coins];
         });
+        pairList = pairList.filter(coin => {
+          return favoriteCoins.includes(coin.key);
+        });
       } else {
-        pairList = tradeExpair[market] || [];
+        pairList = tradeExpair[market]
+          ? Object.keys(tradeExpair[market]).map(key => {
+              tradeExpair[market][key].key = key;
+              return tradeExpair[market][key];
+            })
+          : [];
       }
     }
 
+    if(searchValue) {
+      pairList = pairList.filter(coin => {
+        return coin.coinOther.indexOf(searchValue.toLocaleUpperCase()) !== -1;
+      });
+    }
+
     let allTradeMarket = [];
-    if (tradeExpair) {
+    if (Object.keys(tradeExpair).length > 0) {
       allTradeMarket = Object.keys(tradeExpair);
       allTradeMarket.unshift('optional');
     }
@@ -263,8 +237,7 @@ class Home extends Component {
         render: (text, record) => (
           <span
             className={classnames({
-              'name-wrap': true,
-              attention: true
+              'name-wrap': true
             })}
           >
             <i
@@ -278,9 +251,7 @@ class Home extends Component {
         )
       },
       {
-        title: `${localization['最新价']}${
-          market !== 'optional' ? `(${market})` : ''
-        }`,
+        title: `${localization['最新价']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'latestPrice',
         key: 'latestPrice',
         sorter: (a, b) => a.price - b.price,
@@ -288,15 +259,15 @@ class Home extends Component {
       },
       {
         title: localization['涨跌幅'],
-        dataIndex: 'change',
-        key: 'change',
-        sorter: (a, b) => a.change - b.change,
-        sortOrder: sortedInfo.columnKey === 'change' && sortedInfo.order,
-        render: (text, record) => {
-          const { latestPrice, firstPrice } = record;
-          const change = (latestPrice - firstPrice) / firstPrice || 0;
-          return `${change.toFixed(2)}%`;
-        }
+        dataIndex: 'rise',
+        key: 'rise',
+        sorter: (a, b) =>
+          Number(a.rise.substring(0, a.rise.length - 1)) -
+          Number(a.rise.substring(0, b.rise.length - 1)),
+        sortOrder: sortedInfo.columnKey === 'rise' && sortedInfo.order,
+        render: text => (
+          <span className={`font-color-${text.indexOf('-') !== -1 ? 'red' : 'green'}`}>{text}</span>
+        )
       },
       {
         title: localization['最高价'],
@@ -309,9 +280,7 @@ class Home extends Component {
         key: 'lowerPrice'
       },
       {
-        title: `${localization['成交额']}${
-          market !== 'optional' ? `(${market})` : ''
-        }`,
+        title: `${localization['成交额']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'dayCount',
         key: 'dayCount',
         sorter: (a, b) => a.total - b.total,
@@ -321,13 +290,7 @@ class Home extends Component {
 
     return (
       <div className="content home">
-        <Carousel
-          autoPlay
-          infiniteLoop
-          showArrows={false}
-          showStatus={false}
-          showThumbs={false}
-        >
+        <Carousel autoPlay infiniteLoop showArrows={false} showStatus={false} showThumbs={false}>
           {banners.length > 0 &&
             banners.map(banner => {
               const props = {
@@ -378,7 +341,7 @@ class Home extends Component {
                   >
                     <Table
                       columns={columns}
-                      dataSource={searchList ? searchList : pairList}
+                      dataSource={pairList}
                       onChange={this.handleChange}
                       onRow={record => ({
                         onClick: this.handleGoToTrade.bind(this, record)
@@ -398,38 +361,22 @@ class Home extends Component {
             <h2>-{localization['合作伙伴']}-</h2>
             <ul className="content-inner">
               <li>
-                <a
-                  href="https://po.im/#/home"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://po.im/#/home" target="_blank" rel="noopener noreferrer">
                   <img src={partner1} alt="" />
                 </a>
               </li>
               <li>
-                <a
-                  href="https://www.magicw.net/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://www.magicw.net/" target="_blank" rel="noopener noreferrer">
                   <img src={partner2} alt="" />
                 </a>
               </li>
               <li>
-                <a
-                  href="http://www.nodecap.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="http://www.nodecap.com/" target="_blank" rel="noopener noreferrer">
                   <img src={partner3} alt="" />
                 </a>
               </li>
               <li>
-                <a
-                  href="https://www.chainnews.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://www.chainnews.com/" target="_blank" rel="noopener noreferrer">
                   <img src={partner5} alt="" />
                 </a>
               </li>

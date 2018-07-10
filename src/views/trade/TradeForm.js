@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Input, InputNumber, Slider, Button, Tooltip, message } from 'antd';
+import { Link } from 'react-router-dom';
+import { Input, Slider, Button, Tooltip, message } from 'antd';
 import classnames from 'classnames';
 
 class TradeForm extends Component {
@@ -23,7 +24,7 @@ class TradeForm extends Component {
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const volume = (assetVolume / price) * (value / 100);
-    this.setState({ volume: volume.toFixed(8)});
+    this.setState({ volume: volume.toFixed(8) });
   };
 
   // 获取订单号
@@ -106,7 +107,7 @@ class TradeForm extends Component {
 
     const { type, tradeType, marketName, coinName, mainVolume, coinVolume } = this.props;
 
-    const { triggerPrice, price, volume, totalPrice, pending, tradeAmount } = this.state;
+    const { triggerPrice, price, volume, totalPrice, pending } = this.state;
 
     const isLogin = sessionStorage.getItem('account');
 
@@ -116,27 +117,51 @@ class TradeForm extends Component {
     };
 
     let totalCount = 0;
-    
-    if(isNaN(price*volume)){
-      totalCount = 0
-    }else{
-      totalCount = (price*volume).toFixed(8)
+
+    if (isNaN(price * volume)) {
+      totalCount = 0;
+    } else {
+      totalCount = (price * volume).toFixed(8);
     }
 
     return (
       <ul className="trade-form">
+        {type === 'buy' && (
+          <li key="info" className="property-info">
+            <span>
+              {marketName} 可用 {mainVolume.toFixed(8)}
+              {false && (
+                <Link className="recharge-link" to="#">
+                  充币
+                </Link>
+              )}
+            </span>
+          </li>
+        )}
+        {type === 'sell' && (
+          <li key="info" className="property-info">
+            <span>
+              {coinName} 可用 {coinVolume.toFixed(8)}
+              {false && (
+                <Link className="recharge-link" to="#">
+                  充币
+                </Link>
+              )}
+            </span>
+          </li>
+        )}
         {tradeType === 'stop' && (
           <li>
             <span className="trade-form-name">触发价</span>
             <Input
               id="triggerPrice"
+              size="large"
               value={triggerPrice}
               onChange={e => {
                 let value = e.target.value;
-                if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
+                if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
                   this.handleValue(value, 'triggerPrice');
                 }
-                
               }}
             />
             <span className="trade-form-marketName">{marketName}</span>
@@ -147,14 +172,14 @@ class TradeForm extends Component {
             <span className="trade-form-name">价格</span>
             <Input
               id="price"
+              size="large"
               value={price}
               placeholder={`${typeToText[type]}价`}
               onChange={e => {
                 let value = e.target.value;
-                if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
+                if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
                   this.handleValue(value, 'price');
                 }
-                
               }}
             />
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
@@ -184,23 +209,15 @@ class TradeForm extends Component {
             )}
             <Input
               id="volume"
+              size="large"
               value={volume}
               placeholder={`${typeToText[type]}量`}
               onChange={e => {
                 let value = e.target.value;
-                if(/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length<16){
+                if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
                   this.handleValue(value, 'volume');
                 }
-               
               }}
-            />
-            <Slider
-              marks={marks}
-              defaultValue={0}
-              onChange={this.handleSlideInput}
-              disabled={
-                !price || ((type === 'buy' && !mainVolume) || (type === 'sell' && !coinVolume))
-              }
             />
             <span
               className={classnames({
@@ -210,6 +227,18 @@ class TradeForm extends Component {
             >
               {coinName}
             </span>
+          </li>
+        )}
+        {(tradeType !== 'market' || (tradeType === 'market' && type === 'sell')) && (
+          <li>
+            <Slider
+              marks={marks}
+              defaultValue={0}
+              onChange={this.handleSlideInput}
+              disabled={
+                !price || ((type === 'buy' && !mainVolume) || (type === 'sell' && !coinVolume))
+              }
+            />
           </li>
         )}
         {tradeType === 'market' &&
@@ -236,13 +265,13 @@ class TradeForm extends Component {
               )}
               <Input
                 id="totalPrice"
+                size="large"
                 value={totalPrice}
                 placeholder={`${typeToText[type]}量`}
                 onChange={value => {
                   this.handleValue(value, 'totalPrice');
                 }}
               />
-              <Slider marks={marks} defaultValue={0} />
               <span
                 className={classnames({
                   'trade-form-coinName': true,

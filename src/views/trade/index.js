@@ -31,7 +31,7 @@ class Trade extends Component {
   constructor(props) {
     super(props);
 
-    const tradePair = sessionStorage.getItem('tradePair');
+    const tradePair = localStorage.getItem('tradePair');
     if (tradePair) {
       const [coinName, marketName] = tradePair.split('_');
       this.coinName = coinName;
@@ -55,8 +55,8 @@ class Trade extends Component {
       mergeNumber: 8,
       orderStatus: 0,
       coinDetail: '',
-      favoriteCoins: sessionStorage.getItem('favoriteCoins')
-        ? JSON.parse(sessionStorage.getItem('favoriteCoins'))
+      favoriteCoins: localStorage.getItem('favoriteCoins')
+        ? JSON.parse(localStorage.getItem('favoriteCoins'))
         : [],
       tradePrice: '',
       clickTradeType: '',
@@ -484,7 +484,7 @@ class Trade extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         if (this.coinName) {
-          // 如果有保存在sessionStorage的交易对，就取保存中的
+          // 如果有保存在localStorage的交易对，就取保存中的
           this.setState({ coinName: this.coinName });
         } else {
           // 如果没有保存的交易对，就取当前市场的第一个币种
@@ -504,7 +504,7 @@ class Trade extends Component {
         const tradeExpair = {};
         Object.keys(json.data).forEach(key => {
           tradeExpair[key] = json.data[key].map(coin => {
-            coin.key = `${coin.coinMain}.${coin.coinOther}`;
+            coin.key = `${coin.coinOther}/${coin.coinMain}`;
             coin.latestPrice = coin.latestPrice || 0;
             return coin;
           });
@@ -613,7 +613,7 @@ class Trade extends Component {
       favoriteCoins.push(record.key);
     }
     this.setState({ favoriteCoins });
-    sessionStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
+    localStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
   };
 
   // 选择币种
@@ -714,7 +714,7 @@ class Trade extends Component {
       this.openStreamWebsocket({ marketName, coinName });
 
       // 保存交易对,以便刷新能够定位交易对
-      sessionStorage.setItem('tradePair', `${coinName}_${marketName}`);
+      localStorage.setItem('tradePair', `${coinName}_${marketName}`);
     }
 
     if (this.state.coinName !== nextState.coinName) {
@@ -1139,7 +1139,7 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="introduction">币种介绍</Button>
+                    <Button type="normal">币种介绍</Button>
                   </Tooltip>
                 </div>
               </header>
