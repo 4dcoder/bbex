@@ -1,5 +1,14 @@
 /* 全局样式 */
 
+
+/* 修改chrome浏览器渲染黄色背景的时间 */
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #272b37 inset !important;
+  -webkit-text-fill-color: #e8e8e8 !important;
+  caret-color: #e8e8e8;
+}
+
 html,
 body {
   width: 100%;

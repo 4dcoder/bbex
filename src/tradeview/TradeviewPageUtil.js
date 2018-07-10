@@ -1,11 +1,10 @@
 import $ from 'jquery';
 const datafeedConfig = params => {
   let { resolution, Datafeeds, serverUrl, pushInterval, symbol } = params;
-  console.log('symbol: ', symbol);
-
+  
   return {
     symbol,
-    debug: true,
+    debug: false,
     fullscreen: false,
     interval: resolution,
     container_id: 'tv_chart_container',
@@ -178,6 +177,7 @@ const chartReady = widget => {
   let handleClick = (e, value) => {
     console.log("set++++++++++++++++++++++: ", value);
     widget.chart().setResolution(value);
+    
     $(e.target)
       .addClass('select')
       .closest('div.space-single')

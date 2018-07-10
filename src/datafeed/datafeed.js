@@ -78,7 +78,7 @@ const datafeeds = symbol => {
   Datafeeds.UDFCompatibleDatafeed.prototype._logMessage = function(message) {
     if (this._enableLogging) {
       var now = new Date();
-      console.log(now.toLocaleTimeString() + '.' + now.getMilliseconds() + '> ' + message);
+      //console.log(now.toLocaleTimeString() + '.' + now.getMilliseconds() + '> ' + message);
     }
   };
 
@@ -232,11 +232,11 @@ const datafeeds = symbol => {
 
         window.ws.onmessage = function(e) {
           if (e.data === 'pong') {
-            console.log('kline: ', e.data);
+            // console.log('kline: ', e.data);
             return;
           }
           const record = JSON.parse(e.data);
-          console.log('Kline recevied record: ', record);
+          // console.log('Kline recevied record: ', record);
           // JSON格式
           let websocketParams = {
             data: e.data,

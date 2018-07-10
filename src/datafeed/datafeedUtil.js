@@ -91,12 +91,11 @@ const filteringTime = time => {
 const transformTime = time => {
   let period = '';
   if (time.toString().indexOf('D') !== -1) {
-    if (time === 'D') {
-      period = '1d';
-    } else {
-      let dayNumber = parseInt(time.split('D')[0]);
-      period = `${dayNumber}d`;
-    }
+    period = '1d';
+  } else if(time.toString().indexOf('W') !== -1){
+    period = '1w';
+  }else if(time.toString().indexOf('M') !== -1){
+    period = '1mth';
   } else {
     if (parseInt(time) < 60) {
       period = `${time}m`;
