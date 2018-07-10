@@ -48,7 +48,7 @@
     height: 15px;
     margin-right: 5px;
     vertical-align: middle;
-    background-image: url(../../../assets/images/coin-logos.png);
+    background-image: url(../../../assets/images/coin_logos.png);
     background-repeat: no-repeat;
 }
 .currency-logo.btc {
