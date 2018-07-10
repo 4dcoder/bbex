@@ -351,8 +351,8 @@ class Trade extends Component {
       buyandsellWS.send(`${coinName}_${marketName}_${mergeNumber}`);
     }
     this.interval2 = setInterval(() => {
-      if (buyandsellWS && buyandsellWS.readyState === 1) {
-        const { marketName, coinName, mergeNumber } = this.state;
+      const { marketName, coinName, mergeNumber } = this.state;
+      if (buyandsellWS && buyandsellWS.readyState === 1 && coinName && marketName) {
         buyandsellWS.send(`${coinName}_${marketName}_${mergeNumber}`);
       }
     }, 1000);
@@ -1137,9 +1137,9 @@ class Trade extends Component {
                 <span
                   className="trade-plate-header-price"
                   dangerouslySetInnerHTML={{
-                    __html: `${Number(currentCoin.latestPrice).toFixed(
-                      8
-                    )} &asymp; ￥${Number(currentCoin.toCNY).toFixed(8)}`
+                    __html: `${Number(currentCoin.latestPrice).toFixed(8)} &asymp; ￥${Number(
+                      currentCoin.toCNY
+                    ).toFixed(8)}`
                   }}
                 />
                 <div className="trade-plate-header-right">
