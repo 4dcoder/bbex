@@ -24,7 +24,7 @@ const datafeeds = symbol => {
     this._symbolSearch = null;
     this._symbolsStorage = null;
     // 实时订阅
-    // this._barsPulseUpdater = new Datafeeds.DataPulseUpdater(this, updateFrequency || 1000 * 10);
+    this._barsPulseUpdater = new Datafeeds.DataPulseUpdater(this, updateFrequency || 1000 * 10);
     // 交易终端
     this._quotesPulseUpdater = new Datafeeds.QuotesPulseUpdater(this);
     this._protocolVersion = protocolVersion || 2;
@@ -48,7 +48,7 @@ const datafeeds = symbol => {
 
   // 获取服务器时间
   Datafeeds.UDFCompatibleDatafeed.prototype.getServerTime = function(callback) {
-    callback(Date.now());
+    callback(new Date().getTime());
   };
 
   Datafeeds.UDFCompatibleDatafeed.prototype.on = function(event, callback) {
@@ -203,9 +203,9 @@ const datafeeds = symbol => {
     let resolutionTime = datafeedUtil.filteringTime(resolution);
     let period = datafeedUtil.transformTime(resolution);
 
-    if(!window.period) {
+    if (!window.period) {
       window.period = resolution;
-    } else if( window.period !== resolution) {
+    } else if (window.period !== resolution) {
       window.hasWsMessage = false;
       window.period = resolution;
     }
@@ -220,8 +220,10 @@ const datafeeds = symbol => {
             const symbolName = symbolInfo.name.replace(/\//g, '_');
             that._logMessage(`send ${symbolName} get bars...`);
 
-            try{
-              window.ws.send(symbolName + '_' + period);
+            try {
+              if (window.ws.readyState === 1) {
+                window.ws.send(symbolName + '_' + period);
+              }
             } catch (e) {
               that._logMessage(`send ws error: ${e.message} get bars...`);
             }
@@ -271,8 +273,7 @@ const datafeeds = symbol => {
       }*/
 
       var bars = [];
-      if(data && data.s != 'no_data') {
-
+      if (data && data.s != 'no_data') {
         for (const dataBar of data) {
           const bar = {
             time: +dataBar.t,
@@ -280,8 +281,8 @@ const datafeeds = symbol => {
             high: +dataBar.h,
             open: +dataBar.o,
             low: +dataBar.l,
-            close: +dataBar.c,
-          }
+            close: +dataBar.c
+          };
           bars.push(bar);
         }
         bars = bars
@@ -318,18 +319,18 @@ const datafeeds = symbol => {
   ) {
     // console.log('subscribeBars ->');
     window.hasWsMessage = '';
-    /*this._barsPulseUpdater.subscribeDataListener(
+    this._barsPulseUpdater.subscribeDataListener(
       symbolInfo,
       resolution,
       onRealtimeCallback,
       listenerGUID,
       onResetCacheNeededCallback
-    );*/
+    );
   };
 
   // 取消订阅K线数据。在调用subscribeBars方法时,图表库将跳过与subscriberUID相同的对象。
   Datafeeds.UDFCompatibleDatafeed.prototype.unsubscribeBars = function(listenerGUID) {
-    // this._barsPulseUpdater.unsubscribeDataListener(listenerGUID);
+    this._barsPulseUpdater.unsubscribeDataListener(listenerGUID);
   };
 
   /*
@@ -713,7 +714,7 @@ const datafeeds = symbol => {
     } else if (resolution == 'W') {
       daysCount = 7 * requiredPeriodsCount;
     } else {
-      daysCount = requiredPeriodsCount * resolution / (24 * 60);
+      daysCount = (requiredPeriodsCount * resolution) / (24 * 60);
     }
 
     return daysCount * 24 * 60 * 60;

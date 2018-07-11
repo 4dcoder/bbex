@@ -351,7 +351,7 @@ class Trade extends Component {
       buyandsellWS.send(`${coinName}_${marketName}_${mergeNumber}`);
     }
     this.interval2 = setInterval(() => {
-      const { marketName, coinName, mergeNumber } = this.state;
+      const { tradeList, marketName, coinName, mergeNumber } = this.state;
       if (buyandsellWS && buyandsellWS.readyState === 1 && coinName && marketName) {
         buyandsellWS.send(`${coinName}_${marketName}_${mergeNumber}`);
       }
@@ -691,6 +691,8 @@ class Trade extends Component {
       this.state.coinName !== prevState.coinName
     ) {
       const { marketName, coinName } = this.state;
+
+      // 获取交易流水列表
       this.getStream({
         coinMain: marketName,
         coinOther: coinName
@@ -706,8 +708,10 @@ class Trade extends Component {
     if (this.state.coinName !== prevState.coinName) {
       const { marketName, coinName, orderStatus } = this.state;
 
+      // 获取币种详情
       this.getCoinDetail(coinName);
 
+      // 如果已经登录，获取挂单列表
       if (sessionStorage.getItem('account')) {
         this.findOrderList({
           marketName,
@@ -715,6 +719,13 @@ class Trade extends Component {
           status: orderStatus
         });
       }
+
+      // 如果5秒后buyandsellWS没有推送买卖盘的时候去掉loading
+      setTimeout(() => {
+        if (Object.keys(this.state.tradeList).length === 0) {
+          this.setState({ tradeList: { buyOrderVOList: [], sellOrderVOList: [] } });
+        }
+      }, 1000 * 5);
     }
   }
 

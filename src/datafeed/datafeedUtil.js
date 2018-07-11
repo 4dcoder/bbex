@@ -22,48 +22,43 @@ const onWsMessage = params => {
 const dealWebsocket = params => {
   let { data, resolutionTime, callback } = params;
   // if (data && data.data && data.data.length>0) {
-    data = JSON.parse(data);
-    let dataString = '';
-    let dataJSON = '';
-    let wsLocalStorage = 'wsTradeViewDataHistory';
-    switch (data.type) {
-      // k线历史图
-      case 'kline':
-        dataString = JSON.stringify(data.data);
-        break;
-      // 实时获取推送
-      case 'dealSuccess':
-        dataString = localStorage.getItem(wsLocalStorage);
-        dataJSON = JSON.parse(dataString);
-        let lastDataLength = dataJSON['t'].length - 1;
-        let newData = data.data.kLine;
-        let lastDataTime = dataJSON['t'][lastDataLength];
+  data = JSON.parse(data);
+  let dataString = '';
+  let dataJSON = '';
+  let wsLocalStorage = 'wsTradeViewDataHistory';
+  switch (data.type) {
+    // k线历史图
+    case 'kline':
+      dataString = JSON.stringify(data.data);
+      break;
+    // 实时获取推送
+    case 'realTime':
+      dataString = localStorage.getItem(wsLocalStorage);
+      dataJSON = JSON.parse(dataString);
+      if (dataJSON.length > 0) {
+        let lastDataLength = dataJSON.length - 1;
+        let newData = data.data[0];
+        // debugger;
+        let lastDataTime = dataJSON[lastDataLength]['t'];
         let newDataTime = parseInt(newData['t']);
 
+        
         // 判断当前时间 + 时间间隔 和 最新时间的大小
         if (lastDataTime + resolutionTime > newDataTime) {
           // 替换最后一个
-          dataJSON['c'][lastDataLength] = newData['c'];
-          dataJSON['o'][lastDataLength] = newData['o'];
-          dataJSON['h'][lastDataLength] = newData['h'];
-          dataJSON['l'][lastDataLength] = newData['l'];
-          dataJSON['v'][lastDataLength] = newData['v'];
+          dataJSON[lastDataLength] = newData
         } else {
           // 放入最新的
-          dataJSON['t'].push(newData['t']);
-          dataJSON['c'].push(newData['c']);
-          dataJSON['o'].push(newData['o']);
-          dataJSON['h'].push(newData['h']);
-          dataJSON['l'].push(newData['l']);
-          dataJSON['v'].push(newData['v']);
+          dataJSON.push(newData);
         }
-
+        
         dataString = JSON.stringify(dataJSON);
-        break;
-    }
-    localStorage.setItem(wsLocalStorage, dataString);
-    callback(dataString);
-    
+      }
+      break;
+  }
+  localStorage.setItem(wsLocalStorage, dataString);
+  callback(dataString);
+
   // }
 };
 
@@ -92,9 +87,9 @@ const transformTime = time => {
   let period = '';
   if (time.toString().indexOf('D') !== -1) {
     period = '1d';
-  } else if(time.toString().indexOf('W') !== -1){
+  } else if (time.toString().indexOf('W') !== -1) {
     period = '1w';
-  }else if(time.toString().indexOf('M') !== -1){
+  } else if (time.toString().indexOf('M') !== -1) {
     period = '1mth';
   } else {
     if (parseInt(time) < 60) {
