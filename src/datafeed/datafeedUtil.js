@@ -42,16 +42,18 @@ const dealWebsocket = params => {
         let lastDataTime = dataJSON[lastDataLength]['t'];
         let newDataTime = parseInt(newData['t']);
 
-        
         // 判断当前时间 + 时间间隔 和 最新时间的大小
         if (lastDataTime + resolutionTime > newDataTime) {
-          // 替换最后一个
-          dataJSON[lastDataLength] = newData
+          // 替换最后一个, 交易量累加
+          dataJSON[lastDataLength] = {
+            ...newData,
+            v: Number(dataJSON[lastDataLength]['v']) + Number(newData['v'])
+          };
         } else {
           // 放入最新的
           dataJSON.push(newData);
         }
-        
+
         dataString = JSON.stringify(dataJSON);
       }
       break;
