@@ -46,7 +46,7 @@ class AppealModal extends Component{
       title="订单申诉"
       visible
       width={500}
-      wrapClassName="appeal_modal v_center_modal"
+      wrapClassName="v-center-modal"
       okText='确认'
       cancelText='取消'
       onCancel={this.props.onCancel}
