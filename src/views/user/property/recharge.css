@@ -1,34 +1,34 @@
 
-.recharge_content{
+.recharge-content{
   padding-left: 20px;
 }
-.recharge_content .address{
+.recharge-content .address{
   display: flex;
   justify-content: flex-start;
   margin-top: 10px;
 }
-.recharge_content #re_address{
+.recharge-content #re-address{
   color: #d4a668;
 }
-.recharge_content h4{
+.recharge-content h4{
   color: #e8e8e8;
 }
 
-.recharge_content .address .copy{
+.recharge-content .address .copy{
   color: #d4a668;
   cursor: pointer;
   margin-left: 30px;
   margin-right: 60px;
 }
 
-.recharge_content .ercode{
+.recharge-content .ercode{
   position: relative;
 
 }
-.recharge_content .ercode .text{
+.recharge-content .ercode .text{
   cursor: pointer;
 }
-.recharge_content .ercode .ercon{
+.recharge-content .ercode .ercon{
   position: absolute;
   top: 30px;
   left: -40px;

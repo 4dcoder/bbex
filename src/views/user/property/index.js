@@ -363,7 +363,7 @@ class Property extends Component {
           <TabPane tab="常规账户" key="routine">
             <header className="property-header clear">
               <h2 className="pull-left">我的资金一览表</h2>
-              <div className="header_search">
+              <div className="header-search">
                 <Search value={currencyName} onChange={this.handleSearch} style={{ width: 100 }} />
               </div>
               {/* <ul className="pull-right">
@@ -420,7 +420,7 @@ class Property extends Component {
                   <li>
                     <Input addonBefore="币种名称" size="large" value={handleCoin.symbol} disabled />
                   </li>
-                  <li className="line_li">
+                  <li className="line-li">
                     <Input
                       addonBefore="输入划转数量"
                       size="large"
@@ -428,10 +428,10 @@ class Property extends Component {
                       onChange={this.inputVolume}
                     />
                   </li>
-                  <li className="aviable_symbol">
+                  <li className="aviable-symbol">
                     可用：{availableC2c} {handleCoin.symbol}
                   </li>
-                  <li className="c2c_submit">
+                  <li className="c2c-submit">
                     <Button
                       type="primary"
                       size="large"

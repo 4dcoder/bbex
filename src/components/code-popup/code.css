@@ -1,0 +1,41 @@
+.graphic-popup{
+  padding: 10px 10px 10px;
+}
+.graphic-popup .iconfont{
+  color: #fff;
+}
+.graphic-popup .ant-input-affix-wrapper .ant-input:not(:first-child){
+  padding-left: 40px;
+}
+.graphic-popup .error-tip{
+  color: #d42f2f;
+  line-height: 30px;
+  height: 30px;
+}
+.graphic-popup .graphic-content{
+  display: flex;
+}
+.graphic-popup .graphic-content img{
+  border: 1px solid #e8e8e8;
+  cursor: pointer;
+  border-left: 0;
+  height: 42px;
+  width: 120px;
+}
+.graphic-popup .graphic-btn{
+  margin-top: 30px;
+  text-align: center;
+}
+.graphic-popup .graphic-btn button{
+  width: 100px;
+  height: 36px;
+}
+.graphic-popup .graphic-btn button:nth-child(1){
+  margin-right: 20px;
+}
+.graphic-popup .graphic-img-text{
+  color: #e8e8e8;
+  height: 30px;
+  line-height: 30px;
+  text-align: right;
+}

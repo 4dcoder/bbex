@@ -1,53 +1,53 @@
 
-.sign_up{
+.sign-up{
   padding: 80px 0;
 }
-.signup_form{
+.signup-form{
   padding: 20px 50px 80px;
   width: 500px;
   background: #2c3644;
   margin: 0 auto;
 }
-.signup_form h4{
+.signup-form h4{
   color: #e8e8ee;
   font-size: 20px;
   text-align: center;
   height: 70px;
   line-height: 60px;
 }
-.signup_form .iconfont{
+.signup-form .iconfont{
   color: #fff;
 }
-.signup_form .ant-input-affix-wrapper .ant-input:not(:first-child){
+.signup-form .ant-input-affix-wrapper .ant-input:not(:first-child){
   padding-left: 40px;
 }
-.signup_form .mail_code input{
+.signup-form .mail-code input{
   width: 260px;
 }
-.signup_form .mail_code_btn{
+.signup-form .mail-code-btn{
   width: 140px;
   position: absolute;
   top: 0;
   right: 0;
 }
-.signup_form .mail_code .ant-form-item-control{
+.signup-form .mail-code .ant-form-item-control{
   position: relative;
 }
-.signup_form .mail_code .ant-form-item-children{
+.signup-form .mail-code .ant-form-item-children{
   position: initial;
 }
-.signup_form .submit_btn{
+.signup-form .submit-btn{
   display: 'flex';
   justify-content: 'center';
   margin-top: 30px;
 }
-.signup_form .has-error .ant-form-explain, .signup_form .has-error .ant-form-split{
+.signup-form .has-error .ant-form-explain, .signup-form .has-error .ant-form-split{
   padding-top: 5px;
 }
-.signup_form .agree_text span{
+.signup-form .agree-text span{
   color: #e8e8e8;
 }
-.signup_form .link_agree{
+.signup-form .link-agree{
   color: #d4a668;
 }
 

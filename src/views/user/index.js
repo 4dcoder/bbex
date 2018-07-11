@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, NavLink, Switch } from 'react-router-dom';
+import { Route, NavLink } from 'react-router-dom';
 import Property from './property';
 import Verified from './verified';
 import Payment from './payment';
@@ -10,7 +10,6 @@ import Status from './status';
 import Security from './security';
 import Invite from './invite';
 import Verification from '../../components/verification';
-
 
 import './user.css';
 
@@ -26,10 +25,10 @@ class UserCenter extends Component {
         this.setState({
           popup: (
             <Verification
-              closeModal={()=>{
+              closeModal={() => {
                 this.closePopup();
-              }} 
-              gotoSetting={()=>{
+              }}
+              gotoSetting={() => {
                 this.closePopup();
                 this.props.history.push('/user/security');
               }}
@@ -59,12 +58,7 @@ class UserCenter extends Component {
               {account.mail}
             </div>
             <div className="user-nav">
-              <NavLink
-                to={`${match.path}`}
-                exact
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}`} exact className="user-link" activeClassName="active">
                 <i className="iconfont icon-zichan" />我的资产
               </NavLink>
               <NavLink
@@ -74,46 +68,22 @@ class UserCenter extends Component {
               >
                 <i className="iconfont icon-jiaoyi" />我的交易
               </NavLink>
-              <NavLink
-                to={`${match.path}/finance`}
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}/finance`} className="user-link" activeClassName="active">
                 <i className="iconfont icon-caiwu" />财务记录
               </NavLink>
-              <NavLink
-                to={`${match.path}/security`}
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}/security`} className="user-link" activeClassName="active">
                 <i className="iconfont icon-anquanzhongxin" />安全中心
               </NavLink>
-              <NavLink
-                to={`${match.path}/verified`}
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}/verified`} className="user-link" activeClassName="active">
                 <i className="iconfont icon-shimingrenzheng" />实名认证
               </NavLink>
-              <NavLink
-                to={`${match.path}/payment`}
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}/payment`} className="user-link" activeClassName="active">
                 <i className="iconfont icon-zhifu" />支付绑定
               </NavLink>
-              <NavLink
-                to={`${match.path}/address`}
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}/address`} className="user-link" activeClassName="active">
                 <i className="iconfont icon-navicon-fwdzpz" />地址管理
               </NavLink>
-              <NavLink
-                to={`${match.path}/invite`}
-                className="user-link"
-                activeClassName="active"
-              >
+              <NavLink to={`${match.path}/invite`} className="user-link" activeClassName="active">
                 <i className="iconfont icon-yaoqingma" />我的邀请
               </NavLink>
             </div>

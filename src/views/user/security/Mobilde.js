@@ -120,11 +120,11 @@ class Mobile extends Component {
             title="绑定手机号"
             visible
             width={440}
-            wrapClassName="change_pwd_modal v_center_modal"
+            wrapClassName="change-pwd-modal v-center-modal"
             onCancel={this.props.closeModal}
             footer={null}
         >
-            <Form onSubmit={this.handleSubmit} className="change_password">
+            <Form onSubmit={this.handleSubmit} className="change-password">
                 <FormItem {...formLayoutMobile} label="手机号">
                     {getFieldDecorator('mobile', {
                         rules: [
@@ -134,7 +134,7 @@ class Mobile extends Component {
                     })(<Input />)}
                     <Button 
                       onClick={this.getMobileCode} 
-                      className='get_mobile_code' 
+                      className='get-mobile-code' 
                       type="primary"
                       disabled={disabled}
                       style={{ width: 100 }}

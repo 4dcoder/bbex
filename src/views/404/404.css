@@ -1,4 +1,4 @@
-.page_404{
+.page-404{
   min-height: 400px;
   text-align: center;
   display: flex;
@@ -6,7 +6,7 @@
   align-items: center;
   width: 100%;
 }
-.page_404 h1{
+.page-404 h1{
   color: #e8e8e8;
   font-size: 16px;
   margin-bottom: 10px;

@@ -73,16 +73,16 @@ class Notice extends Component {
         ) : null;
         return (
             <List
-                className="bbex_notice"
+                className="bbex-notice"
                 loading={loading}
                 itemLayout="horizontal"
                 loadMore={loadMore}
                 size="small"
-                header={<p className="notice_title">公告</p>}
+                header={<p className="notice-title">公告</p>}
                 dataSource={notices}
                 renderItem={item => (
                     <List.Item
-                        className="notice_item"
+                        className="notice-item"
                         onClick={() => {
                             this.itemClick(item);
                         }}

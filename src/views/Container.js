@@ -5,7 +5,7 @@ import { message } from 'antd';
 import classnames from 'classnames';
 import request from '../utils/request';
 import Verification from '../components/verification';
-import GooglePopup from '../components/google_popup';
+import GooglePopup from '../components/google-popup';
 
 // 设置全局消息
 message.config({
@@ -307,7 +307,7 @@ class Container extends Component {
                       platLinks.map((item, index) => {
                         if (item.typeId === 'link_weixin') {
                           return (
-                            <span key={index} className="wexin_content">
+                            <span key={index} className="wexin-content">
                               <i className="iconfont icon-weixin" />
                               <img src={item.linkImage} />
                             </span>

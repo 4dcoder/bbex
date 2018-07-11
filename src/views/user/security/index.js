@@ -83,49 +83,49 @@ class Security extends Component {
     }
 
     return (
-      <div className="security_con user-cont">
+      <div className="security-con user-cont">
         <Row type="flex">
           <Col span={2} className="title">
             手机号:{' '}
           </Col>
           {account && account.mobile ? (
-            <Col span={20} className="col_content">
+            <Col span={20} className="col-content">
               {account.mobile}
             </Col>
           ) : (
-            <Col span={20} className="col_content">
+            <Col span={20} className="col-content">
               <Button onClick={this.handleBind} type="primary">
                 绑定手机号
               </Button>
             </Col>
           )}
         </Row>
-        <Row type="flex" className="password_row">
+        <Row type="flex" className="password-row">
           <Col span={2} className="title">
             密码:{' '}
           </Col>
-          <Col span={20} className="pwd_btn">
+          <Col span={20} className="pwd-btn">
             {' '}
             <Button onClick={this.showDialog} type="primary">
               修改密码
             </Button>
           </Col>
         </Row>
-        <Row type="flex" className="google_ver_row">
+        <Row type="flex" className="google-ver-row">
           <Col span={2} className="title">
             谷歌验证:{' '}
           </Col>
           {account && account.googleAuth ? (
-            <Col span={20} className="col_content">
+            <Col span={20} className="col-content">
               已认证
             </Col>
           ) : (
-            <Col span={20} className="google_ver_con">
+            <Col span={20} className="google-ver-con">
               <div>
-                <div className="step_title">
+                <div className="step-title">
                   <span>第一步: </span> 下载并安装谷歌验证器APP
                 </div>
-                <div className="step_content">
+                <div className="step-content">
                   <a
                     href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8"
                     className="down-btn apple"
@@ -145,10 +145,10 @@ class Security extends Component {
                 </div>
               </div>
               <div>
-                <div className="step_title">
+                <div className="step-title">
                   <span>第二步: </span> 扫描二维码
                 </div>
-                <div className="step_content clear">
+                <div className="step-content clear">
                   <div className="qrcode-box pull-left">
                     <QRCode
                       value={qrcodeContent}
@@ -168,10 +168,10 @@ class Security extends Component {
                 </div>
               </div>
               <div>
-                <div className="step_title">
+                <div className="step-title">
                   <span>第三步: </span> 备份密钥
                 </div>
-                <div className="step_content">
+                <div className="step-content">
                   <div className="key-box">
                     <i className="iconfont icon-miyao" />
                     {secret}
@@ -189,10 +189,10 @@ class Security extends Component {
                 </div>
               </div>
               <div>
-                <div className="step_title">
+                <div className="step-title">
                   <span>第四步: </span> 开启谷歌验证
                 </div>
-                <div className="step_content">
+                <div className="step-content">
                   <p className="error-tip">
                     {errorTip && <i className="iconfont icon-zhuyishixiang" />}
                     {errorTip}
@@ -221,15 +221,9 @@ class Security extends Component {
                     </li>
                   </ul>
                   <div className="auth-direction">
-                    <button
-                      className={classnames({
-                        'button primary submit': true,
-                        disabled: !code
-                      })}
-                      onClick={this.submit}
-                    >
+                    <Button type="primary" size="large" onClick={this.submit} disabled={!code}>
                       提交
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>

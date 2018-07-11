@@ -951,7 +951,7 @@ class TradeContainer extends Component {
         key: 'wechatNo',
         render: (text, record) => {
           return (
-            <div className="pay_list_icon">
+            <div className="pay-list-icon">
               {record.cardNo && <i className="iconfont icon-yinhangqia" />}
               {record.alipayNo && <i className="iconfont icon-zhifubao" />}
               {record.wechatNo && <i className="iconfont icon-wxpay" />}
@@ -1238,7 +1238,7 @@ class TradeContainer extends Component {
             </Button>
             <Modal
               title="发布广告"
-              wrapClassName="c2c-modal v_center_modal"
+              wrapClassName="c2c-modal v-center-modal"
               visible={releaseVisible}
               onCancel={this.hideModal.bind(this, 'releaseVisible')}
               footer={null}
@@ -1374,7 +1374,7 @@ class TradeContainer extends Component {
         </div>
         <Modal
           title={`${typeText[exType]}${coin.symbol}`}
-          wrapClassName="c2c-modal v_center_modal"
+          wrapClassName="c2c-modal v-center-modal"
           visible={transactionVisible}
           onCancel={this.hideModal.bind(this, 'transactionVisible')}
           footer={null}

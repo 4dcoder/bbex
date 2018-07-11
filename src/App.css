@@ -1,14 +1,11 @@
-/* 全局样式 */
-
-
 /* 修改chrome浏览器渲染黄色背景的时间 */
-
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 1000px #272b37 inset !important;
   -webkit-text-fill-color: #e8e8e8 !important;
   caret-color: #e8e8e8;
 }
 
+/* 全局样式 */
 html,
 body {
   width: 100%;
@@ -287,11 +284,30 @@ a:hover {
 }
 
 :root .ant-btn-normal,
-:root .ant-btn-normal:hover,
 :root .ant-btn-normal:focus {
-  color: #c08b47;
-  border-color: transparent;
-  background-color: rgb(59, 74, 97);
+  color: #e8e8e8;
+  border-color: #e8e8e8;
+  background-color: transparent;
+}
+
+:root .ant-btn-normal:hover {
+  color: #d4a668;
+  border-color: #d4a668;
+}
+
+:root .ant-btn-primary.disabled, 
+:root .ant-btn-primary[disabled], 
+:root .ant-btn-primary.disabled:hover, 
+:root .ant-btn-primary[disabled]:hover, 
+:root .ant-btn-primary.disabled:focus, 
+:root .ant-btn-primary[disabled]:focus, 
+:root .ant-btn-primary.disabled:active, 
+:root .ant-btn-primary[disabled]:active, 
+:root .ant-btn-primary.disabled.active, 
+:root .ant-btn-primary[disabled].active {
+  color: #666;
+  border-color: #666;
+  background-color: transparent;
 }
 
 :root .ant-pagination-jump-prev:after,
@@ -508,12 +524,12 @@ a:hover {
   line-height: 30px;
 }
 
-.wexin_content {
+.wexin-content {
   position: relative;
   margin-right: 20px;
 }
 
-.wexin_content img {
+.wexin-content img {
   width: 120px;
   height: 120px;
   display: none;
@@ -523,7 +539,7 @@ a:hover {
   background: #e9e9e9;
 }
 
-.wexin_content:hover img {
+.wexin-content:hover img {
   display: block;
 }
 
@@ -885,20 +901,20 @@ a:hover {
   padding: 8px 15px !important;
 }
 
-.withdraw_content .ant-list-sm .ant-list-item {
+.withdraw-content .ant-list-sm .ant-list-item {
   padding: 2px 0;
   border-bottom: 1px solid #5f6f5f;
 }
 
-.bbex_notice .ant-list-header {
+.bbex-notice .ant-list-header {
   border-bottom: 0 !important;
 }
 
-.change_pwd_modal .ant-form-item {
+.change-pwd-modal .ant-form-item {
   margin-bottom: 16px;
 }
 
-.c2c-form .line_li {
+.c2c-form .line-li {
   margin-top: 16px;
 }
 
@@ -906,51 +922,51 @@ a:hover {
   width: 120px;
 }
 
-.c2c-form .aviable_symbol {
+.c2c-form .aviable-symbol {
   margin: 20px 0;
   text-align: right;
 }
 
-.c2c-form .c2c_submit {
+.c2c-form .c2c-submit {
   text-align: right;
 }
 
-.security_con .ant-row-flex {
+.security-con .ant-row-flex {
   height: 50px;
 }
 
 /* 交易历史详情 */
 
-.expend_content .expent_title {
+.expend-content .expent-title {
   display: flex;
 }
 
-.expend_content .ant-list-split .ant-list-header {
+.expend-content .ant-list-split .ant-list-header {
   border-bottom: 1px solid #4c525e;
 }
 
-.expend_content .expent_title li {
+.expend-content .expent-title li {
   width: 20%;
   text-align: center;
   color: #e8e8e8;
 }
 
-.expend_content .list_item {
+.expend-content .list-item {
   width: 100%;
   display: flex;
 }
 
-.expend_content .list_item li {
+.expend-content .list-item li {
   width: 20%;
   text-align: center;
   color: #e8e8e8;
 }
 
-.expend_content .ant-list-split .ant-list-item {
+.expend-content .ant-list-split .ant-list-item {
   border-bottom: 1px solid #4f6f4f;
 }
 
-.expend_content .ant-list-header {
+.expend-content .ant-list-header {
   padding-bottom: 0;
   padding-top: 0;
 }
@@ -971,29 +987,29 @@ a:hover {
 
 /* 我的交易 */
 
-.transation_content .ant-table-expand-icon-th {
+.transation-content .ant-table-expand-icon-th {
   display: none;
 }
 
-.transation_content .ant-table-row-expand-icon-cell {
+.transation-content .ant-table-row-expand-icon-cell {
   display: none;
 }
 
-.transation_content .ant-table-expanded-row td:nth-child(1) {
+.transation-content .ant-table-expanded-row td:nth-child(1) {
   display: none;
 }
 
 /* 交易历史  */
 
-.trade_history .ant-table-expand-icon-th {
+.trade-history .ant-table-expand-icon-th {
   display: none;
 }
 
-.trade_history .ant-table-row-expand-icon-cell {
+.trade-history .ant-table-row-expand-icon-cell {
   display: none;
 }
 
-.trade_history .ant-table-expanded-row td:nth-child(1) {
+.trade-history .ant-table-expanded-row td:nth-child(1) {
   display: none;
 }
 
@@ -1034,60 +1050,60 @@ a:hover {
 
 /* 验证框 */
 
-.verification_modal .ant-modal-content {
+.verification-modal .ant-modal-content {
   background-color: #363c49;
 }
 
-.verification_modal .ant-modal-footer {
+.verification-modal .ant-modal-footer {
   border-top: 0;
 }
 
-.verification_modal .verification_content {
+.verification-modal .verification-content {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
-.verification_modal .icon-icon {
+.verification-modal .icon-icon {
   font-size: 70px;
   color: #d4a668;
 }
 
-.verification_modal p {
+.verification-modal p {
   color: #e8e8e8;
   display: flex;
   justify-content: center;
 }
 
-.verification_modal .footer_btn {
+.verification-modal .footer-btn {
   margin-top: 30px;
   display: flex;
   justify-content: center;
 }
 
-.verification_modal .footer_btn button {
+.verification-modal .footer-btn button {
   width: 100px;
   height: 40px;
 }
 
-.verification_modal .footer_btn button:nth-child(1) {
+.verification-modal .footer-btn button:nth-child(1) {
   margin-right: 20px;
 }
 
-.verification_modal .ant-modal-close-x {
+.verification-modal .ant-modal-close-x {
   color: #e8e8e8;
 }
 
-.verification_modal .ant-modal-close-x:hover {
+.verification-modal .ant-modal-close-x:hover {
   color: #d4a668;
 }
 
-.verification_modal {
+.verification-modal {
   text-align: center;
   white-space: nowrap;
 }
 
-.verification_modal:before {
+.verification-modal:before {
   content: '';
   display: inline-block;
   height: 100%;
@@ -1095,7 +1111,7 @@ a:hover {
   width: 0;
 }
 
-.verification_modal .ant-modal {
+.verification-modal .ant-modal {
   display: inline-block;
   vertical-align: middle;
   top: 0;
@@ -1126,40 +1142,40 @@ a:hover {
 
 /* 绑定手机号 */
 
-.change_pwd_modal .get_mobile_code {
+.change-pwd-modal .get-mobile-code {
   position: absolute;
   right: -110px;
   top: -6px;
 }
 
 /* 弹窗垂直居中 */
-.v_center_modal {
+.v-center-modal {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.v_center_modal .ant-modal {
+.v-center-modal .ant-modal {
   top: 0;
 }
-.v_center_modal .ant-modal-content {
+.v-center-modal .ant-modal-content {
   background: #313643;
   color: #e8e8e8;
 }
-.v_center_modal .ant-modal-header {
+.v-center-modal .ant-modal-header {
   background: #313643;
   color: #e8e8e8;
   border-bottom: 1px solid #d4a668;
 }
-.v_center_modal .ant-modal-title {
+.v-center-modal .ant-modal-title {
   color: #e8e8e8;
   text-align: center;
 }
-.v_center_modal .ant-form-item-required {
+.v-center-modal .ant-form-item-required {
   color: #e8e8e8;
 }
-.v_center_modal .ant-modal-close-x {
+.v-center-modal .ant-modal-close-x {
   color: #e8e8e8;
 }
-.v_center_modal .ant-modal-footer{
+.v-center-modal .ant-modal-footer{
   border-top: none;
 }

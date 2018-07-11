@@ -1,30 +1,30 @@
-.security_con .title{
+.security-con .title{
   text-align: right;
 }
-.security_con .password_row{
+.security-con .password-row{
   border-top: 1px solid #5f5f5f;
   border-bottom: 1px solid #5f5f5f;
 }
-.security_con .ant-row-flex{
+.security-con .ant-row-flex{
   padding-top: 12px;
   min-height: 60px;
 }
-.security_con .pwd_btn{
+.security-con .pwd-btn{
   padding-left: 100px;
 }
-.security_con .mobile_con{
+.security-con .mobile-con{
   padding-left: 100px;
 }
-.google_ver_con{
+.google-ver-con{
   padding-left: 30px;
 }
-.security_con .google_ver_row{
+.security-con .google-ver-row{
   height: 800px;
 }
-.security_con  .col_content{
+.security-con  .col-content{
   padding-left: 100px;
 }
-.security_con  .down-btn {
+.security-con  .down-btn {
   display: inline-block;
   width: 169px;
   height: 57px;
@@ -34,20 +34,20 @@
   overflow: hidden;
   text-indent: -999px;
 }
-.security_con  .down-btn.apple {
+.security-con  .down-btn.apple {
   background-position: 0 0;
 }
-.security_con .down-btn.google {
+.security-con .down-btn.google {
   background-position: -184px 0;
 }
-.security_con .step_title span{
+.security-con .step-title span{
   color: #d4a668;
 }
-.security_con .step_content{
+.security-con .step-content{
   padding: 10px 20px 16px;
 }
 
-.security_con .qrcode-box {
+.security-con .qrcode-box {
   width: 147px;
   padding: 10px 15px 2px;
   margin-right: 40px;
@@ -57,16 +57,16 @@
   line-height: 16px;
   background-color: #f8f8f8;
 }
-.security_con .qrcode-box p {
+.security-con .qrcode-box p {
   font-size: 12px;
   color: #363C49;
 }
-.security_con .qrcode-text {
+.security-con .qrcode-text {
   overflow: hidden;
   padding-top: 30px;
   line-height: 18px;
 }
-.security_con .qrcode-num {
+.security-con .qrcode-num {
   display: inline-block;
   height: 38px;
   margin-bottom: 20px;
@@ -77,7 +77,7 @@
   background-color: #363C49;
 }
 
-.security_con .key-box {
+.security-con .key-box {
   margin: 8px 0;
   width: 325px;
   height: 40px;
@@ -87,27 +87,27 @@
   color: #bb925c;
   background-color: #fff6e9;
 }
-.security_con .key-box .icon-miyao {
+.security-con .key-box .icon-miyao {
   display: inline-block;
   margin-right: 5px;
   font-weight: bolder;
   transform: rotate(-45deg);
 }
 
-.security_con .key-text {
+.security-con .key-text {
   line-height: 18px;
 }
-.security_con .key-text p {
+.security-con .key-text p {
   padding: 6px 0;
 }
 
-.security_con .auth-box .form-list {
+.security-con .auth-box .form-list {
   width: 360px;
 }
-.security_con .form-list input{
+.security-con .form-list input{
   width: 350px;
   background-color: #363C49;
 }
-.security_con .auth-direction button{
+.security-con .auth-direction button{
   width: 100px;
 }

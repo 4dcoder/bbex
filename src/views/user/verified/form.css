@@ -1,21 +1,21 @@
-.ver_form .ant-form-item-label>label{
+.ver-form .ant-form-item-label>label{
   color: #e8e8e8;
 }
-.ver_form .sex_item .ant-form-item-control{
+.ver-form .sex-item .ant-form-item-control{
   text-align: left;
   padding-left: 20px;
   
 }
-.ver_form .sex_item .ant-form-item-control span{
+.ver-form .sex-item .ant-form-item-control span{
   color: #e8e8e8;
 }
-.ver_form .ant-form-item-label{
+.ver-form .ant-form-item-label{
   padding-right: 10px;
 }
-.ver_form .ant-form-item{
+.ver-form .ant-form-item{
   margin-bottom: 24px;
 }
-.ver_form .has-error .ant-form-explain{
+.ver-form .has-error .ant-form-explain{
   text-align: left;
   padding: 4px 0 0 20px;
 }
