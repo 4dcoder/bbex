@@ -203,9 +203,11 @@ const datafeeds = symbol => {
     let resolutionTime = datafeedUtil.filteringTime(resolution);
     let period = datafeedUtil.transformTime(resolution);
 
-    if (window.period !== period) {
-      window.hasWsMessage = true;
-      window.period = period;
+    if (!window.period) {
+      window.period = resolution;
+    } else if (window.period !== resolution) {
+      window.hasWsMessage = false;
+      window.period = resolution;
     }
 
     var that = this;

@@ -62,10 +62,8 @@ class TradeviewPage extends Component {
         );
     }
 
-    componentWillMount() {
-        if (window.ws) {
-            window.ws.close();
-        }
+    componentWillUnmount() {
+        window.ws && window.ws.close();
     }
 
     render() {
