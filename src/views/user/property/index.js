@@ -407,7 +407,7 @@ class Property extends Component {
         </Tabs>
         <Modal
           title={modalTit}
-          wrapClassName="property-modal"
+          wrapClassName="property-modal v-center-modal"
           visible={showModal}
           onCancel={this.hideModal}
           footer={null}
