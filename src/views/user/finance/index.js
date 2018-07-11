@@ -325,7 +325,7 @@ class Finance extends Component {
                 dataIndex: 'updateDate',
                 key: 'updateDate',
                 render: (text, record) => {
-                    return <div onClick={()=>{this.detailClick(record)}} style={{color: '#d4a668'}}>
+                    return <div onClick={()=>{this.detailClick(record)}} style={{cursor: 'pointer', color: '#d4a668'}}>
                         详情
                     </div>;
                 }
