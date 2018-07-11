@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Row, Col, Input, Button, message } from 'antd';
+import { Table, Modal, Input, message } from 'antd';
+import QRCode from 'qrcode.react';
 import { copy } from '../../../utils';
 
 import './invite.css';
@@ -9,7 +10,8 @@ class Invite extends Component {
     currentPage: 1,
     showCount: 10,
     totalCount: 0,
-    inviteList: []
+    inviteList: [],
+    showQRCode: false
   };
 
   request = window.request;
@@ -18,6 +20,14 @@ class Invite extends Component {
     copy(text).then(() => {
       message.success('复制成功！');
     });
+  };
+
+  handleShowQRCode = () => {
+    this.setState({ showQRCode: true });
+  };
+
+  handleHideQRCode = () => {
+    this.setState({ showQRCode: false });
   };
 
   getInvitedPerson = currentPage => {
@@ -50,7 +60,7 @@ class Invite extends Component {
   }
 
   render() {
-    const { currentPage, showCount, totalCount, inviteList } = this.state;
+    const { currentPage, showCount, totalCount, inviteList, showQRCode } = this.state;
     const { inviteCode } = JSON.parse(sessionStorage.getItem('account'));
     const inviteLink = `${window.location.origin}/signup?inviteCode=${inviteCode}`;
 
@@ -77,34 +87,41 @@ class Invite extends Component {
       <div className="user-cont invite">
         <div className="invite-box">
           <h2 className="invite-box-tit">我的邀请方式</h2>
-          <div className="invite-box-cont">
-            <Row gutter={16}>
-              <Col className="gutter-row" span={7}>
-                <Input
-                  addonAfter={
-                    <span onClick={this.handleCopy.bind(this, inviteCode)}>
-                      复制邀请码
-                    </span>
-                  }
-                  size="large"
-                  defaultValue={inviteCode}
-                  disabled
-                />
-              </Col>
-              <Col className="gutter-row" span={15} offset={2}>
-                <Input
-                  addonAfter={
-                    <span onClick={this.handleCopy.bind(this, inviteLink)}>
-                      复制邀请链接
-                    </span>
-                  }
-                  size="large"
-                  defaultValue={inviteLink}
-                  disabled
-                />
-              </Col>
-            </Row>
-          </div>
+          <ul className="invite-box-cont clear">
+            <li className="pull-left">
+              <QRCode
+                value={inviteLink}
+                size={110}
+                style={{ marginRight: 40, border: '1px solid #e8e8e8', cursor: 'pointer' }}
+                bgColor={'#ffffff'}
+                fgColor={'#000000'}
+                level={'L'}
+                onClick={this.handleShowQRCode}
+              />
+            </li>
+            <li>
+              <Input
+                addonAfter={
+                  <span onClick={this.handleCopy.bind(this, inviteCode)}>复制邀请码</span>
+                }
+                size="large"
+                style={{ width: 200 }}
+                defaultValue={inviteCode}
+                disabled
+              />
+            </li>
+            <li style={{ marginTop: 30 }}>
+              <Input
+                addonAfter={
+                  <span onClick={this.handleCopy.bind(this, inviteLink)}>复制邀请链接</span>
+                }
+                size="large"
+                style={{ width: 550 }}
+                defaultValue={inviteLink}
+                disabled
+              />
+            </li>
+          </ul>
         </div>
         <div className="invite-box">
           <h2 className="invite-box-tit">我邀请的人</h2>
@@ -124,6 +141,21 @@ class Invite extends Component {
             />
           </div>
         </div>
+        <Modal
+          wrapClassName="v-center-modal"
+          visible={showQRCode}
+          footer={null}
+          onCancel={this.handleHideQRCode}
+        >
+          <QRCode
+            value={inviteLink}
+            size={450}
+            style={{ margin: 10, border: '1px solid #e8e8e8' }}
+            bgColor={'#ffffff'}
+            fgColor={'#000000'}
+            level={'L'}
+          />
+        </Modal>
       </div>
     );
   }

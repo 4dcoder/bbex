@@ -21,7 +21,8 @@ class UserCenter extends Component {
   componentDidMount() {
     if (sessionStorage.getItem('account')) {
       const account = JSON.parse(sessionStorage.getItem('account'));
-      if (!account.googleAuth) {
+      const { pathname } = this.props.location;
+      if (!account.googleAuth && pathname.indexOf('security') === -1) {
         this.setState({
           popup: (
             <Verification
