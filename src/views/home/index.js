@@ -26,8 +26,7 @@ class Home extends Component {
     searchValue: '',
     favoriteCoins: localStorage.getItem('favoriteCoins')
       ? JSON.parse(localStorage.getItem('favoriteCoins'))
-      : [],
-    homeWS: null
+      : []
   };
 
   request = window.request;
@@ -42,63 +41,41 @@ class Home extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
-    const { homeWS } = this.state;
-    homeWS && homeWS.close();
+    clearInterval(this.homeInterval);
+    this.homeWS && this.homeWS.close();
   }
 
   // 主页homeSocket
   openHomeSocket = () => {
-    const homeWS = new ReconnectingWebSocket(`${WS_PREFIX}/home`);
+    this.homeWS = new ReconnectingWebSocket(`${WS_PREFIX}/home`);
 
-    this.interval = setInterval(() => {
-      if (homeWS.readyState === 1) {
-        homeWS.send('ping');
+    this.homeInterval = setInterval(() => {
+      if (this.homeWS.readyState === 1) {
+        this.homeWS.send('ping');
       }
     }, 1000 * 5);
 
-    homeWS.onopen = evt => {
-      this.timer1 = new Date().getTime();
-    };
-
-    homeWS.onmessage = evt => {
+    this.homeWS.onmessage = evt => {
       if (evt.data === 'pong') {
         return;
       }
-      let current = new Date().getTime();
 
-      if (current - this.timer1 > 1000) {
-        this.timer1 = current;
-
-        const { tradeExpair } = this.state;
-        const updateExPair = JSON.parse(evt.data);
-        Object.keys(updateExPair).forEach(key => {
-          updateExPair[key].forEach(coin => {
-            const expair = `${coin.coinOther}/${coin.coinMain}`;
-            tradeExpair[key][expair] = {
-              ...coin,
-              rise: coin.rise || '0.00%',
-              latestPrice: (coin.latestPrice || 0).toFixed(8),
-              highestPrice: (coin.highestPrice || 0).toFixed(8),
-              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-              dayCount: (coin.dayCount || 0).toFixed(8)
-            };
-          });
+      const { tradeExpair } = this.state;
+      const updateExPair = JSON.parse(evt.data);
+      Object.keys(updateExPair).forEach(key => {
+        updateExPair[key].forEach(coin => {
+          const expair = `${coin.coinOther}/${coin.coinMain}`;
+          tradeExpair[key][expair] = {
+            ...coin,
+            rise: coin.rise || '0.00%',
+            latestPrice: (coin.latestPrice || 0).toFixed(8),
+            highestPrice: (coin.highestPrice || 0).toFixed(8),
+            lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+            dayCount: (coin.dayCount || 0).toFixed(8)
+          };
         });
-
-        this.setState({ tradeExpair });
-      }
+      });
     };
-
-    homeWS.onclose = evt => {
-      // console.log('stream Websocket Connection closed.');
-    };
-
-    homeWS.onerror = evt => {
-      // console.log(evt);
-    };
-
-    this.setState({ homeWS });
   };
 
   //获取banner图
@@ -189,8 +166,6 @@ class Home extends Component {
 
   render() {
     const { localization } = this.props;
-
-    console.log('============localization: ', localization);
     let { banners, market, sortedInfo, tradeExpair, searchValue, favoriteCoins } = this.state;
     sortedInfo = sortedInfo || {};
 
@@ -346,7 +321,12 @@ class Home extends Component {
                         onClick: this.handleGoToTrade.bind(this, record)
                       })}
                       locale={{
-                        emptyText: <span><i className="iconfont icon-zanwushuju"></i>{localization['暂无数据']}</span>
+                        emptyText: (
+                          <span>
+                            <i className="iconfont icon-zanwushuju" />
+                            {localization['暂无数据']}
+                          </span>
+                        )
                       }}
                       pagination={false}
                     />
