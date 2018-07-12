@@ -69,7 +69,7 @@ class TradeBox extends Component {
   };
 
   render() {
-    const { tradeType, marketName, coinName, tradePrice, clickTradeType } = this.props;
+    const { tradeType, marketName, coinName, tradePrice, clickTradeType,localization } = this.props;
     const { mainVolume, coinVolume } = this.state;
 
     const tradeProps = {
@@ -83,8 +83,8 @@ class TradeBox extends Component {
     };
 
     return [
-      <TradeForm key="buy" type="buy" {...tradeProps} />,
-      <TradeForm key="sell" type="sell" {...tradeProps} />
+      <TradeForm key="buy" type="buy" {...tradeProps} {...{ localization }} />,
+      <TradeForm key="sell" type="sell" {...tradeProps} {...{ localization }} />
     ];
   }
 }

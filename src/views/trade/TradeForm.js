@@ -20,7 +20,7 @@ class TradeForm extends Component {
   };
 
   handleSlideInput = value => {
-    const { type, mainVolume, coinVolume } = this.props;
+    const { type, mainVolume, coinVolume,localization } = this.props;
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const volume = (assetVolume / price) * (value / 100);
@@ -29,13 +29,13 @@ class TradeForm extends Component {
 
   // 获取订单号
   getOrderNo = () => {
-    const { price, volume } = this.state;
+    const { price, volume,localization } = this.state;
     if (price <= 0) {
-      message.error('请输入价格！');
+      message.error(localization['请输入价格']);
       return;
     }
     if (volume <= 0) {
-      message.error('请输入数量！');
+      message.error(localization['请输入数量']);
       return;
     }
 
@@ -55,7 +55,7 @@ class TradeForm extends Component {
 
   // 买入卖出
   tradeAction = orderNo => {
-    const { type, marketName, coinName } = this.props;
+    const { type, marketName, coinName,localization } = this.props;
 
     const { price, volume } = this.state;
 
@@ -78,7 +78,7 @@ class TradeForm extends Component {
     })
       .then(json => {
         if (json.code === 10000000) {
-          message.success(`挂单成功！`);
+          message.success(localization['挂单成功']);
           this.setState({ price: '', volume: '', tradePrice: 0 });
         } else {
           message.error(json.msg);
@@ -105,15 +105,15 @@ class TradeForm extends Component {
       100: ''
     };
 
-    const { type, tradeType, marketName, coinName, mainVolume, coinVolume } = this.props;
+    const { type, tradeType, marketName, coinName, mainVolume, coinVolume,localization } = this.props;
 
     const { triggerPrice, price, volume, totalPrice, pending } = this.state;
 
     const isLogin = sessionStorage.getItem('account');
 
     const typeToText = {
-      buy: '买入',
-      sell: '卖出'
+      buy: localization['买入'],
+      sell: localization['卖出']
     };
 
     let totalCount = 0;
@@ -129,10 +129,10 @@ class TradeForm extends Component {
         {type === 'buy' && (
           <li key="info" className="property-info">
             <span>
-              {marketName} 可用 {Number(mainVolume).toFixed(8)}
+              {marketName} {localization['可用']} {Number(mainVolume).toFixed(8)}
               {false && (
                 <Link className="recharge-link" to="#">
-                  充币
+                  {localization['充币']}
                 </Link>
               )}
             </span>
@@ -141,10 +141,10 @@ class TradeForm extends Component {
         {type === 'sell' && (
           <li key="info" className="property-info">
             <span>
-              {coinName} 可用 {Number(coinVolume).toFixed(8)}
+              {coinName} {localization['可用']} {Number(coinVolume).toFixed(8)}
               {false && (
                 <Link className="recharge-link" to="#">
-                  充币
+                  {localization['充币']}
                 </Link>
               )}
             </span>
@@ -152,7 +152,7 @@ class TradeForm extends Component {
         )}
         {tradeType === 'stop' && (
           <li>
-            <span className="trade-form-name">触发价</span>
+            <span className="trade-form-name">{localization['触发价']}</span>
             <Input
               id="triggerPrice"
               size="large"
@@ -169,12 +169,12 @@ class TradeForm extends Component {
         )}
         {tradeType !== 'market' && (
           <li>
-            <span className="trade-form-name">价格</span>
+            <span className="trade-form-name">{localization['价格']}</span>
             <Input
               id="price"
               size="large"
               value={price}
-              placeholder={`${typeToText[type]}价`}
+              placeholder={`${typeToText[type]} ${localization["价"]}`}
               onChange={e => {
                 let value = e.target.value;
                 if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
@@ -194,14 +194,14 @@ class TradeForm extends Component {
                 market: tradeType === 'market'
               })}
             >
-              数量
+              {localization['数量']}
             </span>
             {tradeType === 'market' && (
               <span className="trade-form-tips">
-                以市场上最优价格卖出
+                {localization['以市场上最优价格卖出']}
                 <Tooltip
                   placement="top"
-                  title={`当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止`}
+                  title={localization['当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止']}
                 >
                   <i className="iconfont icon-zhuyishixiang" />
                 </Tooltip>
@@ -211,7 +211,7 @@ class TradeForm extends Component {
               id="volume"
               size="large"
               value={volume}
-              placeholder={`${typeToText[type]}量`}
+              placeholder={`${typeToText[type]} ${localization["量"]}`}
               onChange={e => {
                 let value = e.target.value;
                 if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
@@ -250,14 +250,14 @@ class TradeForm extends Component {
                   market: tradeType === 'market'
                 })}
               >
-                交易额
+                {localization['交易额']}
               </span>
               {tradeType === 'market' && (
                 <span className="trade-form-tips">
-                  以市场上最优价格买入
+                  {localization['以市场上最优价格买入']}
                   <Tooltip
                     placement="top"
-                    title={`当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止`}
+                    title={localization['当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止']}
                   >
                     <i className="iconfont icon-zhuyishixiang" />
                   </Tooltip>
@@ -267,7 +267,7 @@ class TradeForm extends Component {
                 id="totalPrice"
                 size="large"
                 value={totalPrice}
-                placeholder={`${typeToText[type]}量`}
+                placeholder={`${typeToText[type]} ${localization["量"]}`}
                 onChange={value => {
                   this.handleValue(value, 'totalPrice');
                 }}
@@ -285,7 +285,7 @@ class TradeForm extends Component {
         <li>
           {tradeType !== 'market' && (
             <div className="trade-form-total">
-              交易额 {totalCount} {marketName}
+              {localization['交易额']} {totalCount} {marketName}
             </div>
           )}
           {tradeType === 'market' &&
