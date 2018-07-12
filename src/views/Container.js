@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Input } from 'antd';
 import { message } from 'antd';
 import classnames from 'classnames';
 import request from '../utils/request';
@@ -41,10 +40,7 @@ class Container extends Component {
                 // 如果已经谷歌绑定了，去输入谷歌验证码
                 this.setState({
                   popup: (
-                    <GooglePopup
-                      cancelHandle={this.closePopup} 
-                      confirmHandle={this.closePopup}
-                    />
+                    <GooglePopup cancelHandle={this.closePopup} confirmHandle={this.closePopup} />
                   )
                 });
               } else {
@@ -76,7 +72,6 @@ class Container extends Component {
       value: 'zh_CN',
       name: '中文'
     },
-    locale: {},
     logo: '',
     googleCode: '',
     popup: false,
@@ -89,7 +84,6 @@ class Container extends Component {
     this.setState({ popup: false });
   };
 
-  
   // 获取link列表
   getIntroduce = () => {
     this.request('/cms/introduce/list', {
@@ -186,7 +180,7 @@ class Container extends Component {
 
   render() {
     const { localization } = this.props;
-    const { language, locale, logo, popup, introduces, platLinks, friendship } = this.state;
+    const { language, logo, popup, introduces, platLinks, friendship } = this.state;
 
     const account = sessionStorage.getItem('account')
       ? JSON.parse(sessionStorage.getItem('account'))
@@ -312,9 +306,14 @@ class Container extends Component {
                               <img src={item.linkImage} />
                             </span>
                           );
-                        } else if(item.typeId === 'link_qq'){
+                        } else if (item.typeId === 'link_qq') {
                           return (
-                            <a  href={`tencent://message/?Site=baidu.com&uin=${item.linkUrl}&Menu=yes`} key={index}>
+                            <a
+                              href={`tencent://message/?Site=baidu.com&uin=${
+                                item.linkUrl
+                              }&Menu=yes`}
+                              key={index}
+                            >
                               <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />
                             </a>
                           );

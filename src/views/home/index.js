@@ -189,6 +189,8 @@ class Home extends Component {
 
   render() {
     const { localization } = this.props;
+
+    console.log('============localization: ', localization);
     let { banners, market, sortedInfo, tradeExpair, searchValue, favoriteCoins } = this.state;
     sortedInfo = sortedInfo || {};
 
