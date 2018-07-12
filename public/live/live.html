@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>交易</title>
+  <style>
+    .box{padding: 2px 2px;}
+
+    .box .list{display: flex;margin-top: 4px;height: 128px;}
+    .box .list .left{width: 70%;background-color: #CB0807;color: #fff;padding-left: 20px;}
+    .box .list .left h4{font-weight: normal;margin: 0 0;font-size: 24px;margin-top: 12px;}
+    .box .list .left h5{font-weight: normal;margin: 0 0;font-size: 16px;margin-top: 8px;margin-bottom: 8px;}
+    .box .list .left h3{font-size: 35px;margin: 0 0;margin-bottom: 5px;}
+    .box .list .left h3 i{font-style: normal;font-size: 20px;font-weight: normal;}
+    .box .list .right{width: 30%;background-color: #B1002F;position: relative;}
+    .box .list .right img{position: absolute;width: 50px;height: 82px;right: 4px;bottom:0px;}
+    .bottom{display: flex;margin-top: 10px;}
+    .bottom .left{padding: 0 5px;width: 70%;}
+    .bottom .left h5{font-weight: normal;font-size: 12px;}
+    .bottom .left p{font-size: 12px;}
+    .bottom .right{display: flex;}
+    .title{
+      font-size: 14px;
+      text-align: center;
+      margin: 2px 0;
+    }
+    .title_top{
+      text-align: center;
+      display: flex;flex-direction: column;
+    }
+    .title_top .bold_text{
+
+    }
+    .title_top .title{
+
+    }
+    .bold_text{
+      font-weight: 500;
+      margin-right: 30px;
+    }
+    @keyframes langth
+        {
+        from {height: 0}
+        to {height: 40px;}
+        }
+    @keyframes op
+        {
+        0% {opacity:0;}
+        60% {opacity:0;}
+        100% {opacity:1;}
+        }
+        .index1{display: none;}
+        .detail{display: none;}
+        .number{display: none;}
+        .volume{display: none;}
+        .detail.on{display: block;}
+        .number.on{display: block;}
+        .volume.on{display: block;}
+        .index1.on{display: block;}
+
+      .detail-top{text-align: center;padding-top: 20px;position: fixed;left: 0;top: 0;width: 100%;height: 100px;z-index: 10;background-color: #fff;}
+      .detail-top h5{font-size: 21px;color: #989898;margin: 0 0;font-weight: normal;}
+      .detail-top h4{font-size: 24px;color: #000;margin: 0 0;font-weight: normal;}
+      .detail-top h3{font-size: 34px;color: #BA0400;margin: 0 0;}
+      .detail-top h3 i{font-size: 24px;color: #BA0400;margin: 0 0;font-weight: normal;font-style: normal;}
+      .detail-top .letter-box{position: absolute;right:20px;bottom:40px;font-size: 12px;background-color: #ECECEC;border-radius:10px;padding: 5px 5px;color: #999999;}
+      .detail-top .letter-box em{width: 0px;height: 0px;position: absolute;bottom: 0px;left:-5px;display: inline-block;border: 8px solid rgba(255,255,255,0);border-right: 8px solid #ECECEC;transform:rotate(90deg); }
+      .goback{position: absolute;right:20px;top:10px; font-size: 12px;background-color: #ECECEC;border-radius:10px;padding: 8px 8px;color: #999999;}
+      .detail-time-box{position: fixed;left: 0px;top: 120px;z-index: 10;width: 100%;height: 130px;background-color: #fff;}
+      .detail-time{background-color: #C20000;width: 150px;height: 100px;border-radius: 10px;margin:  0 auto;margin-top: 30px;}
+      .detail-time img{width: 50px;height: 70px;border-radius: 10px;}
+      .detail-time p{margin: 0 0 ;color: #fff;text-align: center;margin-top: -10px;font-size: 16px;}
+
+
+
+      .content{margin-top: 245px;min-height: 50px;}
+      .content .content-list{position: relative;;margin: 0 auto;}
+      .content .box{border-top: 1px dashed #bbb;width: 40%;animation: op 1s;}
+      .content .box h5{margin: 0 0;margin-top: 5px;font-size: 12px;font-weight: normal;}
+      .content .box h5 em{font-style: normal;font-size: 16px;color: #C20000;}
+      .content .content-list .box.left{position: absolute;left: 2px;bottom:-10px;}
+      .content .content-list .box.right{position: absolute;right: 2px;bottom:-10px;}
+      .content .tiao-cir{margin: 0 auto;}
+      .content .tiao{animation: langth 0.5s;width: 12px;height: 28px;margin: 0 auto;background: linear-gradient(#EAEAEA, #DBDBDB, #EAEAEA);}
+      .content .cir{animation: op 1s;background-color: #C20000;border-radius: 50%;width: 50px;height: 50px;color: #fff;text-align: center;line-height: 50px;margin: 0 auto;}
+      .detail-bottom{margin: 0 auto;margin-top: 30px;padding-bottom: 50px;}
+      .detail-bottom h4{text-align: center;margin: 0 0;}
+      .detail-bottom p{text-align: center;font-size: 35px;color: #C20000;margin: 0 0;margin-top: 5px;font-weight: bold;}
+      .detail-bottom p i{font-style: normal;font-size: 30px;font-weight: normal;}
+  </style>
+</head>
+<body>
+  <!-- 主页 -->
+  <div class="index1 on" id="index6">
+    <div class="title_top">
+        <span class="bold_text">离开播(<span id='live_time'>--</span>)还有 <span id="last_time">--</span></span>
+        <span class='title'>访问交易所：
+          <a href="http://www.uescoin.com" target='_blank'>http://www.uescoin.com</a>
+        </span>
+    </div>
+    <div class="box" id="summarize">
+      <div id="list1" class="list" onclick="gotodetail()">
+          <div class="left">
+            <h4>0分钟</h4>
+            <h5>总上币数</h5>
+            <h3>0 <i>个</i></h3>
+          </div>
+          <div class="right"><img src="./img/b.png" alt=""></div>
+      </div>
+      <div id="list2" class="list" onclick="gotodetail()">
+        <div class="left">
+          <h4>0分钟</h4>
+          <h5>总并发量性能</h5>
+          <h3>0 <i>个</i></h3>
+        </div>
+        <div class="right"><img src="./img/b.png" alt=""></div>
+      </div>
+      <div id="list3" class="list" onclick="gotodetail()">
+        <div class="left">
+          <h4>0分钟</h4>
+          <h5>总成交量</h5>
+          <h3>0 <i>个</i></h3>
+        </div>
+        <div class="right"><img src="./img/b.png" alt=""></div>
+      </div>
+
+    </div>
+    <div class="bottom">
+      <div class="left">
+        <h5>分享界面给好友，长按二维码访问界面，</h5>
+
+      </div>
+      <div class="right">
+        <!-- <div id="qrcode"></div> -->
+        <img src="./img/live_qrcode.png" alt="" width="100px" height="100px">
+      </div>
+    </div>
+  </div>
+  <!-- 总上币数目 -->
+  <div class="number" id="number">
+    <div class="detail-top">
+      <h5 id="number-time1"></h5>
+      <h4>共同见证</h4>
+      <h3><strong id="number-number1">0</strong><i>个</i></h3>
+      <div class="letter-box">
+        <em></em>
+        总上币数
+      </div>
+      <div class="goback" onclick="gotoback()">
+        返回上一页
+      </div>
+    </div>
+    <div class="detail-time-box">
+      <div class="detail-time">
+        <img src="./img/c.png" alt="">
+        <p id="number-time2">0</p>
+      </div>
+    </div>
+
+    <div class="content" id="number-content">
+    </div>
+    <div class="detail-bottom" id="number-text">
+      <h4>交易所总上币数</h4>
+      <p><strong id="number-number2">0</strong>  <i>个</i></p>
+    </div>
+  </div>
+
+  <!-- 总用户 -->
+
+  <div class="detail" id="detail">
+    <div class="detail-top">
+      <h5 id="detail-time1"></h5>
+      <h4>共同见证</h4>
+      <h3><strong id="detail-number1">0</strong><i></i></h3>
+      <div class="letter-box">
+        <em></em>
+        总并发量性能
+      </div>
+      <div class="goback" onclick="gotoback()">
+        返回上一页
+      </div>
+    </div>
+    <div class="detail-time-box">
+      <div class="detail-time">
+        <img src="./img/c.png" alt="">
+        <p id="detail-time2"></p>
+      </div>
+    </div>
+    <div class="content" id="detail-content">
+    </div>
+    <div class="detail-bottom" id="detail-text">
+      <h4>交易所总并发量性能</h4>
+      <p><strong id="detail-number2">0</strong>  <i></i></p>
+    </div>
+  </div>
+
+
+  <!-- 总交易量 -->
+  <div class="volume" id="volume">
+    <div class="detail-top">
+      <h5 id="volume-time1"></h5>
+      <h4>共同见证</h4>
+      <h3><strong id="volume-number1">0</strong><i></i></h3>
+      <div class="letter-box">
+        <em></em>
+        总成交量
+      </div>
+      <div class="goback" onclick="gotoback()">
+        返回上一页
+      </div>
+    </div>
+    <div class="detail-time-box">
+      <div class="detail-time">
+        <img src="./img/c.png" alt="">
+        <p id="volume-time2"></p>
+      </div>
+    </div>
+    <div class="content" id="volume-content">
+    </div>
+    <div class="detail-bottom" id="volume-text">
+      <h4>交易所总成交量</h4>
+      <p><strong id="volume-number2">0</strong>  <i></i></p>
+    </div>
+  </div>
+
+
+
+
+
+
+</body>
+
+
+<script src="./js/reconnecting-websocket.min.js"></script>
+<script>
+
+//二维码生成
+    // var qrcode = new QRCode('qrcode', {
+    //         text: window.location.href,
+    //         width:80,
+    //         height: 80,
+    //         colorDark : '#000000',
+    //         colorLight : '#ffffff',
+    //         correctLevel : QRCode.CorrectLevel.H
+    //         });
+
+    var list1=document.getElementById("list1");
+    var list2=document.getElementById("list2");
+    var list3=document.getElementById("list3");
+    var index6=document.getElementById("index6");
+    var detail=document.getElementById("detail");
+    var number=document.getElementById("number");
+    var volume=document.getElementById("volume");
+
+    var summarize=document.getElementById("summarize");    //内容盒子
+
+    //detail-
+    var contentDetail=document.getElementById("detail-content").innerHTML;
+    var textDetail=document.getElementById("detail-text");
+    var time1Detail=document.getElementById("detail-time1");
+    var time2Detail=document.getElementById("detail-time2");
+    var number1Detail=document.getElementById("detail-number1");
+    var number2Detail=document.getElementById("detail-number2");
+    var numsDetail=0;  //圆圈个数
+
+
+    var contentNumber=document.getElementById("number-content").innerHTML;
+    var textNumber=document.getElementById("number-text");
+    var time1Number=document.getElementById("number-time1");
+    var time2Number=document.getElementById("number-time2");
+    var number1Number=document.getElementById("number-number1");
+    var number2Number=document.getElementById("number-number2");
+    var numsNumber=0;  //圆圈个数
+
+
+    var contentVolume=document.getElementById("volume-content").innerHTML;
+    var textVolume=document.getElementById("volume-text");
+    var time1Volume=document.getElementById("volume-time1");
+    var time2Volume=document.getElementById("volume-time2");
+    var number1Volume=document.getElementById("volume-number1");
+    var number2Volume=document.getElementById("volume-number2");
+    var numsVolume=0;  //圆圈个数
+
+
+
+    //页面跳转
+    var gotodetail1=function(){
+      // window.location.href="number.html";
+      contentNumber="";
+      contentDetail ="";
+      contentVolume="";
+
+      index6.className="index1";
+      detail.className="detail";
+      volume.className="volume";
+      number.className="number on";
+
+
+    };
+    var gotodetail2=function(){
+      contentNumber="";
+      contentDetail ="";
+      contentVolume="";
+
+      index6.className="index1";
+      number.className="number";
+      volume.className="volume";
+      detail.className="detail on";
+
+    };
+    var gotodetail3=function(){
+      contentNumber="";
+      contentDetail ="";
+      contentVolume="";
+      index6.className="index1";
+      number.className="number";
+      detail.className="detail";
+      volume.className="volume on";
+    };
+    var gotoback=function(){
+      index6.className="index1 on";
+      number.className="number";
+      detail.className="detail";
+      volume.className="volume";
+    }
+
+      //打开websokict
+        //打开websockets
+        const buyandsellWS = new ReconnectingWebSocket("ws://www.uescoin.com/bbex/websocket/showView");
+
+        setInterval(() => {
+          if (buyandsellWS.readyState === 1) {
+            buyandsellWS.send('ping');
+          }
+        }, 1000*3);
+
+        setInterval(() => {
+          if (buyandsellWS.readyState === 1) {
+            buyandsellWS.send('getData');
+          }
+        }, 1000);
+
+        buyandsellWS.onopen = evt => {
+          console.log('stream Websocket Connection open ...');
+        };
+
+        buyandsellWS.onmessage = evt => {
+
+            if (evt.data === 'pong') {
+              return;
+            }else{
+
+
+            var data1 = JSON.parse(evt.data);
+            var summarize1=data1.summarize; //首页数据
+            var userGrowth=data1.userGrowth;  //数组，总并量性能
+            var coinGrowth=data1.coinGrowth;  //数组，
+            var tradeGrowth=data1.tradeGrowth;  //数组，总并量性能
+         
+            document.getElementById('last_time').innerHTML=data1.leftTime;
+            document.getElementById('live_time').innerHTML=data1.liveTime;
+
+            summarize.innerHTML=`<div id="list1" class="list" onclick="gotodetail1()">
+                    <div class="left">
+                      <h4>${summarize1[0] && summarize1[0].curMinute}分钟</h4>
+                      <h5>总上币数</h5>
+                      <h3>${summarize1[0] && summarize1[0].valueLabel} <i>个</i></h3>
+                    </div>
+                    <div class="right"><img src="./img/b.png" alt=""></div>
+                </div>
+                <div id="list2" class="list" onclick="gotodetail2()">
+                  <div class="left">
+                    <h4>${summarize1[1].curMinute}分钟</h4>
+                    <h5>总并量性能</h5>
+                    <h3>${summarize1[1].valueLabel}<i>用户</i></h3>
+                  </div>
+                  <div class="right"><img src="./img/b.png" alt=""></div>
+                </div>
+                <div id="list3" class="list" onclick="gotodetail3()">
+                  <div class="left">
+                    <h4>${summarize1[2].curMinute}分钟</h4>
+                    <h5>总成交量</h5>
+                    <h3>${summarize1[2].valueLabel}<i>笔</i></h3>
+                  </div>
+                  <div class="right"><img src="./img/b.png" alt=""></div>
+                </div>`
+
+
+            //detail
+
+
+                time1Detail.innerHTML=data1.curData;
+                time2Detail.innerHTML=data1.curData;
+                if(data1.summarize[1] && data1.summarize[1].valueLabel){
+                  number1Detail.innerHTML=data1.summarize[1].valueLabel;
+                  number2Detail.innerHTML=data1.summarize[1].valueLabel;
+
+                }
+
+
+                if(userGrowth.length==numsDetail){
+
+                  let lastone=document.getElementsByClassName("detail-last");
+                  if(data1.summarize[1]&&data1.summarize[1].valueLabel){
+                    lastone[lastone.length-1].innerHTML=data1.summarize[1].valueLabel;
+                  }
+
+                }else if(userGrowth.length>numsDetail){
+
+
+
+
+                    let box5=document.getElementById("detail-content");
+                    let addArr=userGrowth.filter((item,index)=>(index+1)>numsDetail);
+
+                    addArr.forEach((item,index1)=>{
+                                let insertElement = document.createElement("div");
+                                if(index1==addArr.length-1){
+                                  insertElement.innerHTML=`<div class="content-list">
+                                       <div class="${(numsDetail-index1)%2==0?'left':'right'} box">
+                                         <h5>第${item.uTime}分钟超过<em class="detail-last">${item.valueLabel}</em>用户</h5>
+                                       </div>
+                                       <div class="tiao-cir">
+                                         <div class="tiao"></div>
+                                         <div class="cir">
+                                           ${item.uTime}:00
+                                         </div>
+                                       </div>
+                                     </div>`;
+                                }else{
+                                  insertElement.innerHTML=`<div class="content-list">
+                                       <div class="${(numsDetail-index1)%2==0?'left':'right'} box">
+                                         <h5>第${item.uTime}分钟超过<em class="lastone detail-last">${item.valueLabel}</em>用户</h5>
+                                       </div>
+                                       <div class="tiao-cir">
+                                         <div class="tiao"></div>
+                                         <div class="cir">
+                                           ${item.uTime}:00
+                                         </div>
+                                       </div>
+                                     </div>`;
+                                }
+                        box5.appendChild(insertElement) ;
+                    })
+
+                  numsDetail=userGrowth.length;
+
+                }else{
+
+                  document.getElementById("detail-content").innerHTML="";
+                  numsDetail=0;
+                  console.log(1);
+                }
+
+            //number
+
+
+
+
+            time1Number.innerHTML=data1.curData;
+            time2Number.innerHTML=data1.curData;
+            number1Number.innerHTML=data1.summarize[0].valueLabel;
+            number2Number.innerHTML=data1.summarize[0].valueLabel;
+
+
+            if(coinGrowth.length==numsNumber){
+              let lastone=document.getElementsByClassName("number-last");
+              if( lastone[lastone.length-1]){
+                lastone[lastone.length-1].innerHTML=data1.summarize[0].valueLabel;
+              }
+
+            }else if(coinGrowth.length>numsNumber){
+
+
+                let box5=document.getElementById("number-content");
+                let addArr=coinGrowth.filter((item,index)=>(index+1)>numsNumber);
+
+                addArr.forEach((item,index1)=>{
+                            let insertElement = document.createElement("div");
+                            if(index1==addArr.length-1){
+                              insertElement.innerHTML=`<div class="content-list">
+                                   <div class="${(numsNumber-index1)%2==0?'left':'right'} box">
+                                     <h5>第${item.tTime}分钟超过<em class="lastone number-last">${item.valueLabel}个</em>上币数</h5>
+                                   </div>
+                                   <div class="tiao-cir">
+                                     <div class="tiao"></div>
+                                     <div class="cir">
+                                       ${item.tTime}:00
+                                     </div>
+                                   </div>
+                                 </div>`;
+                            }else{
+                              insertElement.innerHTML=`<div class="content-list">
+                                   <div class="${(numsNumber-index1)%2==0?'left':'right'} box">
+                                     <h5>第${item.tTime}分钟超过<em class="number-last">${item.valueLabel}个</em>上币数</h5>
+                                   </div>
+                                   <div class="tiao-cir">
+                                     <div class="tiao"></div>
+                                     <div class="cir">
+                                       ${item.tTime}:00
+                                     </div>
+                                   </div>
+                                 </div>`;
+                            }
+
+
+                    box5.appendChild(insertElement) ;
+
+                })
+
+              numsNumber=coinGrowth.length;
+            }else{
+              document.getElementById("number-content").innerHTML="";
+              numsNumber=0;
+              console.log(2);
+            }
+          //volume
+
+
+
+
+
+
+          time1Volume.innerHTML=data1.curData;
+          time2Volume.innerHTML=data1.curData;
+          number1Volume.innerHTML=data1.summarize[2].valueLabel;
+          number2Volume.innerHTML=data1.summarize[2].valueLabel;
+
+
+
+          if(tradeGrowth.length==numsVolume){
+
+
+              let lastone=document.getElementsByClassName("volume-last");
+              if(data1.summarize[2] && data1.summarize[2].valueLabel){
+                lastone[lastone.length-1].innerHTML=data1.summarize[2].valueLabel;
+              }
+
+
+          }else if(tradeGrowth.length>numsVolume){
+
+              let box5=document.getElementById("volume-content");
+              let addArr=tradeGrowth.filter((item,index)=>(index+1)>numsVolume);
+
+
+
+              addArr.forEach((item,index1)=>{
+
+                    let insertElement = document.createElement("div");
+                    if(index1==addArr.length-1){
+                      insertElement.innerHTML=`<div class="content-list">
+                           <div class="${(numsVolume-index1)%2==0?'left':'right'} box">
+                             <h5>第${item.uTime}分钟总成交量<em class="lastone volume-last">${item.valueLabel}</em>笔</h5>
+                           </div>
+                           <div class="tiao-cir">
+                             <div class="tiao"></div>
+                             <div class="cir">
+                               ${item.uTime}:00
+                             </div>
+                           </div>
+                         </div>`;
+                    }else{
+                      insertElement.innerHTML=`<div class="content-list">
+                           <div class="${(numsVolume-index1)%2==0?'left':'right'} box">
+                             <h5>第${item.uTime}分钟总成交量<em class="volume-last">${item.valueLabel}</em>笔</h5>
+                           </div>
+                           <div class="tiao-cir">
+                             <div class="tiao"></div>
+                             <div class="cir">
+                               ${item.uTime}:00
+                             </div>
+                           </div>
+                         </div>`;
+                    }
+
+                  box5.appendChild(insertElement) ;
+
+              })
+              numsVolume=tradeGrowth.length;
+
+          }else{
+            document.getElementById("volume-content").innerHTML="";
+            numsVolume=0;
+            console.log(2);
+          }
+
+
+        }
+
+      };
+
+        buyandsellWS.onclose = evt => {
+          console.log('buyandsell Websocket Connection closed.');
+
+        };
+
+        buyandsellWS.onerror = evt => {
+          console.log(evt);
+        };
+
+
+</script>
+
+</html>
