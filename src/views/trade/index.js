@@ -380,7 +380,7 @@ class Trade extends Component {
           orderVo.price = orderVo.price && orderVo.price.toFixed(8);
           orderVo.volume = orderVo.volume && orderVo.volume.toFixed(8);
           orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
-          if (pendingOrderList && pendingOrderList.length > 0) {
+          if (pendingOrderList) {
             pendingOrderList.unshift(orderVo);
             let target = pendingOrderList.slice(0, 50);
             pendingOrderList = target;
