@@ -35,7 +35,8 @@ const dealWebsocket = params => {
     case 'realTime':
       dataString = localStorage.getItem(wsLocalStorage);
       dataJSON = JSON.parse(dataString);
-      if (dataJSON.length > 0) {
+      // debugger;
+      if (dataJSON && dataJSON.length > 0) {
         let lastDataLength = dataJSON.length - 1;
         let newData = data.data[0];
         // debugger;
