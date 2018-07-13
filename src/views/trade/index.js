@@ -305,7 +305,7 @@ class Trade extends Component {
                   }
                   return item.volume > 0;
                 });
-              if (streamList && streamList.length > 0) {
+              if (streamList) {
                 streamList.unshift(streamVO);
                 streamList = streamList.slice(0, 30);
               }
