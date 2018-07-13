@@ -198,9 +198,15 @@ class Trade extends Component {
         Object.keys(updateExPair).forEach(key => {
           updateExPair[key].forEach(coin => {
             const expair = `${coin.coinOther}/${coin.coinMain}`;
+            let rise = '0.00%';
+            if(coin.firstPrice>0){
+              rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice)*100;
+              rise = rise.toFixed(2)+'%';
+            }
+            // console.log('rise', rise);
             tradeExpair[key][expair] = {
               ...coin,
-              rise: coin.rise || '0.00%',
+              rise: rise,
               latestPrice: (coin.latestPrice || 0).toFixed(8),
               highestPrice: (coin.highestPrice || 0).toFixed(8),
               lowerPrice: (coin.lowerPrice || 0).toFixed(8),
@@ -265,6 +271,13 @@ class Trade extends Component {
                       tradeExpair[marketName][key].latestPrice;
                   }
                   tradeExpair[marketName][key].latestPrice = streamVO.price;
+                  let rise = '0.00%';
+                  let current = tradeExpair[marketName][key];
+                  if(current.firstPrice>0){
+                    rise = ((current.latestPrice - current.firstPrice) / current.firstPrice)*100;
+                    rise = rise.toFixed(2)+'%';
+                  }
+                  tradeExpair[marketName][key].rise = rise;
                 }
               });
 
@@ -433,9 +446,14 @@ class Trade extends Component {
           tradeExpair[key] = {};
           json.data[key].forEach(coin => {
             const expair = `${coin.coinOther}/${coin.coinMain}`;
+            let rise = '0.00%';
+            if(coin.firstPrice>0){
+              rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice)*100;
+              rise = rise.toFixed(2)+'%';
+            }
             tradeExpair[key][expair] = {
               ...coin,
-              rise: coin.rise || '0.00%',
+              rise: rise,
               latestPrice: (coin.latestPrice || 0).toFixed(8),
               highestPrice: (coin.highestPrice || 0).toFixed(8),
               lowerPrice: (coin.lowerPrice || 0).toFixed(8),
@@ -822,24 +840,16 @@ class Trade extends Component {
               toCNY = latestPrice * usdtToCnyRate;
           }
 
-          let change = 0; //涨跌幅
-          if (coin.firstPrice > 0) {
-            change = (coin.latestPrice - coin.firstPrice) / coin.firstPrice;
-          }
-          if (isNaN(change)) {
-            change = 0;
-          }
-
-          const trend = change > 0 ? 'green' : 'red'; //涨跌
+          const trend = coin.rise.indexOf('-')===-1 ? 'green' : 'red'; //涨跌
 
           currentCoin = {
-            change,
+            change: coin.rise,
             trend,
             toCNY,
             latestPrice,
-            highestPrice: Number(coin.highestPrice) || 0,
-            lowerPrice: Number(coin.lowerPrice) || 0,
-            dayCount: Number(coin.dayCount) || 0
+            highestPrice: coin.highestPrice || 0,
+            lowerPrice: coin.lowerPrice || 0,
+            dayCount: coin.dayCount || 0
           };
         }
       });
@@ -1081,18 +1091,18 @@ class Trade extends Component {
               </header>
               <div className="trade-plate-tit Kline">
                 <div className="trade-plate-tit-cell">
-                  最高<strong>{Number(currentCoin.highestPrice).toFixed(8)}</strong>
+                  最高<strong>{currentCoin.highestPrice}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  最低<strong>{Number(currentCoin.lowerPrice).toFixed(8)}</strong>
+                  最低<strong>{currentCoin.lowerPrice}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  成交量<strong>{Number(currentCoin.dayCount).toFixed(8)}</strong>
+                  成交量<strong>{currentCoin.dayCount}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
                   涨跌幅
                   <strong className={`font-color-${currentCoin.trend}`}>
-                    {Number(currentCoin.change).toFixed(2)}%
+                    {(currentCoin.change)}
                   </strong>
                 </div>
               </div>
