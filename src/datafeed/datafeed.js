@@ -212,29 +212,26 @@ const datafeeds = symbol => {
 
     var that = this;
 
-    try {
-      if (symbolInfo && symbolInfo.name) {
-        const symbolName = symbolInfo.name.replace(/\//g, '_');
-        that._logMessage(`send ${symbolName} get bars...`);
-
-        try {
-          if (window.ws.readyState === 1) {
-            window.ws.send(symbolName + '_' + period);
-          }
-        } catch (e) {
-          that._logMessage(`send ws error: ${e.message} get bars...`);
-        }
-      }
-    } catch (e) {
-      console.log('send error: ', e);
-    }
-
     var websocketGetData = function() {
       if (!window.hasWsMessage) {
         window.hasWsMessage = true;
-
+        try {
+          if (symbolInfo && symbolInfo.name) {
+            const symbolName = symbolInfo.name.replace(/\//g, '_');
+            that._logMessage(`send ${symbolName} get bars...`);
+    
+            try {
+              if (window.ws.readyState === 1) {
+                window.ws.send(symbolName + '_' + period);
+              }
+            } catch (e) {
+              that._logMessage(`send ws error: ${e.message} get bars...`);
+            }
+          }
+        } catch (e) {
+          console.log('send error: ', e);
+        }
         
-
         window.ws.onmessage = function(e) {
           if (e.data === 'pong') {
             // console.log('kline: ', e.data);
