@@ -212,25 +212,28 @@ const datafeeds = symbol => {
 
     var that = this;
 
-    var websocketGetData = function() {
-      if (!window.hasWsMessage) {
-        try {
-          window.hasWsMessage = true;
-          if (symbolInfo && symbolInfo.name) {
-            const symbolName = symbolInfo.name.replace(/\//g, '_');
-            that._logMessage(`send ${symbolName} get bars...`);
+    try {
+      if (symbolInfo && symbolInfo.name) {
+        const symbolName = symbolInfo.name.replace(/\//g, '_');
+        that._logMessage(`send ${symbolName} get bars...`);
 
-            try {
-              if (window.ws.readyState === 1) {
-                window.ws.send(symbolName + '_' + period);
-              }
-            } catch (e) {
-              that._logMessage(`send ws error: ${e.message} get bars...`);
-            }
+        try {
+          if (window.ws.readyState === 1) {
+            window.ws.send(symbolName + '_' + period);
           }
         } catch (e) {
-          console.log('send error: ', e);
+          that._logMessage(`send ws error: ${e.message} get bars...`);
         }
+      }
+    } catch (e) {
+      console.log('send error: ', e);
+    }
+
+    var websocketGetData = function() {
+      if (!window.hasWsMessage) {
+        window.hasWsMessage = true;
+
+        
 
         window.ws.onmessage = function(e) {
           if (e.data === 'pong') {
@@ -318,7 +321,8 @@ const datafeeds = symbol => {
     onResetCacheNeededCallback
   ) {
     // console.log('subscribeBars ->');
-    window.hasWsMessage = '';
+    window.hasWsMessage = false;
+
     this._barsPulseUpdater.subscribeDataListener(
       symbolInfo,
       resolution,

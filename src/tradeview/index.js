@@ -45,7 +45,7 @@ class TradeviewPage extends Component {
             Datafeeds: datafeeds(`${coin}/${market}`),
             serverUrl: this.websocketUrl,
             pushInterval: 1000,
-            language: 'zh_CN',
+            locale: 'en',
             symbol: `${coin}/${market}`
         };
 

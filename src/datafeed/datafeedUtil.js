@@ -35,20 +35,17 @@ const dealWebsocket = params => {
     case 'realTime':
       dataString = localStorage.getItem(wsLocalStorage);
       dataJSON = JSON.parse(dataString);
-      if (dataJSON.length > 0) {
+      if (dataJSON && dataJSON.length > 0) {
         let lastDataLength = dataJSON.length - 1;
         let newData = data.data[0];
         // debugger;
-        let lastDataTime = dataJSON[lastDataLength]['t'];
+        let lastDataTime = parseInt(dataJSON[lastDataLength]['t']);
         let newDataTime = parseInt(newData['t']);
 
         // 判断当前时间 + 时间间隔 和 最新时间的大小
         if (lastDataTime + resolutionTime > newDataTime) {
           // 替换最后一个, 交易量累加
-          dataJSON[lastDataLength] = {
-            ...newData,
-            v: Number(dataJSON[lastDataLength]['v']) + Number(newData['v'])
-          };
+          dataJSON[lastDataLength] = newData;
         } else {
           // 放入最新的
           dataJSON.push(newData);

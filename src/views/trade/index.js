@@ -663,6 +663,8 @@ class Trade extends Component {
     this.streamWS && this.streamWS.close();
     this.buyandsellWS && this.buyandsellWS.close();
     this.userWS && this.userWS.close();
+    window.tvWidget.remove();
+    window.tvWidget = null;
   }
 
   render() {
