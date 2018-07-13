@@ -53,7 +53,7 @@ class Trade extends Component {
       listType: -1,
       mergeNumber: 8,
       orderStatus: 0,
-      coinDetail: '',
+      coinDetail: ' ',
       favoriteCoins: localStorage.getItem('favoriteCoins')
         ? JSON.parse(localStorage.getItem('favoriteCoins'))
         : [],
@@ -220,106 +220,94 @@ class Trade extends Component {
     };
   };
 
-  openStreamWebsocket = ({ coinName, marketName }) => {
-    this.streamWS && this.streamWS.close();
-
-    //打开websockets
-    this.reOpenFlowWaterInterval = setInterval(() => {
-      if (!this.streamWS || this.streamWS.readyState !== 1) {
-        clearInterval(this.reOpenFlowWaterInterval);
-        clearInterval(this.streamInterval);
-        this.streamWS = new ReconnectingWebSocket(
-          `${WS_PREFIX}/flowingWater?${coinName}_${marketName}`
-        );
-        this.streamInterval = setInterval(() => {
-          if (this.streamWS && this.streamWS.readyState === 1) {
-            this.streamWS.send('ping');
-          }
-        }, 1000 * 3);
-
-        this.streamWS.onopen = evt => {
-          console.log('stream Websocket Connection open ...');
-        };
-
-        this.streamWS.onmessage = evt => {
-          if (evt.data === 'pong') {
-            return;
-          }
-
-          const { btcLastPrice, ethLastPrice, matchStreamVO } = JSON.parse(evt.data);
-          const { marketName, coinName, tradeList } = this.state;
-
-          // 更新btc最新价
-          if (btcLastPrice) this.setState({ btcLastPrice });
-
-          // 更新eth最新价
-          if (ethLastPrice) this.setState({ ethLastPrice });
-
-          if (matchStreamVO) {
-            // 当流水的交易对跟当前交易对相等时
-            if (
-              matchStreamVO &&
-              matchStreamVO.coinMain === marketName &&
-              matchStreamVO.coinOther === coinName
-            ) {
-              const streamVO = matchStreamVO;
-              let { tradeExpair, streamList, marketName } = this.state;
-              Object.keys(tradeExpair[marketName]).forEach(key => {
-                if (streamVO.coinOther === tradeExpair[marketName][key].coinOther) {
-                  if (tradeExpair[marketName][key].firstPrice == 0) {
-                    tradeExpair[marketName][key].firstPrice =
-                      tradeExpair[marketName][key].latestPrice;
-                  }
-                  tradeExpair[marketName][key].latestPrice = streamVO.price;
-                  let rise = '0.00%';
-                  let current = tradeExpair[marketName][key];
-                  if (current.firstPrice > 0) {
-                    rise = ((current.latestPrice - current.firstPrice) / current.firstPrice) * 100;
-                    rise = rise.toFixed(2) + '%';
-                  }
-                  tradeExpair[marketName][key].rise = rise;
-                }
-              });
-
-              tradeList.buyOrderVOList =
-                tradeList.buyOrderVOList &&
-                tradeList.buyOrderVOList.filter(item => {
-                  if (
-                    item.coinMain === streamVO.coinMain &&
-                    item.coinOther === streamVO.coinOther &&
-                    item.price === streamVO.price
-                  ) {
-                    item.volume -= streamVO.volume;
-                  }
-                  return item.volume > 0;
-                });
-              tradeList.sellOrderVOList =
-                tradeList.sellOrderVOList &&
-                tradeList.sellOrderVOList.filter(item => {
-                  if (
-                    item.coinMain === streamVO.coinMain &&
-                    item.coinOther === streamVO.coinOther &&
-                    item.price === streamVO.price
-                  ) {
-                    item.volume -= streamVO.volume;
-                  }
-                  return item.volume > 0;
-                });
-              if (streamList) {
-                streamList.unshift(streamVO);
-                streamList = streamList.slice(0, 30);
-              }
-
-              this.setState({
-                tradeExpair,
-                tradeList,
-                streamList
-              });
-            }
-          }
-        };
+  openStreamWebsocket = () => {
+    this.streamWS = new ReconnectingWebSocket(`${WS_PREFIX}/flowingWater`);
+    this.streamInterval = setInterval(() => {
+      if (this.streamWS && this.streamWS.readyState === 1) {
+        this.streamWS.send('ping');
       }
-    }, 100);
+    }, 1000 * 3);
+
+    this.streamWS.onopen = evt => {
+      console.log('stream Websocket Connection open ...');
+    };
+
+    this.streamWS.onmessage = evt => {
+      if (evt.data === 'pong') {
+        return;
+      }
+
+      const { btcLastPrice, ethLastPrice, matchStreamVO } = JSON.parse(evt.data);
+      const { marketName, coinName, tradeList } = this.state;
+
+      // 更新btc最新价
+      if (btcLastPrice) this.setState({ btcLastPrice });
+
+      // 更新eth最新价
+      if (ethLastPrice) this.setState({ ethLastPrice });
+
+      if (matchStreamVO) {
+        // 当流水的交易对跟当前交易对相等时
+        if (
+          matchStreamVO &&
+          matchStreamVO.coinMain === marketName &&
+          matchStreamVO.coinOther === coinName
+        ) {
+          const streamVO = matchStreamVO;
+          let { tradeExpair, streamList, marketName } = this.state;
+          Object.keys(tradeExpair[marketName]).forEach(key => {
+            if (streamVO.coinOther === tradeExpair[marketName][key].coinOther) {
+              if (tradeExpair[marketName][key].firstPrice == 0) {
+                tradeExpair[marketName][key].firstPrice = tradeExpair[marketName][key].latestPrice;
+              }
+              tradeExpair[marketName][key].latestPrice = streamVO.price;
+              let rise = '0.00%';
+              let current = tradeExpair[marketName][key];
+              if (current.firstPrice > 0) {
+                rise = ((current.latestPrice - current.firstPrice) / current.firstPrice) * 100;
+                rise = rise.toFixed(2) + '%';
+              }
+              tradeExpair[marketName][key].rise = rise;
+            }
+          });
+
+          tradeList.buyOrderVOList =
+            tradeList.buyOrderVOList &&
+            tradeList.buyOrderVOList.filter(item => {
+              if (
+                item.coinMain === streamVO.coinMain &&
+                item.coinOther === streamVO.coinOther &&
+                item.price === streamVO.price
+              ) {
+                item.volume -= streamVO.volume;
+              }
+              return item.volume > 0;
+            });
+          tradeList.sellOrderVOList =
+            tradeList.sellOrderVOList &&
+            tradeList.sellOrderVOList.filter(item => {
+              if (
+                item.coinMain === streamVO.coinMain &&
+                item.coinOther === streamVO.coinOther &&
+                item.price === streamVO.price
+              ) {
+                item.volume -= streamVO.volume;
+              }
+              return item.volume > 0;
+            });
+          if (streamList) {
+            streamList.unshift(streamVO);
+            streamList = streamList.slice(0, 30);
+          }
+
+          this.setState({
+            tradeExpair,
+            tradeList,
+            streamList
+          });
+        }
+      }
+    };
   };
 
   openBuyAndSellWebsocket = () => {
@@ -558,44 +546,7 @@ class Trade extends Component {
 
   // 按小数位数合并列表
   handleMerge = value => {
-    const { listType } = this.state;
     this.setState({ mergeNumber: value });
-  };
-
-  requestMerge = ({ type = '', length }) => {
-    this.setState({
-      tradeList: {
-        buyOrderVOList: null,
-        sellOrderVOList: null
-      }
-    });
-    const { marketName, coinName } = this.state;
-    this.request('/index/merge', {
-      method: 'GET',
-      body: {
-        coinMain: marketName,
-        coinOther: coinName,
-        type,
-        length
-      }
-    }).then(json => {
-      if (json.code === 10000000) {
-        this.setState({
-          tradeList: {
-            buyOrderVOList: json.data.buyOrderVOList ? json.data.buyOrderVOList : [],
-            sellOrderVOList: json.data.sellOrderVOList ? json.data.sellOrderVOList : []
-          }
-        });
-      } else {
-        this.setState({
-          tradeList: {
-            buyOrderVOList: [],
-            sellOrderVOList: []
-          }
-        });
-        message.error(json.msg);
-      }
-    });
   };
 
   // 切换买卖盘列表
@@ -617,6 +568,7 @@ class Trade extends Component {
     // 打开websocket链接
     this.openMarketsocket();
     this.openBuyAndSellWebsocket();
+    this.openStreamWebsocket();
 
     // 只有登录状态下才打开用户websocket
     if (sessionStorage.getItem('account')) {
@@ -630,6 +582,7 @@ class Trade extends Component {
       this.state.coinName !== prevState.coinName
     ) {
       const { marketName, coinName } = this.state;
+      const tradePair = `${coinName}_${marketName}`;
 
       // 获取交易流水列表
       this.getStream({
@@ -637,18 +590,17 @@ class Trade extends Component {
         coinOther: coinName
       });
 
-      // 关闭流水websocket重新连接
-      this.openStreamWebsocket({ marketName, coinName });
+      // 交易流水websocket 重新发送交易对
+      if (this.streamWS && this.streamWS.readyState === 1) {
+        this.streamWS.send(tradePair);
+      }
 
       // 保存交易对,以便刷新能够定位交易对
-      localStorage.setItem('tradePair', `${coinName}_${marketName}`);
+      localStorage.setItem('tradePair', tradePair);
     }
 
     if (this.state.coinName !== prevState.coinName) {
       const { marketName, coinName, orderStatus } = this.state;
-
-      // 获取币种详情
-      this.getCoinDetail(coinName);
 
       // 如果已经登录，获取挂单列表
       if (sessionStorage.getItem('account')) {
@@ -1089,7 +1041,7 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="normal">{localization['币种介绍']}</Button>
+                    <Button type="normal" onMouseEnter={this.getCoinDetail.bind(this, coinName)}>{localization['币种介绍']}</Button>
                   </Tooltip>
                 </div>
               </header>
