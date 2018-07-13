@@ -15,7 +15,7 @@ import {
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
 import Spinners from 'react-spinners';
-import NoticeBar from '../../components/noticeBar';
+import NoticeBar from '../../components/notice-bar';
 import { stampToDate } from '../../utils';
 import { WS_PREFIX } from '../../utils/constants';
 import TradeBox from './TradeBox';
@@ -53,7 +53,7 @@ class Trade extends Component {
       listType: -1,
       mergeNumber: 8,
       orderStatus: 0,
-      coinDetail: '',
+      coinDetail: ' ',
       favoriteCoins: localStorage.getItem('favoriteCoins')
         ? JSON.parse(localStorage.getItem('favoriteCoins'))
         : [],
@@ -198,9 +198,15 @@ class Trade extends Component {
         Object.keys(updateExPair).forEach(key => {
           updateExPair[key].forEach(coin => {
             const expair = `${coin.coinOther}/${coin.coinMain}`;
+            let rise = '0.00%';
+            if (coin.firstPrice > 0) {
+              rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
+              rise = rise.toFixed(2) + '%';
+            }
+            // console.log('rise', rise);
             tradeExpair[key][expair] = {
               ...coin,
-              rise: coin.rise || '0.00%',
+              rise: rise,
               latestPrice: (coin.latestPrice || 0).toFixed(8),
               highestPrice: (coin.highestPrice || 0).toFixed(8),
               lowerPrice: (coin.lowerPrice || 0).toFixed(8),
@@ -214,99 +220,94 @@ class Trade extends Component {
     };
   };
 
-  openStreamWebsocket = ({ coinName, marketName }) => {
-    this.streamWS && this.streamWS.close();
-
-    //打开websockets
-    this.reOpenFlowWaterInterval = setInterval(() => {
-      if (!this.streamWS || this.streamWS.readyState !== 1) {
-        clearInterval(this.reOpenFlowWaterInterval);
-        clearInterval(this.streamInterval);
-        this.streamWS = new ReconnectingWebSocket(
-          `${WS_PREFIX}/flowingWater?${coinName}_${marketName}`
-        );
-        this.streamInterval = setInterval(() => {
-          if (this.streamWS && this.streamWS.readyState === 1) {
-            this.streamWS.send('ping');
-          }
-        }, 1000 * 3);
-
-        this.streamWS.onopen = evt => {
-          console.log('stream Websocket Connection open ...');
-        };
-
-        this.streamWS.onmessage = evt => {
-          if (evt.data === 'pong') {
-            return;
-          }
-
-          const { btcLastPrice, ethLastPrice, matchStreamVO } = JSON.parse(evt.data);
-          const { marketName, coinName, tradeList } = this.state;
-
-          // 更新btc最新价
-          if (btcLastPrice) this.setState({ btcLastPrice });
-
-          // 更新eth最新价
-          if (ethLastPrice) this.setState({ ethLastPrice });
-
-          if (matchStreamVO) {
-            // 当流水的交易对跟当前交易对相等时
-            if (
-              matchStreamVO &&
-              matchStreamVO.coinMain === marketName &&
-              matchStreamVO.coinOther === coinName
-            ) {
-              const streamVO = matchStreamVO;
-              let { tradeExpair, streamList, marketName } = this.state;
-              Object.keys(tradeExpair[marketName]).forEach(key => {
-                if (streamVO.coinOther === tradeExpair[marketName][key].coinOther) {
-                  if (tradeExpair[marketName][key].firstPrice == 0) {
-                    tradeExpair[marketName][key].firstPrice =
-                      tradeExpair[marketName][key].latestPrice;
-                  }
-                  tradeExpair[marketName][key].latestPrice = streamVO.price;
-                }
-              });
-
-              tradeList.buyOrderVOList =
-                tradeList.buyOrderVOList &&
-                tradeList.buyOrderVOList.filter(item => {
-                  if (
-                    item.coinMain === streamVO.coinMain &&
-                    item.coinOther === streamVO.coinOther &&
-                    item.price === streamVO.price
-                  ) {
-                    item.volume -= streamVO.volume;
-                  }
-                  return item.volume > 0;
-                });
-              tradeList.sellOrderVOList =
-                tradeList.sellOrderVOList &&
-                tradeList.sellOrderVOList.filter(item => {
-                  if (
-                    item.coinMain === streamVO.coinMain &&
-                    item.coinOther === streamVO.coinOther &&
-                    item.price === streamVO.price
-                  ) {
-                    item.volume -= streamVO.volume;
-                  }
-                  return item.volume > 0;
-                });
-              if (streamList && streamList.length > 0) {
-                streamList.unshift(streamVO);
-                streamList = streamList.slice(0, 30);
-              }
-
-              this.setState({
-                tradeExpair,
-                tradeList,
-                streamList
-              });
-            }
-          }
-        };
+  openStreamWebsocket = () => {
+    this.streamWS = new ReconnectingWebSocket(`${WS_PREFIX}/flowingWater`);
+    this.streamInterval = setInterval(() => {
+      if (this.streamWS && this.streamWS.readyState === 1) {
+        this.streamWS.send('ping');
       }
-    }, 100);
+    }, 1000 * 3);
+
+    this.streamWS.onopen = evt => {
+      console.log('stream Websocket Connection open ...');
+    };
+
+    this.streamWS.onmessage = evt => {
+      if (evt.data === 'pong') {
+        return;
+      }
+
+      const { btcLastPrice, ethLastPrice, matchStreamVO } = JSON.parse(evt.data);
+      const { marketName, coinName, tradeList } = this.state;
+
+      // 更新btc最新价
+      if (btcLastPrice) this.setState({ btcLastPrice });
+
+      // 更新eth最新价
+      if (ethLastPrice) this.setState({ ethLastPrice });
+
+      if (matchStreamVO) {
+        // 当流水的交易对跟当前交易对相等时
+        if (
+          matchStreamVO &&
+          matchStreamVO.coinMain === marketName &&
+          matchStreamVO.coinOther === coinName
+        ) {
+          const streamVO = matchStreamVO;
+          let { tradeExpair, streamList, marketName } = this.state;
+          Object.keys(tradeExpair[marketName]).forEach(key => {
+            if (streamVO.coinOther === tradeExpair[marketName][key].coinOther) {
+              if (tradeExpair[marketName][key].firstPrice == 0) {
+                tradeExpair[marketName][key].firstPrice = tradeExpair[marketName][key].latestPrice;
+              }
+              tradeExpair[marketName][key].latestPrice = streamVO.price;
+              let rise = '0.00%';
+              let current = tradeExpair[marketName][key];
+              if (current.firstPrice > 0) {
+                rise = ((current.latestPrice - current.firstPrice) / current.firstPrice) * 100;
+                rise = rise.toFixed(2) + '%';
+              }
+              tradeExpair[marketName][key].rise = rise;
+            }
+          });
+
+          tradeList.buyOrderVOList =
+            tradeList.buyOrderVOList &&
+            tradeList.buyOrderVOList.filter(item => {
+              if (
+                item.coinMain === streamVO.coinMain &&
+                item.coinOther === streamVO.coinOther &&
+                item.price === streamVO.price
+              ) {
+                item.volume -= streamVO.volume;
+              }
+              return item.volume > 0;
+            });
+          tradeList.sellOrderVOList =
+            tradeList.sellOrderVOList &&
+            tradeList.sellOrderVOList.filter(item => {
+              if (
+                item.coinMain === streamVO.coinMain &&
+                item.coinOther === streamVO.coinOther &&
+                item.price === streamVO.price
+              ) {
+                item.volume -= streamVO.volume;
+              }
+              return item.volume > 0;
+            });
+          if (streamList) {
+            streamList.unshift(streamVO);
+            streamList = streamList.slice(0, 30);
+          }
+
+          this.setState({
+            tradeExpair,
+            tradeList,
+            streamList
+          });
+        }
+      }
+    };
   };
 
   openBuyAndSellWebsocket = () => {
@@ -433,9 +434,14 @@ class Trade extends Component {
           tradeExpair[key] = {};
           json.data[key].forEach(coin => {
             const expair = `${coin.coinOther}/${coin.coinMain}`;
+            let rise = '0.00%';
+            if (coin.firstPrice > 0) {
+              rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
+              rise = rise.toFixed(2) + '%';
+            }
             tradeExpair[key][expair] = {
               ...coin,
-              rise: coin.rise || '0.00%',
+              rise: rise,
               latestPrice: (coin.latestPrice || 0).toFixed(8),
               highestPrice: (coin.highestPrice || 0).toFixed(8),
               lowerPrice: (coin.lowerPrice || 0).toFixed(8),
@@ -540,44 +546,7 @@ class Trade extends Component {
 
   // 按小数位数合并列表
   handleMerge = value => {
-    const { listType } = this.state;
     this.setState({ mergeNumber: value });
-  };
-
-  requestMerge = ({ type = '', length }) => {
-    this.setState({
-      tradeList: {
-        buyOrderVOList: null,
-        sellOrderVOList: null
-      }
-    });
-    const { marketName, coinName } = this.state;
-    this.request('/index/merge', {
-      method: 'GET',
-      body: {
-        coinMain: marketName,
-        coinOther: coinName,
-        type,
-        length
-      }
-    }).then(json => {
-      if (json.code === 10000000) {
-        this.setState({
-          tradeList: {
-            buyOrderVOList: json.data.buyOrderVOList ? json.data.buyOrderVOList : [],
-            sellOrderVOList: json.data.sellOrderVOList ? json.data.sellOrderVOList : []
-          }
-        });
-      } else {
-        this.setState({
-          tradeList: {
-            buyOrderVOList: [],
-            sellOrderVOList: []
-          }
-        });
-        message.error(json.msg);
-      }
-    });
   };
 
   // 切换买卖盘列表
@@ -599,6 +568,7 @@ class Trade extends Component {
     // 打开websocket链接
     this.openMarketsocket();
     this.openBuyAndSellWebsocket();
+    this.openStreamWebsocket();
 
     // 只有登录状态下才打开用户websocket
     if (sessionStorage.getItem('account')) {
@@ -612,6 +582,7 @@ class Trade extends Component {
       this.state.coinName !== prevState.coinName
     ) {
       const { marketName, coinName } = this.state;
+      const tradePair = `${coinName}_${marketName}`;
 
       // 获取交易流水列表
       this.getStream({
@@ -619,18 +590,17 @@ class Trade extends Component {
         coinOther: coinName
       });
 
-      // 关闭流水websocket重新连接
-      this.openStreamWebsocket({ marketName, coinName });
+      // 交易流水websocket 重新发送交易对
+      if (this.streamWS && this.streamWS.readyState === 1) {
+        this.streamWS.send(tradePair);
+      }
 
       // 保存交易对,以便刷新能够定位交易对
-      localStorage.setItem('tradePair', `${coinName}_${marketName}`);
+      localStorage.setItem('tradePair', tradePair);
     }
 
     if (this.state.coinName !== prevState.coinName) {
       const { marketName, coinName, orderStatus } = this.state;
-
-      // 获取币种详情
-      this.getCoinDetail(coinName);
 
       // 如果已经登录，获取挂单列表
       if (sessionStorage.getItem('account')) {
@@ -663,6 +633,8 @@ class Trade extends Component {
     this.streamWS && this.streamWS.close();
     this.buyandsellWS && this.buyandsellWS.close();
     this.userWS && this.userWS.close();
+    window.tvWidget.remove();
+    window.tvWidget = null;
   }
 
   render() {
@@ -753,7 +725,7 @@ class Trade extends Component {
         key: 'price'
       },
       {
-        title:`${localization['委托数量']}(${coinName}/${marketName})`,
+        title: `${localization['委托数量']}(${coinName}/${marketName})`,
         dataIndex: 'volume',
         key: 'volume'
       },
@@ -777,13 +749,13 @@ class Trade extends Component {
           if (record.status === 2 || record.status === 3) {
             return (
               <Button type="primary" onClick={this.handleOrderDetail.bind(this, record.orderNo)}>
-              {localization['详情']}
+                {localization['详情']}
               </Button>
             );
           } else if (record.status === 0 || record.status === 1) {
             return (
               <Button type="primary" onClick={this.handleCancelTrade.bind(this, record.orderNo)}>
-              {localization['撤单']}
+                {localization['撤单']}
               </Button>
             );
           } else {
@@ -824,24 +796,16 @@ class Trade extends Component {
               toCNY = latestPrice * usdtToCnyRate;
           }
 
-          let change = 0; //涨跌幅
-          if (coin.firstPrice > 0) {
-            change = (coin.latestPrice - coin.firstPrice) / coin.firstPrice;
-          }
-          if (isNaN(change)) {
-            change = 0;
-          }
-
-          const trend = change > 0 ? 'green' : 'red'; //涨跌
+          const trend = coin.rise.indexOf('-') === -1 ? 'green' : 'red'; //涨跌
 
           currentCoin = {
-            change,
+            change: coin.rise,
             trend,
             toCNY,
             latestPrice,
-            highestPrice: Number(coin.highestPrice) || 0,
-            lowerPrice: Number(coin.lowerPrice) || 0,
-            dayCount: Number(coin.dayCount) || 0
+            highestPrice: coin.highestPrice || 0,
+            lowerPrice: coin.lowerPrice || 0,
+            dayCount: coin.dayCount || 0
           };
         }
       });
@@ -1077,24 +1041,27 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="normal">{localization['币种介绍']}</Button>
+                    <Button type="normal" onMouseEnter={this.getCoinDetail.bind(this, coinName)}>{localization['币种介绍']}</Button>
                   </Tooltip>
                 </div>
               </header>
               <div className="trade-plate-tit Kline">
                 <div className="trade-plate-tit-cell">
-                  {localization['最高价']}<strong>{Number(currentCoin.highestPrice).toFixed(8)}</strong>
+                  {localization['最高价']}
+                  <strong>{currentCoin.highestPrice}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  {localization['最低价']}<strong>{Number(currentCoin.lowerPrice).toFixed(8)}</strong>
+                  {localization['最低价']}
+                  <strong>{currentCoin.lowerPrice}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  {localization['成交量']}<strong>{Number(currentCoin.dayCount).toFixed(8)}</strong>
+                  {localization['成交量']}
+                  <strong>{currentCoin.dayCount}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
                   {localization['涨跌幅']}
                   <strong className={`font-color-${currentCoin.trend}`}>
-                    {Number(currentCoin.change).toFixed(2)}%
+                    {currentCoin.change}
                   </strong>
                 </div>
               </div>
@@ -1119,7 +1086,9 @@ class Trade extends Component {
                         {localization['止盈止损']}
                         <Tooltip
                           placement="rightTop"
-                          title={localization['当市场价达到触发价时，将按计划设定的价格和数量进行下单']}
+                          title={
+                            localization['当市场价达到触发价时，将按计划设定的价格和数量进行下单']
+                          }
                         >
                           <i className="iconfont icon-web-icon-" />
                         </Tooltip>
@@ -1174,15 +1143,29 @@ class Trade extends Component {
               {listType === -1 ? (
                 <div className="trade-plate-tit list">
                   <div className="trade-plate-tit-cell">{localization['类型']}</div>
-                  <div className="trade-plate-tit-cell">{localization['价格']}({marketName})</div>
-                  <div className="trade-plate-tit-cell">{localization['数量']}({coinName})</div>
-                  {false && <div className="trade-plate-tit-cell">{localization['交易额']}({marketName})</div>}
+                  <div className="trade-plate-tit-cell">
+                    {localization['价格']}({marketName})
+                  </div>
+                  <div className="trade-plate-tit-cell">
+                    {localization['数量']}({coinName})
+                  </div>
+                  {false && (
+                    <div className="trade-plate-tit-cell">
+                      {localization['交易额']}({marketName})
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="trade-plate-tit list">
-                  <div className="trade-plate-tit-cell">{listType === 0 ? localization['买入'] : localization['卖出']}价</div>
+                  <div className="trade-plate-tit-cell">
+                    {listType === 0 ? localization['买入'] : localization['卖出']}价
+                  </div>
                   <div className="trade-plate-tit-cell">{localization['委单量']}</div>
-                  {false && <div className="trade-plate-tit-cell">{localization['交易额']}({marketName})</div>}
+                  {false && (
+                    <div className="trade-plate-tit-cell">
+                      {localization['交易额']}({marketName})
+                    </div>
+                  )}
                 </div>
               )}
               {listType === -1 ? (
@@ -1202,7 +1185,8 @@ class Trade extends Component {
                                     onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
                                   >
                                     <td className="font-color-red">
-                                      {localization['卖出']}{visibleLength - index + startIndex}
+                                      {localization['卖出']}
+                                      {visibleLength - index + startIndex}
                                     </td>
                                     <td>{Number(record.price).toFixed(8)}</td>
                                     <td>{Number(record.volume).toFixed(8)}</td>
@@ -1222,7 +1206,8 @@ class Trade extends Component {
                   </div>
                   <div className="latest-price">
                     <span>
-                      <i className="iconfont icon-xinhao font-color-green" />{localization['最新价']}
+                      <i className="iconfont icon-xinhao font-color-green" />
+                      {localization['最新价']}
                     </span>
                     <span
                       className={
@@ -1267,7 +1252,10 @@ class Trade extends Component {
                                     key={index}
                                     onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
                                   >
-                                    <td className="font-color-green">{localization['买入']}{index + 1}</td>
+                                    <td className="font-color-green">
+                                      {localization['买入']}
+                                      {index + 1}
+                                    </td>
                                     <td>{Number(record.price).toFixed(8)}</td>
                                     <td>{Number(record.volume).toFixed(8)}</td>
                                     {false && (
@@ -1300,7 +1288,8 @@ class Trade extends Component {
                               : tradeList.buyOrderVOList
                             ).map((record, index) => {
                               const colorName = listType === 0 ? 'green' : 'red';
-                              const actionName = listType === 0 ? localization['买入']: localization['卖出'];
+                              const actionName =
+                                listType === 0 ? localization['买入'] : localization['卖出'];
                               return (
                                 <tr
                                   key={index}

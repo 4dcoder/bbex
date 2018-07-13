@@ -859,8 +859,7 @@ a:hover {
 }
 
 .scroll-notice .ant-carousel {
-  width: 80%;
-  margin: 0 auto;
+  margin: 0 110px;
 }
 
 .scroll-notice .notice-more,

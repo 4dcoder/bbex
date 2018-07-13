@@ -20,7 +20,7 @@ class TradeForm extends Component {
   };
 
   handleSlideInput = value => {
-    const { type, mainVolume, coinVolume,localization } = this.props;
+    const { type, mainVolume, coinVolume } = this.props;
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const volume = (assetVolume / price) * (value / 100);
@@ -29,7 +29,8 @@ class TradeForm extends Component {
 
   // 获取订单号
   getOrderNo = () => {
-    const { price, volume,localization } = this.state;
+    const { localization } = this.props;
+    const { price, volume } = this.state;
     if (price <= 0) {
       message.error(localization['请输入价格']);
       return;
@@ -55,7 +56,7 @@ class TradeForm extends Component {
 
   // 买入卖出
   tradeAction = orderNo => {
-    const { type, marketName, coinName,localization } = this.props;
+    const { type, marketName, coinName, localization } = this.props;
 
     const { price, volume } = this.state;
 
@@ -105,7 +106,15 @@ class TradeForm extends Component {
       100: ''
     };
 
-    const { type, tradeType, marketName, coinName, mainVolume, coinVolume,localization } = this.props;
+    const {
+      type,
+      tradeType,
+      marketName,
+      coinName,
+      mainVolume,
+      coinVolume,
+      localization
+    } = this.props;
 
     const { triggerPrice, price, volume, totalPrice, pending } = this.state;
 
@@ -174,7 +183,7 @@ class TradeForm extends Component {
               id="price"
               size="large"
               value={price}
-              placeholder={`${typeToText[type]} ${localization["价"]}`}
+              placeholder={`${typeToText[type]} ${localization['价']}`}
               onChange={e => {
                 let value = e.target.value;
                 if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
@@ -201,7 +210,11 @@ class TradeForm extends Component {
                 {localization['以市场上最优价格卖出']}
                 <Tooltip
                   placement="top"
-                  title={localization['当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止']}
+                  title={
+                    localization[
+                      '当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止'
+                    ]
+                  }
                 >
                   <i className="iconfont icon-zhuyishixiang" />
                 </Tooltip>
@@ -211,7 +224,7 @@ class TradeForm extends Component {
               id="volume"
               size="large"
               value={volume}
-              placeholder={`${typeToText[type]} ${localization["量"]}`}
+              placeholder={`${typeToText[type]} ${localization['量']}`}
               onChange={e => {
                 let value = e.target.value;
                 if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
@@ -257,7 +270,11 @@ class TradeForm extends Component {
                   {localization['以市场上最优价格买入']}
                   <Tooltip
                     placement="top"
-                    title={localization['当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止']}
+                    title={
+                      localization[
+                        '当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止'
+                      ]
+                    }
                   >
                     <i className="iconfont icon-zhuyishixiang" />
                   </Tooltip>
@@ -267,7 +284,7 @@ class TradeForm extends Component {
                 id="totalPrice"
                 size="large"
                 value={totalPrice}
-                placeholder={`${typeToText[type]} ${localization["量"]}`}
+                placeholder={`${typeToText[type]} ${localization['量']}`}
                 onChange={value => {
                   this.handleValue(value, 'totalPrice');
                 }}

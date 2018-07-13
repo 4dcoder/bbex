@@ -214,12 +214,12 @@ const datafeeds = symbol => {
 
     var websocketGetData = function() {
       if (!window.hasWsMessage) {
+        window.hasWsMessage = true;
         try {
-          window.hasWsMessage = true;
           if (symbolInfo && symbolInfo.name) {
             const symbolName = symbolInfo.name.replace(/\//g, '_');
             that._logMessage(`send ${symbolName} get bars...`);
-
+    
             try {
               if (window.ws.readyState === 1) {
                 window.ws.send(symbolName + '_' + period);
@@ -231,7 +231,7 @@ const datafeeds = symbol => {
         } catch (e) {
           console.log('send error: ', e);
         }
-
+        
         window.ws.onmessage = function(e) {
           if (e.data === 'pong') {
             // console.log('kline: ', e.data);
@@ -249,13 +249,7 @@ const datafeeds = symbol => {
           };
           datafeedUtil.dealWebsocket(websocketParams);
         };
-      } else {
-        dealSuccess(
-          JSON.stringify({
-            s: 'no_data'
-          })
-        );
-      }
+      } 
     };
 
     var dealSuccess = function(data) {
@@ -276,22 +270,22 @@ const datafeeds = symbol => {
       if (data && data.s != 'no_data') {
         for (const dataBar of data) {
           const bar = {
-            time: +dataBar.t,
-            volume: +dataBar.v,
-            high: +dataBar.h,
-            open: +dataBar.o,
-            low: +dataBar.l,
-            close: +dataBar.c
+            time: dataBar.t*1,
+            volume: dataBar.v*1,
+            high: dataBar.h*1,
+            open: dataBar.o*1,
+            low: dataBar.l*1,
+            close: dataBar.c*1
           };
           bars.push(bar);
         }
-        bars = bars
-          .sort((a, b) => {
-            return a.time - b.time;
-          })
-          .filter((item, index, array) => {
-            return (!index || item.time !== array[index - 1].time) && item.close;
-          });
+        // bars = bars
+        //   .sort((a, b) => {
+        //     return a.time - b.time;
+        //   })
+        //   .filter((item, index, array) => {
+        //     return (!index || item.time !== array[index - 1].time) && item.close;
+        //   });
       }
 
       let meta = {
@@ -302,6 +296,7 @@ const datafeeds = symbol => {
       // console.log('getBars bars->', bars);
       // console.log('getBars meta->', meta);
       // 只会执行一次
+      console.log('bar: ', bars[bars.length-1]);
       onDataCallback(bars, meta);
     };
 
@@ -318,7 +313,8 @@ const datafeeds = symbol => {
     onResetCacheNeededCallback
   ) {
     // console.log('subscribeBars ->');
-    window.hasWsMessage = '';
+    window.hasWsMessage = false;
+
     this._barsPulseUpdater.subscribeDataListener(
       symbolInfo,
       resolution,
