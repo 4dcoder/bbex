@@ -229,7 +229,10 @@ class Trade extends Component {
     }, 1000 * 3);
 
     this.streamWS.onopen = evt => {
-      console.log('stream Websocket Connection open ...');
+      const { marketName, coinName } = this.state;
+      if(marketName && coinName && this.streamWS && this.streamWS.readyState === 1) {
+        this.streamWS.send(`${coinName}_${marketName}`);
+      }
     };
 
     this.streamWS.onmessage = evt => {
