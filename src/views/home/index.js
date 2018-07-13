@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Tabs, Input, Table, message } from 'antd';
 import { Carousel } from 'react-responsive-carousel';
 import classnames from 'classnames';
-import NoticeBar from '../../components/noticeBar';
+import NoticeBar from '../../components/notice-bar';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import { WS_PREFIX } from '../../utils/constants';
 

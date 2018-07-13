@@ -15,7 +15,7 @@ import {
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
 import Spinners from 'react-spinners';
-import NoticeBar from '../../components/noticeBar';
+import NoticeBar from '../../components/notice-bar';
 import { stampToDate } from '../../utils';
 import { WS_PREFIX } from '../../utils/constants';
 import TradeBox from './TradeBox';
