@@ -721,67 +721,69 @@ class Trade extends Component {
       });
     }
 
+    const { localization } = this.props;
+
     const orderColumns = [
       {
-        title: '委托时间',
+        title: localization['委托时间'],
         dataIndex: 'time',
         key: 'time',
         render: (text, record) => stampToDate(Number(text))
       },
       {
-        title: '委托单号',
+        title: localization['委托单号'],
         dataIndex: 'orderNo',
         key: 'orderNo'
       },
       {
-        title: '委托类别',
+        title: localization['委托类别'],
         dataIndex: 'exType',
         key: 'exType',
         render: (text, record) => {
           if (text === 0) {
-            return <span className="font-color-green">买入</span>;
+            return <span className="font-color-green">{localization['买入']}</span>;
           } else {
-            return <span className="font-color-red">卖出</span>;
+            return <span className="font-color-red">{localization['卖出']}</span>;
           }
         }
       },
       {
-        title: '委托价格',
+        title: localization['委托价格'],
         dataIndex: 'price',
         key: 'price'
       },
       {
-        title: `委托数量(${coinName}/${marketName})`,
+        title:`${localization['委托数量']}(${coinName}/${marketName})`,
         dataIndex: 'volume',
         key: 'volume'
       },
       {
-        title: '委托金额',
+        title: localization['委托金额'],
         dataIndex: 'amount',
         key: 'amount',
         render: (text, record) => (record.price * record.volume).toFixed(8)
       },
       {
-        title: `成交量(${coinName}/${marketName})`,
+        title: `${localization['成交量']}(${coinName}/${marketName})`,
         dataIndex: 'successVolume',
         key: 'successVolume',
-        render: (text, record) => `${text}${record.status === 1 ? '（部分成交）' : ''}`
+        render: (text, record) => `${text}${record.status === 1 ? localization['部分成交'] : ''}`
       },
       {
-        title: '状态/操作',
+        title: localization['状态/操作'],
         dataIndex: 'status',
         key: 'status',
         render: (text, record) => {
           if (record.status === 2 || record.status === 3) {
             return (
               <Button type="primary" onClick={this.handleOrderDetail.bind(this, record.orderNo)}>
-                详情
+              {localization['详情']}
               </Button>
             );
           } else if (record.status === 0 || record.status === 1) {
             return (
               <Button type="primary" onClick={this.handleCancelTrade.bind(this, record.orderNo)}>
-                撤单
+              {localization['撤单']}
               </Button>
             );
           } else {
@@ -854,7 +856,7 @@ class Trade extends Component {
       clickTradeType
     };
 
-    const { localization } = this.props;
+    // const { localization } = this.props;
 
     const loading = (
       <div className="container-loading">
@@ -879,7 +881,7 @@ class Trade extends Component {
             <div className="trade-plate">
               <header className="trade-plate-header" style={{ height: 88 }}>
                 <div className="market-tit">
-                  市场
+                  {localization['市场']}
                   <div className="trade-plate-header-right" style={{ right: 0 }}>
                     <Search
                       value={searchValue}
@@ -903,16 +905,16 @@ class Trade extends Component {
                             }`}
                           />
                         )}
-                        {marketName === 'optional' ? '自选' : marketName}
+                        {marketName === 'optional' ? localization['自选'] : marketName}
                       </li>
                     );
                   })}
                 </ul>
               </header>
               <div className="trade-plate-tit cell-3">
-                <div className="trade-plate-tit-cell">币种</div>
+                <div className="trade-plate-tit-cell">{localization['币种']}</div>
                 <div className="trade-plate-tit-cell sorter">
-                  最新价
+                  {localization['最新价']}
                   <div className="ant-table-column-sorter">
                     <span className="ant-table-column-sorter-up on" title="↑">
                       <i className="anticon anticon-caret-up" />
@@ -923,7 +925,7 @@ class Trade extends Component {
                   </div>
                 </div>
                 <div className="trade-plate-tit-cell sorter">
-                  涨跌幅
+                  {localization['涨跌幅']}
                   <div className="ant-table-column-sorter">
                     <span className="ant-table-column-sorter-up off" title="↑">
                       <i className="anticon anticon-caret-up" />
@@ -980,14 +982,14 @@ class Trade extends Component {
             </div>
             <div className="trade-plate">
               <header className="trade-plate-header">
-                <span className="trade-plate-header-text">最新成交</span>
+                <span className="trade-plate-header-text">{localization['最新成交']}</span>
               </header>
               <div className="trade-plate-tit cell-3">
                 <div className="trade-plate-tit-cell" style={{ paddingLeft: 25 }}>
-                  成交时间
+                  {localization['成交时间']}
                 </div>
-                <div className="trade-plate-tit-cell">成交价格</div>
-                <div className="trade-plate-tit-cell">成交量</div>
+                <div className="trade-plate-tit-cell">{localization['成交价格']}</div>
+                <div className="trade-plate-tit-cell">{localization['成交量']}</div>
               </div>
               <div className="trade-plate-container stream">
                 {streamList ? (
@@ -1075,22 +1077,22 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="normal">币种介绍</Button>
+                    <Button type="normal">{localization['币种介绍']}</Button>
                   </Tooltip>
                 </div>
               </header>
               <div className="trade-plate-tit Kline">
                 <div className="trade-plate-tit-cell">
-                  最高<strong>{Number(currentCoin.highestPrice).toFixed(8)}</strong>
+                  {localization['最高价']}<strong>{Number(currentCoin.highestPrice).toFixed(8)}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  最低<strong>{Number(currentCoin.lowerPrice).toFixed(8)}</strong>
+                  {localization['最低价']}<strong>{Number(currentCoin.lowerPrice).toFixed(8)}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  成交量<strong>{Number(currentCoin.dayCount).toFixed(8)}</strong>
+                  {localization['成交量']}<strong>{Number(currentCoin.dayCount).toFixed(8)}</strong>
                 </div>
                 <div className="trade-plate-tit-cell">
-                  涨跌幅
+                  {localization['涨跌幅']}
                   <strong className={`font-color-${currentCoin.trend}`}>
                     {Number(currentCoin.change).toFixed(2)}%
                   </strong>
@@ -1102,22 +1104,22 @@ class Trade extends Component {
             </div>
             <div className="trade-plate">
               <Tabs defaultActiveKey="1">
-                <TabPane tab="限价交易" key="1">
-                  <TradeBox tradeType="limit" {...tradeProps} />
+                <TabPane tab={localization['限价交易']} key="1">
+                  <TradeBox tradeType="limit" {...tradeProps} {...{ localization }} />
                 </TabPane>
                 {false && (
-                  <TabPane tab="市价交易" key="2">
-                    <TradeBox tradeType="market" {...tradeProps} />
+                  <TabPane tab={localization['市价交易']} key="2">
+                    <TradeBox tradeType="market" {...tradeProps} {...{ localization }} />
                   </TabPane>
                 )}
                 {false && (
                   <TabPane
                     tab={
                       <span>
-                        止盈止损
+                        {localization['止盈止损']}
                         <Tooltip
                           placement="rightTop"
-                          title={`当市场价达到触发价时，将按计划设定的价格和数量进行下单`}
+                          title={localization['当市场价达到触发价时，将按计划设定的价格和数量进行下单']}
                         >
                           <i className="iconfont icon-web-icon-" />
                         </Tooltip>
@@ -1156,32 +1158,31 @@ class Trade extends Component {
                   })}
                 </div>
                 <div className="trade-plate-header-right">
-                  合并
+                  {localization['合并']}
                   <Select
                     defaultValue="8"
                     style={{ width: 100 }}
                     dropdownClassName="merge-dropdown"
                     onChange={this.handleMerge}
                   >
-                    <Option value="8">8位小数</Option>
-                    <Option value="6">6位小数</Option>
-                    <Option value="4">4位小数</Option>
+                    <Option value="8">8{localization['位小数']}</Option>
+                    <Option value="6">6{localization['位小数']}</Option>
+                    <Option value="4">4{localization['位小数']}</Option>
                   </Select>
                 </div>
               </header>
               {listType === -1 ? (
                 <div className="trade-plate-tit list">
-                  <div className="trade-plate-tit-cell">类型</div>
-                  <div className="trade-plate-tit-cell">价格({marketName})</div>
-                  <div className="trade-plate-tit-cell">数量({coinName})</div>
-                  {false && <div className="trade-plate-tit-cell">交易额({marketName})</div>}
+                  <div className="trade-plate-tit-cell">{localization['类型']}</div>
+                  <div className="trade-plate-tit-cell">{localization['价格']}({marketName})</div>
+                  <div className="trade-plate-tit-cell">{localization['数量']}({coinName})</div>
+                  {false && <div className="trade-plate-tit-cell">{localization['交易额']}({marketName})</div>}
                 </div>
               ) : (
                 <div className="trade-plate-tit list">
-                  <div className="trade-plate-tit-cell">{listType === 0 ? '买入' : '卖出'}</div>
-                  <div className="trade-plate-tit-cell">{listType === 0 ? '买入' : '卖出'}价</div>
-                  <div className="trade-plate-tit-cell">委单量</div>
-                  {false && <div className="trade-plate-tit-cell">交易额({marketName})</div>}
+                  <div className="trade-plate-tit-cell">{listType === 0 ? localization['买入'] : localization['卖出']}价</div>
+                  <div className="trade-plate-tit-cell">{localization['委单量']}</div>
+                  {false && <div className="trade-plate-tit-cell">{localization['交易额']}({marketName})</div>}
                 </div>
               )}
               {listType === -1 ? (
@@ -1201,7 +1202,7 @@ class Trade extends Component {
                                     onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
                                   >
                                     <td className="font-color-red">
-                                      卖出{visibleLength - index + startIndex}
+                                      {localization['卖出']}{visibleLength - index + startIndex}
                                     </td>
                                     <td>{Number(record.price).toFixed(8)}</td>
                                     <td>{Number(record.volume).toFixed(8)}</td>
@@ -1221,7 +1222,7 @@ class Trade extends Component {
                   </div>
                   <div className="latest-price">
                     <span>
-                      <i className="iconfont icon-xinhao font-color-green" />最新价
+                      <i className="iconfont icon-xinhao font-color-green" />{localization['最新价']}
                     </span>
                     <span
                       className={
@@ -1266,7 +1267,7 @@ class Trade extends Component {
                                     key={index}
                                     onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
                                   >
-                                    <td className="font-color-green">买入{index + 1}</td>
+                                    <td className="font-color-green">{localization['买入']}{index + 1}</td>
                                     <td>{Number(record.price).toFixed(8)}</td>
                                     <td>{Number(record.volume).toFixed(8)}</td>
                                     {false && (
@@ -1299,7 +1300,7 @@ class Trade extends Component {
                               : tradeList.buyOrderVOList
                             ).map((record, index) => {
                               const colorName = listType === 0 ? 'green' : 'red';
-                              const actionName = listType === 0 ? '买入' : '卖出';
+                              const actionName = listType === 0 ? localization['买入']: localization['卖出'];
                               return (
                                 <tr
                                   key={index}
@@ -1346,7 +1347,7 @@ class Trade extends Component {
                 this.setState({ orderStatus: status });
               }}
             >
-              <TabPane tab="我的挂单" key="0">
+              <TabPane tab={localization['我的挂单']} key="0">
                 <Scrollbars>
                   <Table
                     columns={orderColumns}
@@ -1364,7 +1365,7 @@ class Trade extends Component {
                   />
                 </Scrollbars>
               </TabPane>
-              <TabPane tab="成交历史" key="1">
+              <TabPane tab={localization['成交历史']} key="1">
                 <Scrollbars>
                   <Table
                     className="trade-history"
@@ -1388,11 +1389,11 @@ class Trade extends Component {
                             size="small"
                             header={
                               <ul className="expent-title">
-                                <li>时间</li>
-                                <li>价格</li>
-                                <li>数量</li>
-                                <li>成交额</li>
-                                <li>手续费</li>
+                                <li>{localization['时间']}</li>
+                                <li>{localization['价格']}</li>
+                                <li>{localization['数量']}</li>
+                                <li>{localization['成交额']}</li>
+                                <li>{localization['手续费']}</li>
                               </ul>
                             }
                             dataSource={historyDetails}
