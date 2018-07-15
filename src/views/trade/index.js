@@ -636,8 +636,6 @@ class Trade extends Component {
     this.streamWS && this.streamWS.close();
     this.buyandsellWS && this.buyandsellWS.close();
     this.userWS && this.userWS.close();
-    window.tvWidget.remove();
-    window.tvWidget = null;
   }
 
   render() {
@@ -1069,7 +1067,7 @@ class Trade extends Component {
                 </div>
               </div>
               <div className="trade-plate-container">
-                <Tradeview market={marketName} coin={coinName} />
+                <Tradeview symbol={`${coinName}_${marketName}`} />
               </div>
             </div>
             <div className="trade-plate">

@@ -203,18 +203,13 @@ const datafeeds = symbol => {
     let resolutionTime = datafeedUtil.filteringTime(resolution);
     let period = datafeedUtil.transformTime(resolution);
 
-    if (!window.period) {
-      window.period = resolution;
-    } else if (window.period !== resolution) {
-      window.hasWsMessage = false;
-      window.period = resolution;
-    }
-
     var that = this;
 
     var websocketGetData = function() {
-      if (!window.hasWsMessage) {
-        window.hasWsMessage = true;
+      const symbolName = symbolInfo.name.replace(/\//g, '_');
+      console.log('symbolName======: ', symbolName);
+      if (window.symbolName !== symbolName) {
+        window.symbolName = symbolName;
         try {
           if (symbolInfo && symbolInfo.name) {
             const symbolName = symbolInfo.name.replace(/\//g, '_');
@@ -312,9 +307,6 @@ const datafeeds = symbol => {
     listenerGUID,
     onResetCacheNeededCallback
   ) {
-    // console.log('subscribeBars ->');
-    window.hasWsMessage = false;
-
     this._barsPulseUpdater.subscribeDataListener(
       symbolInfo,
       resolution,

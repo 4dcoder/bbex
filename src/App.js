@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Spinners from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
-// import asyncComponent from './components/asyncComponent';
+// import asyncComponent from './components/AsyncComponent';
 
 import './App.css';
 
