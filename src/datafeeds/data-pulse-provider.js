@@ -33,7 +33,7 @@ var DataPulseProvider = /** @class */ (function() {
         '}'
     );
 
-    this.WS = [];
+    this.WS = {};
     for (var listenerGuid in this._subscribers) {
       this._updateDataForSubscriber(listenerGuid);
     }
@@ -71,25 +71,28 @@ var DataPulseProvider = /** @class */ (function() {
     // see the explanation below. `10` is the `large enough` value to work around holidays
     var rangeStartTime = rangeEndTime - periodLengthSeconds(subscriptionRecord.resolution, 10);
 
-    // debugger;
-    _this.WS[listenerGuid] = new ReconnectingWebSocket('ws://localhost:3001');
+    this.WS[listenerGuid] = new ReconnectingWebSocket('ws://localhost:3001');
 
-    if (_this.WS[listenerGuid] && _this.WS[listenerGuid].readyState === 1) {
-      const tradePair = sessionStorage.getItem('tradePair');
-      _this.WS[listenerGuid].send(tradePair);
+    
+    this.WS[listenerGuid].onopen = evt => {
+      console.log(this.WS[listenerGuid], this.WS[listenerGuid].readyState);
+      if (this.WS[listenerGuid] && this.WS[listenerGuid].readyState === 1) {
+        const tradePair = localStorage.getItem('tradePair');
+        this.WS[listenerGuid].send(tradePair);
+      }
     }
-    debugger;
+    
     //   _this.interval[listenerGuid] = setInterval(() => {
-    //     const tradePair = sessionStorage.getItem('tradePair');
+    //     const tradePair = localStorage.getItem('tradePair');
     //     if (_this.WS[listenerGuid] && _this.WS[listenerGuid].readyState === 1 && tradePair) {
     //         _this.WS[listenerGuid].send(tradePair);
     //     }
     //   }, 1000);
 
-    _this.WS[listenerGuid].onmessage = evt => {
+    this.WS[listenerGuid].onmessage = evt => {
       if (evt.data) {
         const result = JSON.parse(evt.data);
-        _this._onSubscriberDataReceived(listenerGuid, result);
+        this._onSubscriberDataReceived(listenerGuid, result);
       }
     };
 
@@ -112,26 +115,37 @@ var DataPulseProvider = /** @class */ (function() {
       );
       return;
     }
-    var bars = result.bars;
+    var bars = result.data;
     if (bars.length === 0) {
       return;
     }
     var lastBar = bars[bars.length - 1];
+    lastBar = {
+      isBarClosed: false,
+      isLastBar: true,
+      time: lastBar.t*1000,
+      close: lastBar.c*1,
+      high: lastBar.h*1,
+      low: lastBar.l*1,
+      open: lastBar.o*1,
+      volume: lastBar.v*100
+    }
     var subscriptionRecord = this._subscribers[listenerGuid];
     if (subscriptionRecord.lastBarTime !== null && lastBar.time < subscriptionRecord.lastBarTime) {
       return;
     }
     var isNewBar =
       subscriptionRecord.lastBarTime !== null && lastBar.time > subscriptionRecord.lastBarTime;
+      console.log(lastBar.time,subscriptionRecord.lastBarTime,isNewBar)
     // Pulse updating may miss some trades data (ie, if pulse period = 10 secods and new bar is started 5 seconds later after the last update, the
     // old bar's last 5 seconds trades will be lost). Thus, at fist we should broadcast old bar updates when it's ready.
-    if (isNewBar) {
-      if (bars.length < 2) {
-        throw new Error('Not enough bars in history for proper pulse update. Need at least 2.');
-      }
-      var previousBar = bars[bars.length - 2];
-      subscriptionRecord.listener(previousBar);
-    }
+    // if (isNewBar) {
+      // if (bars.length < 2) {
+      //   throw new Error('Not enough bars in history for proper pulse update. Need at least 2.');
+      // }
+      // var previousBar = bars[bars.length - 2];
+      // subscriptionRecord.listener(previousBar);
+    // }
     subscriptionRecord.lastBarTime = lastBar.time;
     subscriptionRecord.listener(lastBar);
     console.log('lastBar--------------: ', lastBar);
