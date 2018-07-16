@@ -2,7 +2,7 @@ import OHLCRequestResponseHandler from './OHLCRequestResponseHandler';
 import SymbolRequestResponseHandler from './SymbolRequestResponseHandler';
 import TickDataRequestResponseHandler from './TickDataRequestResponseHandler';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
-import TradingView from '../../tradeview/ChartingLibrary';
+import TradingView from '../../tv-chart-container/ChartingLibrary';
 import $ from 'jquery';
 import loki from 'lokijs';
 

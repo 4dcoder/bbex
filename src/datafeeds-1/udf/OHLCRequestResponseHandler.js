@@ -1,3 +1,6 @@
+import TradingView from '../../tv-chart-container/ChartingLibrary';
+import $ from 'jquery';
+
 const OHLCRequestResponseHandler = function(feedHandler) {
 
   this.feedHandler = feedHandler;
@@ -263,3 +266,5 @@ OHLCRequestResponseHandler.prototype.resetTableData = function(symbolInfo) {
   }
   this._barsTable.update(bars);
 };
+
+export default OHLCRequestResponseHandler;

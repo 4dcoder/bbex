@@ -1,4 +1,4 @@
-import TradingView from '../../tradeview/ChartingLibrary';
+import TradingView from '../../tv-chart-container/ChartingLibrary';
 
 const TickDataRequestResponseHandler = function(feedHandler) {
 
