@@ -19,7 +19,7 @@ import NoticeBar from '../../components/notice-bar';
 import { stampToDate } from '../../utils';
 import { WS_PREFIX } from '../../utils/constants';
 import TradeBox from './TradeBox';
-import Tradeview from '../../tradeview';
+import { TVChartContainer } from '../../tv-chart-container';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import './trade.css';
 
@@ -230,7 +230,7 @@ class Trade extends Component {
 
     this.streamWS.onopen = evt => {
       const { marketName, coinName } = this.state;
-      if(marketName && coinName && this.streamWS && this.streamWS.readyState === 1) {
+      if (marketName && coinName && this.streamWS && this.streamWS.readyState === 1) {
         this.streamWS.send(`${coinName}_${marketName}`);
       }
     };
@@ -1042,7 +1042,9 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="normal" onMouseEnter={this.getCoinDetail.bind(this, coinName)}>{localization['币种介绍']}</Button>
+                    <Button type="normal" onMouseEnter={this.getCoinDetail.bind(this, coinName)}>
+                      {localization['币种介绍']}
+                    </Button>
                   </Tooltip>
                 </div>
               </header>
@@ -1067,7 +1069,7 @@ class Trade extends Component {
                 </div>
               </div>
               <div className="trade-plate-container">
-                <Tradeview symbol={`${coinName}_${marketName}`} />
+                <TVChartContainer />
               </div>
             </div>
             <div className="trade-plate">

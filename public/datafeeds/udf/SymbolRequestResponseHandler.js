@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 const SymbolRequestResponseHandler = function (feedHandler) {
 
   this._markets = null;
@@ -76,5 +74,3 @@ SymbolRequestResponseHandler.prototype.process = function(data) {
   $(document).trigger('marketsLoaded');
   this._currentlyProcessingRequest = false;
 };
-
-export default SymbolRequestResponseHandler;

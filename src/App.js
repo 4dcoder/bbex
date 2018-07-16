@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Spinners from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
+import Trade from './views/trade';
 // import asyncComponent from './components/AsyncComponent';
 
 import './App.css';
@@ -40,7 +41,7 @@ const asyncComponent = loader =>
 
 const Home = asyncComponent(() => import('./views/home'));
 
-const Trade = asyncComponent(() => import('./views/trade'));
+// const Trade = asyncComponent(() => import('./views/trade'));
 
 const SignIn = asyncComponent(() => import('./views/signin'));
 
