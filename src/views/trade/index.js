@@ -19,7 +19,7 @@ import NoticeBar from '../../components/notice-bar';
 import { stampToDate } from '../../utils';
 import { WS_PREFIX } from '../../utils/constants';
 import TradeBox from './TradeBox';
-import { TVChartContainer } from '../../tv-chart-container';
+import TVChartContainer from '../../tv-chart-container';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import './trade.css';
 

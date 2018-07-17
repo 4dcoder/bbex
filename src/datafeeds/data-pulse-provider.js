@@ -1,11 +1,12 @@
 import { getErrorMessage, logMessage } from './helpers';
 import ReconnectingWebSocket from '../utils/ReconnectingWebSocket';
+import { WS_PREFIX } from '../utils/constants';
 var DataPulseProvider = /** @class */ (function() {
   function DataPulseProvider(historyProvider, updateFrequency) {
     this._subscribers = {};
-    this._requestsPending = 0;
-    this._historyProvider = historyProvider;
-    setInterval(this._updateData.bind(this), updateFrequency);
+    // this._requestsPending = 0;
+    // this._historyProvider = historyProvider;
+    // setInterval(this._updateData.bind(this), updateFrequency);
   }
   DataPulseProvider.prototype.subscribeBars = function(
     symbolInfo,
@@ -33,7 +34,6 @@ var DataPulseProvider = /** @class */ (function() {
         '}'
     );
 
-    this.WS = {};
     this._updateDataForSubscriber(listenerGuid);
   };
   DataPulseProvider.prototype.unsubscribeBars = function(listenerGuid) {
@@ -68,28 +68,31 @@ var DataPulseProvider = /** @class */ (function() {
     // see the explanation below. `10` is the `large enough` value to work around holidays
     var rangeStartTime = rangeEndTime - periodLengthSeconds(subscriptionRecord.resolution, 10);
 
-    this.WS[listenerGuid] = new ReconnectingWebSocket('ws://localhost:3001');
+    // this.WS = {};
+    // this.interval = {};
 
-    this.WS[listenerGuid].onopen = evt => {
-      console.log(this.WS[listenerGuid], this.WS[listenerGuid].readyState);
-      if (this.WS[listenerGuid] && this.WS[listenerGuid].readyState === 1) {
-        const tradePair = localStorage.getItem('tradePair');
-        this.WS[listenerGuid].send(tradePair);
-      }
-    };
+    // this.WS[listenerGuid] = new ReconnectingWebSocket(`${WS_PREFIX}/kline`);
 
-    _this.interval[listenerGuid] = setInterval(() => {
-      if (_this.WS[listenerGuid] && _this.WS[listenerGuid].readyState === 1) {
-        _this.WS[listenerGuid].send('ping');
-      }
-    }, 1000 * 5);
+    // this.WS[listenerGuid].onopen = evt => {
+    //   console.log(this.WS[listenerGuid], this.WS[listenerGuid].readyState);
+    //   if (this.WS[listenerGuid] && this.WS[listenerGuid].readyState === 1) {
+    //     const tradePair = localStorage.getItem('tradePair');
+    //     this.WS[listenerGuid].send(tradePair);
+    //   }
+    // };
 
-    this.WS[listenerGuid].onmessage = evt => {
-      if (evt.data) {
-        const result = JSON.parse(evt.data);
-        this._onSubscriberDataReceived(listenerGuid, result);
-      }
-    };
+    // this.interval[listenerGuid] = setInterval(() => {
+    //   if (this.WS[listenerGuid] && this.WS[listenerGuid].readyState === 1) {
+    //     this.WS[listenerGuid].send('ping');
+    //   }
+    // }, 1000 * 5);
+
+    // this.WS[listenerGuid].onmessage = evt => {
+    //   if (evt.data && evt.data !== 'pong') {
+    //     const result = JSON.parse(evt.data);
+    //     this._onSubscriberDataReceived(listenerGuid, result);
+    //   }
+    // };
 
     // return this._historyProvider
     //   .getBars(
@@ -149,15 +152,23 @@ var DataPulseProvider = /** @class */ (function() {
 })();
 export { DataPulseProvider };
 function periodLengthSeconds(resolution, requiredPeriodsCount) {
-  var daysCount = 0;
-  if (resolution === 'D') {
-    daysCount = requiredPeriodsCount;
-  } else if (resolution === 'M') {
-    daysCount = 31 * requiredPeriodsCount;
-  } else if (resolution === 'W') {
-    daysCount = 7 * requiredPeriodsCount;
-  } else {
-    daysCount = (requiredPeriodsCount * parseInt(resolution)) / (24 * 60);
+  console.log('resolution：', resolution);
+  let minuteTime = 60;
+  let dayTime = 60 * 60 * 24;
+  let longTime = 0;
+  switch (resolution) {
+    case '1D':
+      longTime = dayTime * 1;
+      break;
+    case '1W':
+      longTime = dayTime * 7;
+      break;
+    case '1M':
+      longTime = dayTime * 30;
+      break;
+    default:
+      longTime = parseInt(resolution) * minuteTime;
+      break;
   }
-  return daysCount * 24 * 60 * 60;
+  return longTime;
 }

@@ -3,12 +3,12 @@ import TradingView from './ChartingLibrary';
 import { UDFCompatibleDatafeed } from '../datafeeds/udf-compatible-datafeed';
 import $ from 'jquery';
 
-export class TVChartContainer extends PureComponent {
+class TVChartContainer extends PureComponent {
   static defaultProps = {
-    symbol: 'BBC/USDT',
-    interval: 'D',
+    symbol: 'BCC/USDT',
+    interval: '1',
     containerId: 'tv_chart_container',
-    datafeedUrl: 'https://demo_feed.tradingview.com',
+    datafeedUrl: `${window.location.origin}/bbex`,
     libraryPath: '/charting_library/',
     chartsStorageUrl: 'https://saveload.tradingview.com',
     chartsStorageApiVersion: '1.1',
@@ -24,7 +24,7 @@ export class TVChartContainer extends PureComponent {
       'MACD.MACD.color': '#ce5277',
       'MACD.signal.color': '#a0d75b'
     },
-    ticker: 'BBC/USDT'
+    ticker: 'BCC/USDT'
   };
 
   componentDidMount() {
@@ -241,3 +241,5 @@ export class TVChartContainer extends PureComponent {
     );
   }
 }
+
+export default TVChartContainer;

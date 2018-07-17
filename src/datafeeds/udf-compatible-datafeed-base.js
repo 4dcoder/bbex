@@ -283,9 +283,8 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
     var resolveRequestStartTime = Date.now();
 
     //手动写死代替 http请求/symbols
-    const symbol = localStorage.getItem('tradePair').replace('_', '/');
     const symbolInfo = {
-      name: symbol,
+      name: symbolName,
       'exchange-traded': '',
       'exchange-listed': '',
       timezone: 'Asia/Shanghai',
@@ -305,7 +304,7 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
       type: 'Index',
       supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M'],
       pricescale: 10 ** 8,
-      ticker: symbol
+      ticker: symbolName
     };
     onResultReady(symbolInfo);
     //手动写死代替 http请求/symbols
