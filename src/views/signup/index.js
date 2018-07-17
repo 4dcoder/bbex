@@ -228,7 +228,7 @@ class SignUp extends Component {
 						})(
 						<Input
 							size='large'
-							placeholder='邀请码 (选填)'
+							placeholder='邀请码'
 							prefix={<i className="iconfont icon-yaoqingma" />}
 						/>)}
         </FormItem>

@@ -6,9 +6,9 @@ class TransactionForm extends Component {
     console.log('props',this.props);
   }
   state = {
-    price: this.props.price,
-    volume: this.props.volume || 0,
-    amount: this.props.volume ? (this.props.price * this.props.volume).toFixed(2) : '0.00'
+    price: this.props.price||'',
+    volume: this.props.volume|| '',
+    amount: this.props.volume ? (this.props.price * this.props.volume).toFixed(2) : ''
   };
 
   componentWillReceiveProps(nextProps) {
@@ -46,7 +46,7 @@ class TransactionForm extends Component {
   handleAmount = e => {
     const amount = e.target.value;
     if(/^\d*\.{0,1}\d{0,2}$/.test(amount) && amount.length<16 ){
-      const volume = amount / this.state.price;
+      const volume = (amount / this.state.price).toFixed(8);
       this.setState({amount });
       if( this.state.price>0){
         this.setState({volume})

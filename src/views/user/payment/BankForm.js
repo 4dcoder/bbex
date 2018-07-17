@@ -107,13 +107,20 @@ class BankForm extends Component {
             <Form onSubmit={this.handleSubmit}>
                 <FormItem {...formItemLayout} label="姓名">
                     {getFieldDecorator('realName', {
-                        rules: [{ required: true, message: '请输入姓名!', whitespace: true }],
+                        rules: [
+                            { required: true, message: '请输入姓名!', whitespace: true },
+                            { max: 30, message:'姓名不能长度不能超过30'}
+                        ],
+                        validateTrigger: 'onBlur',
                         initialValue: bankInfo && bankInfo.realName
                     })(<Input size="large" placeholder="请输入姓名!" />)}
                 </FormItem>
                 <FormItem {...formItemLayout} label="手机号码">
                     {getFieldDecorator('mobile', {
-                        rules: [{ required: true, message: '请输入手机号码!' }],
+                        rules: [{ required: true, message: '请输入手机号码!' },
+                            { pattern: /^1[34578][0-9]{9}$/, message:'手机号不正确' }
+                        ],
+                        validateTrigger: 'onBlur',
                         initialValue: bankInfo && bankInfo.mobile
                     })(<Input size="large" placeholder="请输入手机号码!" />)}
                 </FormItem>
@@ -132,7 +139,9 @@ class BankForm extends Component {
                 </FormItem>
                 <FormItem {...formItemLayout} label="开户支行">
                     {getFieldDecorator('branchBankName', {
-                        rules: [{ required: true, message: '请输入开户支行!', whitespace: true }],
+                        rules: [{ required: true, message: '请输入开户支行!', whitespace: true },
+                        { max: 30, message:'姓名不能长度不能超过30'}],
+                        validateTrigger: 'onBlur',
                         initialValue: bankInfo && bankInfo.branchBankName
                     })(<Input size="large" placeholder="请输入开户支行!" />)}
                 </FormItem>
