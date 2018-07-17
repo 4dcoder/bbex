@@ -416,6 +416,10 @@ class TradeContainer extends Component {
     this.state.ws && this.state.ws.close();
   }
 
+  pageOnChange = (page, pageSize) => {
+    this.getAdvertList(page);
+  }
+
   //根据币种和交易类型分页获取广告列表
   getAdvertList = (current, props = this.props) => {
     const { exType, coin } = props;
@@ -1307,7 +1311,7 @@ class TradeContainer extends Component {
               current,
               pageSize,
               total: advertList && advertList.count,
-              onChange: this.getAdvertList
+              onChange: this.pageOnChange
             }}
             locale={{
               emptyText: localization['暂无数据']
