@@ -1,28 +1,7 @@
 import request from '../../utils/request';
-const history = {};
-
-const transformResolution = resolution => {
-  let time = '';
-  if (resolution.toString().indexOf('D') !== -1) {
-    time = '1d';
-  } else if (resolution.toString().indexOf('W') !== -1) {
-    time = '1w';
-  } else if (resolution.toString().indexOf('M') !== -1) {
-    time = '1mth';
-  } else {
-    if (parseInt(resolution) < 60) {
-      time = `${resolution}m`;
-    } else {
-      let hourNumber = Math.floor(parseInt(resolution) / 60);
-      time = `${hourNumber}h`;
-    }
-  }
-  return time;
-};
+import { transformResolution } from './utils';
 
 export default {
-  history: history,
-
   getBars: function(symbolInfo, resolution, from, to, first, limit) {
     const [coinOther, coinMain] = symbolInfo.ticker.split('/');
     const time = transformResolution(resolution);
@@ -31,7 +10,7 @@ export default {
     }).then(json => {
       const resBars = json.data.data;
       const bars = [];
-      if (resBars.length > 0 && first) {
+      if (resBars && resBars.length > 0 && first) {
         resBars.forEach(bar =>
           bars.push({
             time: bar.t * 1,

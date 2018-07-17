@@ -1,19 +1,23 @@
-import * as React from 'react';
-import './index.css';
-import TradingView from './ChartingLibrary';
-import Datafeed from './api';
+import React, { Component } from 'react';
+import { onready, widget } from './ChartingLibrary';
+import Datafeed from './datafeed';
 import $ from 'jquery';
 
-function getLanguageFromURL() {
-  const regex = new RegExp('[\\?&]lang=([^&#]*)');
-  const results = regex.exec(window.location.search);
-  return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
-}
+class TradeviewPage extends Component {
+  componentWillUpdate(nextProps, nextState) {
+    if (!this.props.coin && nextProps.coin) {
+      //当coin第一次有值的时候，就初始化tradingview
+      const { market, coin } = nextProps;
+      this.tradingViewGetReady({ market, coin });
+    }
+  }
 
-class TVChartContainer extends React.PureComponent {
-  componentDidMount() {
+  // tradeView准备
+  tradingViewGetReady({ market, coin }) {
+    const symbol = `${coin}/${market}`;
     const widgetOptions = {
-      symbol: 'BCC/USDT',
+      symbol,
+      tiker: symbol,
       debug: false,
       fullscreen: false,
       interval: '1',
@@ -122,114 +126,116 @@ class TVChartContainer extends React.PureComponent {
       }
     };
 
-    TradingView.onready(() => {
-      const widget = (window.tvWidget = new TradingView.widget(widgetOptions));
+    onready(
+      (() => {
+        window.widget = (window.tvWidget = new widget(widgetOptions));
 
-      widget.onChartReady(() => {
-        let buttonArr = [
-          {
-            value: '1',
-            period: '1m',
-            text: '1m'
-          },
-          {
-            value: '5',
-            period: '5m',
-            text: '5m'
-          },
-          {
-            value: '15',
-            period: '15m',
-            text: '15m'
-          },
-          {
-            value: '30',
-            period: '30m',
-            text: '30m'
-          },
-          {
-            value: '60',
-            period: '1h',
-            text: '1h'
-          },
-          {
-            value: '120',
-            period: '2h',
-            text: '2h'
-          },
-          {
-            value: '240',
-            period: '4h',
-            text: '4h'
-          },
-          {
-            value: '480',
-            period: '8h',
-            text: '8h'
-          },
-          {
-            value: '1D',
-            period: '1D',
-            text: '日线'
-          },
-          {
-            value: '1W',
-            period: '1W',
-            text: '周线'
-          },
-          {
-            value: '1M',
-            period: '1M',
-            text: '月线'
-          }
-        ];
+        window.widget.onChartReady(() => {
+          let buttonArr = [
+            {
+              value: '1',
+              period: '1m',
+              text: '1m'
+            },
+            {
+              value: '5',
+              period: '5m',
+              text: '5m'
+            },
+            {
+              value: '15',
+              period: '15m',
+              text: '15m'
+            },
+            {
+              value: '30',
+              period: '30m',
+              text: '30m'
+            },
+            {
+              value: '60',
+              period: '1h',
+              text: '1h'
+            },
+            {
+              value: '120',
+              period: '2h',
+              text: '2h'
+            },
+            {
+              value: '240',
+              period: '4h',
+              text: '4h'
+            },
+            {
+              value: '480',
+              period: '8h',
+              text: '8h'
+            },
+            {
+              value: '1D',
+              period: '1D',
+              text: '日线'
+            },
+            {
+              value: '1W',
+              period: '1W',
+              text: '周线'
+            },
+            {
+              value: '1M',
+              period: '1M',
+              text: '月线'
+            }
+          ];
 
-        let btn = {};
+          let btn = {};
 
-        let handleClick = (e, value) => {
-          console.log('set++++++++++++++++++++++: ', value);
-          widget.chart().setResolution(value);
+          let handleClick = (e, value) => {
+            console.log('set++++++++++++++++++++++: ', value);
+            window.widget.chart().setResolution(value);
 
-          $(e.target)
-            .addClass('select')
-            .closest('div.space-single')
-            .siblings('div.space-single')
-            .find('div.button')
-            .removeClass('select');
-        };
+            $(e.target)
+              .addClass('select')
+              .closest('div.space-single')
+              .siblings('div.space-single')
+              .find('div.button')
+              .removeClass('select');
+          };
 
-        buttonArr.forEach((v, i) => {
-          btn = widget
-            .createButton()
-            .addClass('resolution')
-            .on('click', function(e) {
-              handleClick(e, v.value);
-            });
-          if (v.text === '1m') {
-            btn.addClass('select');
-          }
-          btn[0].innerHTML = v.text;
-          btn[0].title = v.text;
+          buttonArr.forEach((v, i) => {
+            btn = window.widget
+              .createButton()
+              .addClass('resolution')
+              .on('click', function(e) {
+                handleClick(e, v.value);
+              });
+            if (v.text === '1m') {
+              btn.addClass('select');
+            }
+            btn[0].innerHTML = v.text;
+            btn[0].title = v.text;
+          });
+          window.widget
+            .chart()
+            .createStudy('Moving Average', false, false, [5], null, { 'Plot.color': '#965FC4' });
+          window.widget
+            .chart()
+            .createStudy('Moving Average', false, false, [10], null, { 'Plot.color': '#84aad5' });
+          window.widget
+            .chart()
+            .createStudy('Moving Average', false, false, [30], null, { 'Plot.color': '#55b263' });
+          window.widget
+            .chart()
+            .createStudy('Moving Average', false, false, [60], null, { 'Plot.color': '#b7248a' });
         });
-        widget
-          .chart()
-          .createStudy('Moving Average', false, false, [5], null, { 'Plot.color': '#965FC4' });
-        widget
-          .chart()
-          .createStudy('Moving Average', false, false, [10], null, { 'Plot.color': '#84aad5' });
-        widget
-          .chart()
-          .createStudy('Moving Average', false, false, [30], null, { 'Plot.color': '#55b263' });
-        widget
-          .chart()
-          .createStudy('Moving Average', false, false, [60], null, { 'Plot.color': '#b7248a' });
-      });
-    });
+      })()
+    );
   }
 
   render() {
-    return <div id="tv_chart_container" style={{ height: 380 }} />;
+    return <div id="tv_chart_container" />;
   }
 }
 
-export default TVChartContainer;
+export default TradeviewPage;

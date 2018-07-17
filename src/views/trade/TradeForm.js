@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Slider, Button, Tooltip, message } from 'antd';
 import classnames from 'classnames';
 
-class TradeForm extends Component {
+class TradeForm extends PureComponent {
   state = {
     triggerPrice: '',
     price: '',
