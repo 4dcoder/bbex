@@ -164,7 +164,7 @@ class SignUp extends Component {
             {getFieldDecorator('password', {
                 rules: [
                     { required: true, message: '请输入密码' },
-                    { pattern: PWD_REGEX, message: '输入8-20位密码'},
+                    { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字,字母'},
                     { validator: this.validateToNextPassword }
 								],
 								validateTrigger: 'onBlur'
@@ -198,7 +198,7 @@ class SignUp extends Component {
             {getFieldDecorator('code', {
                 rules: [
 										{ required: true, message: '请输入邮箱验证码' },
-										{ pattern: /^\w{6}$/, message: '请输入6位验证码'},
+										{ pattern: /^\w{6}$/, message: '请输入6位邮箱验证码'},
 								],
 								validateTrigger: 'onBlur'
             })(
@@ -222,7 +222,7 @@ class SignUp extends Component {
             {getFieldDecorator('inviteCode', {
 							initialValue: inviteCode,
 							rules: [
-								{ pattern: /^\w{4}$/, message: '请输入4位邀请码'},
+								{ pattern: /^\d+$/, message: '请输入数字邀请码'},
 							],
 							validateTrigger: 'onBlur'
 						})(

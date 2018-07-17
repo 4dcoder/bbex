@@ -37,10 +37,11 @@ class Security extends Component {
       body: { secret, code }
     }).then(json => {
       if (json.code === 10000000) {
+        message.success('谷歌绑定成功',1);
         const account = JSON.parse(sessionStorage.getItem('account'));
         account.googleAuth = secret;
         sessionStorage.setItem('account', JSON.stringify(account));
-        // this.props.history.push('/user');
+        this.props.history.push('/user/security');
       } else {
         message.error(json.msg);
       }
