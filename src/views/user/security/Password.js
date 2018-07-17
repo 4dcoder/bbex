@@ -103,7 +103,7 @@ class Password extends Component {
                         {getFieldDecorator('password', {
                             rules: [
                                 { required: true, message: '请输入新密码' },
-                                { pattern: PWD_REGEX, message: '输入8-20位密码'},
+                                { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字，字母'},
                                 { validator: this.validateToNextPassword }
                             ]
                         })(<Input type="password" />)}
