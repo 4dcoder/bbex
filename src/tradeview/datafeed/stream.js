@@ -43,5 +43,9 @@ export default {
         listener(bar);
       }
     };
-  }
+  },
+
+  unsubscribeBars: function(uid) {
+    
+  } 
 };
