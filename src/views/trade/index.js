@@ -263,7 +263,7 @@ class Trade extends PureComponent {
               if (tradeExpair[marketName][key].firstPrice == 0) {
                 tradeExpair[marketName][key].firstPrice = tradeExpair[marketName][key].latestPrice;
               }
-              tradeExpair[marketName][key].latestPrice = streamVO.price;
+              tradeExpair[marketName][key].latestPrice = (streamVO.price*1).toFixed(8);
               let rise = '0.00%';
               let current = tradeExpair[marketName][key];
               if (current.firstPrice > 0) {
