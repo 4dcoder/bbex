@@ -1,74 +1,235 @@
-import React, { Component } from 'react';
-import datafeeds from '../datafeed/datafeed.js';
-import tradeviewPageUtil from './TradeviewPageUtil';
-import { WS_PREFIX } from '../utils/constants';
-import { onready, widget } from './ChartingLibrary';
-import ReconnectingWebSocket from '../utils/ReconnectingWebSocket';
+import * as React from 'react';
+import './index.css';
+import TradingView from './ChartingLibrary';
+import Datafeed from './api';
+import $ from 'jquery';
 
-class TradeviewPage extends Component {
-    websocketUrl = `${WS_PREFIX}/kline`;
-
-    componentDidMount() {
-        this.websocketStart();
-
-        window.ws.onopen = evt => {
-            console.log('Kline Connection open ...');
-        };
-
-        window.ws.onclose = evt => {
-            console.log('Kline Connection closed.');
-        };
-    }
-
-    componentWillUpdate(nextProps, nextState) {
-        if (!this.props.coin && nextProps.coin) {
-            //当coin第一次有值的时候，就初始化tradingview
-            const { market, coin } = nextProps;
-            this.tradingViewGetReady({ market, coin });
-        }
-    }
-
-    // 开启websocket
-    websocketStart() {
-        window.ws = new ReconnectingWebSocket(this.websocketUrl);
-        setInterval(() => {
-            if (window.ws.readyState === 1) {
-                window.ws.send('ping');
-            }
-        }, 1000 * 3);
-    }
-
-    // tradeView准备
-    tradingViewGetReady({ market, coin }) {
-        let params = {
-            resolution: '1',
-            Datafeeds: datafeeds(`${coin}/${market}`),
-            serverUrl: this.websocketUrl,
-            pushInterval: 1000,
-            locale: 'en',
-            symbol: `${coin}/${market}`
-        };
-
-        onready(
-            (() => {
-                window.widget = window.tvWidget = new widget(
-                    tradeviewPageUtil.datafeedConfig(params)
-                );
-
-                window.widget.onChartReady(() => {
-                    tradeviewPageUtil.chartReady(window.widget);
-                });
-            })()
-        );
-    }
-
-    componentWillUnmount() {
-        window.ws && window.ws.close();
-    }
-
-    render() {
-        return <div id="tv_chart_container" />;
-    }
+function getLanguageFromURL() {
+  const regex = new RegExp('[\\?&]lang=([^&#]*)');
+  const results = regex.exec(window.location.search);
+  return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
 }
 
-export default TradeviewPage;
+class TVChartContainer extends React.PureComponent {
+  componentDidMount() {
+    const widgetOptions = {
+      symbol: 'BCC/USDT',
+      debug: false,
+      fullscreen: false,
+      interval: '1',
+      container_id: 'tv_chart_container',
+      datafeed: Datafeed,
+      width: '100%',
+      height: '380',
+      library_path: '/charting_library/',
+      locale: 'zh',
+      drawings_access: {
+        type: 'black',
+        tools: [
+          {
+            name: 'Regression Trend'
+          }
+        ]
+      },
+      theme: 'Black',
+      // autosize: true,
+      timezone: 'Asia/Shanghai',
+      toolbar_bg: '#292f3d',
+      disabled_features: [
+        'header_symbol_search',
+        'use_localstorage_for_settings',
+        'symbol_search_hot_key',
+        'header_chart_type',
+        'header_compare',
+        'header_undo_redo',
+        'header_screenshot',
+        'header_saveload',
+        'timeframes_toolbar',
+        'context_menus',
+        'left_toolbar',
+        'header_indicators', //图表指标
+        // 'header_settings', //设置
+        'header_resolutions', //时间下拉框
+        // 'header_fullscreen_button' //全屏按钮
+        'volume_force_overlay'
+      ],
+      enabled_features: ['study_templates', 'hide_last_na_study_output'],
+      charts_storage_url: 'http://saveload.tradingview.com',
+      charts_storage_api_version: '1.1',
+      client_id: 'tradingview.com',
+      user_id: 'public_user_id',
+      overrides: {
+        volumePaneSize: 'medium',
+        'scalesProperties.lineColor': '#AAA',
+        'scalesProperties.textColor': '#AAA',
+        'symbolWatermarkProperties.transparency': 90,
+        'paneProperties.background': '#292f3d',
+        'paneProperties.vertGridProperties.color': '#454545',
+        'paneProperties.horzGridProperties.color': '#454545',
+        'paneProperties.crossHairProperties.color': '#9194A3',
+        'paneProperties.legendProperties.showLegend': false,
+        'paneProperties.legendProperties.showStudyArguments': true,
+        'paneProperties.legendProperties.showStudyTitles': true,
+        'paneProperties.legendProperties.showStudyValues': true,
+        'paneProperties.legendProperties.showSeriesTitle': true,
+        'paneProperties.legendProperties.showSeriesOHLC': true,
+        'mainSeriesProperties.candleStyle.upColor': '#589065',
+        'mainSeriesProperties.candleStyle.downColor': '#ae4e54',
+        'mainSeriesProperties.candleStyle.drawWick': true,
+        'mainSeriesProperties.candleStyle.drawBorder': true,
+        'mainSeriesProperties.candleStyle.borderColor': '#4e5b85',
+        'mainSeriesProperties.candleStyle.borderUpColor': '#589065',
+        'mainSeriesProperties.candleStyle.borderDownColor': '#ae4e54',
+        'mainSeriesProperties.candleStyle.wickUpColor': '#589065',
+        'mainSeriesProperties.candleStyle.wickDownColor': '#ae4e54',
+        'mainSeriesProperties.candleStyle.barColorsOnPrevClose': false,
+        'mainSeriesProperties.hollowCandleStyle.upColor': '#589065',
+        'mainSeriesProperties.hollowCandleStyle.downColor': '#ae4e54',
+        'mainSeriesProperties.hollowCandleStyle.drawWick': true,
+        'mainSeriesProperties.hollowCandleStyle.drawBorder': true,
+        'mainSeriesProperties.hollowCandleStyle.borderColor': '#4e5b85',
+        'mainSeriesProperties.hollowCandleStyle.borderUpColor': '#589065',
+        'mainSeriesProperties.hollowCandleStyle.borderDownColor': '#ae4e54',
+        'mainSeriesProperties.haStyle.upColor': '#589065',
+        'mainSeriesProperties.haStyle.downColor': '#ae4e54',
+        'mainSeriesProperties.haStyle.drawBorder': true,
+        'mainSeriesProperties.haStyle.borderColor': '#4e5b85',
+        'mainSeriesProperties.haStyle.borderUpColor': '#589065',
+        'mainSeriesProperties.haStyle.borderDownColor': '#ae4e54',
+        'mainSeriesProperties.haStyle.wickColor': '#4e5b85',
+        'mainSeriesProperties.haStyle.barColorsOnPrevClose': false,
+        'mainSeriesProperties.barStyle.upColor': '#589065',
+        'mainSeriesProperties.barStyle.downColor': '#ae4e54',
+        'mainSeriesProperties.barStyle.barColorsOnPrevClose': false,
+        'mainSeriesProperties.barStyle.dontDrawOpen': false,
+        'mainSeriesProperties.lineStyle.color': '#4e5b85',
+        'mainSeriesProperties.lineStyle.linewidth': 1,
+        'mainSeriesProperties.lineStyle.priceSource': 'close',
+        'mainSeriesProperties.areaStyle.color1': 'rgba(122, 152, 247, .1)',
+        'mainSeriesProperties.areaStyle.color2': 'rgba(122, 152, 247, .02)',
+        'mainSeriesProperties.areaStyle.linecolor': '#4e5b85',
+        'mainSeriesProperties.areaStyle.linewidth': 1,
+        'mainSeriesProperties.areaStyle.priceSource': 'close',
+        'mainSeriesProperties.style': 1
+      },
+      studies_overrides: {
+        'volume.volume.color.0': '#ce5277',
+        'volume.volume.color.1': '#a0d75b',
+        'volume.volume.transparency': 50,
+        'MACD.histogram.color': '#606060',
+        'MACD.MACD.color': '#ce5277',
+        'MACD.signal.color': '#a0d75b'
+      }
+    };
+
+    TradingView.onready(() => {
+      const widget = (window.tvWidget = new TradingView.widget(widgetOptions));
+
+      widget.onChartReady(() => {
+        let buttonArr = [
+          {
+            value: '1',
+            period: '1m',
+            text: '1m'
+          },
+          {
+            value: '5',
+            period: '5m',
+            text: '5m'
+          },
+          {
+            value: '15',
+            period: '15m',
+            text: '15m'
+          },
+          {
+            value: '30',
+            period: '30m',
+            text: '30m'
+          },
+          {
+            value: '60',
+            period: '1h',
+            text: '1h'
+          },
+          {
+            value: '120',
+            period: '2h',
+            text: '2h'
+          },
+          {
+            value: '240',
+            period: '4h',
+            text: '4h'
+          },
+          {
+            value: '480',
+            period: '8h',
+            text: '8h'
+          },
+          {
+            value: '1D',
+            period: '1D',
+            text: '日线'
+          },
+          {
+            value: '1W',
+            period: '1W',
+            text: '周线'
+          },
+          {
+            value: '1M',
+            period: '1M',
+            text: '月线'
+          }
+        ];
+
+        let btn = {};
+
+        let handleClick = (e, value) => {
+          console.log('set++++++++++++++++++++++: ', value);
+          widget.chart().setResolution(value);
+
+          $(e.target)
+            .addClass('select')
+            .closest('div.space-single')
+            .siblings('div.space-single')
+            .find('div.button')
+            .removeClass('select');
+        };
+
+        buttonArr.forEach((v, i) => {
+          btn = widget
+            .createButton()
+            .addClass('resolution')
+            .on('click', function(e) {
+              handleClick(e, v.value);
+            });
+          if (v.text === '1m') {
+            btn.addClass('select');
+          }
+          btn[0].innerHTML = v.text;
+          btn[0].title = v.text;
+        });
+        widget
+          .chart()
+          .createStudy('Moving Average', false, false, [5], null, { 'Plot.color': '#965FC4' });
+        widget
+          .chart()
+          .createStudy('Moving Average', false, false, [10], null, { 'Plot.color': '#84aad5' });
+        widget
+          .chart()
+          .createStudy('Moving Average', false, false, [30], null, { 'Plot.color': '#55b263' });
+        widget
+          .chart()
+          .createStudy('Moving Average', false, false, [60], null, { 'Plot.color': '#b7248a' });
+      });
+    });
+  }
+
+  render() {
+    return <div id="tv_chart_container" style={{ height: 380 }} />;
+  }
+}
+
+export default TVChartContainer;
