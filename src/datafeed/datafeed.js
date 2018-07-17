@@ -26,7 +26,7 @@ const datafeeds = symbol => {
     // 实时订阅
     this._barsPulseUpdater = new Datafeeds.DataPulseUpdater(this, updateFrequency || 1000 * 10);
     // 交易终端
-    this._quotesPulseUpdater = new Datafeeds.QuotesPulseUpdater(this);
+    // this._quotesPulseUpdater = new Datafeeds.QuotesPulseUpdater(this);
     this._protocolVersion = protocolVersion || 2;
 
     this._enableLogging = false;
@@ -214,13 +214,12 @@ const datafeeds = symbol => {
 
     var websocketGetData = function() {
       if (!window.hasWsMessage) {
-        window.hasWsMessage = true;
         try {
+          window.hasWsMessage = true;
           if (symbolInfo && symbolInfo.name) {
             const symbolName = symbolInfo.name.replace(/\//g, '_');
             that._logMessage(`send ${symbolName} get bars...`);
-    
-            try {
+            try{
               if (window.ws.readyState === 1) {
                 window.ws.send(symbolName + '_' + period);
               }
@@ -231,7 +230,7 @@ const datafeeds = symbol => {
         } catch (e) {
           console.log('send error: ', e);
         }
-        
+
         window.ws.onmessage = function(e) {
           if (e.data === 'pong') {
             // console.log('kline: ', e.data);
@@ -249,7 +248,13 @@ const datafeeds = symbol => {
           };
           datafeedUtil.dealWebsocket(websocketParams);
         };
-      } 
+      } else {
+        dealSuccess(
+          JSON.stringify({
+            s: 'no_data'
+          })
+        );
+      }
     };
 
     var dealSuccess = function(data) {
@@ -296,7 +301,7 @@ const datafeeds = symbol => {
       // console.log('getBars bars->', bars);
       // console.log('getBars meta->', meta);
       // 只会执行一次
-      console.log('bar: ', bars[bars.length-1]);
+      // console.log('bar: ', bars);
       onDataCallback(bars, meta);
     };
 
@@ -313,6 +318,7 @@ const datafeeds = symbol => {
     onResetCacheNeededCallback
   ) {
     // console.log('subscribeBars ->');
+    // console.log('symbolInfo', symbolInfo)
     window.hasWsMessage = false;
 
     this._barsPulseUpdater.subscribeDataListener(
@@ -666,6 +672,7 @@ const datafeeds = symbol => {
     };
 
     if (typeof updateFrequency != 'undefined' && updateFrequency > 0) {
+      // console.log('updateFrequency',updateFrequency);
       setInterval(update, updateFrequency);
     }
   };

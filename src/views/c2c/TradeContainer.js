@@ -26,6 +26,7 @@ const ExpandComponent = ({
       message.success('复制成功！');
     });
   };
+  
   return (
     <div className="payment-box">
       <Tabs
@@ -33,7 +34,7 @@ const ExpandComponent = ({
           <div className="extra-cont">
             <span>
               <i className="iconfont icon-phone" />
-              {remarks === 'buy' ? '卖' : '买'}家：{bankInfo.mobile}
+              商家：{bankInfo.mobile}
             </span>
             <a href="javascript:;" onClick={handleAppeal}>
               <i className="iconfont icon-kefu" />申请客服处理
@@ -45,7 +46,7 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-yinhangqia" />
-              {remarks === 'buy' ? '卖' : '买'}家银行卡信息
+              商家银行卡信息
             </span>
           }
           key="bank"
@@ -111,7 +112,7 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-zhifubao" />
-              {remarks === 'buy' ? '卖' : '买'}家支付宝信息
+             商家支付宝信息
             </span>
           }
           key="alipay"
@@ -181,7 +182,7 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-wxpay" />
-              {remarks === 'buy' ? '卖' : '买'}家微信支付信息
+              商家微信支付信息
             </span>
           }
           key="wechat"
@@ -258,19 +259,19 @@ const ExpandComponent = ({
                 confirmPay(record);
               }}
             >
-              我已付款给卖家
+              我已付款给商家
             </Button>
           )}
         {remarks === 'buy' &&
           status === 1 && (
             <Button type="primary" size="large" disabled>
-              我已付款给卖家
+              我已付款给商家
             </Button>
           )}
         {remarks === 'sell' &&
           status === 0 && (
             <Button size="large" disabled>
-              等待买家确认付款
+              等待商家确认付款
             </Button>
           )}
         {remarks === 'sell' &&
@@ -290,7 +291,7 @@ const ExpandComponent = ({
             type="normal"
             size="large"
             onClick={() => {
-              cancelPay(record);
+              cancelPay(record, status);
             }}
           >
             取消订单
@@ -301,13 +302,13 @@ const ExpandComponent = ({
         <h3>交易须知：</h3>
         <ul>
           <li>
-            买家有<span className="font-color-red">一个未完成买单</span>，无法继续买入，完成后方可进行买卖
+            商家有<span className="font-color-red">一个未完成买单</span>，无法继续买入，完成后方可进行买卖
           </li>
           <li>
-            买家当天取消<span className="font-color-red">3笔</span>交易，将禁止当天C2C买卖功能
+            商家当天取消<span className="font-color-red">3笔</span>交易，将禁止当天C2C买卖功能
           </li>
           <li>
-            买家当天被申诉<span className="font-color-red">3次以上</span>，禁止当天C2C买卖功能
+            商家当天被申诉<span className="font-color-red">3次以上</span>，禁止当天C2C买卖功能
           </li>
           <li>
             大于<span className="font-color-red">5万</span>的付款，请务必将单笔金额拆分为<span className="font-color-red">
@@ -728,8 +729,7 @@ class TradeContainer extends Component {
     });
   };
 
-  //撤销交易
-  cancelPay = record => {
+  cancelOrderSubmit = (record) => {
     this.request('/offline/detail/cancel', {
       body: {
         orderId: record.orderId,
@@ -743,6 +743,36 @@ class TradeContainer extends Component {
         message.error(json.msg);
       }
     });
+  }
+
+  //撤销交易
+  cancelPay = (record, status) => {
+    if(status===1){
+      this.setState({
+        showAppeal: <Modal
+          title="确认取消订单"
+          width={400}
+          cancelText='取消'
+          okText='确认'
+          wrapClassName="v-center-modal"
+          visible={true}
+          onCancel={()=>{
+            this.setState({showAppeal: ''});
+          }}
+          onOk={()=>{
+            this.setState({showAppeal: ''});
+            this.cancelOrderSubmit(record);
+          }}
+          >
+          <div style={{textAlign: 'center', padding: '20px 0 10px'}}>
+              您已支付款项给对方, 请确认是否取消订单!
+          </div>
+        </Modal>
+      })
+    } else {
+      this.cancelOrderSubmit(record);
+    }
+    
   };
 
   //撤销广告
@@ -897,7 +927,7 @@ class TradeContainer extends Component {
 
     const listColumns = [
       {
-        title: '卖家名称',
+        title: '商家名称',
         dataIndex: 'realName',
         render: (text, record) => (
           <span
@@ -1110,7 +1140,7 @@ class TradeContainer extends Component {
             if (record.remarks === 'buy') {
               return (
                 <Button type="primary" onClick={this.confirmPay.bind(this, record)}>
-                  我已付款给卖家
+                  我已付款给商家
                 </Button>
               );
             } else {

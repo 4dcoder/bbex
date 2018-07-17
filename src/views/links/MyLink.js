@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import request from '../../utils/request';
+import './link.css';
 
 class MyLink extends Component {
   constructor(props){
@@ -29,8 +30,10 @@ class MyLink extends Component {
   }
   render(){
     let { detail } = this.state;
-    return <div style={{ padding:40 }}  dangerouslySetInnerHTML={{ __html: detail }}>
-      
+    return <div style={{ padding:40 }} >
+      <div id='link_container' dangerouslySetInnerHTML={{ __html: detail }} >
+        
+      </div>
     </div>
   }
 }

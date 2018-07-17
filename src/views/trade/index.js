@@ -131,7 +131,7 @@ class Trade extends Component {
       if (json.code === 10000000) {
         this.setState({ coinDetail: json.data });
       } else {
-        message.error(json.msg);
+        // message.error(json.msg);
       }
     });
   };
@@ -184,7 +184,7 @@ class Trade extends Component {
       if (this.marketWS && this.marketWS.readyState === 1) {
         this.marketWS.send('ping');
       }
-    }, 1000 * 3);
+    }, 1000 * 10);
 
     this.marketWS.onmessage = evt => {
       if (evt.data === 'pong') {
@@ -226,7 +226,7 @@ class Trade extends Component {
       if (this.streamWS && this.streamWS.readyState === 1) {
         this.streamWS.send('ping');
       }
-    }, 1000 * 3);
+    }, 1000 * 10);
 
     this.streamWS.onopen = evt => {
       const { marketName, coinName } = this.state;

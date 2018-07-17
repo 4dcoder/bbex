@@ -279,7 +279,7 @@ class Container extends Component {
               <div className="footer-main-right">
                 <div className="footer-nav clear">
                   {introduces &&
-                    introduces.map((item, index) => {
+                   introduces.map((item, index) => {
                       return (
                         <Link
                           key={index}
@@ -289,7 +289,7 @@ class Container extends Component {
                           target="_blank"
                           data-id={item.id}
                         >
-                          {localization[item.title]}
+                          {item.title}
                         </Link>
                       );
                     })}
@@ -311,7 +311,7 @@ class Container extends Component {
                             <a
                               href={`tencent://message/?Site=baidu.com&uin=${
                                 item.linkUrl
-                              }&Menu=yes`}
+                                }&Menu=yes`}
                               key={index}
                             >
                               <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />

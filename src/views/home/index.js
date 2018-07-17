@@ -53,7 +53,7 @@ class Home extends Component {
       if (this.homeWS.readyState === 1) {
         this.homeWS.send('ping');
       }
-    }, 1000 * 5);
+    }, 1000 * 10);
 
     this.homeWS.onmessage = evt => {
       if (evt.data === 'pong') {

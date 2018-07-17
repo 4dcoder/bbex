@@ -31,7 +31,11 @@ class Property extends Component {
   }
 
   inputVolume = e => {
-    this.setState({ handleVolume: e.target.value });
+    let value  = e.target.value;
+    if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
+      this.setState({ handleVolume: value });
+    }
+    
   };
 
   tabChange = key => {
@@ -182,7 +186,12 @@ class Property extends Component {
         message.success('操作成功！');
         this.hideModal();
       } else {
-        message.error(json.msg);
+
+        if(type==='turnOut' && json.code===10004015){
+          message.error('资产不足');
+        }else{
+          message.error(json.msg);
+        }
       }
     });
   };
