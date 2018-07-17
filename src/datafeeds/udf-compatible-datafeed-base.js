@@ -25,7 +25,7 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
     this._quotesProvider = quotesProvider;
     this._dataPulseProvider = new DataPulseProvider(this._historyProvider, updateFrequency);
     this._quotesPulseProvider = new QuotesPulseProvider(this._quotesProvider);
-    this._setupWithConfiguration(defaultConfiguration()); //由请求/config获取的配置改为 写死的默认配置
+    this._setupWithConfiguration(defaultConfiguration()); //由请求 /config获取的配置改为 写死的默认配置
     // this._configurationReadyPromise = this._requestConfiguration()
     //     .then(function (configuration) {
     //     if (configuration === null) {
@@ -35,7 +35,7 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
     // });
   }
   UDFCompatibleDatafeedBase.prototype.onReady = function(callback) {
-    callback(this._configuration); //由请求/config获取的配置改为 写死的默认配置
+    callback(this._configuration); //由请求 /config获取的配置改为 写死的默认配置
     // var _this = this;
     // this._configurationReadyPromise.then(function() {
     //   callback(_this._configuration);
@@ -86,28 +86,28 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
     }
 
     //手动写死代替http请求marks
-    try {
-      const response = {
-        id: [0, 1, 2, 3, 4, 5],
-        time: [1531699200, 1531353600, 1531094400, 1531094400, 1530403200, 1529107200],
-        color: ['red', 'blue', 'green', 'red', 'blue', 'green'],
-        text: [
-          'Today',
-          '4 days back',
-          '7 days back + Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          '7 days back once again',
-          '15 days back',
-          '30 days back'
-        ],
-        label: ['A', 'B', 'CORE', 'D', 'EURO', 'F'],
-        labelFontColor: ['white', 'white', 'red', '#FFFFFF', 'white', '#000'],
-        minSize: [14, 28, 7, 40, 7, 14]
-      };
-      onDataCallback(response);
-    } catch (error) {
-      logMessage('UdfCompatibleDatafeed: Request marks failed: ' + getErrorMessage(error));
-      onDataCallback([]);
-    }
+    // try {
+    //   const response = {
+    //     id: [0, 1, 2, 3, 4, 5],
+    //     time: [1531699200, 1531353600, 1531094400, 1531094400, 1530403200, 1529107200],
+    //     color: ['red', 'blue', 'green', 'red', 'blue', 'green'],
+    //     text: [
+    //       'Today',
+    //       '4 days back',
+    //       '7 days back + Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    //       '7 days back once again',
+    //       '15 days back',
+    //       '30 days back'
+    //     ],
+    //     label: ['A', 'B', 'CORE', 'D', 'EURO', 'F'],
+    //     labelFontColor: ['white', 'white', 'red', '#FFFFFF', 'white', '#000'],
+    //     minSize: [14, 28, 7, 40, 7, 14]
+    //   };
+    //   onDataCallback(response);
+    // } catch (error) {
+    //   logMessage('UdfCompatibleDatafeed: Request marks failed: ' + getErrorMessage(error));
+    //   onDataCallback([]);
+    // }
     //手动写死代替http请求marks
 
     // var requestParams = {
@@ -152,38 +152,40 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
       return;
     }
 
-    const response = [
-      { id: 'tsm1', time: 1531699200, color: 'red', label: 'A', tooltip: '' },
-      {
-        id: 'tsm2',
-        time: 1531353600,
-        color: 'blue',
-        label: 'D',
-        tooltip: ['Dividends: $0.56', 'Date: Thu Jul 12 2018']
-      },
-      {
-        id: 'tsm3',
-        time: 1531094400,
-        color: 'green',
-        label: 'D',
-        tooltip: ['Dividends: $3.46', 'Date: Mon Jul 09 2018']
-      },
-      {
-        id: 'tsm4',
-        time: 1530403200,
-        color: '#999999',
-        label: 'E',
-        tooltip: ['Earnings: $3.44', 'Estimate: $3.60']
-      },
-      {
-        id: 'tsm7',
-        time: 1529107200,
-        color: 'red',
-        label: 'E',
-        tooltip: ['Earnings: $5.40', 'Estimate: $5.00']
-      }
-    ];
-    onDataCallback(response);
+    // 手动写死代替 http请求/timescale_marks 获取
+    // const response = [
+    //   { id: 'tsm1', time: 1531699200, color: 'red', label: 'A', tooltip: '' },
+    //   {
+    //     id: 'tsm2',
+    //     time: 1531353600,
+    //     color: 'blue',
+    //     label: 'D',
+    //     tooltip: ['Dividends: $0.56', 'Date: Thu Jul 12 2018']
+    //   },
+    //   {
+    //     id: 'tsm3',
+    //     time: 1531094400,
+    //     color: 'green',
+    //     label: 'D',
+    //     tooltip: ['Dividends: $3.46', 'Date: Mon Jul 09 2018']
+    //   },
+    //   {
+    //     id: 'tsm4',
+    //     time: 1530403200,
+    //     color: '#999999',
+    //     label: 'E',
+    //     tooltip: ['Earnings: $3.44', 'Estimate: $3.60']
+    //   },
+    //   {
+    //     id: 'tsm7',
+    //     time: 1529107200,
+    //     color: 'red',
+    //     label: 'E',
+    //     tooltip: ['Earnings: $5.40', 'Estimate: $5.00']
+    //   }
+    // ];
+    // onDataCallback(response);
+    // 手动写死代替 http请求/timescale_marks 获取
 
     // var requestParams = {
     //     symbol: symbolInfo.ticker || '',
@@ -221,7 +223,7 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
       return;
     }
 
-    callback(new Date().getTime()); //1531726207
+    callback(Math.floor(new Date().getTime()/1000)); //1531726207
     // this._send('time')
     //   .then(function(response) {
     //     var time = parseInt(response);
@@ -281,22 +283,29 @@ var UDFCompatibleDatafeedBase = /** @class */ (function() {
     var resolveRequestStartTime = Date.now();
 
     //手动写死代替 http请求/symbols
+    const symbol = localStorage.getItem('tradePair').replace('_', '/');
     const symbolInfo = {
-      name: 'AAPL',
-      'exchange-traded': 'NasdaqNM',
-      'exchange-listed': 'NasdaqNM',
+      name: symbol,
+      'exchange-traded': '',
+      'exchange-listed': '',
       timezone: 'Asia/Shanghai',
       minmov: 1,
       minmov2: 0,
       pointvalue: 1,
-      session: '0930-1630',
-      has_intraday: false,
+      // session: '0930-1630',
+      session: '24x7',
+      // has_intraday: false,
+      has_intraday: true,
+      intraday_multipliers: ['1', '5', '15', '30', '60','120', '240','480', '1D', '1W', '1M'],
+      has_daily: true,
+      has_weekly_and_monthly: true,
+      has_empty_bars: false,
       has_no_volume: false,
-      description: 'Apple Inc.',
-      type: 'index',
-      supported_resolutions: ['D', '2D', '3D', 'W', '3W', 'M', '6M'],
-      pricescale: 100,
-      ticker: 'AAPL'
+      description: '',
+      type: 'Index',
+      supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M'],
+      pricescale: 10 ** 8,
+      ticker: symbol
     };
     onResultReady(symbolInfo);
     //手动写死代替 http请求/symbols
@@ -395,22 +404,10 @@ export { UDFCompatibleDatafeedBase };
 function defaultConfiguration() {
   return {
     supports_search: true,
-    supports_group_request: false,
-    supports_marks: true,
-    supports_timescale_marks: true,
     supports_time: true,
-    exchanges: [
-      { value: '', name: 'All Exchanges', desc: '' },
-      { value: 'NasdaqNM', name: 'NasdaqNM', desc: 'NasdaqNM' },
-      { value: 'NYSE', name: 'NYSE', desc: 'NYSE' },
-      { value: 'NCM', name: 'NCM', desc: 'NCM' },
-      { value: 'NGM', name: 'NGM', desc: 'NGM' }
-    ],
-    symbols_types: [
-      { name: 'All types', value: '' },
-      { name: 'Stock', value: 'stock' },
-      { name: 'Index', value: 'index' }
-    ],
-    supported_resolutions: ['D', '2D', '3D', 'W', '3W', 'M', '6M']
+    supports_timescale_marks: false,
+    supports_group_request: false,
+    supports_marks: false,
+    supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M']
   };
 }

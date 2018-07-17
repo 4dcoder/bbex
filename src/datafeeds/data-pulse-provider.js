@@ -34,9 +34,7 @@ var DataPulseProvider = /** @class */ (function() {
     );
 
     this.WS = {};
-    for (var listenerGuid in this._subscribers) {
-      this._updateDataForSubscriber(listenerGuid);
-    }
+    this._updateDataForSubscriber(listenerGuid);
   };
   DataPulseProvider.prototype.unsubscribeBars = function(listenerGuid) {
     delete this._subscribers[listenerGuid];
@@ -61,7 +59,6 @@ var DataPulseProvider = /** @class */ (function() {
     //     });
     // };
     // var this_1 = this;
-    
   };
   DataPulseProvider.prototype._updateDataForSubscriber = function(listenerGuid) {
     var _this = this;
@@ -73,21 +70,19 @@ var DataPulseProvider = /** @class */ (function() {
 
     this.WS[listenerGuid] = new ReconnectingWebSocket('ws://localhost:3001');
 
-    
     this.WS[listenerGuid].onopen = evt => {
       console.log(this.WS[listenerGuid], this.WS[listenerGuid].readyState);
       if (this.WS[listenerGuid] && this.WS[listenerGuid].readyState === 1) {
         const tradePair = localStorage.getItem('tradePair');
         this.WS[listenerGuid].send(tradePair);
       }
-    }
-    
-    //   _this.interval[listenerGuid] = setInterval(() => {
-    //     const tradePair = localStorage.getItem('tradePair');
-    //     if (_this.WS[listenerGuid] && _this.WS[listenerGuid].readyState === 1 && tradePair) {
-    //         _this.WS[listenerGuid].send(tradePair);
-    //     }
-    //   }, 1000);
+    };
+
+    _this.interval[listenerGuid] = setInterval(() => {
+      if (_this.WS[listenerGuid] && _this.WS[listenerGuid].readyState === 1) {
+        _this.WS[listenerGuid].send('ping');
+      }
+    }, 1000 * 5);
 
     this.WS[listenerGuid].onmessage = evt => {
       if (evt.data) {
@@ -123,28 +118,28 @@ var DataPulseProvider = /** @class */ (function() {
     lastBar = {
       isBarClosed: false,
       isLastBar: true,
-      time: lastBar.t*1000,
-      close: lastBar.c*1,
-      high: lastBar.h*1,
-      low: lastBar.l*1,
-      open: lastBar.o*1,
-      volume: lastBar.v*100
-    }
+      time: lastBar.t * 1000,
+      close: lastBar.c * 1,
+      high: lastBar.h * 1,
+      low: lastBar.l * 1,
+      open: lastBar.o * 1,
+      volume: lastBar.v * 100
+    };
     var subscriptionRecord = this._subscribers[listenerGuid];
     if (subscriptionRecord.lastBarTime !== null && lastBar.time < subscriptionRecord.lastBarTime) {
       return;
     }
     var isNewBar =
       subscriptionRecord.lastBarTime !== null && lastBar.time > subscriptionRecord.lastBarTime;
-      console.log(lastBar.time,subscriptionRecord.lastBarTime,isNewBar)
+    console.log(lastBar.time, subscriptionRecord.lastBarTime, isNewBar);
     // Pulse updating may miss some trades data (ie, if pulse period = 10 secods and new bar is started 5 seconds later after the last update, the
     // old bar's last 5 seconds trades will be lost). Thus, at fist we should broadcast old bar updates when it's ready.
     // if (isNewBar) {
-      // if (bars.length < 2) {
-      //   throw new Error('Not enough bars in history for proper pulse update. Need at least 2.');
-      // }
-      // var previousBar = bars[bars.length - 2];
-      // subscriptionRecord.listener(previousBar);
+    // if (bars.length < 2) {
+    //   throw new Error('Not enough bars in history for proper pulse update. Need at least 2.');
+    // }
+    // var previousBar = bars[bars.length - 2];
+    // subscriptionRecord.listener(previousBar);
     // }
     subscriptionRecord.lastBarTime = lastBar.time;
     subscriptionRecord.listener(lastBar);
