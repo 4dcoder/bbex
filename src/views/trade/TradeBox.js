@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { message } from 'antd';
 import TradeForm from './TradeForm';
 
-class TradeBox extends Component {
+class TradeBox extends PureComponent {
   state = {
     mainVolume: 0,
     coinVolume: 0,

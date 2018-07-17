@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
   Tabs,
   Input,
@@ -27,7 +27,7 @@ const Search = Input.Search;
 const TabPane = Tabs.TabPane;
 const Option = Select.Option;
 
-class Trade extends Component {
+class Trade extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -230,7 +230,7 @@ class Trade extends Component {
 
     this.streamWS.onopen = evt => {
       const { marketName, coinName } = this.state;
-      if(marketName && coinName && this.streamWS && this.streamWS.readyState === 1) {
+      if (marketName && coinName && this.streamWS && this.streamWS.readyState === 1) {
         this.streamWS.send(`${coinName}_${marketName}`);
       }
     };
@@ -636,8 +636,6 @@ class Trade extends Component {
     this.streamWS && this.streamWS.close();
     this.buyandsellWS && this.buyandsellWS.close();
     this.userWS && this.userWS.close();
-    window.tvWidget.remove();
-    window.tvWidget = null;
   }
 
   render() {
@@ -1044,7 +1042,9 @@ class Trade extends Component {
                 />
                 <div className="trade-plate-header-right">
                   <Tooltip placement="rightTop" title={coinDetail}>
-                    <Button type="normal" onMouseEnter={this.getCoinDetail.bind(this, coinName)}>{localization['币种介绍']}</Button>
+                    <Button type="normal" onMouseEnter={this.getCoinDetail.bind(this, coinName)}>
+                      {localization['币种介绍']}
+                    </Button>
                   </Tooltip>
                 </div>
               </header>
