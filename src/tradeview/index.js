@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { onready, widget } from './ChartingLibrary';
 import Datafeed from './datafeed';
-import $ from 'jquery';
 
 class TradeviewPage extends Component {
   componentWillUpdate(nextProps, nextState) {
@@ -128,9 +127,9 @@ class TradeviewPage extends Component {
 
     onready(
       (() => {
-        window.widget = (window.tvWidget = new widget(widgetOptions));
+        window.tvWidget = new widget(widgetOptions);
 
-        window.widget.onChartReady(() => {
+        window.tvWidget.onChartReady(() => {
           let buttonArr = [
             {
               value: '1',
@@ -189,43 +188,42 @@ class TradeviewPage extends Component {
             }
           ];
 
-          let btn = {};
+          const handleClick = (e, value, text) => {
+            // 设置tradingview分辨率
+            window.tvWidget.chart().setResolution(value);
 
-          let handleClick = (e, value) => {
-            console.log('set++++++++++++++++++++++: ', value);
-            window.widget.chart().setResolution(value);
-
-            $(e.target)
-              .addClass('select')
-              .closest('div.space-single')
-              .siblings('div.space-single')
-              .find('div.button')
-              .removeClass('select');
+            // 更新选中状态
+            Array.from(e.target.parentNode.parentNode.children).forEach(child => {
+              const currentEl = child.firstChild;
+              const classVal = currentEl.className;
+              child.firstChild.setAttribute('class', classVal.replace('select', ''));
+              if (currentEl.innerHTML === text) {
+                child.firstChild.setAttribute('class', classVal.concat(' select'));
+              }
+            });
           };
 
           buttonArr.forEach((v, i) => {
-            btn = window.widget
+            const btn = window.tvWidget
               .createButton()
-              .addClass('resolution')
+              .addClass(`resolution${v.text === '1m' ? ' select' : ''}`)
               .on('click', function(e) {
-                handleClick(e, v.value);
+                handleClick(e, v.value, v.text);
               });
-            if (v.text === '1m') {
-              btn.addClass('select');
-            }
+
             btn[0].innerHTML = v.text;
             btn[0].title = v.text;
           });
-          window.widget
+          window.tvWidget
             .chart()
             .createStudy('Moving Average', false, false, [5], null, { 'Plot.color': '#965FC4' });
-          window.widget
+          window.tvWidget
             .chart()
             .createStudy('Moving Average', false, false, [10], null, { 'Plot.color': '#84aad5' });
-          window.widget
+          window.tvWidget
             .chart()
             .createStudy('Moving Average', false, false, [30], null, { 'Plot.color': '#55b263' });
-          window.widget
+          window.tvWidget
             .chart()
             .createStudy('Moving Average', false, false, [60], null, { 'Plot.color': '#b7248a' });
         });
