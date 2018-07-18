@@ -1,19 +1,14 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { onready, widget } from './ChartingLibrary';
 import Datafeed from './datafeed';
 
-class TradeviewPage extends Component {
-  componentWillUpdate(nextProps, nextState) {
-    if (!this.props.coin && nextProps.coin) {
-      //当coin第一次有值的时候，就初始化tradingview
-      const { market, coin } = nextProps;
-      this.tradingViewGetReady({ market, coin });
-    }
+class TradeviewPage extends PureComponent {
+  componentDidMount() {
+    this.tradingViewGetReady(this.props.symbol);
   }
 
   // tradeView准备
-  tradingViewGetReady({ market, coin }) {
-    const symbol = `${coin}/${market}`;
+  tradingViewGetReady(symbol) {
     const widgetOptions = {
       symbol,
       tiker: symbol,
