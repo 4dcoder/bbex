@@ -130,11 +130,6 @@
   text-align: center;
 }
 
-.trade-plate-tit-cell:first-child {
-  padding-left: 30px;
-  text-align: left;
-}
-
 .trade-plate-tit-cell.sorter {
   cursor: pointer;
 }
@@ -225,16 +220,13 @@
 
 .trade-plate-container td:first-child {
   position: relative;
-  padding-left: 30px;
-  text-align: left;
 }
 
-.trade-plate-container td .iconfont {
-  position: absolute;
-  top: 50%;
-  left: 10px;
+.trade-plate-container tr td:first-child .iconfont {
+  position: relative;
+  top: -2px;
+  left: -5px;
   font-size: 18px;
-  transform: translateY(-50%);
 }
 
 .trade-plate-container td .icon-shoucang {
@@ -380,13 +372,16 @@
   top: 10px;
   transition: .2s ease;
 }
+.trade-form li .ant-input~.has-value,
 .trade-form li .ant-input:focus-within~.trade-form-name {
   display: block;
   top: -10px;
   font-size: 12px;
   padding: 0 5px;
-  color: #d4a668;
   background-color: #292f3d;
+}
+.trade-form li .ant-input:focus-within~.trade-form-name {
+  color: #d4a668;
 }
 
 .trade-form li .trade-form-name.market {

@@ -43,7 +43,7 @@
   "买入":"Buy",
   "卖出":"Sell",
   "交易额":"Turnover",
-  "委单量":"Appoint a single volume",
+  "委单量":"Single Volume",
   "类型":"Type",
   "位小数":"decimals",
   "当市场价达到触发价时，将按计划设定的价格和数量进行下单":"When the market price reaches the trigger price, the price and quantity set according to the plan will be placed",

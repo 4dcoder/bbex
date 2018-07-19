@@ -263,7 +263,7 @@ class Trade extends PureComponent {
               if (tradeExpair[marketName][key].firstPrice == 0) {
                 tradeExpair[marketName][key].firstPrice = tradeExpair[marketName][key].latestPrice;
               }
-              tradeExpair[marketName][key].latestPrice = (streamVO.price*1).toFixed(8);
+              tradeExpair[marketName][key].latestPrice = (streamVO.price * 1).toFixed(8);
               let rise = '0.00%';
               let current = tradeExpair[marketName][key];
               if (current.firstPrice > 0) {
@@ -630,12 +630,14 @@ class Trade extends PureComponent {
     clearInterval(this.buyandsellInterval);
     clearInterval(this.userInterval);
     clearInterval(this.marketInterval);
+    clearInterval(window.klineInterval);
 
     // 关闭websocket的连接
     this.marketWS && this.marketWS.close();
     this.streamWS && this.streamWS.close();
     this.buyandsellWS && this.buyandsellWS.close();
     this.userWS && this.userWS.close();
+    window.klineWS && window.klineWS.close();
   }
 
   render() {
@@ -950,9 +952,7 @@ class Trade extends PureComponent {
                 <span className="trade-plate-header-text">{localization['最新成交']}</span>
               </header>
               <div className="trade-plate-tit cell-3">
-                <div className="trade-plate-tit-cell" style={{ paddingLeft: 25 }}>
-                  {localization['成交时间']}
-                </div>
+                <div className="trade-plate-tit-cell">{localization['成交时间']}</div>
                 <div className="trade-plate-tit-cell">{localization['成交价格']}</div>
                 <div className="trade-plate-tit-cell">{localization['成交量']}</div>
               </div>
@@ -967,13 +967,7 @@ class Trade extends PureComponent {
                               const trend = stream.type == 0 ? 'green' : 'red';
                               return (
                                 <tr key={stream.date + index} className={`font-color-${trend}`}>
-                                  <td
-                                    style={{
-                                      paddingLeft: 25
-                                    }}
-                                  >
-                                    {stampToDate(Number(stream.date), 'hh:mm:ss')}
-                                  </td>
+                                  <td>{stampToDate(Number(stream.date), 'hh:mm:ss')}</td>
                                   <td>{Number(stream.price).toFixed(8)}</td>
                                   <td>{Number(stream.volume).toFixed(8)}</td>
                                 </tr>
@@ -1160,10 +1154,13 @@ class Trade extends PureComponent {
                 </div>
               ) : (
                 <div className="trade-plate-tit list">
+                  <div className="trade-plate-tit-cell">{localization['类型']}</div>
                   <div className="trade-plate-tit-cell">
-                    {listType === 0 ? localization['买入'] : localization['卖出']}价
+                    {listType === 0 ? localization['买入'] : localization['卖出']} {localization['价']}({marketName})
                   </div>
-                  <div className="trade-plate-tit-cell">{localization['委单量']}</div>
+                  <div className="trade-plate-tit-cell">
+                    {localization['委单量']}({coinName})
+                  </div>
                   {false && (
                     <div className="trade-plate-tit-cell">
                       {localization['交易额']}({marketName})

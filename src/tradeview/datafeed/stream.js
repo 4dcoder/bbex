@@ -11,16 +11,25 @@ export default {
       window.klineWS.send(`${coinOther}_${coinMain}_${time}`);
     } else {
       window.klineWS = new ReconnectingWebSocket(`${WS_PREFIX}/kline`);
-      // const klineWS = new ReconnectingWebSocket(`ws://localhost:3001`);
 
       window.klineWS.onopen = evt => {
         if (window.klineWS && window.klineWS.readyState === 1) {
           window.klineWS.send(`${coinOther}_${coinMain}_${time}`);
         }
       };
+
+      window.klineInterval = setInterval(() => {
+        if (window.klineWS && window.klineWS.readyState === 1) {
+          window.klineWS.send('ping');
+        }
+      }, 1000 * 10);
     }
-    
+
     window.klineWS.onmessage = evt => {
+      if(evt.data === 'pong') {
+        return;
+      }
+      
       const data = JSON.parse(evt.data).data;
       if (data && data.length > 0) {
         const resBar = data[data.length - 1];
@@ -45,7 +54,5 @@ export default {
     };
   },
 
-  unsubscribeBars: function(uid) {
-    
-  } 
+  unsubscribeBars: function(uid) {}
 };

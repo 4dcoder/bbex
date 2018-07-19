@@ -173,14 +173,20 @@ class TradeForm extends PureComponent {
               value={triggerPrice}
               onChange={this.handleValue}
             />
-            <span className="trade-form-name">{localization['触发价']}</span>
+            <span className={classnames({
+              'trade-form-name': true,
+              'has-value': !!triggerPrice
+            })}>{localization['触发价']}</span>
             <span className="trade-form-marketName">{marketName}</span>
           </li>
         )}
         {tradeType !== 'market' && (
           <li>
             <Input id="price" size="large" value={price} onChange={this.handleValue} />
-            <span className="trade-form-name">{`${typeToText[type]}${localization['价']}`}</span>
+            <span className={classnames({
+              'trade-form-name': true,
+              'has-value': !!price
+            })}>{`${typeToText[type]}${localization['价']}`}</span>
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
             <span className="trade-form-coinName">{marketName}</span>
           </li>
@@ -206,6 +212,7 @@ class TradeForm extends PureComponent {
             <span
               className={classnames({
                 'trade-form-name': true,
+                'has-value': !!volume,
                 market: tradeType === 'market'
               })}
             >
@@ -302,8 +309,7 @@ class TradeForm extends PureComponent {
             onClick={this.getOrderNo}
             disabled={!isLogin || pending}
           >
-            {typeToText[type]}
-            {coinName}
+            {typeToText[type]} {coinName}
           </Button>
         </li>
       </ul>
