@@ -357,29 +357,27 @@
   position: relative;
   width: 100%;
   margin-bottom: 30px;
-  outline: none;
 }
 
 .trade-form li:nth-child(2n-1) {
   margin-right: 40px;
 }
 
-.trade-form li .ant-input~.trade-form-name {
+.trade-form li .trade-form-name {
   z-index: 2;
   position: absolute;
   left: 11px;
   top: 10px;
   transition: .2s ease;
 }
-.trade-form li .ant-input~.has-value,
-.trade-form li .ant-input:focus-within~.trade-form-name {
-  display: block;
-  top: -10px;
+.trade-form li .has-value,
+.trade-form li .ant-input:focus + .trade-form-name {
+  transform: translate3d(0, -20px, 0);
   font-size: 12px;
   padding: 0 5px;
   background-color: #292f3d;
 }
-.trade-form li .ant-input:focus-within~.trade-form-name {
+.trade-form li .ant-input:focus + .trade-form-name {
   color: #d4a668;
 }
 

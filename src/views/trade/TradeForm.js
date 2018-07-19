@@ -174,26 +174,26 @@ class TradeForm extends PureComponent {
               onChange={this.handleValue}
               placeholder={localization['触发价']}
             />
-            {/* <span
+            <span
               className={classnames({
                 'trade-form-name': true,
                 'has-value': !!triggerPrice
               })}
             >
               {localization['触发价']}
-            </span> */}
+            </span>
             <span className="trade-form-marketName">{marketName}</span>
           </li>
         )}
         {tradeType !== 'market' && (
           <li>
-            <Input placeholder={`${typeToText[type]}${localization['价']}`} id="price" size="large" value={price} onChange={this.handleValue} />
-            {/* <span
+            <Input id="price" size="large" value={price} onChange={this.handleValue} />
+            <span
               className={classnames({
                 'trade-form-name': true,
                 'has-value': !!price
               })}
-            >{`${typeToText[type]}${localization['价']}`}</span> */}
+            >{`${typeToText[type]}${localization['价']}`}</span>
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
             <span className="trade-form-coinName">{marketName}</span>
           </li>
@@ -215,8 +215,8 @@ class TradeForm extends PureComponent {
                 </Tooltip>
               </span>
             )}
-            <Input placeholder={`${typeToText[type]}${localization['量']}`} id="volume" size="large" value={volume} onChange={this.handleValue} />
-            {/* <span
+            <Input id="volume" size="large" value={volume} onChange={this.handleValue} />
+            <span
               className={classnames({
                 'trade-form-name': true,
                 'has-value': !!volume,
@@ -224,7 +224,7 @@ class TradeForm extends PureComponent {
               })}
             >
               {`${typeToText[type]}${localization['量']}`}
-            </span> */}
+            </span>
             <span
               className={classnames({
                 'trade-form-coinName': true,
