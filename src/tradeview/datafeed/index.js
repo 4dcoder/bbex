@@ -36,6 +36,7 @@ export default {
       has_empty_bars: false,
       has_no_volume: false,
       type: 'index',
+      volume_precision: 4,
       supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M'],
       pricescale: 10 ** 8,
       ticker: symbolName
