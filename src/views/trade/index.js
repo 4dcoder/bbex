@@ -1069,7 +1069,7 @@ class Trade extends PureComponent {
                 </div>
               </div>
               <div className="trade-plate-container">
-                <Tradeview market={marketName} coin={coinName} />
+                {coinName && marketName && <Tradeview symbol={`${coinName}/${marketName}`} />}
               </div>
             </div>
             <div className="trade-plate">
