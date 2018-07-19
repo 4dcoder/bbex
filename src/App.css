@@ -29,7 +29,7 @@ body {
   min-height: 100%;
   width: 100%;
   min-width: 1200px;
-  padding-bottom: 347px;
+  padding-bottom: 340px;
   background-color: #353c4a;
 }
 
@@ -350,8 +350,7 @@ a:hover {
   position: relative;
   height: 68px;
   padding: 0 176px 0 206px;
-  border-bottom: 1px solid rgba(204, 210, 218, 0.16);
-  line-height: 68px;
+  line-height: 66px;
   color: rgb(153, 153, 153);
   background-color: #141729;
 }

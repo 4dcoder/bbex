@@ -1,5 +1,4 @@
 .content.home {
-  padding: 0 0 20px;
   background-color: rgb(51, 60, 75);
 }
 
@@ -74,7 +73,7 @@
 }
 
 .partner {
-  margin-top: 70px;
+  margin-top: 20px;
   padding: 80px 0 50px;
   background-color: #292f3d;
   border-top: 1px solid #535763;
