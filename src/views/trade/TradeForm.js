@@ -15,9 +15,15 @@ class TradeForm extends PureComponent {
 
   request = window.request;
 
-  handleValue = (value, key) => {
-    this.setState({ [key]: value });
+  handleValue = e => {
+    const key = e.target.id;
+    const value = e.target.value;
+    if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
+      this.setState({ [key]: value });
+    }
   };
+
+  handleFocus = e => {};
 
   handleSlideInput = value => {
     const { type, mainVolume, coinVolume } = this.props;
@@ -161,50 +167,26 @@ class TradeForm extends PureComponent {
         )}
         {tradeType === 'stop' && (
           <li>
-            <span className="trade-form-name">{localization['触发价']}</span>
             <Input
               id="triggerPrice"
               size="large"
               value={triggerPrice}
-              onChange={e => {
-                let value = e.target.value;
-                if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
-                  this.handleValue(value, 'triggerPrice');
-                }
-              }}
+              onChange={this.handleValue}
             />
+            <span className="trade-form-name">{localization['触发价']}</span>
             <span className="trade-form-marketName">{marketName}</span>
           </li>
         )}
         {tradeType !== 'market' && (
           <li>
-            <span className="trade-form-name">{localization['价格']}</span>
-            <Input
-              id="price"
-              size="large"
-              value={price}
-              placeholder={`${typeToText[type]} ${localization['价']}`}
-              onChange={e => {
-                let value = e.target.value;
-                if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
-                  this.handleValue(value, 'price');
-                }
-              }}
-            />
+            <Input id="price" size="large" value={price} onChange={this.handleValue} />
+            <span className="trade-form-name">{`${typeToText[type]}${localization['价']}`}</span>
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
             <span className="trade-form-coinName">{marketName}</span>
           </li>
         )}
         {(tradeType !== 'market' || (tradeType === 'market' && type === 'sell')) && (
           <li>
-            <span
-              className={classnames({
-                'trade-form-name': true,
-                market: tradeType === 'market'
-              })}
-            >
-              {localization['数量']}
-            </span>
             {tradeType === 'market' && (
               <span className="trade-form-tips">
                 {localization['以市场上最优价格卖出']}
@@ -220,18 +202,15 @@ class TradeForm extends PureComponent {
                 </Tooltip>
               </span>
             )}
-            <Input
-              id="volume"
-              size="large"
-              value={volume}
-              placeholder={`${typeToText[type]} ${localization['量']}`}
-              onChange={e => {
-                let value = e.target.value;
-                if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
-                  this.handleValue(value, 'volume');
-                }
-              }}
-            />
+            <Input id="volume" size="large" value={volume} onChange={this.handleValue} />
+            <span
+              className={classnames({
+                'trade-form-name': true,
+                market: tradeType === 'market'
+              })}
+            >
+              {`${typeToText[type]}${localization['量']}`}
+            </span>
             <span
               className={classnames({
                 'trade-form-coinName': true,
@@ -285,9 +264,7 @@ class TradeForm extends PureComponent {
                 size="large"
                 value={totalPrice}
                 placeholder={`${typeToText[type]} ${localization['量']}`}
-                onChange={value => {
-                  this.handleValue(value, 'totalPrice');
-                }}
+                onChange={this.handleValue}
               />
               <span
                 className={classnames({

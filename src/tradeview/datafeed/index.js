@@ -38,8 +38,7 @@ export default {
       type: 'index',
       supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M'],
       pricescale: 10 ** 8,
-      ticker: symbolName,
-      exchange: 'BBEX'
+      ticker: symbolName
     };
 
     onSymbolResolvedCallback(symbolInfo);
