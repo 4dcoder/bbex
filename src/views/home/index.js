@@ -254,7 +254,7 @@ class Home extends Component {
         key: 'lowerPrice'
       },
       {
-        title: `${localization['成交额']}${market !== 'optional' ? `(${market})` : ''}`,
+        title: `${localization['成交量']}`,
         dataIndex: 'dayCount',
         key: 'dayCount',
         sorter: (a, b) => a.total - b.total,

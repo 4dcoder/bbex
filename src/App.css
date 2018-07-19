@@ -4,6 +4,9 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #e8e8e8 !important;
   caret-color: #e8e8e8;
 }
+::-webkit-scrollbar{
+  background-color: #272B37;
+}
 
 /* 全局样式 */
 html,
@@ -35,7 +38,7 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   position: relative;
-  width: 90%;
+  width: 98%;
   min-width: 1200px;
   margin: 0 auto;
 }
@@ -350,11 +353,7 @@ a:hover {
   border-bottom: 1px solid rgba(204, 210, 218, 0.16);
   line-height: 68px;
   color: rgb(153, 153, 153);
-  background-color: rgb(1, 4, 6);
-}
-
-.header:hover {
-  background-color: rgba(1, 4, 6, 0.9);
+  background-color: #141729;
 }
 
 .logo {
@@ -485,7 +484,7 @@ a:hover {
   bottom: 0;
   width: 100%;
   color: rgb(153, 153, 153);
-  background-color: #2c3644;
+  background-color: #141729;
 }
 
 .footer-container {
