@@ -280,6 +280,17 @@ class Container extends Component {
                 <div className="footer-nav clear">
                   {introduces &&
                    introduces.map((item, index) => {
+                     if(item.link){
+                      return (
+                        <a
+                          key={index}
+                          href={item.link}
+                          target="_blank"
+                        >
+                          {item.title}
+                        </a>
+                      );
+                     }else{
                       return (
                         <Link
                           key={index}
@@ -292,6 +303,8 @@ class Container extends Component {
                           {item.title}
                         </Link>
                       );
+                     }
+                      
                     })}
                 </div>
                 <ul className="footer-contact">
