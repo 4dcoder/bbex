@@ -53,7 +53,7 @@ class C2c extends Component {
                     ) : (
                       <i className="iconfont icon-maichu" />
                     )}
-                    {exType === 'buy' ? '我要买入' : '我要卖出'}
+                    {exType === 'buy' ? localization['我要买入'] : localization['我要卖出']}
                   </h2>
                   {coinList &&
                     coinList.map((coin, index) => {

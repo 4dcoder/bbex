@@ -26,7 +26,7 @@ const ExpandComponent = ({
       message.success('复制成功！');
     });
   };
-  
+
   return (
     <div className="payment-box">
       <Tabs
@@ -112,7 +112,7 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-zhifubao" />
-             商家支付宝信息
+              商家支付宝信息
             </span>
           }
           key="alipay"
@@ -363,21 +363,16 @@ class TradeContainer extends Component {
     //登录后才打开websockets
     if (JSON.parse(sessionStorage.getItem('account'))) {
       const userId = JSON.parse(sessionStorage.getItem('account')).id;
-      var ws = new ReconnectingWebSocket(`${WS_PREFIX}/c2cUser?${userId}`);
+      this.offlineWS = new ReconnectingWebSocket(`${WS_PREFIX}/c2cUser?${userId}`);
 
-      this.timer = setInterval(() => {
-        if (ws.readyState === 1) {
-          ws.send('ping');
+      this.offlineInterval = setInterval(() => {
+        if (this.offlineWS.readyState === 1) {
+          this.offlineWS.send('ping');
         }
-      }, 1000 * 3);
+      }, 1000 * 10);
 
-      ws.onopen = evt => {
-        //console.log('Connection open ...');
-      };
-
-      ws.onmessage = evt => {
+      this.offlineWS.onmessage = evt => {
         if (evt.data === 'pong') {
-          //console.log('c2c: ', evt.data);
           return;
         }
         const record = JSON.parse(evt.data);
@@ -398,27 +393,17 @@ class TradeContainer extends Component {
           this.setState({ myOrderList });
         }
       };
-
-      ws.onclose = evt => {
-        //console.log('Connection closed.');
-      };
-
-      ws.onerror = evt => {
-        //console.log(evt);
-      };
-
-      this.setState({ ws });
     }
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer);
-    this.state.ws && this.state.ws.close();
+    clearInterval(this.offlineInterval);
+    this.offlineWS && this.offlineWS.close();
   }
 
   pageOnChange = (page, pageSize) => {
     this.getAdvertList(page);
-  }
+  };
 
   //根据币种和交易类型分页获取广告列表
   getAdvertList = (current, props = this.props) => {
@@ -464,8 +449,9 @@ class TradeContainer extends Component {
   };
 
   triggerRelease = () => {
+    const { localization } = this.props;
     if (!sessionStorage.getItem('account')) {
-      message.info('请先登录');
+      message.info(localization['请先登录']);
       return;
     }
 
@@ -479,10 +465,10 @@ class TradeContainer extends Component {
       } else if (json.code === 10004017) {
         //请进行身份认证
         Modal.confirm({
-          title: '发布广告',
-          content: '为保证资金安全，请在交易前实名认证',
-          okText: '去实名',
-          cancelText: '取消',
+          title: localization['发布广告'],
+          content: localization['为保证资金安全，请在交易前实名认证'],
+          okText: localization['去实名'],
+          cancelText: localization['取消'],
           onOk: () => {
             this.props.history.push('/user/verified');
           }
@@ -490,10 +476,10 @@ class TradeContainer extends Component {
       } else if (json.code === 10004018) {
         //请先绑定银行卡
         Modal.confirm({
-          title: '发布广告',
-          content: '为保证交易顺畅，请在交易前绑定银行卡',
-          okText: '去绑卡',
-          cancelText: '取消',
+          title: localization['发布广告'],
+          content: localization['为保证交易顺畅，请在交易前绑定银行卡'],
+          okText: localization['去绑卡'],
+          cancelText: localization['取消'],
           onOk: () => {
             this.props.history.push('/user/payment');
           }
@@ -507,6 +493,7 @@ class TradeContainer extends Component {
 
   //发布广告
   handleRelease = ({ price, volume, exType }) => {
+    const { localization } = this.props;
     this.hideModal('releaseVisible');
     const typeMap = {
       buy: 0,
@@ -523,7 +510,7 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success('发布广告成功！');
+        message.success(localization['发布广告成功！']);
         //刷新广告列表
         this.getAdvertList(this.state.current);
         //刷新我发布的广告列表
@@ -535,8 +522,9 @@ class TradeContainer extends Component {
   };
 
   triggerTransaction = ({ exType, record }) => {
+    const { localization } = this.props;
     if (!sessionStorage.getItem('account')) {
-      message.info('请先登录');
+      message.info(localization['请先登录']);
       return;
     }
 
@@ -545,11 +533,12 @@ class TradeContainer extends Component {
   };
 
   handleTransaction = ({ price, volume, exType }) => {
+    const { localization } = this.props;
     this.hideModal('transactionVisible');
     const { selectedCoin } = this.state;
     const typeText = {
-      buy: '买入',
-      sell: '卖出'
+      buy: localization['买入'],
+      sell: localization['卖出']
     };
     this.request(`/offline/${exType}`, {
       body: {
@@ -560,29 +549,29 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success(`${typeText[exType]}${selectedCoin.symbol}成功！`);
+        message.success(`${typeText[exType]}${selectedCoin.symbol}${localization['成功！']}`);
         this.getMyOrderList();
       } else if (json.code === 10004016) {
         //自己不能卖给自己
         Modal.error({
           title: typeText[exType],
-          content: '自己不能卖给自己',
-          okText: '确定'
+          content: localization['自己不能卖给自己'],
+          okText: localization['确定']
         });
       } else if (json.code === 10004009) {
         //没有足够资产
         Modal.error({
           title: typeText[exType],
           content: json.msg,
-          okText: '确定'
+          okText: localization['确定']
         });
       } else if (json.code === 10004017) {
         //请进行身份认证
         Modal.confirm({
-          title: '发布广告',
-          content: '为保证资金安全，请在交易前实名认证',
-          okText: '去实名',
-          cancelText: '取消',
+          title: localization['发布广告'],
+          content: localization['为保证资金安全，请在交易前实名认证'],
+          okText: localization['去实名'],
+          cancelText: localization['取消'],
           onOk: () => {
             this.props.history.push('/user/verified');
           }
@@ -590,10 +579,10 @@ class TradeContainer extends Component {
       } else if (json.code === 10004018) {
         //请先绑定银行卡
         Modal.confirm({
-          title: '发布广告',
-          content: '为保证交易顺畅，请在交易前绑定银行卡',
-          okText: '去绑卡',
-          cancelText: '取消',
+          title: localization['发布广告'],
+          content: localization['为保证交易顺畅，请在交易前绑定银行卡'],
+          okText: localization['去绑卡'],
+          cancelText: localization['取消'],
           onOk: () => {
             this.props.history.push('/user/payment');
           }
@@ -623,13 +612,14 @@ class TradeContainer extends Component {
 
   //获取我的广告列表
   getMyAdvertList = () => {
+    const { localization } = this.props;
     this.request('/offline/myAdvert/list', {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
         const typeMap = {
-          0: '买入',
-          1: '卖出'
+          0: localization['买入'],
+          1: localization['卖出']
         };
         const myAdvertList = json.data.map(order => {
           order.key = order.id;
@@ -701,6 +691,7 @@ class TradeContainer extends Component {
 
   //确认付款
   confirmPay = record => {
+    const { localization } = this.props;
     this.request('/offline/buy/confirm', {
       body: {
         orderId: record.orderId,
@@ -709,7 +700,7 @@ class TradeContainer extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         this.getMyOrderList();
-        message.success('确认付款成功！');
+        message.success(localization['确认付款成功！']);
       } else {
         message.error(json.msg);
       }
@@ -718,6 +709,7 @@ class TradeContainer extends Component {
 
   //确认收款
   confirmReceipt = record => {
+    const { localization } = this.props;
     this.request('/offline/sell/confirm', {
       body: {
         orderId: record.orderId,
@@ -726,14 +718,15 @@ class TradeContainer extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         this.getMyOrderList();
-        message.success('确认收款成功！');
+        message.success(localization['确认收款成功！']);
       } else {
         message.error(json.msg);
       }
     });
   };
 
-  cancelOrderSubmit = (record) => {
+  cancelOrderSubmit = record => {
+    const { localization } = this.props;
     this.request('/offline/detail/cancel', {
       body: {
         orderId: record.orderId,
@@ -742,51 +735,54 @@ class TradeContainer extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         this.getMyOrderList();
-        message.success('撤销交易成功！');
+        message.success(localization['撤销交易成功！']);
       } else {
         message.error(json.msg);
       }
     });
-  }
+  };
 
   //撤销交易
   cancelPay = (record, status) => {
-    if(status===1){
+    const { localization } = this.props;
+    if (status === 1) {
       this.setState({
-        showAppeal: <Modal
-          title="确认取消订单"
-          width={400}
-          cancelText='取消'
-          okText='确认'
-          wrapClassName="v-center-modal"
-          visible={true}
-          onCancel={()=>{
-            this.setState({showAppeal: ''});
-          }}
-          onOk={()=>{
-            this.setState({showAppeal: ''});
-            this.cancelOrderSubmit(record);
-          }}
+        showAppeal: (
+          <Modal
+            title={localization['确认取消订单']}
+            width={400}
+            cancelText={localization['取消']}
+            okText={localization['确认']}
+            wrapClassName="v-center-modal"
+            visible={true}
+            onCancel={() => {
+              this.setState({ showAppeal: '' });
+            }}
+            onOk={() => {
+              this.setState({ showAppeal: '' });
+              this.cancelOrderSubmit(record);
+            }}
           >
-          <div style={{textAlign: 'center', padding: '20px 0 10px'}}>
-              您已支付款项给对方, 请确认是否取消订单!
-          </div>
-        </Modal>
-      })
+            <div style={{ textAlign: 'center', padding: '20px 0 10px' }}>
+              {localization['您已支付款项给对方, 请确认是否取消订单!']}
+            </div>
+          </Modal>
+        )
+      });
     } else {
       this.cancelOrderSubmit(record);
     }
-    
   };
 
   //撤销广告
   cancelAdvert = record => {
+    const { localization } = this.props;
     this.request('/offline/advert/cancel', {
       body: { orderId: record.id }
     }).then(json => {
       if (json.code === 10000000) {
         this.getMyAdvertList();
-        message.success('撤销广告成功！');
+        message.success(localization['撤销广告成功！']);
       } else {
         message.error(json.msg);
       }
@@ -812,6 +808,7 @@ class TradeContainer extends Component {
   };
   // 撤销申诉
   cancelAppeal = appealId => {
+    const { localization } = this.props;
     this.request('/offline/appeal/cancel', {
       method: 'POST',
       body: {
@@ -819,7 +816,7 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success('撤销申诉成功');
+        message.success(localization['撤销申诉成功！']);
         this.getAppealList();
       } else {
         message.destroy();
@@ -850,6 +847,7 @@ class TradeContainer extends Component {
 
   // 提交申诉
   submitAppeal = (subOrderId, appealType, reason) => {
+    const { localization } = this.props;
     this.request('/offline/appeal/doappeal', {
       body: {
         subOrderId,
@@ -858,7 +856,7 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success('提交成功', 1);
+        message.success(localization['提交成功！'], 1);
         this.closeAppealModal();
         this.getAppealList();
       } else {
@@ -898,8 +896,8 @@ class TradeContainer extends Component {
   render() {
     const { exType, coin, localization } = this.props;
     const typeText = {
-      buy: '买入',
-      sell: '卖出'
+      buy: localization['买入'],
+      sell: localization['卖出']
     };
 
     const {
@@ -931,36 +929,38 @@ class TradeContainer extends Component {
 
     const listColumns = [
       {
-        title: '商家名称',
+        title: localization['商家名称'],
         dataIndex: 'realName',
         render: (text, record) => {
-        return  <span
-            className={classnames({
-              'name-wrap': true,
-              online: true
-            })}
-          >
-            {text && text.substr(0, 1)}
-          </span>
+          return (
+            <span
+              className={classnames({
+                'name-wrap': true,
+                online: true
+              })}
+            >
+              {text && text.substr(0, 1)}
+            </span>
+          );
         }
       },
       {
-        title: `挂单数量(${coin.symbol})`,
+        title: `${localization['挂单数量']}(${coin.symbol})`,
         dataIndex: 'volume',
         key: 'volume'
       },
       {
-        title: `成交数量(${coin.symbol})`,
+        title: `${localization['成交数量']}(${coin.symbol})`,
         dataIndex: 'successVolume',
         key: 'successVolume'
       },
       {
-        title: `锁定数量(${coin.symbol})`,
+        title: `${localization['锁定数量']}(${coin.symbol})`,
         dataIndex: 'lockVolume',
         key: 'lockVolume'
       },
       {
-        title: '价格(CNY)',
+        title: `${localization['价格']}(CNY)`,
         dataIndex: 'price',
         render: (text, record) => (
           <span
@@ -975,12 +975,12 @@ class TradeContainer extends Component {
         )
       },
       {
-        title: '金额(CNY)',
+        title: `${localization['金额']}(CNY)`,
         dataIndex: 'totalPrice',
         key: 'totalPrice'
       },
       {
-        title: '支付方式',
+        title: localization['支付方式'],
         dataIndex: 'wechatNo',
         key: 'wechatNo',
         render: (text, record) => {
@@ -994,7 +994,7 @@ class TradeContainer extends Component {
         }
       },
       {
-        title: '操作',
+        title: localization['操作'],
         dataIndex: 'action',
         key: 'action',
         render: (text, record) => {
@@ -1017,12 +1017,12 @@ class TradeContainer extends Component {
 
     const appealColumns = [
       {
-        title: '订单号',
+        title: localization['订单号'],
         dataIndex: 'subOrderId',
         key: 'subOrderId'
       },
       {
-        title: '时间',
+        title: localization['时间'],
         dataIndex: 'createDate',
         key: 'createDate',
         render: text => {
@@ -1030,17 +1030,17 @@ class TradeContainer extends Component {
         }
       },
       {
-        title: '申诉类型',
+        title: localization['申诉类型'],
         dataIndex: 'appealType',
         key: 'appealType'
       },
       {
-        title: '申诉理由',
+        title: localization['申诉理由'],
         dataIndex: 'reason',
         key: 'reason'
       },
       {
-        title: '操作',
+        title: localization['操作'],
         dataIndex: 'status',
         key: 'status',
         render: (text, record) => {
@@ -1068,7 +1068,7 @@ class TradeContainer extends Component {
 
     const orderColumns = [
       {
-        title: '类型',
+        title: localization['类型'],
         dataIndex: 'remarks',
         key: 'remarks',
         render: (text, record) => {
@@ -1080,27 +1080,27 @@ class TradeContainer extends Component {
         }
       },
       {
-        title: '订单号',
+        title: localization['订单号'],
         dataIndex: 'subOrderId',
         key: 'subOrderId'
       },
       {
-        title: '价格(CNY)',
+        title: `${localization['价格']}(CNY)`,
         dataIndex: 'price',
         key: 'price'
       },
       {
-        title: '数量',
+        title: localization['数量'],
         dataIndex: 'volume',
         key: 'volume'
       },
       {
-        title: '总额(CNY)',
+        title: `${localization['总额']}(CNY)`,
         dataIndex: 'totalPrice',
         key: 'totalPrice'
       },
       {
-        title: '状态',
+        title: localization['状态'],
         dataIndex: 'status',
         key: 'status',
         render: text => {
@@ -1130,13 +1130,13 @@ class TradeContainer extends Component {
       //   key: 'name'
       // },
       {
-        title: '下单时间',
+        title: localization['下单时间'],
         dataIndex: 'createDate',
         key: 'createDate',
         render: (text, record) => stampToDate(Number(text), 'MM-DD hh:mm:ss')
       },
       {
-        title: '操作',
+        title: localization['操作'],
         dataIndex: 'action',
         key: 'action',
         render: (text, record) => {
@@ -1169,38 +1169,38 @@ class TradeContainer extends Component {
 
     const advertColumns = [
       {
-        title: '创建时间',
+        title: localization['创建时间'],
         dataIndex: 'createDate',
         key: 'createDate',
         render: (text, record) => stampToDate(Number(text), 'MM-DD hh:mm:ss')
       },
       {
-        title: '类型',
+        title: localization['类型'],
         dataIndex: 'exType',
         key: 'exType'
       },
       {
-        title: '价格(CNY)',
+        title: `${localization['价格']}(CNY)`,
         dataIndex: 'price',
         key: 'price'
       },
       {
-        title: '币种',
+        title: localization['币种'],
         dataIndex: 'symbol',
         key: 'symbol'
       },
       {
-        title: '数量',
+        title: localization['数量'],
         dataIndex: 'volume',
         key: 'volume'
       },
       {
-        title: '总额(CNY)',
+        title: `${localization['总额']}(CNY)`,
         dataIndex: 'totalPrice',
         key: 'totalPrice'
       },
       {
-        title: '状态',
+        title: localization['状态'],
         dataIndex: 'status',
         key: 'status',
         render: text => {
@@ -1225,7 +1225,7 @@ class TradeContainer extends Component {
         }
       },
       {
-        title: '操作',
+        title: localization['操作'],
         dataIndex: 'action',
         key: 'action',
         render: (text, record) => {
@@ -1268,10 +1268,11 @@ class TradeContainer extends Component {
               onClick={this.triggerRelease}
               className="trade-release pull-right"
             >
-              <i className="iconfont icon-jia" />发布广告
+              <i className="iconfont icon-jia" />
+              {localization['发布广告']}
             </Button>
             <Modal
-              title="发布广告"
+              title={localization['发布广告']}
               wrapClassName="c2c-modal v-center-modal"
               visible={releaseVisible}
               onCancel={this.hideModal.bind(this, 'releaseVisible')}
@@ -1279,7 +1280,7 @@ class TradeContainer extends Component {
             >
               <Tabs defaultActiveKey="1" onChange={this.handleSwitchRelease}>
                 {releaseVisible && [
-                  <TabPane tab={`买入${coin.symbol}`} key="1">
+                  <TabPane tab={`${localization['买入']}${coin.symbol}`} key="1">
                     {releaseVisible && (
                       <TransactionForm
                         coin={coin}
@@ -1289,7 +1290,7 @@ class TradeContainer extends Component {
                       />
                     )}
                   </TabPane>,
-                  <TabPane tab={`卖出${coin.symbol}`} key="2">
+                  <TabPane tab={`${localization['卖出']}${coin.symbol}`} key="2">
                     {releaseVisible && (
                       <TransactionForm
                         coin={coin}
@@ -1320,21 +1321,25 @@ class TradeContainer extends Component {
         </div>
         <div className="trade-record">
           <ul className="trade-record-nav">
-            {['我的未完成订单', '我发布的广告', '我的已完成订单', '我的已取消订单', '我的申诉'].map(
-              (text, index) => {
-                return (
-                  <li
-                    key={text}
-                    className={classnames({
-                      active: recordIndex === index
-                    })}
-                    onClick={this.switchRecord.bind(this, index)}
-                  >
-                    {text}
-                  </li>
-                );
-              }
-            )}
+            {[
+              localization['我的未完成订单'],
+              localization['我发布的广告'],
+              localization['我的已完成订单'],
+              localization['我的已取消订单'],
+              localization['我的申诉']
+            ].map((text, index) => {
+              return (
+                <li
+                  key={text}
+                  className={classnames({
+                    active: recordIndex === index
+                  })}
+                  onClick={this.switchRecord.bind(this, index)}
+                >
+                  {text}
+                </li>
+              );
+            })}
           </ul>
           <div className="trade-record-cont">
             {recordIndex === 0 && (
