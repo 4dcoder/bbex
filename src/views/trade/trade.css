@@ -372,7 +372,7 @@
 }
 .trade-form li .has-value,
 .trade-form li .ant-input:focus + .trade-form-name {
-  transform: translate3d(0, -20px, 0);
+  transform: translate3d(0, -100%, 0);
   font-size: 12px;
   padding: 0 5px;
   background-color: #292f3d;
