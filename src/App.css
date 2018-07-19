@@ -661,6 +661,9 @@ a:hover {
   margin-top: 20px;
   color: #e8e8e8;
 }
+.form-box .attention .icon-zhuyishixiang{
+  color: #d4a668;
+}
 .form-box .attention strong{
   color: #d4a668;
 }
@@ -743,7 +746,10 @@ a:hover {
 }
 
 .form-list input.button.disabled {
-  background-color: #c2c2c2;
+  background-color: transparent;
+  color: #666;
+  border: 1px solid #666;
+  cursor: not-allowed;
 }
 
 .form-list input.checkbox {
