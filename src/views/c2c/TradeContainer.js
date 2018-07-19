@@ -933,16 +933,16 @@ class TradeContainer extends Component {
       {
         title: '商家名称',
         dataIndex: 'realName',
-        render: (text, record) => (
-          <span
+        render: (text, record) => {
+        return  <span
             className={classnames({
               'name-wrap': true,
               online: true
             })}
           >
-            {text.substr(0, 1)}
+            {text && text.substr(0, 1)}
           </span>
-        )
+        }
       },
       {
         title: `挂单数量(${coin.symbol})`,
