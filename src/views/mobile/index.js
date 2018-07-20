@@ -60,15 +60,15 @@ class Mobile extends Component {
       'user-scalable=no,width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0'
     );
     document.head.appendChild(viewport);
-    this.props.history.push(`${this.props.match.path}/signup`);
   }
 
   render() {
-    const { match } = this.props;
+    const { match, location } = this.props;
     const { localization } = this.state;
-    console.log(match.path);
+    const { pathname, search } = location;
     return (
       <div className="mobile-wrap">
+        {pathname.indexOf('signup') === -1 && <Redirect from={`${match.path}`} to={`${match.path}/signup${search}`} />}
         <NormalRoute path={`${match.path}/signup`} component={SignUp} {...{ localization }} />
       </div>
     );

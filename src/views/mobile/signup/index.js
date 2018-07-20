@@ -258,4 +258,4 @@ class MobileForm extends Component {
   }
 }
 
-export default withRouter(Form.create()(MobileForm));
+export default Form.create()(MobileForm);
