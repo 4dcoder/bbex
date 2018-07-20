@@ -60,6 +60,11 @@ class Security extends Component {
       )
     });
   };
+  //绑定邮箱
+  handleMailBind = () => {
+    
+
+  }
 
   inputValue = e => {
     this.setState({ [e.target.id]: e.target.value });
@@ -97,6 +102,22 @@ class Security extends Component {
             <Col span={20} className="col-content">
               <Button onClick={this.handleBind} type="primary">
                 绑定手机号
+              </Button>
+            </Col>
+          )}
+        </Row>
+        <Row type="flex">
+          <Col span={2} className="title">
+            邮箱:{' '}
+          </Col>
+          {account && account.mail ? (
+            <Col span={20} className="col-content">
+              {account.mail}
+            </Col>
+          ) : (
+            <Col span={20} className="col-content">
+              <Button onClick={this.handleMailBind} type="primary">
+                绑定邮箱
               </Button>
             </Col>
           )}
