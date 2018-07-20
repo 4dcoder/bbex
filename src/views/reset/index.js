@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GraphicPopup from '../../components/graphic-popup';
+import CodePopup from '../../components/code-popup';
 import classnames from 'classnames';
 
 class Reset extends Component {
@@ -11,7 +11,11 @@ class Reset extends Component {
     };
 
     inputValue = e => {
-        this.setState({ [e.target.id]: e.target.value });
+        let value  = e.target.value;
+        if(value){
+            this.setState({ [e.target.id]: value, errorTip: '' });
+        }
+        
     };
 
     closePopup = () => {
@@ -22,11 +26,14 @@ class Reset extends Component {
         if (this.state.mail) {
             this.setState({
                 popup: (
-                    <GraphicPopup
+                    <CodePopup
+                        flag="mail"
                         mail={this.state.mail}
                         type="reset"
-                        cancelHandle={this.closePopup}
-                        confirmHandle={() => {
+                        onCancel={() => {
+                            this.closePopup();
+                        }}
+                        onOk={() => {
                             this.setState({ resetConfirm: true });
                         }}
                     />
@@ -45,48 +52,48 @@ class Reset extends Component {
                     <div className="form-box">
                         <h1>重置密码确认</h1>
                         <ul className="form-list">
-                            <li className="form-box-text">
+                            <li className="form-box-text" style={{color: '#e8e8e8'}}>
                                 已向您的注册邮箱发送了一封重置密码邮件，请点击邮件中的链接前去重置登录密码。
                                 如果长时间未收到邮件，请尝试在垃圾邮件中查找。
                             </li>
                         </ul>
                     </div>
                 ) : (
-                    <div className="form-box">
-                        <h1>找回密码</h1>
-                        <p className="error-tip">
-                            {errorTip && (
-                                <i className="iconfont icon-zhuyishixiang" />
-                            )}
-                            {errorTip}
-                        </p>
-                        <ul className="form-list">
-                            <li>
-                                <i className="iconfont icon-youxiang" />
-                                <input
-                                    type="text"
-                                    className="text"
-                                    id="mail"
-                                    value={mail}
-                                    onChange={this.inputValue}
-                                    placeholder="输入您的邮箱"
-                                />
-                            </li>
-                            <li>
-                                <input
-                                    type="submit"
-                                    className={classnames({
-                                        button: true,
-                                        disabled: !mail
-                                    })}
-                                    onClick={this.getValidCode}
-                                    value="确定"
-                                />
-                            </li>
-                        </ul>
-                        {popup}
-                    </div>
-                )}
+                        <div className="form-box">
+                            <h1>找回密码</h1>
+                            <p className="error-tip">
+                                {errorTip && (
+                                    <i className="iconfont icon-zhuyishixiang" />
+                                )}
+                                {errorTip}
+                            </p>
+                            <ul className="form-list">
+                                <li>
+                                    <i className="iconfont icon-youxiang" />
+                                    <input
+                                        type="text"
+                                        className="text"
+                                        id="mail"
+                                        value={mail}
+                                        onChange={this.inputValue}
+                                        placeholder="输入您的邮箱"
+                                    />
+                                </li>
+                                <li>
+                                    <input
+                                        type="submit"
+                                        className={classnames({
+                                            button: true,
+                                            disabled: !mail
+                                        })}
+                                        onClick={this.getValidCode}
+                                        value="确定"
+                                    />
+                                </li>
+                            </ul>
+                            {popup}
+                        </div>
+                    )}
             </div>
         );
     }
