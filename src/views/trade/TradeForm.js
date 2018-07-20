@@ -2,12 +2,14 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Input, Slider, Button, Tooltip, message } from 'antd';
 import classnames from 'classnames';
+import Big from 'big.js';
 
 class TradeForm extends PureComponent {
   state = {
     triggerPrice: '',
     price: '',
     volume: '',
+    sliderValue: 0,
     totalPrice: '',
     pending: false,
     tradeAmount: 0 //交易额
@@ -21,17 +23,35 @@ class TradeForm extends PureComponent {
     if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
       this.setState({ [key]: value });
     }
+    if (key === 'volume') {
+      const { type, mainVolume, coinVolume } = this.props;
+      const assetVolume = type === 'buy' ? mainVolume : coinVolume;
+      const sliderValue = value / assetVolume;
+      this.setState({ sliderValue });
+    }
   };
 
-  handleFocus = e => {};
+  handleHolder = e => {
+    e.target.previousSibling.focus();
+  };
 
   handleSlideInput = value => {
     const { type, mainVolume, coinVolume } = this.props;
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const volume = (assetVolume / price) * (value / 100);
-    this.setState({ volume: volume.toFixed(8) });
+    
+    this.setState({ volume, sliderValue: value });
   };
+
+  // handleSlideInput = value => {
+  //   const { type, mainVolume, coinVolume } = this.props;
+  //   value = new Big(value);
+  //   const price = new Big(this.state.price);
+  //   const assetVolume = new Big(type === 'buy' ? mainVolume : coinVolume);
+  //   const volume = assetVolume.div(price) * value.div(100);
+  //   this.setState({ volume, sliderValue: value });
+  // };
 
   // 获取订单号
   getOrderNo = () => {
@@ -122,7 +142,7 @@ class TradeForm extends PureComponent {
       localization
     } = this.props;
 
-    const { triggerPrice, price, volume, totalPrice, pending } = this.state;
+    const { triggerPrice, price, volume, sliderValue, totalPrice, pending } = this.state;
 
     const isLogin = sessionStorage.getItem('account');
 
@@ -136,8 +156,10 @@ class TradeForm extends PureComponent {
     if (isNaN(price * volume)) {
       totalCount = 0;
     } else {
-      totalCount = (price * volume).toFixed(8);
+      totalCount = price * volume;
     }
+
+    const assetVolume = type === 'buy' ? mainVolume : coinVolume;
 
     return (
       <ul className="trade-form">
@@ -177,8 +199,9 @@ class TradeForm extends PureComponent {
             <span
               className={classnames({
                 'trade-form-name': true,
-                'has-value': !!triggerPrice
+                'has-value': triggerPrice
               })}
+              onClick={this.handleHolder}
             >
               {localization['触发价']}
             </span>
@@ -191,8 +214,9 @@ class TradeForm extends PureComponent {
             <span
               className={classnames({
                 'trade-form-name': true,
-                'has-value': !!price
+                'has-value': String(price)
               })}
+              onClick={this.handleHolder}
             >{`${typeToText[type]}${localization['价']}`}</span>
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
             <span className="trade-form-coinName">{marketName}</span>
@@ -219,9 +243,10 @@ class TradeForm extends PureComponent {
             <span
               className={classnames({
                 'trade-form-name': true,
-                'has-value': !!volume,
+                'has-value': String(volume),
                 market: tradeType === 'market'
               })}
+              onClick={this.handleHolder}
             >
               {`${typeToText[type]}${localization['量']}`}
             </span>
@@ -239,10 +264,11 @@ class TradeForm extends PureComponent {
           <li>
             <Slider
               marks={marks}
-              defaultValue={0}
+              value={sliderValue}
               onChange={this.handleSlideInput}
               disabled={
-                !price || ((type === 'buy' && !mainVolume) || (type === 'sell' && !coinVolume))
+                Number(price) <= 0 ||
+                ((type === 'buy' && !mainVolume) || (type === 'sell' && !coinVolume))
               }
             />
           </li>
@@ -293,7 +319,7 @@ class TradeForm extends PureComponent {
         <li>
           {tradeType !== 'market' && (
             <div className="trade-form-total">
-              {localization['交易额']} {totalCount} {marketName}
+              {localization['交易额']} {totalCount.toFixed(8)} {marketName}
             </div>
           )}
           {tradeType === 'market' &&

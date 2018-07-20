@@ -1,0 +1,12 @@
+dependencies:
+  big.js: 5.1.2
+packages:
+  /big.js/5.1.2:
+    dev: false
+    resolution:
+      integrity: sha512-qG6ZOc1lY84Bn8p/z9xvJisj9F4PRyo0pOGqGNYc7gS3p1WciS/3XcLuNI3Z/yYZpMNFhHeX3YNENwgrQq0NTA==
+registry: 'https://registry.npmjs.org/'
+shrinkwrapMinorVersion: 8
+shrinkwrapVersion: 3
+specifiers:
+  big.js: ^5.1.2

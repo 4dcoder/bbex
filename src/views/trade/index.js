@@ -1263,7 +1263,7 @@ class Trade extends PureComponent {
                       tradeList.buyOrderVOList.length > 0 ? (
                         <table>
                           <tbody>
-                            {[...Array(15).fill({}), ...tradeList.buyOrderVOList].map(
+                            {[...tradeList.buyOrderVOList, ...Array(15).fill({})].map(
                               (record, index) => {
                                 const isEmptyRecord = Object.keys(record).length <= 0;
                                 return (

@@ -19,24 +19,23 @@ class UserCenter extends Component {
   };
 
   componentDidMount() {
-    if (sessionStorage.getItem('account')) {
-      const account = JSON.parse(sessionStorage.getItem('account'));
-      const { pathname } = this.props.location;
-      if (!account.googleAuth && pathname.indexOf('security') === -1) {
-        this.setState({
-          popup: (
-            <Verification
-              closeModal={() => {
-                this.closePopup();
-              }}
-              gotoSetting={() => {
-                this.closePopup();
-                this.props.history.push('/user/security');
-              }}
-            />
-          )
-        });
-      }
+    const account = JSON.parse(sessionStorage.getItem('account'));
+    const { pathname } = this.props.location;
+    //设置二次验证提醒
+    if (false && !account.googleAuth && pathname.indexOf('security') === -1) {
+      this.setState({
+        popup: (
+          <Verification
+            closeModal={() => {
+              this.closePopup();
+            }}
+            gotoSetting={() => {
+              this.closePopup();
+              this.props.history.push('/user/security');
+            }}
+          />
+        )
+      });
     }
   }
 
