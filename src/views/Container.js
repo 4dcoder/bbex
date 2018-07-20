@@ -112,6 +112,11 @@ class Container extends Component {
   };
 
   componentWillMount() {
+    const viewport = document.getElementById('viewport');
+    if(viewport) {
+      document.head.removeChild(viewport);
+    }
+    
     this.getLanguage(this.state.language);
     this.getLogo();
     this.getIntroduce();
@@ -279,32 +284,27 @@ class Container extends Component {
               <div className="footer-main-right">
                 <div className="footer-nav clear">
                   {introduces &&
-                   introduces.map((item, index) => {
-                     if(item.link){
-                      return (
-                        <a
-                          key={index}
-                          href={item.link}
-                          target="_blank"
-                        >
-                          {item.title}
-                        </a>
-                      );
-                     }else{
-                      return (
-                        <Link
-                          key={index}
-                          to={{
-                            pathname: `/link/${item.id}`
-                          }}
-                          target="_blank"
-                          data-id={item.id}
-                        >
-                          {item.title}
-                        </Link>
-                      );
-                     }
-                      
+                    introduces.map((item, index) => {
+                      if (item.link) {
+                        return (
+                          <a key={index} href={item.link} target="_blank">
+                            {item.title}
+                          </a>
+                        );
+                      } else {
+                        return (
+                          <Link
+                            key={index}
+                            to={{
+                              pathname: `/link/${item.id}`
+                            }}
+                            target="_blank"
+                            data-id={item.id}
+                          >
+                            {item.title}
+                          </Link>
+                        );
+                      }
                     })}
                 </div>
                 <ul className="footer-contact">
@@ -324,7 +324,7 @@ class Container extends Component {
                             <a
                               href={`tencent://message/?Site=baidu.com&uin=${
                                 item.linkUrl
-                                }&Menu=yes`}
+                              }&Menu=yes`}
                               key={index}
                             >
                               <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />

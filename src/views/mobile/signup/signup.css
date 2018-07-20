@@ -1,0 +1,52 @@
+.mobile-signup-tit {
+  margin-top: 20px;
+  color: #e8e8e8;
+  font-size: 20px;
+  text-align: center;
+}
+.mobile-signup-form {
+  padding: 10px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.mobile-signup-form .iconfont {
+  color: #fff;
+}
+.mobile-signup-form .ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 40px;
+}
+.mobile-signup-form .mail-code input {
+  width: 90%;
+}
+.mobile-signup-form .mail-code-btn {
+  width: 150px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.mobile-signup-form .mail-code .ant-form-item-control {
+  position: relative;
+}
+.mobile-signup-form .mail-code .ant-form-item-children {
+  position: initial;
+}
+.mobile-signup-form .submit-btn {
+  display: 'flex';
+  justify-content: 'center';
+  margin-top: 30px;
+}
+.mobile-signup-form .has-error .ant-form-explain,
+.mobile-signup-form .has-error .ant-form-split {
+  padding-top: 5px;
+}
+.mobile-signup-form .agree-text span {
+  color: #e8e8e8;
+}
+.mobile-signup-form .link-agree {
+  color: #d4a668;
+}
+.mobile-signup-form .ant-btn.ant-btn-count-down {
+  color: #666;
+  background-color: #302f2f;
+}

@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import Spinners from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
-// import asyncComponent from './components/asyncComponent';
 
 import './App.css';
 
@@ -66,6 +65,8 @@ const MyLink = asyncComponent(() => import('./views/links/MyLink'));
 
 const NotFound = asyncComponent(() => import('./views/404'));
 
+const Mobile = asyncComponent(() => import('./views/mobile'));
+
 const NormalRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
 );
@@ -94,10 +95,12 @@ class App extends Component {
 
   render() {
     const { localization } = this.state;
+    console.log(this.props.match);
     return (
       <Router>
-        <Container {...{ localization }} onGetLocalization={this.handleGetLocalization}>
-          <Switch>
+        <Switch>
+          <NormalRoute path="/mobile" component={Mobile} {...{ localization }} />
+          <Container {...{ localization }} onGetLocalization={this.handleGetLocalization}>
             <NormalRoute exact path="/" component={Home} {...{ localization }} />
             <NormalRoute path="/trade" component={Trade} {...{ localization }} />
             <NormalRoute path="/signin" component={SignIn} {...{ localization }} />
@@ -111,9 +114,9 @@ class App extends Component {
             <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
             <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
             <NormalRoute path="/notice/:id" component={Detail} {...{ localization }} />
-            <NormalRoute path="*" component={NotFound} {...{ localization }} />
-          </Switch>
-        </Container>
+          </Container>
+          <NormalRoute path="*" component={NotFound} {...{ localization }} />
+        </Switch>
       </Router>
     );
   }

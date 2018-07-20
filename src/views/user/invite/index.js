@@ -61,8 +61,9 @@ class Invite extends Component {
 
   render() {
     const { currentPage, showCount, totalCount, inviteList, showQRCode } = this.state;
-    const { inviteCode } = JSON.parse(sessionStorage.getItem('account'));
+    const { realName, inviteCode } = JSON.parse(sessionStorage.getItem('account'));
     const inviteLink = `${window.location.origin}/signup?inviteCode=${inviteCode}`;
+    const mobileLink = `${window.location.origin}/share.html?realName=${realName}&inviteCode=${inviteCode}`;
 
     const inviteColumns = [
       {
@@ -90,8 +91,8 @@ class Invite extends Component {
           <ul className="invite-box-cont clear">
             <li className="pull-left">
               <QRCode
-                value={inviteLink}
-                size={110}
+                value={mobileLink}
+                size={180}
                 style={{ marginRight: 40, border: '1px solid #e8e8e8', cursor: 'pointer' }}
                 bgColor={'#ffffff'}
                 fgColor={'#000000'}
@@ -118,6 +119,17 @@ class Invite extends Component {
                 size="large"
                 style={{ width: 550 }}
                 defaultValue={inviteLink}
+                disabled
+              />
+            </li>
+            <li style={{ marginTop: 30 }}>
+              <Input
+                addonAfter={
+                  <span onClick={this.handleCopy.bind(this, mobileLink)}>复制手机邀请链接</span>
+                }
+                size="large"
+                style={{ width: 600 }}
+                defaultValue={mobileLink}
                 disabled
               />
             </li>
