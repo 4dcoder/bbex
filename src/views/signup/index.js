@@ -12,12 +12,12 @@ class SignUp extends Component {
       <div className="sign-up">
         <div className='sign-up-content'>
           <h4>用户注册</h4>
-          <Tabs defaultActiveKey="mail">
-            <TabPane tab="邮箱注册" key="mail">
-              <MailForm />
-            </TabPane>
+          <Tabs defaultActiveKey="mobile">
             <TabPane tab="手机注册" key="mobile">
               <MobileForm />
+            </TabPane>
+            <TabPane tab="邮箱注册" key="mail">
+              <MailForm />
             </TabPane>
           </Tabs>
         </div>
