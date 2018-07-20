@@ -28,7 +28,7 @@ class Agreement extends Component {
 
   render(){
     let { detail } = this.state;
-    return <div style={{ padding: '20px 20px 0' }}  dangerouslySetInnerHTML={{ __html: detail }}>
+    return <div dangerouslySetInnerHTML={{ __html: detail }}>
       
     </div>
   }

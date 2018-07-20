@@ -30,7 +30,7 @@ class MyLink extends Component {
   }
   render(){
     let { detail } = this.state;
-    return <div style={{ padding:'10px 20px 0' }} >
+    return <div>
       <div id='link_container' dangerouslySetInnerHTML={{ __html: detail }} >
         
       </div>
