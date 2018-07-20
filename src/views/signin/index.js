@@ -103,14 +103,14 @@ class SignIn extends Component {
                     </p>
                     <ul className="form-list">
                         <li>
-                            <i className="iconfont icon-youxiang" />
+                            <i className="iconfont icon-yonghu1" />
                             <input
                                 type="text"
                                 className="text"
                                 id="username"
                                 value={username}
                                 onChange={this.inputValue}
-                                placeholder="邮箱"
+                                placeholder="账号"
                             />
                         </li>
                         <li>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
 import request from '../../../utils/request';
+import CodePopup from '../../../components/code-popup';
 import { MAIL_REGEX } from '../../../utils/constants'
 
 const FormItem = Form.Item;
@@ -11,7 +12,8 @@ class Mail extends Component {
     super(props);
     this.state = {
       number: 59,
-      disabled: false
+      disabled: false,
+      popup: ''
     }
   }
 
@@ -19,33 +21,19 @@ class Mail extends Component {
     clearInterval(this.timer);
   }
 
-  //获取邮箱短信码
-  sendMobileSms = (mobile) => {
-    request('/user/sendMobileSms', {
-      method: 'POST',
-      body: {
-        mobile,
-      }
-    }).then(json => {
-      if (json.code === 10000000) {
-
-      }
-    });
-  }
   //绑定邮箱
-  mobileBinder = (mobile, code, googleCode) => {
-    request('/user/mobileBinder', {
+  mobileBinder = (mail, code) => {
+    request('/user/binderEmail', {
       method: 'POST',
       body: {
-        mobile,
+        mail,
         code,
-        googleCode
       }
     }).then(json => {
       if (json.code === 10000000) {
         message.success(json.msg);
         let account = JSON.parse(sessionStorage.getItem('account'));
-        account.mobile = mobile;
+        account.mail = mail;
         sessionStorage.setItem('account', JSON.stringify(account));
 
         this.props.closeModal();
@@ -56,28 +44,49 @@ class Mail extends Component {
     });
   }
 
+  countDown = () => {
+    this.setState({
+      disabled: true
+    });
+    this.timer = setInterval(() => {
+      let { number } = this.state;
+      if (number === 0) {
+        clearInterval(this.timer);
+        this.setState({
+          number: 59,
+          disabled: false
+        });
+      } else {
+        this.setState({ number: number - 1 });
+      }
+    }, 1000);
+  }
+
+  closePopup = () => {
+    this.setState({popup: ''});
+  }
+
   // 点击绑定邮箱
-  getMobileCode = () => {
-    const mobile = this.props.form.getFieldsValue().mobile;
-    if (/^1[34578][0-9]{9}$/.test(mobile)) {
-
-      this.sendMobileSms(mobile);
-
+  getMailCode = () => {
+    const mail = this.props.form.getFieldsValue().mail;
+    if (MAIL_REGEX.test(mail)) {
       this.setState({
-        disabled: true
-      });
-      this.timer = setInterval(() => {
-        let { number } = this.state;
-        if (number === 0) {
-          clearInterval(this.timer);
-          this.setState({
-            number: 59,
-            disabled: false
-          });
-        } else {
-          this.setState({ number: number - 1 });
-        }
-      }, 1000);
+        popup: <CodePopup
+          flag="mail"
+          mail={mail}
+          type="binder"
+          onCancel={() => {
+            this.closePopup();
+          }}
+          onOk={() => {
+            this.closePopup();
+            this.countDown();
+          }}
+        />
+      })
+    } else {
+      message.destroy();
+      message.info('邮箱格式不正确', 1);
     }
   }
 
@@ -85,8 +94,8 @@ class Mail extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const { mobile, code, googleCode } = values;
-        this.mobileBinder(mobile, code, googleCode);
+        const { mail, code } = values;
+        this.mobileBinder(mail, code);
       }
     });
   };
@@ -114,27 +123,27 @@ class Mail extends Component {
       }
     };
 
-    const { disabled, number } = this.state;
+    const { disabled, number, popup } = this.state;
 
     return (
       <Modal
         title="绑定邮箱"
         visible
-        width={440}
+        width={500}
         wrapClassName="change-pwd-modal v-center-modal"
         onCancel={this.props.closeModal}
         footer={null}
       >
         <Form onSubmit={this.handleSubmit} className="change-password">
-          <FormItem {...formLayoutMobile} label="手机号">
-            {getFieldDecorator('mobile', {
+          <FormItem {...formLayoutMobile} label="邮箱">
+            {getFieldDecorator('mail', {
               rules: [
                 { required: true, message: '请输入邮箱' },
                 { pattern: MAIL_REGEX, message: '邮箱格式不正确' }
               ]
             })(<Input />)}
             <Button
-              onClick={this.getMobileCode}
+              onClick={this.getMailCode}
               className='get-mobile-code'
               type="primary"
               disabled={disabled}
@@ -163,6 +172,7 @@ class Mail extends Component {
             </Button>
           </div>
         </Form>
+        {popup}
       </Modal>
     );
   }

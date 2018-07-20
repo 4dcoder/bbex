@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Row, Col, message } from 'antd';
 import Password from './Password';
 import Mobile from './Mobilde';
+import Mail from './Mail';
 import QRCode from 'qrcode.react';
 import classnames from 'classnames';
 import './security.css';
@@ -62,7 +63,15 @@ class Security extends Component {
   };
   //绑定邮箱
   handleMailBind = () => {
-    
+    this.setState({
+      dialog: (
+        <Mail
+          closeModal={() => {
+            this.setState({ dialog: '' });
+          }}
+        />
+      )
+    });
 
   }
 
@@ -106,7 +115,7 @@ class Security extends Component {
             </Col>
           )}
         </Row>
-        <Row type="flex">
+        <Row type="flex" className='mail-row'>
           <Col span={2} className="title">
             邮箱:{' '}
           </Col>

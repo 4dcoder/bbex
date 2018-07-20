@@ -154,7 +154,7 @@ class MobileForm extends Component {
           <Input
             size="large"
             placeholder="手机号"
-            prefix={<i className="iconfont icon-youxiang" />}
+            prefix={<i className="iconfont icon-shouji54" />}
           />
         )}
       </FormItem>
