@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>分享页面</title>
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body,
+    h4,
+    a {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .share {
+      width: 100%;
+      height: 100%;
+      background-image: url('./share_bg.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+    }
+
+    .share-header {
+      width: 100%;
+      text-align: center;
+    }
+
+    .share h4 {
+      color: #0e3e8d;
+      font-size: 20px;
+      width: 60%;
+      margin: 0 auto;
+      padding-top: 9%;
+      line-height: 28px;
+      font-weight: normal;
+      text-align: center;
+    }
+
+    .share-content {
+      width: 100%;
+      position: absolute;
+      bottom: 22%;
+      left: 0;
+    }
+
+    #content {
+      color: #fff;
+      font-size: 16px;
+      width: 64%;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .share-footer {
+      width: 100%;
+      position: absolute;
+      bottom: 10%;
+      left: 0;
+    }
+
+    .share-footer a {
+      display: block;
+      text-decoration: none;
+      width: 80%;
+      height: 50px;
+      margin: 0 auto;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 50px;
+      background: #4D90ff;
+      color: #fff;
+    }
+  </style>
+  
+</head>
+
+<body>
+  <div class="share">
+    <div class="share-header">
+      <h4 id='header'></h4>
+    </div>
+    <div class="share-content">
+      <div id="content"></div>
+    </div>
+    <div class="share-footer">
+      <a id="link" href="/mobile/signup" target="_blank">马上领取</a>
+    </div>
+  </div>
+</body>
+
+<script>
+    function getQueryString(name) {
+      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+      var r = window.location.search.substr(1).match(reg);
+      if (r !== null) return unescape(r[2]);
+      return null;
+    }
+    var realName = getQueryString('realName');
+
+    if (realName) {
+      document.getElementById('header').innerHTML = realName + '邀请你成为UES交易所平台的会员';
+      document.getElementById('content').innerHTML = realName + '邀请你注册UES平台, UES平台币等你来领, 注册即领取, 领完即止，赶快来领取吧!';
+    } else {
+      document.getElementById('header').innerHTML = '你的朋友邀请你成为UES交易所平台的会员';
+      document.getElementById('content').innerHTML = '你的朋友邀请你注册UES平台, UES平台币等你来领, 注册即领取, 领完即止，赶快来领取吧!';
+    }
+    var inviteCode = getQueryString('inviteCode');
+    document.getElementById('link').href = "/mobile/signup?inviteCode=" + inviteCode;
+
+  </script>
+
+</html>
