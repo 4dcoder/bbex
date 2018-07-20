@@ -63,7 +63,7 @@ class Invite extends Component {
     const { currentPage, showCount, totalCount, inviteList, showQRCode } = this.state;
     const { realName, inviteCode } = JSON.parse(sessionStorage.getItem('account'));
     const inviteLink = `${window.location.origin}/signup?inviteCode=${inviteCode}`;
-    const mobileLink = `${window.location.origin}/share.html?realName=${realName}&inviteCode=${inviteCode}`;
+    const mobileLink = `${window.location.origin}/share.html?realName=${escape(realName)}&inviteCode=${inviteCode}`;
 
     const inviteColumns = [
       {
@@ -99,6 +99,7 @@ class Invite extends Component {
                 level={'L'}
                 onClick={this.handleShowQRCode}
               />
+              <div style={{paddingLeft: '40px'}}>手机邀请二维码</div>
             </li>
             <li>
               <Input
