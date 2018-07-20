@@ -40,7 +40,7 @@ class TradeForm extends PureComponent {
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const volume = (assetVolume / price) * (value / 100);
-    
+
     this.setState({ volume, sliderValue: value });
   };
 
@@ -264,7 +264,7 @@ class TradeForm extends PureComponent {
           <li>
             <Slider
               marks={marks}
-              value={sliderValue}
+              value={assetVolume ? sliderValue : 0}
               onChange={this.handleSlideInput}
               disabled={
                 Number(price) <= 0 ||
