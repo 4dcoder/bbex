@@ -244,7 +244,7 @@ class Container extends Component {
               <div className="select-bar">
                 <i className="iconfont icon-yonghu" />
                 <i className="iconfont icon-jiantou_down" />
-                <span>{account.mail}</span>
+                <span>{account.mail ? account.mail: account.mobile}</span>
                 <ul className="select-list">
                   <li>
                     <Link to="/user">{localization['用户中心']}</Link>

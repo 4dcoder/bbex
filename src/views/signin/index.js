@@ -36,7 +36,7 @@ class SignIn extends Component {
             }).then(json => {
                 if (json.code === 10000000) {
                     sessionStorage.setItem('account', JSON.stringify(json.data));
-                    this.props.history.push('/user');
+                    this.props.history.push('/trade');
                 } else if(json.code === 10001001) {
                     this.getValidImg();
                     this.setState({ errorTip: json.msg });
