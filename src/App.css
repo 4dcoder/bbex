@@ -272,6 +272,15 @@ a:hover {
   background-color: #585858;
 }
 
+:root .ant-slider-disabled .ant-slider-handle,
+:root .ant-slider-disabled .ant-slider-dot {
+  background-color: #4f5053 !important;
+}
+
+:root .ant-slider:hover .ant-slider-rail {
+  background-color: #434447;
+}
+
 :root .ant-slider-dot-active {
   border-color: #cfd2a6;
   background-color: #cfd2a6;

@@ -178,13 +178,18 @@
   display: flex;
 }
 
-.trade-plate-container td,
+.trade-plate-container td {
+  flex: 1 0 80px;
+  line-height: 25px;
+  font-size: 12px;
+  text-align: center;
+}
+
 .trade-plate-list td {
   flex: 1 0 80px;
   padding: 5px;
   font-size: 12px;
   text-align: center;
-  cursor: pointer;
 }
 
 .trade-plate-container.stream td {
@@ -217,22 +222,26 @@
   background-color: #3f4657;
 }
 
-.trade-plate-container td:first-child {
+.trade-plate-container .coin-wrap {
+  display: inline-block;
+  width: 40px;
   position: relative;
+  text-align: left;
 }
 
-.trade-plate-container tr td:first-child .iconfont {
-  position: relative;
-  top: -2px;
-  left: -5px;
+.trade-plate-container .coin-wrap .iconfont {
+  position: absolute;
+  top: 50%;
+  left: -20px;
   font-size: 18px;
+  transform: translateY(-52%);
 }
 
-.trade-plate-container td .icon-shoucang {
+.trade-plate-container .coin-wrap .icon-shoucang {
   color: #585858;
 }
 
-.trade-plate-container td .icon-shoucang-active {
+.trade-plate-container .coin-wrap .icon-shoucang-active {
   color: #d4a668;
 }
 
@@ -368,7 +377,7 @@
   position: absolute;
   left: 11px;
   top: 10px;
-  transition: .2s ease;
+  transition: 0.2s ease;
 }
 .trade-form li .has-value,
 .trade-form li .ant-input:focus + .trade-form-name {

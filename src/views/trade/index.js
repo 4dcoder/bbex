@@ -922,14 +922,16 @@ class Trade extends PureComponent {
                                 })}
                               >
                                 <td>
-                                  <i
-                                    className={`iconfont icon-shoucang${
-                                      favoriteCoins.includes(coin.key) ? '-active' : ''
-                                    }`}
-                                    onClick={this.handleCollect.bind(this, coin)}
-                                  />
-                                  {coin.coinOther}
-                                  {market === 'optional' && `/${coin.coinMain}`}
+                                  <span className="coin-wrap">
+                                    <i
+                                      className={`iconfont icon-shoucang${
+                                        favoriteCoins.includes(coin.key) ? '-active' : ''
+                                      }`}
+                                      onClick={this.handleCollect.bind(this, coin)}
+                                    />
+                                    {coin.coinOther}
+                                    {market === 'optional' && `/${coin.coinMain}`}
+                                  </span>
                                 </td>
                                 <td>{coin.latestPrice}</td>
                                 <td className={`font-color-${trend}`}>{coin.rise}</td>
@@ -1156,7 +1158,8 @@ class Trade extends PureComponent {
                 <div className="trade-plate-tit list">
                   <div className="trade-plate-tit-cell">{localization['类型']}</div>
                   <div className="trade-plate-tit-cell">
-                    {listType === 0 ? localization['买入'] : localization['卖出']} {localization['价']}({marketName})
+                    {listType === 0 ? localization['买入'] : localization['卖出']}{' '}
+                    {localization['价']}({marketName})
                   </div>
                   <div className="trade-plate-tit-cell">
                     {localization['委单量']}({coinName})
@@ -1175,26 +1178,41 @@ class Trade extends PureComponent {
                       tradeList.sellOrderVOList.length > 0 ? (
                         <table>
                           <tbody>
-                            {tradeList.sellOrderVOList.map((record, index, arr) => {
-                              const visibleLength = arr.length < 15 ? arr.length : 15;
-                              const startIndex = arr.length - visibleLength;
-                              return (
-                                index > startIndex - 1 && (
-                                  <tr
-                                    key={index}
-                                    onClick={this.handleTradePrice.bind(this, record.price, 'sell')}
-                                  >
-                                    <td className="font-color-red">
-                                      {localization['卖出']}
-                                      {visibleLength - index + startIndex}
-                                    </td>
-                                    <td>{Number(record.price).toFixed(8)}</td>
-                                    <td>{Number(record.volume).toFixed(8)}</td>
-                                    {false && <td className="font-color-red">{record.sumTotal}</td>}
-                                  </tr>
-                                )
-                              );
-                            })}
+                            {[...Array(15).fill({}), ...tradeList.sellOrderVOList].map(
+                              (record, index, arr) => {
+                                const visibleLength = arr.length < 15 ? arr.length : 15;
+                                const startIndex = arr.length - visibleLength;
+                                const isEmptyRecord = Object.keys(record).length <= 0;
+                                return (
+                                  index > startIndex - 1 && (
+                                    <tr
+                                      key={index}
+                                      onClick={this.handleTradePrice.bind(
+                                        this,
+                                        record.price,
+                                        'sell'
+                                      )}
+                                    >
+                                      <td className="font-color-red">
+                                        {localization['卖出']}
+                                        {visibleLength - index + startIndex}
+                                      </td>
+                                      <td>
+                                        {isEmptyRecord ? '----' : Number(record.price).toFixed(8)}
+                                      </td>
+                                      <td>
+                                        {isEmptyRecord ? '----' : Number(record.volume).toFixed(8)}
+                                      </td>
+                                      {false && (
+                                        <td className="font-color-red">
+                                          {isEmptyRecord ? '----' : record.sumTotal}
+                                        </td>
+                                      )}
+                                    </tr>
+                                  )
+                                );
+                              }
+                            )}
                           </tbody>
                         </table>
                       ) : (
@@ -1245,26 +1263,39 @@ class Trade extends PureComponent {
                       tradeList.buyOrderVOList.length > 0 ? (
                         <table>
                           <tbody>
-                            {tradeList.buyOrderVOList.map((record, index) => {
-                              return (
-                                index < 15 && (
-                                  <tr
-                                    key={index}
-                                    onClick={this.handleTradePrice.bind(this, record.price, 'buy')}
-                                  >
-                                    <td className="font-color-green">
-                                      {localization['买入']}
-                                      {index + 1}
-                                    </td>
-                                    <td>{Number(record.price).toFixed(8)}</td>
-                                    <td>{Number(record.volume).toFixed(8)}</td>
-                                    {false && (
-                                      <td className="font-color-green">{record.sumTotal}</td>
-                                    )}
-                                  </tr>
-                                )
-                              );
-                            })}
+                            {[...Array(15).fill({}), ...tradeList.buyOrderVOList].map(
+                              (record, index) => {
+                                const isEmptyRecord = Object.keys(record).length <= 0;
+                                return (
+                                  index < 15 && (
+                                    <tr
+                                      key={index}
+                                      onClick={this.handleTradePrice.bind(
+                                        this,
+                                        record.price,
+                                        'buy'
+                                      )}
+                                    >
+                                      <td className="font-color-green">
+                                        {localization['买入']}
+                                        {index + 1}
+                                      </td>
+                                      <td>
+                                        {isEmptyRecord ? '----' : Number(record.price).toFixed(8)}
+                                      </td>
+                                      <td>
+                                        {isEmptyRecord ? '----' : Number(record.volume).toFixed(8)}
+                                      </td>
+                                      {false && (
+                                        <td className="font-color-green">
+                                          {isEmptyRecord ? '----' : record.sumTotal}
+                                        </td>
+                                      )}
+                                    </tr>
+                                  )
+                                );
+                              }
+                            )}
                           </tbody>
                         </table>
                       ) : (
