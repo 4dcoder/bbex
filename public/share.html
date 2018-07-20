@@ -117,7 +117,7 @@
       if (r !== null) return unescape(r[2]);
       return null;
     }
-    var realName = getQueryString('realName');
+    var realName = unescape(getQueryString('realName'));
 
     if (realName) {
       document.getElementById('header').innerHTML = realName + '邀请您成为UES交易所平台的会员';
