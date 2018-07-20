@@ -118,13 +118,13 @@
       return null;
     }
     var realName = unescape(getQueryString('realName'));
-
+     
     if (realName) {
-      document.getElementById('header').innerHTML = realName + '邀请您成为UES交易所平台的会员';
-      document.getElementById('content').innerHTML = realName + '邀请您注册UES平台, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
+      document.getElementById('header').innerHTML = realName + '邀请您成为UES交易所的会员';
+      document.getElementById('content').innerHTML = realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
     } else {
-      document.getElementById('header').innerHTML = '您的朋友邀请您成为UES交易所平台的会员';
-      document.getElementById('content').innerHTML = '您的朋友邀请您注册UES平台, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
+      document.getElementById('header').innerHTML = '您的朋友邀请您成为UES交易所的会员';
+      document.getElementById('content').innerHTML = '您的朋友邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
     }
     var inviteCode = getQueryString('inviteCode');
     document.getElementById('link').href = "/mobile/signup?inviteCode=" + inviteCode;
