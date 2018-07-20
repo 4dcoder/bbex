@@ -99,6 +99,7 @@ class Invite extends Component {
                 level={'L'}
                 onClick={this.handleShowQRCode}
               />
+              <div style={{paddingLeft: '40px'}}>手机邀请二维码</div>
             </li>
             <li>
               <Input
