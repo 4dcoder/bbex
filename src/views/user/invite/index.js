@@ -114,7 +114,7 @@ class Invite extends Component {
             <li style={{ marginTop: 30 }}>
               <Input
                 addonAfter={
-                  <span onClick={this.handleCopy.bind(this, inviteLink)}>复制邀请链接</span>
+                  <span onClick={this.handleCopy.bind(this, inviteLink)}>复制PC端邀请链接</span>
                 }
                 size="large"
                 style={{ width: 550 }}
