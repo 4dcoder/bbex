@@ -218,7 +218,7 @@ class MobileForm extends Component {
               {!disabled ? '获取手机验证码' : number + 's'}
             </Button>
           </FormItem>
-          <FormItem>
+          <FormItem style={{display: 'none'}}>
             {getFieldDecorator('inviteCode', {
               initialValue: inviteCode,
               rules: [{ pattern: /^\d+$/, message: '请输入数字邀请码' }],
