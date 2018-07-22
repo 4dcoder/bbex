@@ -4,7 +4,7 @@
 .property-header h2 {
     padding-top: 20px;
     font-size: 16px;
-    color: #e8e8e8;
+    color: #dadada;
 }
 .property-header h2 .ant-checkbox-wrapper {
     margin-left: 20px;
@@ -18,14 +18,14 @@
     justify-content: space-between;
 }
 .property-header .header-search .ant-input-search-icon{
-    color: #e8e8e8;
+    color: #dadada;
 }
 .property-header .pull-right {
     text-align: right;
 }
 .property-header .pull-right li.assets-estimate {
     font-weight: bold;
-    color: #e8e8e8;
+    color: #dadada;
 }
 .property-header .pull-right .anticon {
     color: #d4a668;

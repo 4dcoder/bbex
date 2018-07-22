@@ -54,13 +54,13 @@ class AppealModal extends Component{
     >
       <div className='appeal_content'>
         <p>提起申诉后资产将会冻结，申诉专员将介入本次交易，直至申诉结束。恶意申诉者将会被冻结账户。</p>
-        <h4 style={{margin: '8px 0', color: '#e8e8e8'}}>申诉类型</h4>
+        <h4 style={{margin: '8px 0', color: '#dadada'}}>申诉类型</h4>
         <Select value={appealType} onChange={this.handleChange} style={{width:450}}>
           {list.map((item, index)=>{
             return  <Option value={item} key={index}>{item}</Option>
           })}
         </Select>
-        <h4 style={{margin: '8px 0', color: '#e8e8e8'}}>申诉理由</h4>
+        <h4 style={{margin: '8px 0', color: '#dadada'}}>申诉理由</h4>
         <TextArea rows={5} value={reason} onChange={this.desChange}/>
       </div>
     </Modal>

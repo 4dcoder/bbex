@@ -93,7 +93,7 @@ class Invite extends Component {
               <QRCode
                 value={mobileLink}
                 size={180}
-                style={{ marginRight: 40, border: '1px solid #e8e8e8', cursor: 'pointer' }}
+                style={{ marginRight: 40, border: '1px solid #dadada', cursor: 'pointer' }}
                 bgColor={'#ffffff'}
                 fgColor={'#000000'}
                 level={'L'}
@@ -163,7 +163,7 @@ class Invite extends Component {
           <QRCode
             value={inviteLink}
             size={450}
-            style={{ margin: 10, border: '1px solid #e8e8e8' }}
+            style={{ margin: 10, border: '1px solid #dadada' }}
             bgColor={'#ffffff'}
             fgColor={'#000000'}
             level={'L'}

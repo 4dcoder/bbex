@@ -1,5 +1,5 @@
 .payment-tit {
-    color: #e8e8e8;
+    color: #dadada;
     font-size: 16px;
     font-weight: normal;
     margin-bottom: 20px;
@@ -22,7 +22,7 @@
     width: 120px;
     margin-right: 30px;
     border-right: 1px solid #585858;
-    color: #e8e8e8;
+    color: #dadada;
 }
 .payment-header .iconfont {
     padding-right: 10px;

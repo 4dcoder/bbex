@@ -52,7 +52,7 @@ class Reset extends Component {
                     <div className="form-box">
                         <h1>重置密码确认</h1>
                         <ul className="form-list">
-                            <li className="form-box-text" style={{color: '#e8e8e8'}}>
+                            <li className="form-box-text" style={{color: '#dadada'}}>
                                 已向您的注册邮箱发送了一封重置密码邮件，请点击邮件中的链接前去重置登录密码。
                                 如果长时间未收到邮件，请尝试在垃圾邮件中查找。
                             </li>

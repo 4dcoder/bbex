@@ -6,13 +6,13 @@
   margin-right: 20px;
   padding-bottom: 40px;
   color: #666;
-  color: #e8e8e8;
+  color: #dadada;
   background-color: #2a2f3c;
 }
 .user-cont {
   flex: 1;
   padding: 40px 30px;
-  color: #e8e8e8;
+  color: #dadada;
   background-color: #2a2f3c;
 }
 
@@ -20,7 +20,7 @@
   padding: 20px 0;
   border-bottom: 1px solid #595959;
   text-align: center;
-  color: #e8e8e8;
+  color: #dadada;
   background-color: #242b38;
 }
 .user-avatar {
@@ -30,7 +30,7 @@
   border-radius: 50%;
   text-align: center;
   line-height: 60px;
-  color: #e8e8e8;
+  color: #dadada;
   font-size: 20px;
   background-color: #d4a668;
 }
@@ -39,7 +39,7 @@
 }
 .user-nav .user-link {
   display: block;
-  color: #e8e8e8;
+  color: #dadada;
   line-height: 46px;
   text-align: center;
   border-left: 2px solid transparent;
@@ -52,5 +52,5 @@
   padding-right: 10px;
 }
 .payment-cell-form .ant-form-item-label > label {
-  color: #e8e8e8;
+  color: #dadada;
 }

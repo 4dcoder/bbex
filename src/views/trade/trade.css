@@ -26,7 +26,7 @@
 .trade-plate {
   width: 100%;
   margin-bottom: 10px;
-  color: #e8e8e8;
+  color: #dadada;
   box-shadow: 0 0 15px #252b36;
   background-color: #292f3d;
 }
@@ -257,7 +257,7 @@
   padding: 0 16px;
   height: 54px;
   line-height: 53px;
-  color: #e8e8e8;
+  color: #dadada;
 }
 
 .trade-plate .ant-tabs-nav .ant-tabs-tab.ant-tabs-tab-active {
@@ -277,7 +277,7 @@
 .trade-plate .ant-tabs-content .ant-tabs-tabpane {
   position: relative;
   height: 423px;
-  color: #e8e8e8;
+  color: #dadada;
 }
 
 /* 合并select框 */
@@ -288,7 +288,7 @@
 }
 
 .merge-dropdown .ant-select-dropdown-menu-item {
-  color: #e8e8e8;
+  color: #dadada;
   background-color: #252b36;
   padding: 10px 12px;
 }
@@ -431,7 +431,7 @@
 .trade-form .ant-input-number-handler-up-inner,
 .trade-form .ant-input-number-handler-down-inner {
   right: 10px;
-  color: #e8e8e8;
+  color: #dadada;
   font-size: 14px;
 }
 
@@ -449,7 +449,7 @@
 .trade-form .ant-btn {
   width: 100%;
   margin-top: 10px;
-  color: #e8e8e8;
+  color: #dadada;
 }
 
 .trade-form .ant-btn:disabled,
@@ -467,7 +467,7 @@
 
 .content.trade .ant-dropdown-menu-item {
   padding: 10px 12px;
-  color: #e8e8e8;
+  color: #dadada;
   background-color: #2d3443;
 }
 
