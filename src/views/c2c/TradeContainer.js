@@ -1315,7 +1315,12 @@ class TradeContainer extends Component {
               onChange: this.pageOnChange
             }}
             locale={{
-              emptyText: localization['暂无数据']
+              emptyText: (
+                <span>
+                  <i className="iconfont icon-zanwushuju" />
+                  {localization['暂无数据']}
+                </span>
+              )
             }}
           />
         </div>
@@ -1349,7 +1354,12 @@ class TradeContainer extends Component {
                 onExpand={this.handleExpand}
                 pagination={false}
                 locale={{
-                  emptyText: localization['暂无数据']
+                  emptyText: (
+                    <span>
+                      <i className="iconfont icon-zanwushuju" />
+                      {localization['暂无数据']}
+                    </span>
+                  )
                 }}
                 expandedRowRender={record =>
                   record.bankInfo ? (
@@ -1375,7 +1385,12 @@ class TradeContainer extends Component {
                 columns={advertColumns}
                 pagination={false}
                 locale={{
-                  emptyText: localization['暂无数据']
+                  emptyText: (
+                    <span>
+                      <i className="iconfont icon-zanwushuju" />
+                      {localization['暂无数据']}
+                    </span>
+                  )
                 }}
               />
             )}
@@ -1385,7 +1400,12 @@ class TradeContainer extends Component {
                 columns={orderColumns}
                 pagination={false}
                 locale={{
-                  emptyText: localization['暂无数据']
+                  emptyText: (
+                    <span>
+                      <i className="iconfont icon-zanwushuju" />
+                      {localization['暂无数据']}
+                    </span>
+                  )
                 }}
               />
             )}
@@ -1395,7 +1415,12 @@ class TradeContainer extends Component {
                 columns={orderColumns}
                 pagination={false}
                 locale={{
-                  emptyText: localization['暂无数据']
+                  emptyText: (
+                    <span>
+                      <i className="iconfont icon-zanwushuju" />
+                      {localization['暂无数据']}
+                    </span>
+                  )
                 }}
               />
             )}
@@ -1405,7 +1430,12 @@ class TradeContainer extends Component {
                 columns={appealColumns}
                 pagination={false}
                 locale={{
-                  emptyText: localization['暂无数据']
+                  emptyText: (
+                    <span>
+                      <i className="iconfont icon-zanwushuju" />
+                      {localization['暂无数据']}
+                    </span>
+                  )
                 }}
               />
             )}
