@@ -449,6 +449,7 @@
 .trade-form .ant-btn {
   width: 100%;
   margin-top: 10px;
+  color: #e8e8e8;
 }
 
 .trade-form .ant-btn:disabled,

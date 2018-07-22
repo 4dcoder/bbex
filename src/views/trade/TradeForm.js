@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { Input, Slider, Button, Tooltip, message } from 'antd';
 import classnames from 'classnames';
 import Big from 'big.js';
@@ -55,29 +55,36 @@ class TradeForm extends PureComponent {
 
   // 获取订单号
   getOrderNo = () => {
-    const { localization } = this.props;
-    const { price, volume } = this.state;
-    if (price <= 0) {
-      message.error(localization['请输入价格']);
-      return;
-    }
-    if (volume <= 0) {
-      message.error(localization['请输入数量']);
-      return;
-    }
+    const isLogin = sessionStorage.getItem('account');
+    if(isLogin) {
+      const { localization } = this.props;
+      const { price, volume } = this.state;
+      if (price <= 0) {
+        message.error(localization['请输入价格']);
+        return;
+      }
+      if (volume <= 0) {
+        message.error(localization['请输入数量']);
+        return;
+      }
 
-    this.setState({ pending: true });
-    this.request('/trade/getOrderNo')
-      .then(json => {
-        if (json.code === 10000000) {
-          this.tradeAction(json.data.orderNo);
-        } else {
-          message.error(json.msg);
-        }
-      })
-      .catch(error => {
-        this.setState({ pending: false });
-      });
+      this.setState({ pending: true });
+      this.request('/trade/getOrderNo')
+        .then(json => {
+          if (json.code === 10000000) {
+            this.tradeAction(json.data.orderNo);
+          } else {
+            message.error(json.msg);
+          }
+        })
+        .catch(error => {
+          this.setState({ pending: false });
+        });
+
+    }else{
+      this.props.history.push('/signin')
+    }
+    
   };
 
   // 买入卖出
@@ -160,6 +167,7 @@ class TradeForm extends PureComponent {
     }
 
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
+
 
     return (
       <ul className="trade-form">
@@ -340,9 +348,9 @@ class TradeForm extends PureComponent {
             type={isLogin && !pending ? type : 'ghost'}
             size="large"
             onClick={this.getOrderNo}
-            disabled={!isLogin || pending}
+            disabled={pending}
           >
-            {typeToText[type]} {coinName}
+            { isLogin ? `${typeToText[type]} ${coinName}`: `交易前请先 登录`}
           </Button>
         </li>
       </ul>
@@ -350,4 +358,4 @@ class TradeForm extends PureComponent {
   }
 }
 
-export default TradeForm;
+export default withRouter(TradeForm);

@@ -65,6 +65,7 @@ class Withdraw extends Component {
                 this.setState({
                   vmodal: (
                     <CodePopup
+                      flag="mail"
                       mail={mail}
                       type="withdraw"
                       onCancel={() => {
