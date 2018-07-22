@@ -110,7 +110,7 @@ class SignIn extends Component {
                                 id="username"
                                 value={username}
                                 onChange={this.inputValue}
-                                placeholder="账号"
+                                placeholder="手机/邮箱"
                             />
                         </li>
                         <li>
