@@ -292,6 +292,7 @@ class BankForm extends Component {
           {getFieldDecorator('bankName', bankOption)(
             <Select 
               size="large" 
+              showSearch
               placeholder="请选择开户银行"
             >
               {bankList.map(bank => {
