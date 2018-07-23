@@ -1,5 +1,3 @@
-import { message } from 'antd';
-
 /**
  * @author William Cui
  * @description 数字不够位数前面自动补零
@@ -74,34 +72,6 @@ function copy(text) {
   });
 }
 
-function copyText(e) {
-  const ele = typeof e === 'string' ? document.querySelector(e) : e.currentTarget;
-
-  if (ele.value) {
-    ele.select();
-  } else {
-    const text = e.target.getAttribute('data-address');
-    const textArea = document.createElement('textarea');
-    textArea.style.position = 'fixed';
-    textArea.style.left = '-1000px';
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.select();
-
-    setTimeout(() => {
-      document.body.removeChild(textArea);
-    }, 200);
-  }
-
-  try {
-    document.execCommand('copy');
-    message.destroy();
-    message.success('复制成功!');
-  } catch (err) {
-    throw new Error('该浏览器不支持点击复制到剪贴板');
-  }
-}
-
 /**
  * @author William Cui
  * @description 根据URL参数名获取参数值
@@ -136,4 +106,4 @@ function getMaxPoint(numbers) {
   }
 }
 
-export { fillZero, stampToDate, dateToStamp, copy, copyText, getQueryString, getMaxPoint };
+export { fillZero, stampToDate, dateToStamp, copy, getQueryString, getMaxPoint };
