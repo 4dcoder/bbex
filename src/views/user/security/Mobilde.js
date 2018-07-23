@@ -32,13 +32,12 @@ class Mobile extends Component {
     });
   }
   //绑定手机号
-  mobileBinder = (mobile, code, googleCode) => {
+  mobileBinder = (mobile, code) => {
     request('/user/mobileBinder', {
       method: 'POST',
       body: {
         mobile,
         code,
-        googleCode
       }
     }).then(json => {
         if (json.code === 10000000) {
@@ -84,8 +83,8 @@ class Mobile extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
         if (!err) {
-           const {mobile, code, googleCode } = values;
-           this.mobileBinder(mobile,code,googleCode);
+           const { mobile, code } = values;
+           this.mobileBinder(mobile,code);
         }
     });
   };
@@ -113,7 +112,7 @@ class Mobile extends Component {
       }
   };
 
-  const {disabled, number } = this.state;
+  const { disabled, number } = this.state;
 
     return (
         <Modal
@@ -150,15 +149,6 @@ class Mobile extends Component {
                         ]
                     })(<Input  />)}
                 </FormItem>
-                <FormItem {...formItemLayout} label="谷歌验证码">
-                    {getFieldDecorator('googleCode', {
-                        rules: [
-                            { required: true, message: '请输入谷歌验证码' },
-                            { pattern: /^\d{6}$/, message:'请输入6位数字谷歌验证码' }
-                        ]
-                    })(<Input />)}
-                </FormItem>
-
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                         type="primary"
