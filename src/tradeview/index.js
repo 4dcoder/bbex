@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { onready, widget } from './ChartingLibrary';
+import TradingView from './ChartingLibrary';
 import Datafeed from './datafeed';
 
 class TradeviewPage extends PureComponent {
@@ -120,9 +120,9 @@ class TradeviewPage extends PureComponent {
       }
     };
 
-    onready(
+    TradingView.onready(
       (() => {
-        window.tvWidget = new widget(widgetOptions);
+        window.tvWidget = new TradingView.widget(widgetOptions);
 
         window.tvWidget.onChartReady(() => {
           let buttonArr = [
