@@ -1206,10 +1206,21 @@ class TradeContainer extends Component {
         key: 'symbol'
       },
       {
-        title: localization['数量'],
+        title: `${localization['挂单数量']}`,
         dataIndex: 'volume',
         key: 'volume'
       },
+      {
+        title: `${localization['成交数量']}`,
+        dataIndex: 'successVolume',
+        key: 'successVolume'
+      },
+      {
+        title: `${localization['锁定数量']}`,
+        dataIndex: 'lockVolume',
+        key: 'lockVolume'
+      },
+
       {
         title: `${localization['总额']}(CNY)`,
         dataIndex: 'totalPrice',
