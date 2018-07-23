@@ -24,7 +24,7 @@ class TradeForm extends PureComponent {
     const { price, volume } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
     const otherValue = key === 'price' ? volume : price;
-
+    
     if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
       const curVolume = key === 'volume' ? value : volume;
       if (

@@ -5,7 +5,7 @@ import TradeForm from './TradeForm';
 class TradeBox extends PureComponent {
   state = {
     mainVolume: 0,
-    coinVolume: 0,
+    coinVolume: 0
   };
 
   request = window.request;
@@ -39,7 +39,7 @@ class TradeBox extends PureComponent {
 
   componentWillUpdate(nextProps, nextState) {
     const { marketName, coinName } = this.props;
-    if (sessionStorage.getItem('account')){
+    if (sessionStorage.getItem('account')) {
       if (nextProps.marketName !== marketName) {
         this.getCoinVolume({
           coinType: 'mainVolume',
@@ -69,7 +69,15 @@ class TradeBox extends PureComponent {
   };
 
   render() {
-    const { tradeType, marketName, coinName, tradePrice, clickTradeType,localization } = this.props;
+    const {
+      tradeType,
+      marketName,
+      coinName,
+      tradePrice,
+      clickTradeType,
+      localization
+    } = this.props;
+    
     const { mainVolume, coinVolume } = this.state;
 
     const tradeProps = {
