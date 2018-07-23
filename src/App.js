@@ -95,7 +95,6 @@ class App extends Component {
 
   render() {
     const { localization } = this.state;
-    console.log(this.props.match);
     return (
       <Router>
         <Switch>

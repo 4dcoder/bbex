@@ -20,14 +20,31 @@ class TradeForm extends PureComponent {
   handleValue = e => {
     const key = e.target.id;
     const value = e.target.value;
+    const { type, mainVolume, coinVolume } = this.props;
+    const { price, volume } = this.state;
+    const assetVolume = type === 'buy' ? mainVolume : coinVolume;
+    const otherValue = key === 'price' ? volume : price;
+
     if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
-      this.setState({ [key]: value });
-    }
-    if (key === 'volume') {
-      const { type, mainVolume, coinVolume } = this.props;
-      const assetVolume = type === 'buy' ? mainVolume : coinVolume;
-      const sliderValue = value / assetVolume;
-      this.setState({ sliderValue });
+      const curVolume = key === 'volume' ? value : volume;
+      if (
+        !(type === 'buy' && value * price > assetVolume) &&
+        !(type === 'sell' && key === 'volume' && value > assetVolume)
+      ) {
+        const sliderValue = ((type === 'buy' ? value * otherValue : curVolume) / assetVolume) * 100;
+        this.setState({ [key]: value, sliderValue });
+      } else {
+        if (type === 'buy' && value * price > assetVolume) {
+          const curValue = assetVolume / otherValue;
+          const sliderValue = (curVolume / assetVolume) * 100;
+          this.setState({ [key]: curValue, sliderValue });
+        }
+        if (type === 'sell' && key === 'volume' && value > assetVolume) {
+          const curValue = assetVolume;
+          const sliderValue = 100;
+          this.setState({ [key]: curValue, sliderValue });
+        }
+      }
     }
   };
 
@@ -39,7 +56,8 @@ class TradeForm extends PureComponent {
     const { type, mainVolume, coinVolume } = this.props;
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
-    const volume = (assetVolume / price) * (value / 100);
+
+    const volume = (type === 'buy' ? assetVolume / price : assetVolume) * (value / 100);
 
     this.setState({ volume, sliderValue: value });
   };
@@ -56,7 +74,7 @@ class TradeForm extends PureComponent {
   // 获取订单号
   getOrderNo = () => {
     const isLogin = sessionStorage.getItem('account');
-    if(isLogin) {
+    if (isLogin) {
       const { localization } = this.props;
       const { price, volume } = this.state;
       if (price <= 0) {
@@ -80,11 +98,9 @@ class TradeForm extends PureComponent {
         .catch(error => {
           this.setState({ pending: false });
         });
-
-    }else{
-      this.props.history.push('/signin')
+    } else {
+      this.props.history.push('/signin');
     }
-    
   };
 
   // 买入卖出
@@ -128,6 +144,13 @@ class TradeForm extends PureComponent {
     if (nextProps.tradePrice !== this.props.tradePrice) {
       this.setState({ price: nextProps.tradePrice });
     }
+
+    if (
+      nextProps.marketName !== this.props.marketName ||
+      nextProps.coinName !== this.props.coinName
+    ) {
+      this.setState({ price: '', volume: '' });
+    }
   }
 
   render() {
@@ -167,7 +190,6 @@ class TradeForm extends PureComponent {
     }
 
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
-
 
     return (
       <ul className="trade-form">
@@ -275,8 +297,8 @@ class TradeForm extends PureComponent {
               value={assetVolume ? sliderValue : 0}
               onChange={this.handleSlideInput}
               disabled={
-                Number(price) <= 0 ||
-                ((type === 'buy' && !mainVolume) || (type === 'sell' && !coinVolume))
+                (type === 'buy' && (Number(price) <= 0 || !mainVolume)) ||
+                (type === 'sell' && !coinVolume)
               }
             />
           </li>
@@ -350,7 +372,7 @@ class TradeForm extends PureComponent {
             onClick={this.getOrderNo}
             disabled={pending}
           >
-            { isLogin ? `${typeToText[type]} ${coinName}`: `交易前请先 登录`}
+            {isLogin ? `${typeToText[type]} ${coinName}` : `交易前请先 登录`}
           </Button>
         </li>
       </ul>
