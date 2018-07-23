@@ -745,7 +745,7 @@ class Trade extends PureComponent {
         render: (text, record) => `${text}${record.status === 1 ? localization['部分成交'] : ''}`
       },
       {
-        title: localization['状态/操作'],
+        title: `${localization['状态']}/${localization['操作']}`,
         dataIndex: 'status',
         key: 'status',
         render: (text, record) => {
