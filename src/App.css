@@ -1,11 +1,19 @@
 /* 修改chrome浏览器渲染黄色背景的时间 */
 input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #272b37 inset !important;
+  box-shadow: 0 0 0 1000px #272b37 inset !important;
   -webkit-text-fill-color: #dadada !important;
   caret-color: #dadada;
 }
-::-webkit-scrollbar{
-  background-color: #272B37;
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #272b37;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgb(90, 90, 90);
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
 }
 
 /* 全局样式 */
@@ -305,15 +313,15 @@ a:hover {
   border-color: #d4a668;
 }
 
-:root .ant-btn-primary.disabled, 
-:root .ant-btn-primary[disabled], 
-:root .ant-btn-primary.disabled:hover, 
-:root .ant-btn-primary[disabled]:hover, 
-:root .ant-btn-primary.disabled:focus, 
-:root .ant-btn-primary[disabled]:focus, 
-:root .ant-btn-primary.disabled:active, 
-:root .ant-btn-primary[disabled]:active, 
-:root .ant-btn-primary.disabled.active, 
+:root .ant-btn-primary.disabled,
+:root .ant-btn-primary[disabled],
+:root .ant-btn-primary.disabled:hover,
+:root .ant-btn-primary[disabled]:hover,
+:root .ant-btn-primary.disabled:focus,
+:root .ant-btn-primary[disabled]:focus,
+:root .ant-btn-primary.disabled:active,
+:root .ant-btn-primary[disabled]:active,
+:root .ant-btn-primary.disabled.active,
 :root .ant-btn-primary[disabled].active {
   color: #666;
   border-color: #666;
@@ -653,7 +661,7 @@ a:hover {
   margin: 110px auto 130px;
   padding: 50px 56px;
   text-align: center;
-  background-color: #2A313E;
+  background-color: #2a313e;
 }
 
 .form-box h1 {
@@ -666,18 +674,18 @@ a:hover {
   margin-top: 20px;
   color: #dadada;
 }
-.form-box .attention .icon-zhuyishixiang{
+.form-box .attention .icon-zhuyishixiang {
   color: #d4a668;
 }
-.form-box .attention strong{
+.form-box .attention strong {
   color: #d4a668;
 }
 
-.form-box input{
+.form-box input {
   color: #dadada;
   background-color: #292f3d;
 }
-.form-box .form-list .iconfont{
+.form-box .form-list .iconfont {
   color: #dadada;
 }
 
@@ -1199,6 +1207,6 @@ a:hover {
 .v-center-modal .ant-modal-close-x {
   color: #dadada;
 }
-.v-center-modal .ant-modal-footer{
+.v-center-modal .ant-modal-footer {
   border-top: none;
 }
