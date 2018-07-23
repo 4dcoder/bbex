@@ -11,6 +11,7 @@ import AppealModal from './AppealModal';
 const TabPane = Tabs.TabPane;
 
 const ExpandComponent = ({
+  localization,
   record,
   previewImage,
   onPreview,
@@ -23,7 +24,7 @@ const ExpandComponent = ({
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
   const handleCopy = text => {
     copy(text).then(() => {
-      message.success('复制成功！');
+      message.success(localization['复制成功！']);
     });
   };
 
@@ -34,10 +35,11 @@ const ExpandComponent = ({
           <div className="extra-cont">
             <span>
               <i className="iconfont icon-phone" />
-              商家：{bankInfo.mobile}
+              {localization['商家']}：{bankInfo.mobile}
             </span>
             <a href="javascript:;" onClick={handleAppeal}>
-              <i className="iconfont icon-kefu" />申请客服处理
+              <i className="iconfont icon-kefu" />
+              {localization['申请客服处理']}
             </a>
           </div>
         }
@@ -46,29 +48,33 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-yinhangqia" />
-              商家银行卡信息
+              {localization['商家银行卡信息']}
             </span>
           }
           key="bank"
         >
           <div className="payment-box-cont">
-            <h3>请使用绑定的银行卡完成付款，付款时填写以下信息</h3>
+            <h3>{localization['请使用绑定的银行卡完成付款，付款时填写以下信息']}</h3>
             <table>
               <tbody>
                 <tr>
                   <th>
-                    <span className="font-color-red">*</span>收款姓名
+                    <span className="font-color-red">*</span>
+                    {localization['收款姓名']}
                   </th>
                   <th>
-                    <span className="font-color-red">*</span>银行卡号
+                    <span className="font-color-red">*</span>
+                    {localization['银行卡号']}
                   </th>
                   <th>
-                    <span className="font-color-red">*</span>开户行/支行名称
+                    <span className="font-color-red">*</span>
+                    {localization['开户行']}/{localization['支行名称']}
                   </th>
                   <th>
-                    <span className="font-color-red">*</span>付款金额
+                    <span className="font-color-red">*</span>
+                    {localization['付款金额']}
                   </th>
-                  <th>付款备注</th>
+                  <th>{localization['付款备注']}</th>
                 </tr>
                 <tr>
                   <td>
@@ -112,7 +118,7 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-zhifubao" />
-              商家支付宝信息
+              {localization['商家支付宝信息']}
             </span>
           }
           key="alipay"
@@ -121,30 +127,35 @@ const ExpandComponent = ({
             <div className="payment-box-qrcode pull-left clear">
               <img
                 src={`${IMAGES_ADDRESS}/view/${bankInfo.alipayQrcodeId}`}
-                alt="支付宝收款"
+                alt={localization['付宝收款']}
                 onClick={() => {
                   onPreview(bankInfo.alipayQrcodeId);
                 }}
               />
               <h4>
-                点击图片<br />扫码支付
+                {localization['点击图片']}
+                <br />
+                {localization['扫码支付']}
               </h4>
             </div>
             <div className="payment-box-attr pull-left">
-              <h3>手动付款</h3>
+              <h3>{localization['手动付款']}</h3>
               <table>
                 <tbody>
                   <tr>
                     <th width="100px">
-                      <span className="font-color-red">*</span>收款姓名
+                      <span className="font-color-red">*</span>
+                      {localization['收款姓名']}
                     </th>
                     <th width="200px">
-                      <span className="font-color-red">*</span>支付宝
+                      <span className="font-color-red">*</span>
+                      {localization['支付宝']}
                     </th>
                     <th width="150px">
-                      <span className="font-color-red">*</span>付款金额
+                      <span className="font-color-red">*</span>
+                      {localization['付款金额']}
                     </th>
-                    <th width="100px">付款备注</th>
+                    <th width="100px">{localization['付款备注']}</th>
                   </tr>
                   <tr>
                     <td>
@@ -182,7 +193,7 @@ const ExpandComponent = ({
           tab={
             <span>
               <i className="iconfont icon-wxpay" />
-              商家微信支付信息
+              {localization['商家微信支付信息']}
             </span>
           }
           key="wechat"
@@ -191,30 +202,35 @@ const ExpandComponent = ({
             <div className="payment-box-qrcode pull-left clear">
               <img
                 src={`${IMAGES_ADDRESS}/view/${bankInfo.wechatQrcodeId}`}
-                alt="微信收款"
+                alt={localization['微信收款']}
                 onClick={() => {
                   onPreview(bankInfo.wechatQrcodeId);
                 }}
               />
               <h4>
-                点击图片<br />扫码支付
+                {localization['点击图片']}
+                <br />
+                {localization['扫码支付']}
               </h4>
             </div>
             <div className="payment-box-attr pull-left">
-              <h3>手动付款</h3>
+              <h3>{localization['手动付款']}</h3>
               <table>
                 <tbody>
                   <tr>
                     <th width="100px">
-                      <span className="font-color-red">*</span>收款姓名
+                      <span className="font-color-red">*</span>
+                      {localization['收款姓名']}
                     </th>
                     <th width="200px">
-                      <span className="font-color-red">*</span>微信
+                      <span className="font-color-red">*</span>
+                      {localization['微信']}
                     </th>
                     <th width="150px">
-                      <span className="font-color-red">*</span>付款金额
+                      <span className="font-color-red">*</span>
+                      {localization['付款金额']}
                     </th>
-                    <th width="100px">付款备注</th>
+                    <th width="100px">{localization['付款备注']}</th>
                   </tr>
                   <tr>
                     <td>
@@ -259,19 +275,19 @@ const ExpandComponent = ({
                 confirmPay(record);
               }}
             >
-              我已付款给商家
+              {localization['我已付款给商家']}
             </Button>
           )}
         {remarks === 'buy' &&
           status === 1 && (
             <Button type="primary" size="large" disabled>
-              我已付款给商家
+              {localization['我已付款给商家']}
             </Button>
           )}
         {remarks === 'sell' &&
           status === 0 && (
             <Button size="large" disabled>
-              等待商家确认付款
+              {localization['等待商家确认付款']}
             </Button>
           )}
         {remarks === 'sell' &&
@@ -283,7 +299,7 @@ const ExpandComponent = ({
                 confirmReceipt(record);
               }}
             >
-              确认收款
+              {localization['确认收款']}
             </Button>
           )}
         {remarks !== 'sell' && (
@@ -294,26 +310,18 @@ const ExpandComponent = ({
               cancelPay(record, status);
             }}
           >
-            取消订单
+            {localization['取消订单']}
           </Button>
         )}
       </div>
       <div className="payment-box-notice">
-        <h3>交易须知：</h3>
+        <h3>{localization['交易须知：']}</h3>
         <ul>
+          <li>{localization['商家有一个未完成买单，无法继续买入，完成后方可进行买卖']}</li>
+          <li>{localization['商家当天取消3笔交易，将禁止当天C2C买卖功能']}</li>
+          <li>{localization['商家当天被申诉3次以上，禁止当天C2C买卖功能']}</li>
           <li>
-            商家有<span className="font-color-red">一个未完成买单</span>，无法继续买入，完成后方可进行买卖
-          </li>
-          <li>
-            商家当天取消<span className="font-color-red">3笔</span>交易，将禁止当天C2C买卖功能
-          </li>
-          <li>
-            商家当天被申诉<span className="font-color-red">3次以上</span>，禁止当天C2C买卖功能
-          </li>
-          <li>
-            大于<span className="font-color-red">5万</span>的付款，请务必将单笔金额拆分为<span className="font-color-red">
-              5万以内分批转账
-            </span>，否则将延迟到账
+            {localization['大于5万的付款，请务必将单笔金额拆分为5万以内分批转账，否则将延迟到账']}
           </li>
         </ul>
       </div>
@@ -998,7 +1006,6 @@ class TradeContainer extends Component {
         dataIndex: 'action',
         key: 'action',
         render: (text, record) => {
-          // console.log(text, record)
           if (Number(record.volume - record.lockVolume - record.successVolume) > 0) {
             return (
               <Button
@@ -1054,13 +1061,13 @@ class TradeContainer extends Component {
                   }}
                   style={{ borderRadius: 4 }}
                 >
-                  撤销申诉
+                  {localization['撤销申诉']}
                 </Button>
               );
             case '2':
-              return <div>客服已处理完</div>;
+              return <div>{localization['客服已处理完']}</div>;
             case '3':
-              return <div>已撤销</div>;
+              return <div>{localization['已撤销']}</div>;
           }
         }
       }
@@ -1073,10 +1080,10 @@ class TradeContainer extends Component {
         key: 'remarks',
         render: (text, record) => {
           const typeToText = {
-            buy: '买入',
-            sell: '卖出'
+            buy: localization['买入'],
+            sell: localization['卖出']
           };
-          return `${typeToText[text]}${record.symbol}`;
+          return `${typeToText[text]} ${record.symbol}`;
         }
       },
       {
@@ -1104,24 +1111,26 @@ class TradeContainer extends Component {
         dataIndex: 'status',
         key: 'status',
         render: text => {
+          let status = '';
           switch (text) {
             case 0:
-              return '已挂单';
+              status = '已挂单';
             case 1:
-              return '已付款';
+              status = '已付款';
             case 2:
-              return '确认收到款';
+              status = '确认收到款';
             case 3:
-              return '确认没收到款';
+              status = '确认没收到款';
             case 4:
-              return '申诉';
+              status = '申诉';
             case 5:
-              return '仲裁结束';
+              status = '仲裁结束';
             case 9:
-              return '取消';
+              status = '取消';
             default:
-              return '';
+              status = '';
           }
+          return localization[status];
         }
       },
       // {
@@ -1144,19 +1153,19 @@ class TradeContainer extends Component {
             if (record.remarks === 'buy') {
               return (
                 <Button type="primary" onClick={this.confirmPay.bind(this, record)}>
-                  我已付款给商家
+                  {localization['我已付款给商家']}
                 </Button>
               );
             } else {
-              return '等待收款';
+              return localization['等待收款'];
             }
           } else if (record.status === 1) {
             if (record.remarks === 'buy') {
-              return '已付款';
+              return localization['已付款'];
             } else {
               return (
                 <Button type="primary" onClick={this.confirmReceipt.bind(this, record)}>
-                  确认收款
+                  {localization['确认收款']}
                 </Button>
               );
             }
@@ -1204,24 +1213,27 @@ class TradeContainer extends Component {
         dataIndex: 'status',
         key: 'status',
         render: text => {
+          let status = '';
           switch (text) {
             case 0:
-              return '已挂单';
+              status = '已挂单';
             case 1:
-              return '已付款';
+              status = '已付款';
             case 2:
-              return '已收到款';
+              status = '已收到款';
             case 3:
-              return '确认没收到款';
+              status = '确认没收到款';
             case 4:
-              return '申诉';
+              status = '申诉';
             case 5:
-              return '仲裁结束';
+              status = '仲裁结束';
             case 9:
-              return '取消';
+              status = '取消';
             default:
-              return '';
+              status = '';
           }
+
+          return localization[status];
         }
       },
       {
@@ -1232,7 +1244,7 @@ class TradeContainer extends Component {
           if (record.status === 0 || record.status === 2) {
             return (
               <Button type="primary" onClick={this.cancelAdvert.bind(this, record)}>
-                撤销广告
+                {localization['撤销广告']}
               </Button>
             );
           } else {
@@ -1283,6 +1295,7 @@ class TradeContainer extends Component {
                   <TabPane tab={`${localization['买入']}${coin.symbol}`} key="1">
                     {releaseVisible && (
                       <TransactionForm
+                        localization={localization}
                         coin={coin}
                         exType="buy"
                         price={advertList && advertList.price}
@@ -1293,6 +1306,7 @@ class TradeContainer extends Component {
                   <TabPane tab={`${localization['卖出']}${coin.symbol}`} key="2">
                     {releaseVisible && (
                       <TransactionForm
+                        localization={localization}
                         coin={coin}
                         exType="sell"
                         price={advertList && advertList.price}
@@ -1364,6 +1378,7 @@ class TradeContainer extends Component {
                 expandedRowRender={record =>
                   record.bankInfo ? (
                     <ExpandComponent
+                      localization={localization}
                       record={record}
                       previewImage={previewImage}
                       onPreview={this.handlePreview}
@@ -1442,7 +1457,7 @@ class TradeContainer extends Component {
           </div>
         </div>
         <Modal
-          title={`${typeText[exType]}${coin.symbol}`}
+          title={`${typeText[exType]} ${coin.symbol}`}
           wrapClassName="c2c-modal v-center-modal"
           visible={transactionVisible}
           onCancel={this.hideModal.bind(this, 'transactionVisible')}
@@ -1450,6 +1465,7 @@ class TradeContainer extends Component {
         >
           {transactionVisible && (
             <TransactionForm
+              localization={localization}
               freezePrice
               coin={coin}
               exType={exType}

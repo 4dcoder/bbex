@@ -31,11 +31,10 @@ class Property extends Component {
   }
 
   inputVolume = e => {
-    let value  = e.target.value;
+    let value = e.target.value;
     if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
       this.setState({ handleVolume: value });
     }
-    
   };
 
   tabChange = key => {
@@ -186,10 +185,9 @@ class Property extends Component {
         message.success('操作成功！');
         this.hideModal();
       } else {
-
-        if(type==='turnOut' && json.code===10004015){
+        if (type === 'turnOut' && json.code === 10004015) {
           message.error('资产不足');
-        }else{
+        } else {
           message.error(json.msg);
         }
       }
@@ -227,7 +225,7 @@ class Property extends Component {
         title: '资金名称',
         dataIndex: 'name',
         key: 'name',
-        render: (text, record) => {
+        render: text => {
           const type = text.toLowerCase();
           return (
             <div>
@@ -242,7 +240,11 @@ class Property extends Component {
         dataIndex: 'volume',
         key: 'volume',
         render: text => {
-          return <div>{Number(text).toFixed(8)}</div>;
+          return (
+            <div className="available-col">
+              <i className="iconfont icon-qianbao" /> {Number(text).toFixed(8)}
+            </div>
+          );
         }
       },
       {

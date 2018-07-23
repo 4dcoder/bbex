@@ -55,50 +55,50 @@ class TransactionForm extends Component {
   };
 
   render() {
-    const { coin, exType, freezePrice } = this.props;
+    const { localization, coin, exType, freezePrice } = this.props;
     const { price, volume, amount } = this.state;
     const typeText = {
-      buy: '买入',
-      sell: '卖出'
+      buy: localization['买入'],
+      sell: localization['卖出']
     };
 
     return (
       <ul className="c2c-form">
         <li>
           <Input
-            addonBefore="价格（CNY）"
+            addonBefore={`${localization['价格']}（CNY）`}
             size="large"
             value={price}
-            placeholder="请输入价格"
+            placeholder={localization['请输入价格']}
             disabled={freezePrice}
             onChange={this.handlePrice}
           />
         </li>
         <li>
           <Input
-            addonBefore={`数量（${coin.symbol}）`}
+            addonBefore={`${localization['数量']}（${coin.symbol}）`}
             size="large"
             value={volume}
-            placeholder="请输入数量"
+            placeholder={localization['请输入数量']}
             onChange={this.handleVolume}
           />
         </li>
         <li>
           <Input
-            addonBefore="总额（CNY）"
+            addonBefore={`${localization['总额']}（CNY）`}
             size="large"
             value={amount}
-            placeholder="请输入总额"
+            placeholder={localization['请输入总额']}
             onChange={this.handleAmount}
           />
         </li>
         <li>
           <Button type={exType} size="large" onClick={this.handleSubmit}>
             <i className="iconfont icon-jia" />
-            {`${typeText[exType]}${coin.symbol}`}
+            {`${typeText[exType]} ${coin.symbol}`}
           </Button>
         </li>
-        <li style={{color: '#dadada'}}>费率0%</li>
+        <li style={{color: '#dadada'}}>{localization['费率']} 0%</li>
       </ul>
     );
   }
