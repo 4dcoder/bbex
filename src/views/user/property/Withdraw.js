@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Input, Select, Button, message } from 'antd';
 import { withRouter } from 'react-router-dom';
 import Validate from './Validate';
-import CodePopup from '../../../components/code-popup';
 import './withdraw.css';
 
 const Option = Select.Option;
@@ -44,8 +43,6 @@ class Withdraw extends Component {
       return;
     }
     this.submitWithdraw(json => {
-      let mail = JSON.parse(sessionStorage.getItem('account')).mail;
-
       if (json.code === 10000000) {
         let id = json.data;
         this.setState({
@@ -60,23 +57,6 @@ class Withdraw extends Component {
                 const { name, withdrawFee } = this.props;
                 const myVolume = myCoinCount - withdrawFee;
                 this.props.history.push('/user/status', { name, myVolume, address });
-              }}
-              getCode={() => {
-                this.setState({
-                  vmodal: (
-                    <CodePopup
-                      flag="mail"
-                      mail={mail}
-                      type="withdraw"
-                      onCancel={() => {
-                        this.closeModal();
-                      }}
-                      onOk={() => {
-                        this.closeModal();
-                      }}
-                    />
-                  )
-                });
               }}
             />
           )

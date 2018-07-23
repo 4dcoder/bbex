@@ -5,7 +5,6 @@ class Validate extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      emailCode: '',
       googleCode: '',
       number: 59,
       disabled: false
@@ -14,16 +13,11 @@ class Validate extends Component {
 
   request = window.request;
 
-  codeChange = e => {
-    this.setState({ emailCode: e.target.value });
-  };
-
   handleOk = id => {
-    const { emailCode, googleCode } = this.state;
+    const { googleCode } = this.state;
     if (/^\d{6}$/.test(googleCode) && googleCode) {
       this.validate({
         id,
-        emailCode,
         googleCode,
         callback: json => {
           if (json.code === 10000000) {
@@ -42,7 +36,7 @@ class Validate extends Component {
   };
 
   handleCancel = () => {
-    this.setState({ emailCode: '', googleCode: '' });
+    this.setState({ googleCode: '' });
     let { cancelClick } = this.props;
     cancelClick();
   };
@@ -53,33 +47,11 @@ class Validate extends Component {
     }
   };
 
-  getCodeClick = () => {
-    let { getCode } = this.props;
-    getCode();
-
-    this.setState({
-      disabled: true
-    });
-    this.timer = setInterval(() => {
-      let { number } = this.state;
-      if (number === 0) {
-        clearInterval(this.timer);
-        this.setState({
-          number: 59,
-          disabled: false
-        });
-      } else {
-        this.setState({ number: number - 1 });
-      }
-    }, 1000);
-  };
-
-  validate = ({ id, emailCode, googleCode, callback }) => {
+  validate = ({ id, googleCode, callback }) => {
     this.request('/coin/volume/withdraw/validate', {
       method: 'POST',
       body: {
         id,
-        emailCode,
         googleCode
       }
     }).then(json => {
@@ -91,7 +63,7 @@ class Validate extends Component {
   }
 
   render() {
-    const { emailCode, googleCode, disabled, number } = this.state;
+    const { googleCode } = this.state;
     return (
       <Modal
         title="提币验证"
@@ -107,22 +79,6 @@ class Validate extends Component {
         }}
         onCancel={this.handleCancel}
       >
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Input
-            value={emailCode}
-            onChange={this.codeChange}
-            size="large"
-            placeholder="请输入邮箱验证码"
-          />
-          <Button
-            onClick={this.getCodeClick}
-            disabled={disabled}
-            type="primary"
-            style={{ width: 100, height: 40 }}
-          >
-            {!disabled ? '获取验证码' : number + 's'}
-          </Button>
-        </div>
         <div style={{ marginTop: 20 }}>
           <Input
             value={googleCode}
