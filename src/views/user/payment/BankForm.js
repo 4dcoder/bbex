@@ -290,7 +290,10 @@ class BankForm extends Component {
         </FormItem>
         <FormItem {...formItemLayout} label="开户银行">
           {getFieldDecorator('bankName', bankOption)(
-            <Select size="large" placeholder="请选择开户银行">
+            <Select 
+              size="large" 
+              placeholder="请选择开户银行"
+            >
               {bankList.map(bank => {
                 return (
                   <Option key={bank} value={bank}>

@@ -15,6 +15,10 @@ class Payment extends Component {
     request = window.request;
 
     componentWillMount() {  
+       this.getBankInfo();
+    }
+
+    getBankInfo = () => {
         this.request(`/offline/bank/get`, {
             method: 'GET',
         }).then(json => {
@@ -31,7 +35,8 @@ class Payment extends Component {
     }
 
     handleSetBankInfo = (bankInfo) => {
-        this.setState({ bankInfo });
+        // this.setState({ bankInfo });
+        this.getBankInfo();
     }
 
     render() {

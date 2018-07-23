@@ -20,13 +20,14 @@ class Verified extends Component {
     const { cardStatus } = this.account;
     const currentMap = {
       0: 0,
-      9: 0,
+      9: 2,
       1: 3,
       2: 2
     };
     this.state = {
       current: currentMap[cardStatus],
-      showExampleImage: false
+      showExampleImage: false,
+      reason: ''
     };
   }
 
@@ -45,6 +46,27 @@ class Verified extends Component {
     const current = this.state.current + 1;
     this.setState({ current });
   };
+
+  componentDidMount() {
+    const { current } = this.state;
+    if (current === 2) {
+      this.getReason();
+    }
+  }
+  // 获取审核不通过原因
+  getReason = () => {
+    this.request('/user/findCardStatus').then(json => {
+      if (json.code === 10000000) {
+        this.setState({ reason: json.data.reason });
+      } else {
+        message.success(json.msg);
+      }
+    });
+  }
+  //重新认证
+  reVerified = () => {
+    this.setState({ current: 0, reason: ''});
+  }
 
   // 提交身份信息
   submitVer = values => {
@@ -100,9 +122,10 @@ class Verified extends Component {
   };
 
   render() {
-    const { current, showExampleImage, frontIdCard, backIdCard, handheldIdCard } = this.state;
+    const { current, showExampleImage, frontIdCard, backIdCard, handheldIdCard, reason } = this.state;
 
     const canSumbit = frontIdCard && backIdCard && handheldIdCard;
+    const cardStatus = JSON.parse(sessionStorage.getItem('account')).cardStatus;
 
     return (
       <div className="user-cont verified">
@@ -153,11 +176,11 @@ class Verified extends Component {
                     {this.state[`${type}ImageUrl`] ? (
                       <img src={this.state[`${type}ImageUrl`]} alt="" />
                     ) : (
-                      <div>
-                        <Icon type={this.state[`${type}Loading`] ? 'loading' : 'plus'} />
-                        <div className="ant-upload-text">{uploadText[type]}</div>
-                      </div>
-                    )}
+                        <div>
+                          <Icon type={this.state[`${type}Loading`] ? 'loading' : 'plus'} />
+                          <div className="ant-upload-text">{uploadText[type]}</div>
+                        </div>
+                      )}
                   </Upload>
                 );
               })}
@@ -176,7 +199,17 @@ class Verified extends Component {
         {current === 2 && (
           <div className="steps-content step3">
             <i className="iconfont icon-tubiaolunkuo-" />
-            <h3>您的资料已递交审核，我们会在三个工作日内完成审核</h3>
+            {
+              cardStatus===9 ? 
+              <div className='reason-des'>
+                <div className='reason-result'>认证不通过</div>
+                <h3>原因：{reason}</h3>
+                <Button type="primary" onClick={this.reVerified}>重新认证</Button>
+              </div>
+              : 
+              <h3>您的资料已递交审核，我们会在三个工作日内完成审核</h3>
+            }
+
             <p>我们承诺保证您的个人隐私安全，请您积极配合，耐心等待审核</p>
           </div>
         )}
