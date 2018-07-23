@@ -1115,18 +1115,25 @@ class TradeContainer extends Component {
           switch (text) {
             case 0:
               status = '已挂单';
+              break;
             case 1:
               status = '已付款';
+              break;
             case 2:
               status = '确认收到款';
+              break;
             case 3:
               status = '确认没收到款';
+              break;
             case 4:
               status = '申诉';
+              break;
             case 5:
               status = '仲裁结束';
+              break;
             case 9:
               status = '取消';
+              break;
             default:
               status = '';
           }
@@ -1217,18 +1224,25 @@ class TradeContainer extends Component {
           switch (text) {
             case 0:
               status = '已挂单';
+              break;
             case 1:
               status = '已付款';
+              break;
             case 2:
               status = '已收到款';
+              break;
             case 3:
               status = '确认没收到款';
+              break;
             case 4:
               status = '申诉';
+              break;
             case 5:
               status = '仲裁结束';
+              break;
             case 9:
               status = '取消';
+              break;
             default:
               status = '';
           }
