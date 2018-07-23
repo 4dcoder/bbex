@@ -28,6 +28,7 @@ class TradeForm extends PureComponent {
     if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
       const curVolume = key === 'volume' ? value : volume;
       if (
+        assetVolume &&
         !(type === 'buy' && value * price > assetVolume) &&
         !(type === 'sell' && key === 'volume' && value > assetVolume)
       ) {
@@ -36,11 +37,12 @@ class TradeForm extends PureComponent {
       } else {
         if (type === 'buy' && value * price > assetVolume) {
           const curValue = assetVolume / otherValue;
+          debugger;
           const sliderValue = (curVolume / assetVolume) * 100;
           this.setState({ [key]: curValue, sliderValue });
         }
         if (type === 'sell' && key === 'volume' && value > assetVolume) {
-          const curValue = assetVolume;
+          const curValue = assetVolume || '';
           const sliderValue = 100;
           this.setState({ [key]: curValue, sliderValue });
         }
