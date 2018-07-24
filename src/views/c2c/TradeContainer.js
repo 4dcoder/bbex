@@ -548,6 +548,7 @@ class TradeContainer extends Component {
       buy: localization['买入'],
       sell: localization['卖出']
     };
+
     this.request(`/offline/${exType}`, {
       body: {
         volume,
@@ -557,7 +558,7 @@ class TradeContainer extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success(`${typeText[exType]}${selectedCoin.symbol}${localization['成功！']}`);
+        message.success(`${typeText[exType]}${selectedCoin.symbol}${localization['成功']}`);
         this.getMyOrderList();
       } else if (json.code === 10004016) {
         //自己不能卖给自己
@@ -576,7 +577,6 @@ class TradeContainer extends Component {
       } else if (json.code === 10004017) {
         //请进行身份认证
         Modal.confirm({
-          title: localization['发布广告'],
           content: localization['为保证资金安全，请在交易前实名认证'],
           okText: localization['去实名'],
           cancelText: localization['取消'],
@@ -586,15 +586,16 @@ class TradeContainer extends Component {
         });
       } else if (json.code === 10004018) {
         //请先绑定银行卡
-        Modal.confirm({
-          title: localization['发布广告'],
-          content: localization['为保证交易顺畅，请在交易前绑定银行卡'],
-          okText: localization['去绑卡'],
-          cancelText: localization['取消'],
-          onOk: () => {
-            this.props.history.push('/user/payment');
-          }
-        });
+        if (exType === 'sell') {
+          Modal.confirm({
+            content: localization['为保证交易顺畅，请在交易前绑定银行卡'],
+            okText: localization['去绑卡'],
+            cancelText: localization['取消'],
+            onOk: () => {
+              this.props.history.push('/user/payment');
+            }
+          });
+        }
       } else {
         message.error(json.msg);
       }
