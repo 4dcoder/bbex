@@ -1,21 +1,11 @@
 function e(t, o) {
-  var i = n({}, t);
+  var i = Object.assign({}, t);
   for (var s in o)
     'object' != typeof t[s] || null === t[s] || Array.isArray(t[s])
       ? void 0 !== o[s] && (i[s] = o[s])
       : (i[s] = e(t[s], o[s]));
   return i;
 }
-
-const n =
-  Object.assign ||
-  function(t) {
-    for (var e, o = arguments, i = 1, n = arguments.length; i < n; i++) {
-      e = o[i];
-      for (var s in e) Object.prototype.hasOwnProperty.call(e, s) && (t[s] = e[s]);
-    }
-    return t;
-  };
 
 const s = {
   mobile: {
