@@ -37,7 +37,6 @@ class TradeForm extends PureComponent {
       } else {
         if (type === 'buy' && value * price > assetVolume) {
           const curValue = assetVolume / otherValue;
-          debugger;
           const sliderValue = (curVolume / assetVolume) * 100;
           this.setState({ [key]: curValue, sliderValue });
         }
