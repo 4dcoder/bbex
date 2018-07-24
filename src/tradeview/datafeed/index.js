@@ -13,7 +13,9 @@ export default {
       supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M']
     };
 
-    callback(config);
+    setTimeout(() => {
+      callback(config);
+    }, 0);
   },
 
   searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
@@ -42,7 +44,9 @@ export default {
       ticker: symbolName
     };
 
-    onSymbolResolvedCallback(symbolInfo);
+    setTimeout(() => {
+      onSymbolResolvedCallback(symbolInfo);
+    }, 0);
   },
 
   getBars: function(

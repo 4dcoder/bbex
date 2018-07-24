@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Input, Button, Modal, message } from 'antd';
+import { Input, Modal, message } from 'antd';
 
 class Validate extends Component {
   constructor(props) {

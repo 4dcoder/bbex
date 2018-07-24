@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Form, Input, Button, Checkbox, message } from 'antd';
 import { getQueryString } from '../../../utils';
 import request from '../../../utils/request';
@@ -218,7 +218,7 @@ class MobileForm extends Component {
               {!disabled ? '获取手机验证码' : number + 's'}
             </Button>
           </FormItem>
-          <FormItem style={{display: 'none'}}>
+          <FormItem style={{ display: 'none' }}>
             {getFieldDecorator('inviteCode', {
               initialValue: inviteCode,
               rules: [{ pattern: /^\d+$/, message: '请输入数字邀请码' }],

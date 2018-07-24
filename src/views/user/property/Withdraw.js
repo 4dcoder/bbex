@@ -116,7 +116,7 @@ class Withdraw extends Component {
   };
 
   render() {
-    const { id, name, volume, withdrawFee, withdrawMaxVolume, withdrawMinVolume } = this.props;
+    const { name, volume, withdrawFee, withdrawMaxVolume, withdrawMinVolume } = this.props;
     let { addressHistory, myCoinCount, address } = this.state;
 
     let lastCount = myCoinCount - withdrawFee;

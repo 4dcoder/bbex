@@ -158,7 +158,7 @@ class Trade extends PureComponent {
   // 点击订单详情
   handleOrderDetail = orderNo => {
     let { historyExpendKey } = this.state;
-    if (historyExpendKey != orderNo) {
+    if (historyExpendKey !== orderNo) {
       this.getOrderDetail(orderNo);
       this.setState({ historyExpendKey: orderNo });
     }
@@ -260,7 +260,7 @@ class Trade extends PureComponent {
           let { tradeExpair, streamList, marketName } = this.state;
           Object.keys(tradeExpair[marketName]).forEach(key => {
             if (streamVO.coinOther === tradeExpair[marketName][key].coinOther) {
-              if (tradeExpair[marketName][key].firstPrice == 0) {
+              if (Number(tradeExpair[marketName][key].firstPrice) === 0) {
                 tradeExpair[marketName][key].firstPrice = tradeExpair[marketName][key].latestPrice;
               }
               tradeExpair[marketName][key].latestPrice = (streamVO.price * 1).toFixed(8);
@@ -559,7 +559,9 @@ class Trade extends PureComponent {
 
   //设置交易价格
   handleTradePrice = (tradePrice, clickTradeType) => {
-    this.setState({ tradePrice, clickTradeType });
+    if (tradePrice) {
+      this.setState({ tradePrice, clickTradeType });
+    }
   };
 
   componentWillMount() {
@@ -1187,6 +1189,7 @@ class Trade extends PureComponent {
                                   index > startIndex - 1 && (
                                     <tr
                                       key={index}
+                                      className={classnames({ 'empty': isEmptyRecord })}
                                       onClick={this.handleTradePrice.bind(
                                         this,
                                         record.price,
@@ -1270,6 +1273,7 @@ class Trade extends PureComponent {
                                   index < 15 && (
                                     <tr
                                       key={index}
+                                      className={classnames({ 'empty': isEmptyRecord })}
                                       onClick={this.handleTradePrice.bind(
                                         this,
                                         record.price,

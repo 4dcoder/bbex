@@ -33,6 +33,7 @@
 
 .trade-plate-header {
   position: relative;
+  height: 52px;
   padding: 0 20px;
   line-height: 52px;
   border-bottom: 1px solid #d4a668;
@@ -150,7 +151,7 @@
 
 .trade-plate-list {
   position: relative;
-  height: 935px;
+  height: 937px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -195,7 +196,8 @@
   cursor: pointer;
 }
 
-.trade-plate-container.stream td {
+.trade-plate-container.stream td,
+.trade-plate-list tr.empty td {
   cursor: inherit;
 }
 

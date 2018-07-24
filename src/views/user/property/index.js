@@ -269,7 +269,7 @@ class Property extends Component {
         key: 'action',
         render: (text, record) => (
           <div className="property-action">
-            {(record.tokenStatus == 1 || record.tokenStatus == 2) && (
+            {(record.tokenStatus*1 === 1 || record.tokenStatus*1 === 2) && (
               <Button
                 type="primary"
                 onClick={() => {
@@ -279,7 +279,7 @@ class Property extends Component {
                 充币
               </Button>
             )}
-            {(record.tokenStatus == 1 || record.tokenStatus == 3) && (
+            {(record.tokenStatus*1 === 1 || record.tokenStatus*1 === 3) && (
               <Button
                 type="primary"
                 onClick={() => {

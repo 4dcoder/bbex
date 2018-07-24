@@ -83,6 +83,7 @@
 .carousel img {
   width: 100%;
   display: inline-block;
+  min-height: 350px;
   pointer-events: none;
 }
 

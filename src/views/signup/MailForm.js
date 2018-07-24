@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, message, Tabs } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { getQueryString } from '../../utils';
 import { JSEncrypt } from '../../utils/jsencrypt.js';
 import { PUBLI_KEY, PWD_REGEX, MAIL_REGEX } from '../../utils/constants';
@@ -141,119 +141,118 @@ class MailForm extends Component {
     const { getFieldDecorator } = this.props.form;
     const { disabled, number, popup, inviteCode } = this.state;
 
-    return <Form onSubmit={this.handleSubmit} className="signup-form">
-      <FormItem>
-        {getFieldDecorator('mail', {
-          rules: [
-            { required: true, message: '请输入邮箱' },
-            { pattern: MAIL_REGEX, message: '邮箱格式不正确' },
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
+    return (
+      <Form onSubmit={this.handleSubmit} className="signup-form">
+        <FormItem>
+          {getFieldDecorator('mail', {
+            rules: [
+              { required: true, message: '请输入邮箱' },
+              { pattern: MAIL_REGEX, message: '邮箱格式不正确' }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              type="mail"
+              placeholder="邮箱"
+              prefix={<i className="iconfont icon-youxiang" />}
+            />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('password', {
+            rules: [
+              { required: true, message: '请输入密码' },
+              { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字,字母' },
+              { validator: this.validateToNextPassword }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              type="password"
+              placeholder="密码"
+              prefix={<i className="iconfont icon-suo" />}
+            />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('confirm', {
+            rules: [
+              { required: true, message: '请输入确认密码' },
+              { validator: this.comparePassword }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              type="password"
+              placeholder="确认密码"
+              onBlur={this.handleConfirmBlur}
+              prefix={<i className="iconfont icon-suo" />}
+            />
+          )}
+        </FormItem>
+        <FormItem className="mail-code">
+          {getFieldDecorator('code', {
+            rules: [
+              { required: true, message: '请输入邮箱验证码' },
+              { pattern: /^\w{6}$/, message: '请输入6位邮箱验证码' }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              placeholder="邮箱验证码"
+              prefix={<i className="iconfont icon-yanzhengma2" />}
+            />
+          )}
+          <Button
             size="large"
-            type="mail"
-            placeholder="邮箱"
-            prefix={<i className="iconfont icon-youxiang" />}
-          />
-        )}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('password', {
-          rules: [
-            { required: true, message: '请输入密码' },
-            { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字,字母' },
-            { validator: this.validateToNextPassword }
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
+            onClick={this.getMailCode}
+            type="primary"
+            disabled={disabled}
+            className="mail-code-btn"
+          >
+            {!disabled ? '获取邮箱验证码' : number + 's'}
+          </Button>
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('inviteCode', {
+            initialValue: inviteCode,
+            rules: [{ pattern: /^\d+$/, message: '请输入数字邀请码' }],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              placeholder="邀请码"
+              prefix={<i className="iconfont icon-yaoqingma" />}
+            />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('agreement', {
+            valuePropName: 'checked',
+            initialValue: true
+          })(<Checkbox className="agree-text">我已阅读并同意</Checkbox>)}
+          <Link to="/agreement" className="link-agree" target="_blank">
+            服务条款
+          </Link>
+        </FormItem>
+        <div className="submit-btn" style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            type="primary"
+            htmlType="submit"
             size="large"
-            type="password"
-            placeholder="密码"
-            prefix={<i className="iconfont icon-suo" />}
-          />
-        )}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('confirm', {
-          rules: [
-            { required: true, message: '请输入确认密码' },
-            { validator: this.comparePassword }
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
-            size="large"
-            type="password"
-            placeholder="确认密码"
-            onBlur={this.handleConfirmBlur}
-            prefix={<i className="iconfont icon-suo" />}
-          />
-        )}
-      </FormItem>
-      <FormItem className="mail-code">
-        {getFieldDecorator('code', {
-          rules: [
-            { required: true, message: '请输入邮箱验证码' },
-            { pattern: /^\w{6}$/, message: '请输入6位邮箱验证码' },
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
-            size="large"
-            placeholder="邮箱验证码"
-            prefix={<i className="iconfont icon-yanzhengma2" />}
-          />
-        )}
-        <Button
-          size="large"
-          onClick={this.getMailCode}
-          type="primary"
-          disabled={disabled}
-          className="mail-code-btn"
-        >
-          {!disabled ? '获取邮箱验证码' : number + 's'}
-        </Button>
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('inviteCode', {
-          initialValue: inviteCode,
-          rules: [
-            { pattern: /^\d+$/, message: '请输入数字邀请码' },
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
-            size='large'
-            placeholder='邀请码'
-            prefix={<i className="iconfont icon-yaoqingma" />}
-          />)}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('agreement', {
-          valuePropName: 'checked',
-          initialValue: true,
-        })(
-          <Checkbox className="agree-text">我已阅读并同意</Checkbox>
-        )}
-        <Link to="/agreement" className='link-agree' target="_blank">
-          服务条款
-      </Link>
-      </FormItem>
-      <div className='submit-btn' style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          type="primary"
-          htmlType="submit"
-          size="large"
-          onClick={this.handleSubmit}
-          style={{ width: 400 }}
-        >
-          注册
-      </Button>
-      </div>
-      {popup}
-    </Form>
+            onClick={this.handleSubmit}
+            style={{ width: 400 }}
+          >
+            注册
+          </Button>
+        </div>
+        {popup}
+      </Form>
+    );
   }
 }
 

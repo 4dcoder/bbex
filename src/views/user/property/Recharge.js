@@ -20,7 +20,7 @@ class Recharge extends Component {
   };
 
   componentWillMount() {
-    let { id, name } = this.props;
+    const { id } = this.props;
     this.request('/coin/user/address/' + id, {
       method: 'GET'
     }).then(json => {

@@ -37,7 +37,7 @@ const ExpandComponent = ({
               <i className="iconfont icon-phone" />
               {localization['商家']}：{bankInfo.mobile}
             </span>
-            <a href="javascript:;" onClick={handleAppeal}>
+            <a href="javascript:void(0);" onClick={handleAppeal}>
               <i className="iconfont icon-kefu" />
               {localization['申请客服处理']}
             </a>
@@ -1069,6 +1069,8 @@ class TradeContainer extends Component {
               return <div>{localization['客服已处理完']}</div>;
             case '3':
               return <div>{localization['已撤销']}</div>;
+            default: 
+              return ''
           }
         }
       }

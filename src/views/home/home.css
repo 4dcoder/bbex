@@ -9,6 +9,7 @@
 
 .coins-market .ant-tabs>.ant-tabs-bar {
   position: relative;
+  height: 49px;
   border-bottom: none;
   background-color: rgb(45, 52, 67);
 }

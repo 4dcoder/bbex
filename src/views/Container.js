@@ -316,7 +316,7 @@ class Container extends Component {
                           return (
                             <span key={index} className="wexin-content">
                               <i className="iconfont icon-weixin" />
-                              <img src={item.linkImage} />
+                              <img src={item.linkImage} alt="微信公众号"/>
                             </span>
                           );
                         } else if (item.typeId === 'link_qq') {
@@ -331,6 +331,7 @@ class Container extends Component {
                             </a>
                           );
                         } else if (item.typeId === 'link_mail') {
+                          return '';
                         } else {
                           return (
                             <a href={`${item.linkUrl}`} key={index} target="_blank">

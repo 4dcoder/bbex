@@ -6,13 +6,11 @@ export function transformResolution(resolution) {
     time = '1w';
   } else if (resolution.toString().indexOf('M') !== -1) {
     time = '1mth';
+  } else if (parseInt(resolution) < 60) {
+    time = `${resolution}m`;
   } else {
-    if (parseInt(resolution) < 60) {
-      time = `${resolution}m`;
-    } else {
-      let hourNumber = Math.floor(parseInt(resolution) / 60);
-      time = `${hourNumber}h`;
-    }
+    const hourNumber = Math.floor(parseInt(resolution) / 60);
+    time = `${hourNumber}h`;
   }
   return time;
 }
