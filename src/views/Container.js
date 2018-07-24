@@ -157,10 +157,12 @@ class Container extends Component {
   // 获取logo
   getLogo = () => {
     if (window.location.origin.indexOf('localhost') !== -1) {
+      //本地开发载入react logo
       import('../logo.svg').then(logo => {
         this.setState({ logo });
       });
     } else {
+      //线上加载相应平台logo
       request('/cms/logo', {
         method: 'GET'
       }).then(json => {
