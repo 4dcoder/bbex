@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter, Link, NavLink } from 'react-router-dom';
 import { message } from 'antd';
-import classnames from 'classnames';
 import request from '../utils/request';
 import Verification from '../components/verification';
 import GooglePopup from '../components/google-popup';
@@ -157,16 +156,22 @@ class Container extends Component {
 
   // 获取logo
   getLogo = () => {
-    request('/cms/logo', {
-      method: 'GET'
-    }).then(json => {
-      if (json.code === 10000000) {
-        this.setState({ logo: json.data });
-      } else {
-        message.destroy();
-        message.error(json.msg);
-      }
-    });
+    if (window.location.origin.indexOf('localhost') !== -1) {
+      import('../logo.svg').then(logo => {
+        this.setState({ logo });
+      });
+    } else {
+      request('/cms/logo', {
+        method: 'GET'
+      }).then(json => {
+        if (json.code === 10000000) {
+          this.setState({ logo: json.data });
+        } else {
+          message.destroy();
+          message.error(json.msg);
+        }
+      });
+    }
   };
 
   //获取友情链接
