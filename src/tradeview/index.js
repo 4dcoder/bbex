@@ -18,7 +18,7 @@ class TradeviewPage extends PureComponent {
       container_id: 'tv_chart_container',
       datafeed: Datafeed,
       width: '100%',
-      height: '380',
+      height: '450',
       library_path: '/charting_library/',
       locale: 'zh',
       drawings_access: {

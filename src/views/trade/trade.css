@@ -150,7 +150,7 @@
 
 .trade-plate-list {
   position: relative;
-  height: 865px;
+  height: 935px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -165,6 +165,7 @@
   position: relative;
   flex-basis: 48%;
   border: #f00;
+  overflow: hidden;
 }
 
 .trade-plate-list-wrap:first-child {
@@ -188,7 +189,7 @@
 
 .trade-plate-list td {
   flex: 1 0 80px;
-  padding: 5px;
+  line-height: 29px;
   font-size: 12px;
   text-align: center;
   cursor: pointer;
@@ -196,10 +197,6 @@
 
 .trade-plate-container.stream td {
   cursor: inherit;
-}
-
-.trade-plate-list td {
-  padding: 4px 5px;
 }
 
 .trade-plate-list td:nth-child(1),

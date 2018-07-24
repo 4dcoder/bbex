@@ -903,7 +903,7 @@ class Trade extends PureComponent {
                   </div>
                 </div>
               </div>
-              <div className="trade-plate-container market" style={{ height: 345 }}>
+              <div className="trade-plate-container market" style={{ height: 415 }}>
                 {tradeExpair ? (
                   pairList.length > 0 ? (
                     <Scrollbars>
@@ -1064,7 +1064,7 @@ class Trade extends PureComponent {
                   </strong>
                 </div>
               </div>
-              <div className="trade-plate-container">
+              <div className="trade-plate-container" style={{ height: 450 }}>
                 {coinName && marketName && <Tradeview symbol={`${coinName}/${marketName}`} />}
               </div>
             </div>

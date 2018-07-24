@@ -16,6 +16,7 @@ export const PUBLI_KEY =
 
 // 地址配置
 export const IMAGES_ADDRESS = 'http://images.ecoexc.com';
+// export const IMAGES_ADDRESS = window.location.origin.replace('www', 'images');
 export const WS_PREFIX = `${window.location.origin.replace('http', 'ws')}/bbex/websocket`;
 
 //内网 ws://192.168.1.80
