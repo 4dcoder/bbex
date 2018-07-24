@@ -21,7 +21,7 @@ class TradeForm extends PureComponent {
     const key = e.target.id;
     const value = e.target.value;
     const curValue = this.state[key];
-    const reg = key === 'volume' ? /^\d{0,8}(\d\.\d{0,4})?$/ : /^\d{0,8}(\d\.\d{0,8})?$/;
+    const reg = /^\d{0,8}(\d\.\d{0,8})?$/;
     if (String(curValue).length < String(value).length) {
       if (reg.test(value)) {
         this.setState({ [key]: value });
