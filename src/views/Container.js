@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter, Link, NavLink } from 'react-router-dom';
 import { message } from 'antd';
 import classnames from 'classnames';
 import request from '../utils/request';
@@ -113,10 +113,10 @@ class Container extends Component {
 
   componentWillMount() {
     const viewport = document.getElementById('viewport');
-    if(viewport) {
+    if (viewport) {
       document.head.removeChild(viewport);
     }
-    
+
     this.getLanguage(this.state.language);
     this.getLogo();
     this.getIntroduce();
@@ -190,7 +190,6 @@ class Container extends Component {
     const account = sessionStorage.getItem('account')
       ? JSON.parse(sessionStorage.getItem('account'))
       : null;
-    const pathname = this.props.location.pathname;
 
     let mailLink = '',
       mailItem = [];
@@ -211,24 +210,14 @@ class Container extends Component {
           </Link>
           <ul className="nav-bar">
             <li>
-              <Link
-                to="/trade"
-                className={classnames({
-                  active: pathname === '/trade'
-                })}
-              >
+              <NavLink to="/trade" activeClassName="active">
                 {localization['交易中心']}
-              </Link>
+              </NavLink>
             </li>
             <li>
-              <Link
-                to="/c2c"
-                className={classnames({
-                  active: pathname === '/c2c'
-                })}
-              >
+              <NavLink to="/c2c" activeClassName="active">
                 {localization['C2C 交易']}
-              </Link>
+              </NavLink>
             </li>
           </ul>
           {!account && (
@@ -244,7 +233,7 @@ class Container extends Component {
               <div className="select-bar">
                 <i className="iconfont icon-yonghu" />
                 <i className="iconfont icon-jiantou_down" />
-                <span>{account.mail ? account.mail: account.mobile}</span>
+                <span>{account.mail ? account.mail : account.mobile}</span>
                 <ul className="select-list">
                   <li>
                     <Link to="/user">{localization['用户中心']}</Link>
@@ -316,7 +305,7 @@ class Container extends Component {
                           return (
                             <span key={index} className="wexin-content">
                               <i className="iconfont icon-weixin" />
-                              <img src={item.linkImage} alt="微信公众号"/>
+                              <img src={item.linkImage} alt="微信公众号" />
                             </span>
                           );
                         } else if (item.typeId === 'link_qq') {
@@ -342,9 +331,7 @@ class Container extends Component {
                       })}
                   </li>
                   <li>
-                    {localization['联系邮箱']}：<span to="mailto: support@bbex.com">
-                      {mailLink}
-                    </span>
+                    {localization['联系邮箱']}：<a href={`mailto:${mailLink}`}>{mailLink}</a>
                   </li>
                 </ul>
               </div>

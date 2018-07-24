@@ -51,8 +51,6 @@ const ResetPassword = asyncComponent(() => import('./views/reset/Password'));
 
 const User = asyncComponent(() => import('./views/user'));
 
-const Authentication = asyncComponent(() => import('./views/authentication'));
-
 const C2c = asyncComponent(() => import('./views/c2c'));
 
 const Notice = asyncComponent(() => import('./views/notice'));
@@ -107,14 +105,13 @@ class App extends Component {
             <NormalRoute path="/reset" component={Reset} {...{ localization }} />
             <NormalRoute path="/resetPassword" component={ResetPassword} {...{ localization }} />
             <PrivateRoute path="/user" component={User} {...{ localization }} />
-            <PrivateRoute path="/authentication" component={Authentication} {...{ localization }} />
             <NormalRoute path="/c2c" component={C2c} {...{ localization }} />
             <NormalRoute path="/link/:id" component={MyLink} {...{ localization }} />
             <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
             <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
             <NormalRoute path="/notice/:id" component={Detail} {...{ localization }} />
           </Container>
-          <NormalRoute path="*" component={NotFound} {...{ localization }} />
+          <NormalRoute path="/*" component={NotFound} {...{ localization }} />
         </Switch>
       </Router>
     );

@@ -230,7 +230,7 @@ class TradeForm extends PureComponent {
                 'has-value': String(price)
               })}
               onClick={this.handleHolder}
-            >{`${typeToText[type]}${localization['价']}`}</span>
+            >{`${typeToText[type]} ${localization['价']}`}</span>
             {false && <div className="toCNY">&asymp;￥57555.50</div>}
             <span className="trade-form-coinName">{marketName}</span>
           </li>
@@ -261,7 +261,7 @@ class TradeForm extends PureComponent {
               })}
               onClick={this.handleHolder}
             >
-              {`${typeToText[type]}${localization['量']}`}
+              {`${typeToText[type]} ${localization['量']}`}
             </span>
             <span
               className={classnames({
