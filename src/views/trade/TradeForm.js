@@ -20,32 +20,8 @@ class TradeForm extends PureComponent {
   handleValue = e => {
     const key = e.target.id;
     const value = e.target.value;
-    const { type, mainVolume, coinVolume } = this.props;
-    const { price, volume } = this.state;
-    const assetVolume = type === 'buy' ? mainVolume : coinVolume;
-    const otherValue = key === 'price' ? volume : price;
-    
     if (/^\d*\.{0,1}\d{0,8}$/.test(value) && value.length < 16) {
-      const curVolume = key === 'volume' ? value : volume;
-      if (
-        assetVolume &&
-        !(type === 'buy' && value * price > assetVolume) &&
-        !(type === 'sell' && key === 'volume' && value > assetVolume)
-      ) {
-        const sliderValue = ((type === 'buy' ? value * otherValue : curVolume) / assetVolume) * 100;
-        this.setState({ [key]: value, sliderValue });
-      } else {
-        if (type === 'buy' && value * price > assetVolume) {
-          const curValue = assetVolume / otherValue;
-          const sliderValue = (curVolume / assetVolume) * 100;
-          this.setState({ [key]: curValue, sliderValue });
-        }
-        if (type === 'sell' && key === 'volume' && value > assetVolume) {
-          const curValue = assetVolume || '';
-          const sliderValue = 100;
-          this.setState({ [key]: curValue, sliderValue });
-        }
-      }
+      this.setState({ [key]: value });
     }
   };
 
@@ -150,7 +126,7 @@ class TradeForm extends PureComponent {
       nextProps.marketName !== this.props.marketName ||
       nextProps.coinName !== this.props.coinName
     ) {
-      this.setState({ price: '', volume: '' });
+      this.setState({ price: '', volume: '', sliderValue: 0 });
     }
   }
 
