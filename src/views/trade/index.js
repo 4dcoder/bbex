@@ -874,7 +874,7 @@ class Trade extends PureComponent {
                               marketName === market ? '-active' : ''
                             }`}
                           />
-                        )}
+                        )}{' '}
                         {marketName === 'optional' ? localization['自选'] : marketName}
                       </li>
                     );

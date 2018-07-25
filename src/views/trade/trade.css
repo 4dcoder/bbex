@@ -51,7 +51,10 @@
 }
 
 .trade-plate-header .market-tabs > li {
-  margin-right: 10%;
+  min-width: 20%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   color: rgb(210, 210, 210);
   cursor: pointer;
 }
@@ -128,6 +131,9 @@
 .trade-plate-tit-cell {
   flex: 1 1 80px;
   text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trade-plate-tit-cell.sorter {
@@ -225,7 +231,7 @@
 
 .trade-plate-container .coin-wrap {
   display: inline-block;
-  width: 40px;
+  width: 30px;
   position: relative;
   text-align: left;
 }
@@ -233,7 +239,7 @@
 .trade-plate-container .coin-wrap .iconfont {
   position: absolute;
   top: 50%;
-  left: -20px;
+  left: -25px;
   font-size: 18px;
   transform: translateY(-52%);
 }
