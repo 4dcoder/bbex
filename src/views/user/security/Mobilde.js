@@ -76,6 +76,9 @@ class Mobile extends Component {
               this.setState({ number: number - 1 });
           }
       }, 1000);
+    }else{
+        message.destroy();
+        message.info('请输入正确的手机号', 1);
     }
   }
 
@@ -97,8 +100,8 @@ class Mobile extends Component {
             sm: { span: 6 }
         },
         wrapperCol: {
-            xs: { span: 15 },
-            sm: { span: 15 }
+            xs: { span: 18 },
+            sm: { span: 18 }
         }
     };
     const formLayoutMobile = {
@@ -107,8 +110,8 @@ class Mobile extends Component {
           sm: { span: 6 }
       },
       wrapperCol: {
-          xs: { span: 12 },
-          sm: { span: 12 }
+          xs: { span: 18 },
+          sm: { span: 18}
       }
   };
 
@@ -124,19 +127,20 @@ class Mobile extends Component {
             footer={null}
         >
             <Form onSubmit={this.handleSubmit} className="change-password">
-                <FormItem {...formLayoutMobile} label="手机号">
+                <FormItem {...formLayoutMobile} label="手机号" className='code-row'>
                     {getFieldDecorator('mobile', {
                         rules: [
                             { required: true, message: '请输入手机号' },
                             { pattern: /^1[34578][0-9]{9}$/, message:'手机号不正确' }
                         ]
-                    })(<Input />)}
+                    })(<Input size='large'/>)}
                     <Button 
                       onClick={this.getMobileCode} 
                       className='get-mobile-code' 
                       type="primary"
+                      size='large'
                       disabled={disabled}
-                      style={{ width: 100 }}
+                      style={{width: 120}}
                     >
                         {!disabled ? '获取验证码' : number + 's'}
                     </Button>
@@ -147,14 +151,14 @@ class Mobile extends Component {
                             { required: true, message: '请输入手机验证码' },
                             { pattern: /^\d{6}$/, message:'请输入6位数字验证码' }
                         ]
-                    })(<Input  />)}
+                    })(<Input  size='large' />)}
                 </FormItem>
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Button
                         type="primary"
                         htmlType="submit"
                         onClick={this.handleSubmit}
-                        style={{ width: 100, height: 36, borderRadius: 4 }}
+                        style={{ width: 100, height: 36}}
                     >
                         确认
                     </Button>

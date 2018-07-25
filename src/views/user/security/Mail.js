@@ -104,22 +104,22 @@ class Mail extends Component {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 }
+        xs: { span: 5 },
+        sm: { span: 5 }
       },
       wrapperCol: {
-        xs: { span: 15 },
-        sm: { span: 15 }
+        xs: { span: 19 },
+        sm: { span: 19 }
       }
     };
     const formLayoutMobile = {
       labelCol: {
-        xs: { span: 6 },
-        sm: { span: 6 }
+        xs: { span: 5 },
+        sm: { span: 5 }
       },
       wrapperCol: {
-        xs: { span: 12 },
-        sm: { span: 12 }
+        xs: { span: 19 },
+        sm: { span: 19 }
       }
     };
 
@@ -135,19 +135,20 @@ class Mail extends Component {
         footer={null}
       >
         <Form onSubmit={this.handleSubmit} className="change-password">
-          <FormItem {...formLayoutMobile} label="邮箱">
+          <FormItem {...formLayoutMobile} label="邮箱" className='code-row'>
             {getFieldDecorator('mail', {
               rules: [
                 { required: true, message: '请输入邮箱' },
                 { pattern: MAIL_REGEX, message: '邮箱格式不正确' }
               ]
-            })(<Input />)}
+            })(<Input size='large'/>)}
             <Button
               onClick={this.getMailCode}
               className='get-mobile-code'
               type="primary"
+              size='large'
               disabled={disabled}
-              style={{ width: 100 }}
+              style={{ width: 120 }}
             >
               {!disabled ? '获取验证码' : number + 's'}
             </Button>
@@ -158,7 +159,7 @@ class Mail extends Component {
                 { required: true, message: '请输入邮箱验证码' },
                 { pattern: /^\d{6}$/, message: '请输入6位数字验证码' }
               ]
-            })(<Input />)}
+            })(<Input size='large'/>)}
           </FormItem>
 
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -166,7 +167,7 @@ class Mail extends Component {
               type="primary"
               htmlType="submit"
               onClick={this.handleSubmit}
-              style={{ width: 100, height: 36, borderRadius: 4 }}
+              style={{ width: 100, height: 36 }}
             >
               确认
             </Button>
