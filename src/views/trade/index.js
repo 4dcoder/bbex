@@ -1198,8 +1198,7 @@ class Trade extends PureComponent {
                                       )}
                                     >
                                       <td className="font-color-red">
-                                        {localization['卖出']}
-                                        {visibleLength - index + startIndex}
+                                        {localization['卖出']} {visibleLength - index + startIndex}
                                       </td>
                                       <td>
                                         {isEmptyRecord ? '----' : Number(record.price).toFixed(8)}
@@ -1282,8 +1281,7 @@ class Trade extends PureComponent {
                                       )}
                                     >
                                       <td className="font-color-green">
-                                        {localization['买入']}
-                                        {index + 1}
+                                        {localization['买入']} {index + 1}
                                       </td>
                                       <td>
                                         {isEmptyRecord ? '----' : Number(record.price).toFixed(8)}
@@ -1332,8 +1330,7 @@ class Trade extends PureComponent {
                                   onClick={this.handleTradePrice.bind(this, record.price)}
                                 >
                                   <td className={`font-color-${colorName}`}>
-                                    {actionName}
-                                    {index + 1}
+                                    {actionName} {index + 1}
                                   </td>
                                   <td>{Number(record.price).toFixed(8)}</td>
                                   <td>{Number(record.volume).toFixed(8)}</td>

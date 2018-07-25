@@ -8,7 +8,8 @@ import GooglePopup from '../components/google-popup';
 // 设置全局消息
 message.config({
   top: 200,
-  maxCount: 1
+  maxCount: 1,
+  duration: 1
 });
 
 class Container extends Component {
