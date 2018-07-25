@@ -363,6 +363,10 @@ a:hover {
 :root .ant-upload.ant-upload-select.ant-upload-select-picture-card {
   background-color: transparent;
 }
+:root .ant-confirm-body .ant-confirm-title,
+:root .ant-confirm-body .ant-confirm-content {
+  color: #adadad;
+}
 /* 覆盖antd样式 */
 
 /* 公共样式 */
