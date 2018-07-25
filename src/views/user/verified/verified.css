@@ -68,12 +68,9 @@
 }
 
 .steps-photos {
-    margin-top: 40px;
-    margin-left: 30px;
-}
-.steps-photos > .steps-photo-box {
-    float: left;
-    margin-right: 20px;
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 30px;
 }
 .steps-photos .steps-photo-box .ant-upload-list,
 .steps-photos .steps-photo-box .ant-upload-select {

@@ -153,7 +153,7 @@ class Verified extends Component {
                 </div>
               )}
             </h2>
-            <div className="steps-photos clear">
+            <div className="steps-photos">
               {['front', 'back', 'handheld'].map(type => {
                 const uploadText = {
                   front: '上传身份证正面照',

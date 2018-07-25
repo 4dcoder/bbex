@@ -357,6 +357,9 @@ a:hover {
 :root .ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon {
   color: #dadada;
 }
+:root .ant-upload {
+  color: #adadad;
+}
 :root .ant-upload.ant-upload-select.ant-upload-select-picture-card {
   background-color: transparent;
 }
