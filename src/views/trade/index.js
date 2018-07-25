@@ -12,6 +12,7 @@ import {
   message,
   List
 } from 'antd';
+import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
 import Spinners from 'react-spinners';
@@ -825,8 +826,6 @@ class Trade extends PureComponent {
       clickTradeType
     };
 
-    // const { localization } = this.props;
-
     const loading = (
       <div className="container-loading">
         <Spinners.ClipLoader color={'#d4a668'} size={35} />
@@ -839,6 +838,8 @@ class Trade extends PureComponent {
         {localization['暂无数据']}
       </div>
     );
+
+    const isLogin = sessionStorage.getItem('account');
 
     return (
       <div className="content trade">
@@ -1189,7 +1190,7 @@ class Trade extends PureComponent {
                                   index > startIndex - 1 && (
                                     <tr
                                       key={index}
-                                      className={classnames({ 'empty': isEmptyRecord })}
+                                      className={classnames({ empty: isEmptyRecord })}
                                       onClick={this.handleTradePrice.bind(
                                         this,
                                         record.price,
@@ -1273,7 +1274,7 @@ class Trade extends PureComponent {
                                   index < 15 && (
                                     <tr
                                       key={index}
-                                      className={classnames({ 'empty': isEmptyRecord })}
+                                      className={classnames({ empty: isEmptyRecord })}
                                       onClick={this.handleTradePrice.bind(
                                         this,
                                         record.price,
@@ -1379,10 +1380,15 @@ class Trade extends PureComponent {
                     loading={!pendingOrderList}
                     pagination={false}
                     locale={{
-                      emptyText: (
+                      emptyText: isLogin ? (
                         <span>
                           <i className="iconfont icon-zanwushuju" />
                           {localization['暂无数据']}
+                        </span>
+                      ) : (
+                        <span>
+                          <Link to="/signin">{localization['登录']}</Link>{' '}
+                          {localization['进行查看']}
                         </span>
                       )
                     }}
@@ -1398,10 +1404,15 @@ class Trade extends PureComponent {
                     loading={!completedOrderList}
                     pagination={false}
                     locale={{
-                      emptyText: (
+                      emptyText: isLogin ? (
                         <span>
                           <i className="iconfont icon-zanwushuju" />
                           {localization['暂无数据']}
+                        </span>
+                      ) : (
+                        <span>
+                          <Link to="/signin">{localization['登录']}</Link>{' '}
+                          {localization['进行查看']}
                         </span>
                       )
                     }}

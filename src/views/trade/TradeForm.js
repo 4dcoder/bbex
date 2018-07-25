@@ -349,14 +349,21 @@ class TradeForm extends PureComponent {
                 <span>0.00000000 {coinName}</span>
               </div>
             )}
-          <Button
-            type={isLogin && !pending ? type : 'ghost'}
-            size="large"
-            onClick={this.getOrderNo}
-            disabled={pending}
-          >
-            {isLogin ? `${typeToText[type]} ${coinName}` : `交易前请先 登录`}
-          </Button>
+          {isLogin ? (
+            <Button
+              type={!pending ? type : 'ghost'}
+              size="large"
+              onClick={this.getOrderNo}
+              disabled={pending}
+            >
+              {`${typeToText[type]} ${coinName}`}
+            </Button>
+          ) : (
+            <Button type="ghost" size="large">
+              <Link to="/signin">{localization['登录']}</Link> {localization['或']}{' '}
+              <Link to="/signup">{localization['注册']}</Link> {localization['进行交易']}
+            </Button>
+          )}
         </li>
       </ul>
     );
