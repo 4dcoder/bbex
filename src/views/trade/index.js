@@ -1132,13 +1132,13 @@ class Trade extends PureComponent {
                   {localization['合并']}
                   <Select
                     defaultValue="8"
-                    style={{ width: 100 }}
+                    style={{ width: 105 }}
                     dropdownClassName="merge-dropdown"
                     onChange={this.handleMerge}
                   >
-                    <Option value="8">8{localization['位小数']}</Option>
-                    <Option value="6">6{localization['位小数']}</Option>
-                    <Option value="4">4{localization['位小数']}</Option>
+                    <Option value="8">8 {localization['位小数']}</Option>
+                    <Option value="6">6 {localization['位小数']}</Option>
+                    <Option value="4">4 {localization['位小数']}</Option>
                   </Select>
                 </div>
               </header>

@@ -74,8 +74,13 @@ class Invite extends Component {
       },
       {
         title: '用户名',
-        dataIndex: 'username',
-        key: 'username'
+        dataIndex: 'realName',
+        key: 'realName'
+      },
+      {
+        title: '手机号',
+        dataIndex: 'mobile',
+        key: 'mobile'
       },
       {
         title: '邮箱',
