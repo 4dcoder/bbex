@@ -944,9 +944,6 @@ a:hover {
   border-bottom: 0 !important;
 }
 
-.change-pwd-modal .ant-form-item {
-  margin-bottom: 16px;
-}
 
 .c2c-form .line-li {
   margin-top: 16px;
@@ -1176,10 +1173,11 @@ a:hover {
 
 /* 绑定手机号 */
 
-.change-pwd-modal .get-mobile-code {
-  position: absolute;
-  right: -110px;
-  top: -6px;
+.change-pwd-modal .code-row .ant-form-item-children{
+  display: flex;
+}
+.change-pwd-modal .ant-form-item {
+  margin-bottom: 16px;
 }
 
 /* 弹窗垂直居中 */

@@ -80,15 +80,15 @@ class Password extends Component {
                 sm: { span: 6 }
             },
             wrapperCol: {
-                xs: { span: 16 },
-                sm: { span: 16 }
+                xs: { span: 18 },
+                sm: { span: 18 }
             }
         };
         return (
             <Modal
                 title="修改密码"
                 visible
-                width={420}
+                width={440}
                 wrapClassName="change-pwd-modal v-center-modal"
                 onCancel={this.props.closeModal}
                 footer={null}
@@ -97,7 +97,7 @@ class Password extends Component {
                     <FormItem {...formItemLayout} label="原密码">
                         {getFieldDecorator('oldPassword', {
                             rules: [{ required: true, message: '请输入原密码' }]
-                        })(<Input type="password" />)}
+                        })(<Input size='large' type="password" />)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="新密码">
                         {getFieldDecorator('password', {
@@ -106,7 +106,7 @@ class Password extends Component {
                                 { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字，字母'},
                                 { validator: this.validateToNextPassword }
                             ]
-                        })(<Input type="password" />)}
+                        })(<Input size='large' type="password" />)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="确认密码">
                         {getFieldDecorator('confirm', {
@@ -114,7 +114,7 @@ class Password extends Component {
                                 { required: true, message: '请再次输入密码' },
                                 { validator: this.comparePassword }
                             ]
-                        })(<Input type="password" onBlur={this.handleConfirmBlur} />)}
+                        })(<Input size='large' type="password" onBlur={this.handleConfirmBlur} />)}
                     </FormItem>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -122,7 +122,7 @@ class Password extends Component {
                             type="primary"
                             htmlType="submit"
                             onClick={this.handleSubmit}
-                            style={{ width: 100, height: 36, borderRadius: 4 }}
+                            style={{ width: 100, height: 36}}
                         >
                             确认
                         </Button>
