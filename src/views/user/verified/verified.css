@@ -17,13 +17,12 @@
 .steps-attention > .example-box {
     z-index: 10;
     position: absolute;
-    left: 50%; 
+    left: 25px; 
     top: 50px;
     padding: 20px 30px;
     border-radius: 10px;
     background-color: #fff;
     border: 1px solid #ededed;
-    transform: translateX(-50%);
 }
 .steps-attention > .example-box::before{
     position: absolute;
