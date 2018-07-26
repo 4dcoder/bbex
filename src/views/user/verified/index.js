@@ -137,7 +137,7 @@ class Verified extends Component {
         {current === 0 && (
           <div className="steps-content step1">
             <h2 className="steps-attention" id="attention">
-              照片要求：大小不超过10M，照片清晰，右手掌心持有效证件，左手持带有认证当天时间及用户ID的字条
+              照片要求：大小不超过10M，照片清晰，手持有效证件、平台名称(UES) 及当天日期的字条
               <Button onFocus={this.showExample} onBlur={this.hideExample} type="primary">
                 示例
               </Button>
