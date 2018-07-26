@@ -61,11 +61,11 @@ class PaymentForm extends Component {
     }
 
     beforeUpload = (file) => {
-        const isLt3M = file.size / 1024 / 1024 < 3;
-        if (!isLt3M) {
-            message.error('照片必须小于3MB!');
+        const isLt10M = file.size / 1024 / 1024 < 10;
+        if (!isLt10M) {
+            message.error('照片必须小于10MB!');
         }
-        return isLt3M;
+        return isLt10M;
     }
 
     handleChange = ({ file }) => {
