@@ -152,16 +152,25 @@
     }
 
     .layout__area--top.header-chart-panel {
-      height: 40px!important;
+      height: 40px !important;
       border-bottom: 1px solid #b8b8b8;
     }
 
     .header-chart-panel-content .left {
       display: flex;
     }
+
     .group.space-single {
       flex: 1 1 50px;
     }
+
+    .bottom-widgetbar-content.backtesting .button,
+    .header-chart-panel .button,
+    .hotlist-controls .button,
+    .symbol-edit-widget .button {
+      cursor: pointer;
+    }
+
     .group.space-single>.button:hover,
     .group.space-single>.button.select {
       color: #dadada;

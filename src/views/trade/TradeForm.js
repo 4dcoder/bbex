@@ -45,15 +45,6 @@ class TradeForm extends PureComponent {
     this.setState({ volume, sliderValue: value });
   };
 
-  // handleSlideInput = value => {
-  //   const { type, mainVolume, coinVolume } = this.props;
-  //   value = new Big(value);
-  //   const price = new Big(this.state.price);
-  //   const assetVolume = new Big(type === 'buy' ? mainVolume : coinVolume);
-  //   const volume = assetVolume.div(price) * value.div(100);
-  //   this.setState({ volume, sliderValue: value });
-  // };
-
   // 获取订单号
   getOrderNo = () => {
     const isLogin = sessionStorage.getItem('account');
