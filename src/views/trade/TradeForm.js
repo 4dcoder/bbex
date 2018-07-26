@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { Input, Slider, Button, Tooltip, message } from 'antd';
 import classnames from 'classnames';
-import Big from 'big.js';
 
 class TradeForm extends PureComponent {
   state = {

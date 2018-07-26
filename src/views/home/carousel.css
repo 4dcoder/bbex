@@ -83,7 +83,7 @@
 .carousel img {
   width: 100%;
   display: inline-block;
-  min-height: 350px;
+  min-height: 400px;
   pointer-events: none;
 }
 
@@ -144,6 +144,7 @@
 
 .carousel.carousel-slider {
   position: relative;
+  min-height: 400px;
   margin: 0;
   overflow: hidden;
 }

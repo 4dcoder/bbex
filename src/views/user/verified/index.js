@@ -62,11 +62,11 @@ class Verified extends Component {
         message.success(json.msg);
       }
     });
-  }
+  };
   //重新认证
   reVerified = () => {
-    this.setState({ current: 0, reason: ''});
-  }
+    this.setState({ current: 0, reason: '' });
+  };
 
   // 提交身份信息
   submitVer = values => {
@@ -122,7 +122,14 @@ class Verified extends Component {
   };
 
   render() {
-    const { current, showExampleImage, frontIdCard, backIdCard, handheldIdCard, reason } = this.state;
+    const {
+      current,
+      showExampleImage,
+      frontIdCard,
+      backIdCard,
+      handheldIdCard,
+      reason
+    } = this.state;
 
     const canSumbit = frontIdCard && backIdCard && handheldIdCard;
     const cardStatus = JSON.parse(sessionStorage.getItem('account')).cardStatus;
@@ -136,7 +143,7 @@ class Verified extends Component {
         </Steps>
         {current === 0 && (
           <div className="steps-content step1">
-            <h2 className="steps-attention" id="attention">
+            <h2 className="steps-attention">
               照片要求：大小不超过10M，照片清晰，手持有效证件、平台名称(UES) 及当天日期的字条
               <Button onFocus={this.showExample} onBlur={this.hideExample} type="primary">
                 示例
@@ -176,11 +183,11 @@ class Verified extends Component {
                     {this.state[`${type}ImageUrl`] ? (
                       <img src={this.state[`${type}ImageUrl`]} alt="" />
                     ) : (
-                        <div>
-                          <Icon type={this.state[`${type}Loading`] ? 'loading' : 'plus'} />
-                          <div className="ant-upload-text">{uploadText[type]}</div>
-                        </div>
-                      )}
+                      <div>
+                        <Icon type={this.state[`${type}Loading`] ? 'loading' : 'plus'} />
+                        <div className="ant-upload-text">{uploadText[type]}</div>
+                      </div>
+                    )}
                   </Upload>
                 );
               })}
@@ -199,16 +206,17 @@ class Verified extends Component {
         {current === 2 && (
           <div className="steps-content step3">
             <i className="iconfont icon-tubiaolunkuo-" />
-            {
-              cardStatus===9 ? 
-              <div className='reason-des'>
-                <div className='reason-result'>认证不通过</div>
+            {cardStatus === 9 ? (
+              <div className="reason-des">
+                <div className="reason-result">认证不通过</div>
                 <h3>原因：{reason}</h3>
-                <Button type="primary" onClick={this.reVerified}>重新认证</Button>
+                <Button type="primary" onClick={this.reVerified}>
+                  重新认证
+                </Button>
               </div>
-              : 
+            ) : (
               <h3>您的资料已递交审核，我们会在三个工作日内完成审核</h3>
-            }
+            )}
 
             <p>我们承诺保证您的个人隐私安全，请您积极配合，耐心等待审核</p>
           </div>

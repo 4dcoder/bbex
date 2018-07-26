@@ -272,7 +272,7 @@ class Home extends Component {
               };
               return (
                 <a key={banner.id} href={banner.link || `/link/${banner.id}`} {...props}>
-                  <img key={banner.id} src={banner.image} alt="" />
+                  <img key={banner.id} src={banner.image} />
                 </a>
               );
             })}
