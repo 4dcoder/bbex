@@ -98,11 +98,11 @@ class Verified extends Component {
   };
 
   beforeUpload = file => {
-    const isLt3M = file.size / 1024 / 1024 < 3;
-    if (!isLt3M) {
-      message.error('照片必须小于3MB!');
+    const isLt10M = file.size / 1024 / 1024 < 10;
+    if (!isLt10M) {
+      message.error('照片必须小于10MB!');
     }
-    return isLt3M;
+    return isLt10M;
   };
 
   handleChange = ({ file }, type) => {
@@ -137,7 +137,7 @@ class Verified extends Component {
         {current === 0 && (
           <div className="steps-content step1">
             <h2 className="steps-attention" id="attention">
-              照片要求：大小不超过3M，照片清晰，右手掌心持有效证件，左手持带有认证当天时间及用户ID的字条
+              照片要求：大小不超过10M，照片清晰，右手掌心持有效证件，左手持带有认证当天时间及用户ID的字条
               <Button onFocus={this.showExample} onBlur={this.hideExample} type="primary">
                 示例
               </Button>
