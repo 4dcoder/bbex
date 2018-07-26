@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List, Spin, Button, message } from 'antd';
+import { List, message } from 'antd';
 import { stampToDate } from '../../utils';
 import './notice.css';
 
@@ -7,28 +7,22 @@ class Notice extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            loading: false,
-            loadingMore: true,
-            showLoadingMore: true,
+            total: '',
             notices: [],
-            page: 1
+            current: 1,
+            loading: false
         };
     }
 
     request = window.request;
 
     componentWillMount() {
-        this.getNotice(1, list => {
-            this.setState({ loadingMore: false });
-            if (list.length < 10) {
-                this.setState({ showLoadingMore: false });
-            }
-            this.setState({ notices: list });
-        });
+        this.getNotice(1);
     }
 
     //获取公告
-    getNotice = (page, callback) => {
+    getNotice = (page) => {
+        this.setState({loading: true})
         this.request('/cms/notice/list', {
             body: {
                 language: 'zh_CN',
@@ -37,9 +31,11 @@ class Notice extends Component {
             }
         }).then(json => {
             if (json.code === 10000000) {
-                callback(json.data.list);
+                this.setState({ notices: json.data.list, total: json.data.count })
+                this.setState({loading: false})
             } else {
                 message.error(json.msg);
+                this.setState({loading: false})
             }
         });
     };
@@ -48,51 +44,42 @@ class Notice extends Component {
         this.props.history.push(`/notice/${item.id}`);
     };
 
-    onLoadMore = () => {
-        const { page, notices } = this.state;
-        let myPage = page * 1 + 1;
-        this.setState({
-            loadingMore: true,
-            page: myPage
-        });
-        this.getNotice(myPage, list => {
-            this.setState({ loadingMore: false });
-            if (list.length < 10) {
-                this.setState({ showLoadingMore: false });
-            }
-            this.setState({ notices: notices.concat(list) });
-        });
-    };
+    pageChange = (page) => {
+        this.setState({ current: page });
+        this.getNotice(page);
+    }
+
     render() {
-        const { loading, loadingMore, showLoadingMore, notices } = this.state;
-        const loadMore = showLoadingMore ? (
-            <div className="loadmore">
-                {loadingMore && <Spin />}
-                {!loadingMore && <Button onClick={this.onLoadMore}>加载更多</Button>}
+        const { current, notices, total, loading } = this.state;
+
+        return <div className="notice">
+            <div className="notice-container">
+                <h4>公告</h4>
+                <List
+                    size="large"
+                    loading={loading}
+                    dataSource={notices}
+                    renderItem={item => (<List.Item onClick={()=>{
+                        this.itemClick(item);
+                    }}>
+                        <div className="notice-title">
+                            {item.title}
+                        </div>
+                        <div className='notice-time'>
+                            {stampToDate(item.createDate * 1)}
+                        </div>
+                    </List.Item>)}
+                    pagination={{
+                        current,
+                        total,
+                        pageSize: 10,
+                        onChange: page => {
+                            this.pageChange(page);
+                        }
+                    }}
+                />
             </div>
-        ) : null;
-        return (
-            <List
-                className="bbex-notice"
-                loading={loading}
-                itemLayout="horizontal"
-                loadMore={loadMore}
-                size="small"
-                header={<p className="notice-title">公告</p>}
-                dataSource={notices}
-                renderItem={item => (
-                    <List.Item
-                        className="notice-item"
-                        onClick={() => {
-                            this.itemClick(item);
-                        }}
-                    >
-                        <div>{item.title}</div>
-                        <div>{stampToDate(Number(item.createDate), 'YYYY-MM-DD')}</div>
-                    </List.Item>
-                )}
-            />
-        );
+        </div>
     }
 }
 

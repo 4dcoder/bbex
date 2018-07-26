@@ -1,0 +1,24 @@
+.help{
+  width: 100%;
+}
+.help .help-container{
+  width: 80%;
+  margin: 30px auto 0px;
+  padding: 40px;
+  background: #292E3A;
+}
+.help .help-container h4{
+  color: #dadada;
+  font-size: 20px;
+}
+.help  .ant-list-split .ant-list-item{
+  border-bottom: 1px solid #373C47;
+}
+.help .ant-list-item-content{
+  color: #dadada;
+  cursor: pointer;
+  font-size: 14px;
+}
+.help .ant-list-something-after-last-item .ant-spin-container > .ant-list-item:last-child{
+  border-bottom: 1px solid #373C47;
+}

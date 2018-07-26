@@ -65,6 +65,8 @@ const NotFound = asyncComponent(() => import('./views/404'));
 
 const Mobile = asyncComponent(() => import('./views/mobile'));
 
+const Help = asyncComponent(() => import('./views/help'));
+
 const NormalRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
 );
@@ -110,6 +112,7 @@ class App extends Component {
             <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
             <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
             <NormalRoute path="/notice/:id" component={Detail} {...{ localization }} />
+            <NormalRoute path="/help" component={Help} {...{ localization }} />
           </Container>
           <NormalRoute path="/*" component={NotFound} {...{ localization }} />
         </Switch>

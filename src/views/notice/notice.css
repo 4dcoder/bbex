@@ -1,32 +1,36 @@
-.bbex-notice{
-  padding: 20px;
-  background-color: #2c3644;
-  min-height: 400px;
+.notice{
+  width: 100%;
+}
+.notice .notice-container{
+  width: 80%;
+  margin: 30px auto 0px;
+  padding: 40px;
+  background: #292E3A;
+}
+.notice .notice-container h4{
   color: #dadada;
+  font-size: 20px;
 }
-
-.loadmore{
-  text-align: 'center';
-  margin-top: 12px;
-  height: 32;
-  line-height: '32px';
-  display: flex;
-  justify-content: center;
+.notice  .ant-list-split .ant-list-item{
+  border-bottom: 1px solid #373C47;
 }
-.notice-item div{
+.notice .ant-list-item-content{
+  color: #dadada;
+  cursor: pointer;
+  font-size: 14px;
   display: flex;
   justify-content: space-between;
 }
-.notice-title{
-  text-align: center;
-  padding-bottom: 6px;
-  font-size: 24px;
+.notice .notice-title{
+  word-break: break-all;
+  flex: 1;
 }
-.bbex-notice .notice-item{
-  border-bottom: 1px solid #5f5f5f;
-  height: 50px;
-  cursor: pointer;
+.notice .notice-time{
+  width: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
-.bbex-notice .notice-item:last-child{
-  border-bottom: 1px solid #5f5f5f;
+.notice .ant-list-something-after-last-item .ant-spin-container > .ant-list-item:last-child{
+  border-bottom: 1px solid #373C47;
 }

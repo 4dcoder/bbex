@@ -230,6 +230,11 @@ class Container extends Component {
                 {localization['C2C 交易']}
               </NavLink>
             </li>
+            {/* <li>
+              <NavLink to="/help" activeClassName="active">
+                {localization['帮助中心']}
+              </NavLink>
+            </li> */}
           </ul>
           {!account && (
             <div className="user-status">
