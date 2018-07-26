@@ -165,6 +165,12 @@
   justify-content: space-between;
 }
 
+.trade-plate-container>div>div,
+.trade-plate-list>div>div,
+.ant-tabs-tabpane-active>div>div {
+  overflow-x: hidden !important;
+}
+
 .trade-plate-container table,
 .trade-plate-list table {
   width: 100%;
