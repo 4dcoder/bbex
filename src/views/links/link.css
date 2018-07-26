@@ -1,11 +1,5 @@
 #link_container{
   width: 100%;
   overflow: hidden;
-  margin: 0 auto;
-}
-
-#link_container img{
-  /* width: 100% !important;
-  margin: 0 auto;
-  max-width: 1200px; */
+  margin: 0 auto -30px;
 }

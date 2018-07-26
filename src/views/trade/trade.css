@@ -35,7 +35,7 @@
   position: relative;
   height: 52px;
   padding: 0 20px;
-  line-height: 52px;
+  line-height: 50px;
   border-bottom: 1px solid #d4a668;
 }
 
@@ -46,12 +46,13 @@
 
 .trade-plate-header .market-tabs {
   display: flex;
-  margin-bottom: 0px;
+  margin: 0 -20px;
   line-height: 34px;
 }
 
 .trade-plate-header .market-tabs > li {
-  min-width: 20%;
+  flex: 1 1 40px;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -64,8 +65,8 @@
 }
 
 .trade-plate-header .market-tabs > li:last-child {
+  flex: 2 2 40px;
   margin-left: auto;
-  margin-right: 0;
 }
 
 .trade-plate-header .market-tabs .icon-shoucang,
@@ -93,7 +94,8 @@
 
 .trade-plate-tab .iconfont {
   display: inline-block;
-  width: 40px;
+  width: 10%;
+  min-width: 30px;
   text-align: center;
   color: #585858;
   cursor: pointer;
