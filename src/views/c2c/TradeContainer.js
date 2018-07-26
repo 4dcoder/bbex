@@ -473,7 +473,7 @@ class TradeContainer extends Component {
       } else if (json.code === 10004017) {
         //请进行身份认证
         Modal.confirm({
-          className: "v-center-modal",
+          className: 'v-center-modal',
           title: localization['发布广告'],
           content: localization['为保证资金安全，请在交易前实名认证'],
           okText: localization['去实名'],
@@ -485,7 +485,7 @@ class TradeContainer extends Component {
       } else if (json.code === 10004018) {
         //请先绑定银行卡
         Modal.confirm({
-          className: "v-center-modal",
+          className: 'v-center-modal',
           title: localization['发布广告'],
           content: localization['为保证交易顺畅，请在交易前绑定银行卡'],
           okText: localization['去绑卡'],
@@ -578,20 +578,22 @@ class TradeContainer extends Component {
         });
       } else if (json.code === 10004017) {
         //请进行身份认证
-        Modal.confirm({
-          className: "v-center-modal",
-          content: localization['为保证资金安全，请在交易前实名认证'],
-          okText: localization['去实名'],
-          cancelText: localization['取消'],
-          onOk: () => {
-            this.props.history.push('/user/verified');
-          }
-        });
+        if (exType === 'sell') {
+          Modal.confirm({
+            className: 'v-center-modal',
+            content: localization['为保证资金安全，请在交易前实名认证'],
+            okText: localization['去实名'],
+            cancelText: localization['取消'],
+            onOk: () => {
+              this.props.history.push('/user/verified');
+            }
+          });
+        }
       } else if (json.code === 10004018) {
         //请先绑定银行卡
         if (exType === 'sell') {
           Modal.confirm({
-            className: "v-center-modal",
+            className: 'v-center-modal',
             content: localization['为保证交易顺畅，请在交易前绑定银行卡'],
             okText: localization['去绑卡'],
             cancelText: localization['取消'],
@@ -1073,8 +1075,8 @@ class TradeContainer extends Component {
               return <div>{localization['客服已处理完']}</div>;
             case '3':
               return <div>{localization['已撤销']}</div>;
-            default: 
-              return ''
+            default:
+              return '';
           }
         }
       }
