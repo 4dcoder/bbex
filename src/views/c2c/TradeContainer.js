@@ -421,7 +421,7 @@ class TradeContainer extends Component {
       buy: 1,
       sell: 0
     };
-    this.request('/offline/advert/list', {
+    this.request('/offline/gadvert/list', {
       body: {
         exType: typeMap[exType],
         coinId: coin.coinId,
@@ -792,7 +792,7 @@ class TradeContainer extends Component {
   //撤销广告
   cancelAdvert = record => {
     const { localization } = this.props;
-    this.request('/offline/advert/cancel', {
+    this.request('/offline/gadvert/cancel', {
       body: { orderId: record.id }
     }).then(json => {
       if (json.code === 10000000) {

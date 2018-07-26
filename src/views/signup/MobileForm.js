@@ -10,7 +10,6 @@ import './signup.css';
 const FormItem = Form.Item;
 
 class MobileForm extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -69,18 +68,19 @@ class MobileForm extends Component {
         )
       });
     } else {
+      const { localization } = this.props;
       this.props.form.setFields({
         mobile: {
-          errors: [new Error('请输入正确的手机号')]
+          errors: [new Error(localization['请输入正确的手机号'])]
         }
       });
     }
   };
 
   comparePassword = (rule, value, callback) => {
-    const form = this.props.form;
+    const { localization, form } = this.props;
     if (value && value !== form.getFieldValue('password')) {
-      callback('两次密码不一致');
+      callback(localization['两次密码不一致']);
     } else {
       callback();
     }
@@ -111,8 +111,9 @@ class MobileForm extends Component {
 
           this.register({ registerType, mobile, enPassword, code, inviteCode });
         } else {
+          const { localization } = this.props;
           message.destroy();
-          message.warn('请先同意服务条款');
+          message.warn(localization['请先同意服务条款']);
         }
       }
     });
@@ -129,7 +130,8 @@ class MobileForm extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success('恭喜你，注册成功！');
+        const { localization } = this.props;
+        message.success(localization['恭喜你，注册成功！']);
         this.props.history.push('/signin');
       } else {
         message.destroy();
@@ -139,121 +141,121 @@ class MobileForm extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { localization, form } = this.props;
+    const { getFieldDecorator } = form;
     const { disabled, number, popup, inviteCode } = this.state;
 
-    return <Form onSubmit={this.handleSubmit} className="signup-form">
-      <FormItem>
-        {getFieldDecorator('mobile', {
-          rules: [
-            { required: true, message: '请输入手机号' },
-            { pattern: /^1[34578][0-9]{9}$/, message: '手机号不正确' },
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
+    return (
+      <Form onSubmit={this.handleSubmit} className="signup-form">
+        <FormItem>
+          {getFieldDecorator('mobile', {
+            rules: [
+              { required: true, message: localization['请输入手机号'] },
+              { pattern: /^1[34578][0-9]{9}$/, message: localization['手机号不正确'] }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              placeholder={localization['手机号']}
+              prefix={<i className="iconfont icon-shouji54" />}
+            />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('password', {
+            rules: [
+              { required: true, message: localization['请输入密码'] },
+              { pattern: PWD_REGEX, message: localization['输入8-20位密码 包含数字,字母'] },
+              { validator: this.validateToNextPassword }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              type="password"
+              placeholder={localization['密码']}
+              prefix={<i className="iconfont icon-suo" />}
+            />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('confirm', {
+            rules: [
+              { required: true, message: localization['请输入确认密码'] },
+              { validator: this.comparePassword }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              type="password"
+              placeholder={localization['确认密码']}
+              onBlur={this.handleConfirmBlur}
+              prefix={<i className="iconfont icon-suo" />}
+            />
+          )}
+        </FormItem>
+        <FormItem className="mail-code">
+          {getFieldDecorator('code', {
+            rules: [
+              { required: true, message: localization['请输入手机验证码'] },
+              { pattern: /^\d{6}$/, message: localization['请输入6位手机验证码'] }
+            ],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              placeholder={localization['手机验证码']}
+              prefix={<i className="iconfont icon-yanzhengma2" />}
+            />
+          )}
+          <Button
             size="large"
-            placeholder="手机号"
-            prefix={<i className="iconfont icon-shouji54" />}
-          />
-        )}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('password', {
-          rules: [
-            { required: true, message: '请输入密码' },
-            { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字,字母' },
-            { validator: this.validateToNextPassword }
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
+            onClick={this.getMobileCode}
+            type="primary"
+            disabled={disabled}
+            className="mail-code-btn"
+          >
+            {!disabled ? localization['获取手机验证码'] : number + 's'}
+          </Button>
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('inviteCode', {
+            initialValue: inviteCode,
+            rules: [{ pattern: /^\d+$/, message: localization['请输入数字邀请码'] }],
+            validateTrigger: 'onBlur'
+          })(
+            <Input
+              size="large"
+              placeholder={localization['邀请码']}
+              prefix={<i className="iconfont icon-yaoqingma" />}
+            />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('agreement', {
+            valuePropName: 'checked',
+            initialValue: true
+          })(<Checkbox className="agree-text">{localization['我已阅读并同意']}</Checkbox>)}
+          <Link to="/agreement" className="link-agree" target="_blank">
+            {localization['服务条款']}
+          </Link>
+        </FormItem>
+        <div className="submit-btn" style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            type="primary"
+            htmlType="submit"
             size="large"
-            type="password"
-            placeholder="密码"
-            prefix={<i className="iconfont icon-suo" />}
-          />
-        )}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('confirm', {
-          rules: [
-            { required: true, message: '请输入确认密码' },
-            { validator: this.comparePassword }
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
-            size="large"
-            type="password"
-            placeholder="确认密码"
-            onBlur={this.handleConfirmBlur}
-            prefix={<i className="iconfont icon-suo" />}
-          />
-        )}
-      </FormItem>
-      <FormItem className="mail-code">
-        {getFieldDecorator('code', {
-          rules: [
-            { required: true, message: '请输入手机验证码' },
-            { pattern: /^\d{6}$/, message: '请输入6位手机验证码' },
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
-            size="large"
-            placeholder="手机验证码"
-            prefix={<i className="iconfont icon-yanzhengma2" />}
-          />
-        )}
-        <Button
-          size="large"
-          onClick={this.getMobileCode}
-          type="primary"
-          disabled={disabled}
-          className="mail-code-btn"
-        >
-          {!disabled ? '获取手机验证码' : number + 's'}
-        </Button>
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('inviteCode', {
-          initialValue: inviteCode,
-          rules: [
-            { pattern: /^\d+$/, message: '请输入数字邀请码' },
-          ],
-          validateTrigger: 'onBlur'
-        })(
-          <Input
-            size='large'
-            placeholder='邀请码'
-            prefix={<i className="iconfont icon-yaoqingma" />}
-          />)}
-      </FormItem>
-      <FormItem>
-        {getFieldDecorator('agreement', {
-          valuePropName: 'checked',
-          initialValue: true,
-        })(
-          <Checkbox className="agree-text">我已阅读并同意</Checkbox>
-        )}
-        <Link to="/agreement" className='link-agree' target="_blank">
-          服务条款
-      </Link>
-      </FormItem>
-      <div className='submit-btn' style={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          type="primary"
-          htmlType="submit"
-          size="large"
-          onClick={this.handleSubmit}
-          style={{ width: 400 }}
-        >
-          注册
-      </Button>
-      </div>
-      {popup}
-    </Form>
+            onClick={this.handleSubmit}
+            style={{ width: 400 }}
+          >
+            {localization['注册']}
+          </Button>
+        </div>
+        {popup}
+      </Form>
+    );
   }
 }
 

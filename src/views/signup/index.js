@@ -8,16 +8,17 @@ const TabPane = Tabs.TabPane;
 class SignUp extends Component {
 
   render() {
+    const { localization } = this.props;
     return (
       <div className="sign-up">
         <div className='sign-up-content'>
-          <h4>用户注册</h4>
+          <h4>{localization['用户注册']}</h4>
           <Tabs defaultActiveKey="mobile">
-            <TabPane tab="手机注册" key="mobile">
-              <MobileForm />
+            <TabPane tab={localization['手机注册']} key="mobile">
+              <MobileForm localization={localization} />
             </TabPane>
-            <TabPane tab="邮箱注册" key="mail">
-              <MailForm />
+            <TabPane tab={localization['邮箱注册']} key="mail">
+              <MailForm localization={localization} />
             </TabPane>
           </Tabs>
         </div>
