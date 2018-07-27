@@ -625,15 +625,15 @@ a:hover {
 }
 
 .font-color-primary {
-  color: #d4a668;
+  color: #d4a668 !important;
 }
 
 .font-color-green {
-  color: #2ba75c;
+  color: #2ba75c !important;
 }
 
 .font-color-red {
-  color: #e02a36;
+  color: #e02a36 !important;
 }
 
 .ant-btn-buy {

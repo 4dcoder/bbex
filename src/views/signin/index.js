@@ -98,7 +98,7 @@ class SignIn extends Component {
             {localization['请确认您正在访问']} <strong>{url}</strong>
           </div>
           <div className="safety-site">
-            <i className="iconfont icon-suo1" style={{ color: '#53B135' }} />
+            <i className="iconfont icon-suo1 font-color-green" />
             {url}
           </div>
           <p className="error-tip">
