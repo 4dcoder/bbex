@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Tabs, Table, Button, Input, message, Modal } from 'antd';
+import { Tabs, Table, Button, Input, message, Modal, Checkbox } from 'antd';
 import Recharge from './Recharge';
 import Withdraw from './Withdraw';
 
@@ -21,7 +21,8 @@ class Property extends Component {
     normalAllData: null,
     expandedRowKey: '',
     expendedFlag: '',
-    currencyName: ''
+    currencyName: '',
+    checked: false
   };
 
   request = window.request;
@@ -112,10 +113,6 @@ class Property extends Component {
     });
   };
 
-  handleZero = e => {
-    console.log(e.target.checked);
-  };
-
   handleRecharge = record => {
     this.setState({
       expandedRowKey: record.key,
@@ -132,14 +129,36 @@ class Property extends Component {
   handleSearch = e => {
     let value = e.target.value;
     if (value.length < 16) {
-      let { normalAllData } = this.state;
+      let { normalAllData, checked } = this.state;
+      let normalData = normalAllData;
+      if (checked) {
+        normalData = normalAllData.filter(item => {
+          return item.volume > 0;
+        });
+      }
       let target = value.toUpperCase();
-      let normalData = normalAllData.filter(item => {
+      normalData = normalData.filter(item => {
         return item.name.indexOf(target) > -1;
       });
       this.setState({ currencyName: value, normalData });
     }
   };
+
+  zeroChange = (e) => {
+    const checked = e.target.checked;
+    const { normalAllData, currencyName } = this.state;
+    const target = currencyName.toUpperCase();
+    let normalData = normalAllData.filter(item => {
+      return item.name.indexOf(target) > -1;
+    });
+    if (checked) {
+      normalData = normalData.filter(item => {
+        return item.volume > 0;
+      });
+    }
+    this.setState({ checked, normalData })
+  }
+
 
   triggerAction = ({ type, coin }) => {
     const typeToTit = {
@@ -194,8 +213,6 @@ class Property extends Component {
     });
   };
 
-  handelOutto = () => {};
-
   hideModal = () => {
     this.setState({
       modalTit: '',
@@ -217,7 +234,8 @@ class Property extends Component {
       normalData,
       expandedRowKey,
       expendedFlag,
-      currencyName
+      currencyName,
+      checked
     } = this.state;
 
     const routineColumns = [
@@ -269,7 +287,7 @@ class Property extends Component {
         key: 'action',
         render: (text, record) => (
           <div className="property-action">
-            {(record.tokenStatus*1 === 1 || record.tokenStatus*1 === 2) && (
+            {(record.tokenStatus * 1 === 1 || record.tokenStatus * 1 === 2) && (
               <Button
                 type="primary"
                 onClick={() => {
@@ -279,7 +297,7 @@ class Property extends Component {
                 充币
               </Button>
             )}
-            {(record.tokenStatus*1 === 1 || record.tokenStatus*1 === 3) && (
+            {(record.tokenStatus * 1 === 1 || record.tokenStatus * 1 === 3) && (
               <Button
                 type="primary"
                 onClick={() => {
@@ -375,6 +393,7 @@ class Property extends Component {
             <header className="property-header clear">
               <h2 className="pull-left">我的资金一览表</h2>
               <div className="header-search">
+                <Checkbox onChange={this.zeroChange} checked={checked}>隐藏资产为0的币种</Checkbox>,
                 <Search value={currencyName} onChange={this.handleSearch} style={{ width: 100 }} />
               </div>
               {/* <ul className="pull-right">
