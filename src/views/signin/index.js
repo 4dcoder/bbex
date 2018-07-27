@@ -94,7 +94,7 @@ class SignIn extends Component {
         <div className="form-box">
           <h1>{localization['用户登录']}</h1>
           <div className="attention">
-            <i className="iconfont icon-zhuyishixiang" style={{ color: '#C31823' }} />
+            <i className="iconfont icon-zhuyishixiang" />
             {localization['请确认您正在访问']} <strong>{url}</strong>
           </div>
           <div className="safety-site">
