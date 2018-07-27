@@ -147,7 +147,7 @@ class Home extends Component {
     localStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
   };
 
-  handleChange = (pagination, filters, sorter) => {
+  handleSort = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
     this.setState({
       sortedInfo: sorter
@@ -195,6 +195,7 @@ class Home extends Component {
       }
     }
 
+    // 根据搜索关键字筛选
     if (searchValue) {
       pairList = pairList.filter(coin => {
         return coin.coinOther.indexOf(searchValue.toLocaleUpperCase()) !== -1;
@@ -316,7 +317,7 @@ class Home extends Component {
                     <Table
                       columns={columns}
                       dataSource={pairList}
-                      onChange={this.handleChange}
+                      onChange={this.handleSort}
                       onRow={record => ({
                         onClick: this.handleGoToTrade.bind(this, record)
                       })}

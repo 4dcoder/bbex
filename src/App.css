@@ -366,6 +366,9 @@ a:hover {
 :root .ant-confirm-body .ant-confirm-content {
   color: #adadad;
 }
+:root .ant-checkbox-inner {
+  background-color: transparent;
+}
 /* 覆盖antd样式 */
 
 /* 公共样式 */

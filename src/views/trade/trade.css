@@ -117,6 +117,26 @@
   border-bottom: 1px solid #3f4451;
 }
 
+.trade-plate-tit-sorter {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  vertical-align: middle;
+}
+.trade-plate-tit-sorter>.anticon {
+  display: block;
+  margin: -4px 0;
+  font-size: 12px;
+  transform: scale(0.66666667);
+}
+.trade-plate-tit-sorter.up>.anticon-caret-up {
+  color: #d4a668;
+}
+.trade-plate-tit-sorter.down>.anticon-caret-down {
+  color: #d4a668;
+}
+
 .trade-plate-tit.cell-3 {
   font-size: 14px;
 }
