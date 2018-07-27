@@ -185,10 +185,11 @@
   justify-content: space-between;
 }
 
-.trade-plate-container>div>div,
-.trade-plate-list>div>div,
-.ant-tabs-tabpane-active>div>div {
+.trade-plate-container>div>div:nth-child(1),
+.trade-plate-list>div>div:nth-child(1),
+.ant-tabs-tabpane-active>div>div:nth-child(1) {
   overflow-x: hidden !important;
+  padding: 5px 0 15px;
 }
 
 .trade-plate-container table,
