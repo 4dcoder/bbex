@@ -1,5 +1,6 @@
 .property-header {
     position: relative;
+    margin-bottom: 10px;
 }
 .property-header h2 {
     padding-top: 20px;
@@ -46,8 +47,8 @@
 }
 .header-search .ant-checkbox-wrapper span{
     color: #dadada;
+    font-size: 15px;
 }
-
 
 .currency-logo {
     display: inline-block;
