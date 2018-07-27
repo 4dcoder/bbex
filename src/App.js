@@ -55,7 +55,7 @@ const C2c = asyncComponent(() => import('./views/c2c'));
 
 const Notice = asyncComponent(() => import('./views/notice'));
 
-const Detail = asyncComponent(() => import('./views/notice/Detail'));
+const NoticeDetail = asyncComponent(() => import('./views/notice/Detail'));
 
 const Agreement = asyncComponent(() => import('./views/links/Agreement'));
 
@@ -65,7 +65,12 @@ const NotFound = asyncComponent(() => import('./views/404'));
 
 const Mobile = asyncComponent(() => import('./views/mobile'));
 
+const HelpDetail = asyncComponent(() => import('./views/help/Detail'));
+
 const Help = asyncComponent(() => import('./views/help'));
+
+
+
 
 const NormalRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
@@ -111,8 +116,9 @@ class App extends Component {
             <NormalRoute path="/link/:id" component={MyLink} {...{ localization }} />
             <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
             <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
-            <NormalRoute path="/notice/:id" component={Detail} {...{ localization }} />
-            <NormalRoute path="/help" component={Help} {...{ localization }} />
+            <NormalRoute path="/notice/:id" component={NoticeDetail} {...{ localization }} />
+            <NormalRoute exact path="/help" component={Help} {...{ localization }} />
+            <NormalRoute path="/help/:id" component={HelpDetail} {...{ localization }} />
           </Container>
           <NormalRoute path="/*" component={NotFound} {...{ localization }} />
         </Switch>

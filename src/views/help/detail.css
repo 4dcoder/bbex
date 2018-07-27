@@ -1,11 +1,10 @@
-.notice-detail{
+.help-detail{
   width: 100%;
   min-height: 400px;
   color: #dadada;
-  margin-top: 0;
   margin-bottom: -30px;
 }
-.notice-detail div{
+.help-detail div{
   width: 100%;
   text-align: center;
 }
