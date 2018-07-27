@@ -10,6 +10,7 @@
 .help .help-container h4{
   color: #dadada;
   font-size: 20px;
+  margin-bottom: 20px;
 }
 .help  .ant-list-split .ant-list-item{
   border-bottom: 1px solid #373C47;
