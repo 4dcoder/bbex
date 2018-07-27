@@ -228,8 +228,8 @@ class Home extends Component {
         title: `${localization['最新价']}${market !== 'optional' ? `(${market})` : ''}`,
         dataIndex: 'latestPrice',
         key: 'latestPrice',
-        sorter: (a, b) => a.price - b.price,
-        sortOrder: sortedInfo.columnKey === 'price' && sortedInfo.order
+        sorter: (a, b) => a.latestPrice - b.latestPrice,
+        sortOrder: sortedInfo.columnKey === 'latestPrice' && sortedInfo.order
       },
       {
         title: localization['涨跌幅'],
@@ -237,7 +237,7 @@ class Home extends Component {
         key: 'rise',
         sorter: (a, b) =>
           Number(a.rise.substring(0, a.rise.length - 1)) -
-          Number(a.rise.substring(0, b.rise.length - 1)),
+          Number(b.rise.substring(0, b.rise.length - 1)),
         sortOrder: sortedInfo.columnKey === 'rise' && sortedInfo.order,
         render: text => (
           <span className={`font-color-${text.indexOf('-') !== -1 ? 'red' : 'green'}`}>{text}</span>
@@ -257,8 +257,8 @@ class Home extends Component {
         title: `${localization['成交量']}`,
         dataIndex: 'dayCount',
         key: 'dayCount',
-        sorter: (a, b) => a.total - b.total,
-        sortOrder: sortedInfo.columnKey === 'total' && sortedInfo.order
+        sorter: (a, b) => a.dayCount - b.dayCount,
+        sortOrder: sortedInfo.columnKey === 'dayCount' && sortedInfo.order
       }
     ];
 
