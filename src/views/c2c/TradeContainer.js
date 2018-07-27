@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
 import TransactionForm from './TransactionForm';
-import { stampToDate, copy, getMaxPoint } from '../../utils';
+import { stampToDate, getMaxPoint } from '../../utils';
 import { IMAGES_ADDRESS, WS_PREFIX } from '../../utils/constants';
 import ReconnectingWebSocket from '../../utils/ReconnectingWebSocket';
 import AppealModal from './AppealModal';
@@ -22,11 +22,6 @@ const ExpandComponent = ({
   handleAppeal
 }) => {
   const { bankInfo, totalPrice, radomNum, remarks, status } = record;
-  const handleCopy = text => {
-    copy(text).then(() => {
-      message.success(localization['复制成功！']);
-    });
-  };
 
   return (
     <div className="payment-box">
@@ -80,34 +75,31 @@ const ExpandComponent = ({
                   <td>
                     {bankInfo.realName}{' '}
                     <i
-                      className="iconfont icon-copy"
-                      onClick={handleCopy.bind(this, bankInfo.realName)}
+                      className="iconfont icon-copy copy-btn"
+                      date-clipboard-text={bankInfo.realName}
                     />
                   </td>
                   <td>
                     {bankInfo.cardNo}{' '}
                     <i
-                      className="iconfont icon-copy"
-                      onClick={handleCopy.bind(this, bankInfo.cardNo)}
+                      className="iconfont icon-copy copy-btn"
+                      date-clipboard-text={bankInfo.cardNo}
                     />
                   </td>
                   <td>
                     {bankInfo.bankName}/{bankInfo.branchBankName}{' '}
                     <i
-                      className="iconfont icon-copy"
-                      onClick={handleCopy.bind(
-                        this,
-                        `${bankInfo.bankName}/${bankInfo.branchBankName}`
-                      )}
+                      className="iconfont icon-copy copy-btn"
+                      date-clipboard-text={`${bankInfo.bankName}/${bankInfo.branchBankName}`}
                     />
                   </td>
                   <td>
                     {totalPrice}{' '}
-                    <i className="iconfont icon-copy" onClick={handleCopy.bind(this, totalPrice)} />
+                    <i className="iconfont icon-copy copy-btn" date-clipboard-text={totalPrice} />
                   </td>
                   <td>
                     {radomNum}{' '}
-                    <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
+                    <i className="iconfont icon-copy copy-btn" date-clipboard-text={radomNum} />
                   </td>
                 </tr>
               </tbody>
@@ -161,27 +153,24 @@ const ExpandComponent = ({
                     <td>
                       {bankInfo.realName}{' '}
                       <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, bankInfo.realName)}
+                        className="iconfont icon-copy copy-btn"
+                        data-clipboard-text={bankInfo.realName}
                       />
                     </td>
                     <td>
                       {bankInfo.alipayNo}{' '}
                       <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, bankInfo.alipayNo)}
+                        className="iconfont icon-copy copy-btn"
+                        data-clipboard-text={bankInfo.alipayNo}
                       />
                     </td>
                     <td>
                       {totalPrice}{' '}
-                      <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, totalPrice)}
-                      />
+                      <i className="iconfont icon-copy copy-btn" data-clipboard-text={totalPrice} />
                     </td>
                     <td>
                       {radomNum}{' '}
-                      <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
+                      <i className="iconfont icon-copy copy-btn" data-clipboard-text={radomNum} />
                     </td>
                   </tr>
                 </tbody>
@@ -236,27 +225,24 @@ const ExpandComponent = ({
                     <td>
                       {bankInfo.realName}{' '}
                       <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, bankInfo.realName)}
+                        className="iconfont icon-copy copy-btn"
+                        data-clipboard-text={bankInfo.realName}
                       />
                     </td>
                     <td>
                       {bankInfo.wechatNo}{' '}
                       <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, bankInfo.wechatNo)}
+                        className="iconfont icon-copy copy-btn"
+                        data-clipboard-text={bankInfo.wechatNo}
                       />
                     </td>
                     <td>
                       {totalPrice}{' '}
-                      <i
-                        className="iconfont icon-copy"
-                        onClick={handleCopy.bind(this, totalPrice)}
-                      />
+                      <i className="iconfont icon-copy copy-btn" data-clipboard-text={totalPrice} />
                     </td>
                     <td>
                       {radomNum}{' '}
-                      <i className="iconfont icon-copy" onClick={handleCopy.bind(this, radomNum)} />
+                      <i className="iconfont icon-copy copy-btn" data-clipboard-text={radomNum} />
                     </td>
                   </tr>
                 </tbody>

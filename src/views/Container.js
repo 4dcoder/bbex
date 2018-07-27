@@ -4,6 +4,7 @@ import { message } from 'antd';
 import request from '../utils/request';
 import Verification from '../components/verification';
 import GooglePopup from '../components/google-popup';
+import ClipboardJS from 'clipboard';
 
 // 设置全局消息
 message.config({
@@ -111,19 +112,6 @@ class Container extends Component {
     });
   };
 
-  componentWillMount() {
-    const viewport = document.getElementById('viewport');
-    if (viewport) {
-      document.head.removeChild(viewport);
-    }
-
-    this.getLanguage(this.state.language);
-    this.getLogo();
-    this.getIntroduce();
-    this.getPlatLinks();
-    this.getFriendship();
-  }
-
   switchLanguage(language) {
     this.getLanguage(language);
     this.setState({ language });
@@ -193,6 +181,29 @@ class Container extends Component {
       }
     });
   };
+
+  componentWillMount() {
+    this.getLanguage(this.state.language);
+    this.getLogo();
+    this.getIntroduce();
+    this.getPlatLinks();
+    this.getFriendship();
+
+    // 如果有移动端viewport mate就删除
+    const viewport = document.getElementById('viewport');
+    if (viewport) {
+      document.head.removeChild(viewport);
+    }
+
+    // copy 插件设置
+    const clipboard = new ClipboardJS('.copy-btn');
+    clipboard.on('success', function(e) {
+      message.success('复制成功！');
+    });
+    clipboard.on('error', function(e) {
+      message.success('您的浏览器版本较低，请升级浏览器或者使用chrome和firefox等浏览器重试！');
+    });
+  }
 
   render() {
     const { localization } = this.props;

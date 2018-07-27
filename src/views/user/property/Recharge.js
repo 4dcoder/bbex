@@ -15,10 +15,6 @@ class Recharge extends Component {
 
   request = window.request;
 
-  handleCopy = text => {
-    copy(text).then(() => message.success('复制地址成功！'));
-  };
-
   componentWillMount() {
     const { id } = this.props;
     this.request('/coin/user/address/' + id, {
@@ -38,7 +34,7 @@ class Recharge extends Component {
         <div>充币地址</div>
         <ul className="address">
           <li id="re-address">{address}</li>
-          <li className="copy" data-address={address} onClick={this.handleCopy.bind(this, address)}>
+          <li className="copy copy-btn" data-address={address} data-clipboard-text={address}>
             复制
           </li>
           <li className="ercode">

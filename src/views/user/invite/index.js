@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Modal, Input, message } from 'antd';
+import { Table, Modal, Input } from 'antd';
 import QRCode from 'qrcode.react';
-import { copy } from '../../../utils';
 
 import './invite.css';
 
@@ -15,12 +14,6 @@ class Invite extends Component {
   };
 
   request = window.request;
-
-  handleCopy = text => {
-    copy(text).then(() => {
-      message.success('复制成功！');
-    });
-  };
 
   handleShowQRCode = () => {
     this.setState({ showQRCode: true });
@@ -63,7 +56,9 @@ class Invite extends Component {
     const { currentPage, showCount, totalCount, inviteList, showQRCode } = this.state;
     const { realName, inviteCode } = JSON.parse(sessionStorage.getItem('account'));
     const inviteLink = `${window.location.origin}/signup?inviteCode=${inviteCode}`;
-    const mobileLink = `${window.location.origin}/share.html?realName=${escape(realName?realName:'')}&inviteCode=${inviteCode}`;
+    const mobileLink = `${window.location.origin}/share.html?realName=${escape(
+      realName ? realName : ''
+    )}&inviteCode=${inviteCode}`;
 
     const inviteColumns = [
       {
@@ -104,12 +99,14 @@ class Invite extends Component {
                 level={'L'}
                 onClick={this.handleShowQRCode}
               />
-              <div style={{paddingLeft: '40px'}}>手机邀请二维码</div>
+              <div style={{ paddingLeft: '40px' }}>手机邀请二维码</div>
             </li>
             <li>
               <Input
                 addonAfter={
-                  <span onClick={this.handleCopy.bind(this, inviteCode)}>复制邀请码</span>
+                  <span className="copy-btn" data-clipboard-text={inviteCode}>
+                    复制邀请码
+                  </span>
                 }
                 size="large"
                 style={{ width: 200 }}
@@ -120,7 +117,9 @@ class Invite extends Component {
             <li style={{ marginTop: 30 }}>
               <Input
                 addonAfter={
-                  <span onClick={this.handleCopy.bind(this, inviteLink)}>复制PC端邀请链接</span>
+                  <span className="copy-btn" data-clipboard-text={inviteLink}>
+                    复制PC端邀请链接
+                  </span>
                 }
                 size="large"
                 style={{ width: 550 }}
@@ -131,7 +130,9 @@ class Invite extends Component {
             <li style={{ marginTop: 30 }}>
               <Input
                 addonAfter={
-                  <span onClick={this.handleCopy.bind(this, mobileLink)}>复制手机邀请链接</span>
+                  <span className="copy-btn" data-clipboard-text={mobileLink}>
+                    复制手机邀请链接
+                  </span>
                 }
                 size="large"
                 style={{ width: 600 }}
