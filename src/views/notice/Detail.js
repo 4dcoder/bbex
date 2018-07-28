@@ -10,8 +10,8 @@ class Detail extends Component {
         };
     }
     request = window.request;
+    
     componentWillMount() {
-        console.log(this.props.match.params.id);
         this.getNoticeDetail(this.props.match.params.id);
     }
 

@@ -41,7 +41,7 @@ class Property extends Component {
   tabChange = key => {
     if (key === 'routine') {
       this.getNormalData();
-      this.setState({ currencyName: '', checked: false });
+      this.setState({ currencyName: '' });
     } else if (key === 'c2c') {
       this.getC2cData();
     } else {
@@ -75,7 +75,7 @@ class Property extends Component {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        const normalData = json.data.map(item => {
+        const normalAllData = json.data.map(item => {
           let totalPrice = 0;
           let {
             id,
@@ -106,7 +106,17 @@ class Property extends Component {
             withdrawMinVolume
           };
         });
-        this.setState({ normalData, normalAllData: normalData });
+        const checked = localStorage.getItem('zeroChecked');
+        let normalData = normalAllData;
+        if (checked && checked === "true") {
+          normalData = normalAllData.filter(item => {
+            return item.volume > 0;
+          });
+          this.setState({ normalData, normalAllData, checked: true });
+        } else {
+          this.setState({ normalData, normalAllData, checked: false });
+        }
+
       } else {
         message.error(json.msg);
       }
@@ -156,7 +166,8 @@ class Property extends Component {
         return item.volume > 0;
       });
     }
-    this.setState({ checked, normalData })
+    this.setState({ checked, normalData });
+    localStorage.setItem("zeroChecked", checked);
   }
 
 
