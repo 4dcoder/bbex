@@ -63,7 +63,8 @@ class Trade extends PureComponent {
       historyDetails: [],
       historyExpendKey: '',
       btcLastPrice: 0,
-      ethLastPrice: 0
+      ethLastPrice: 0,
+      sorter: {}
     };
   }
 
@@ -119,7 +120,6 @@ class Trade extends PureComponent {
         } else {
           this.setState({ completedOrderList: [] });
         }
-        //message.error(json.msg);
       }
     });
   };
@@ -166,6 +166,7 @@ class Trade extends PureComponent {
       this.setState({ historyExpendKey: '' });
     }
   };
+
   // 获取订单详情
   getOrderDetail = orderNo => {
     this.request(`/coin/tradeOrderDetail/${orderNo}`, {
@@ -179,8 +180,8 @@ class Trade extends PureComponent {
     });
   };
 
+  // 市场websocket
   openMarketsocket = () => {
-    //打开市场websocket
     this.marketWS = new ReconnectingWebSocket(`${WS_PREFIX}/plat`);
 
     this.marketInterval = setInterval(() => {
@@ -223,6 +224,7 @@ class Trade extends PureComponent {
     };
   };
 
+  // 交易流水websocket
   openStreamWebsocket = () => {
     this.streamWS = new ReconnectingWebSocket(`${WS_PREFIX}/flowingWater`);
     this.streamInterval = setInterval(() => {
@@ -316,8 +318,8 @@ class Trade extends PureComponent {
     };
   };
 
+  // 打开买卖盘websocket
   openBuyAndSellWebsocket = () => {
-    //打开websockets
     this.buyandsellWS = new ReconnectingWebSocket(`${WS_PREFIX}/buyAndSell`);
 
     if (this.buyandsellWS && this.buyandsellWS.readyState === 1) {
@@ -339,8 +341,8 @@ class Trade extends PureComponent {
     };
   };
 
+  // 用户挂单websocket
   openUserWebsocket = () => {
-    //打开websockets
     const { id } = JSON.parse(sessionStorage.getItem('account'));
     this.userWS = new ReconnectingWebSocket(`${WS_PREFIX}/user?${id}`);
 
@@ -567,6 +569,15 @@ class Trade extends PureComponent {
     }
   };
 
+  // 币种根据key排序
+  handleSort = key => {
+    const { sorter } = this.state;
+    const sortType = sorter[key] ? (sorter[key] === 'up' ? 'down' : 'up') : 'up';
+    this.setState({
+      sorter: { [key]: sortType }
+    });
+  };
+
   componentWillMount() {
     this.getTradeExpair();
     this.getRate();
@@ -666,7 +677,8 @@ class Trade extends PureComponent {
       tradePrice,
       clickTradeType,
       historyDetails,
-      historyExpendKey
+      historyExpendKey,
+      sorter
     } = this.state;
 
     let pairList = [];
@@ -695,9 +707,28 @@ class Trade extends PureComponent {
       }
     }
 
+    // 根据搜索关键字筛选
     if (searchValue) {
       pairList = pairList.filter(coin => {
         return coin.coinOther.indexOf(searchValue.toLocaleUpperCase()) !== -1;
+      });
+    }
+
+    // 根据选择的字段和排序方式排序
+    if (Object.keys(sorter).length > 0) {
+      let sorterKey, sorterType;
+      Object.keys(sorter).forEach(key => {
+        sorterKey = key;
+        sorterType = sorter[key];
+      });
+      pairList = pairList.sort((a, b) => {
+        const aKey = String(a[sorterKey]).replace('%', '') * 1;
+        const bKey = String(b[sorterKey]).replace('%', '') * 1;
+        if (sorterType === 'up') {
+          return aKey - bKey;
+        } else {
+          return bKey - aKey;
+        }
       });
     }
 
@@ -885,27 +916,35 @@ class Trade extends PureComponent {
               </header>
               <div className="trade-plate-tit cell-3">
                 <div className="trade-plate-tit-cell">{localization['币种']}</div>
-                <div className="trade-plate-tit-cell sorter">
+                <div
+                  className="trade-plate-tit-cell sorter"
+                  onClick={this.handleSort.bind(this, 'latestPrice')}
+                >
                   {localization['最新价']}
-                  <div className="ant-table-column-sorter">
-                    <span className="ant-table-column-sorter-up on" title="↑">
-                      <i className="anticon anticon-caret-up" />
-                    </span>
-                    <span className="ant-table-column-sorter-down off" title="↓">
-                      <i className="anticon anticon-caret-down" />
-                    </span>
-                  </div>
+                  <span
+                    className={classnames({
+                      'trade-plate-tit-sorter': true,
+                      [sorter['latestPrice']]: sorter['latestPrice']
+                    })}
+                  >
+                    <i className="anticon anticon-caret-up" title="↑" />
+                    <i className="anticon anticon-caret-down" title="↓" />
+                  </span>
                 </div>
-                <div className="trade-plate-tit-cell sorter">
+                <div
+                  className="trade-plate-tit-cell sorter"
+                  onClick={this.handleSort.bind(this, 'rise')}
+                >
                   {localization['涨跌幅']}
-                  <div className="ant-table-column-sorter">
-                    <span className="ant-table-column-sorter-up off" title="↑">
-                      <i className="anticon anticon-caret-up" />
-                    </span>
-                    <span className="ant-table-column-sorter-down off" title="↓">
-                      <i className="anticon anticon-caret-down" />
-                    </span>
-                  </div>
+                  <span
+                    className={classnames({
+                      'trade-plate-tit-sorter': true,
+                      [sorter['rise']]: sorter['rise']
+                    })}
+                  >
+                    <i className="anticon anticon-caret-up" title="↑" />
+                    <i className="anticon anticon-caret-down" title="↓" />
+                  </span>
                 </div>
               </div>
               <div className="trade-plate-container market" style={{ height: 415 }}>

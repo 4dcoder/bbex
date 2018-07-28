@@ -351,9 +351,9 @@ class Finance extends Component {
                 key: 'type',
                 render: text => {
                     if (text == 0) {
-                        return <div style={{color:'#13ae50'}}>转入</div>;
+                        return <div className="font-color-green">转入</div>;
                     } else {
-                        return <div style={{color:'#f51726'}}>转出</div>;
+                        return <div className="font-color-red">转出</div>;
                     }
                 }
             },

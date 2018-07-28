@@ -244,9 +244,9 @@ class Transaction extends Component {
         key: 'exType',
         render: text => {
           if (text == 0) {
-            return <div style={{color:'#13ae50'}}>买入</div>;
+            return <div className="font-color-green">买入</div>;
           } else {
-            return <div style={{color:'#f51726'}}>卖出</div>;
+            return <div className="font-color-red">卖出</div>;
           }
         }
       },
@@ -332,9 +332,9 @@ class Transaction extends Component {
         key: 'exType',
         render: text => {
           if (text == 0) {
-            return <div style={{color:'#13ae50'}}>买入</div>;
+            return <div className="font-color-green">买入</div>;
           } else {
-            return <div style={{color:'#f51726'}}>卖出</div>;
+            return <div className="font-color-red">卖出</div>;
           }
         }
       },
@@ -433,9 +433,9 @@ class Transaction extends Component {
         key: 'exType',
         render: text => {
           if (text == 0) {
-            return <div style={{color:'#13ae50'}}>买入</div>;
+            return <div className="font-color-green">买入</div>;
           } else {
-            return <div style={{color:'#f51726'}}>卖出</div>;
+            return <div className="font-color-red">卖出</div>;
           }
         }
       },
