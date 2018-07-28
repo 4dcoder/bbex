@@ -11,22 +11,9 @@ class Detail extends Component {
   }
 
   request = window.request;
-
-  container = document.querySelector('.container');
   
   componentWillMount() {
     this.getHelpDetail(this.props.match.params.id);
-  }
-
-  componentDidMount() {
-    // 给container 添加 html-wrap
-    const classname = this.container.className;
-    this.container.className = classname + ' html-wrap';
-  }
-
-  componentWillUnmount() {
-    // 给container 移除 html-wrap
-    this.container.className = 'container';
   }
 
   itemClick = item => {

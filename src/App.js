@@ -69,9 +69,6 @@ const HelpDetail = asyncComponent(() => import('./views/help/Detail'));
 
 const Help = asyncComponent(() => import('./views/help'));
 
-
-
-
 const NormalRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
 );
@@ -105,22 +102,24 @@ class App extends Component {
         <Switch>
           <NormalRoute path="/mobile" component={Mobile} {...{ localization }} />
           <Container {...{ localization }} onGetLocalization={this.handleGetLocalization}>
-            <NormalRoute exact path="/" component={Home} {...{ localization }} />
-            <NormalRoute path="/trade" component={Trade} {...{ localization }} />
-            <NormalRoute path="/signin" component={SignIn} {...{ localization }} />
-            <NormalRoute path="/signup" component={SignUp} {...{ localization }} />
-            <NormalRoute path="/reset" component={Reset} {...{ localization }} />
-            <NormalRoute path="/resetPassword" component={ResetPassword} {...{ localization }} />
-            <PrivateRoute path="/user" component={User} {...{ localization }} />
-            <NormalRoute path="/c2c" component={C2c} {...{ localization }} />
-            <NormalRoute path="/link/:id" component={MyLink} {...{ localization }} />
-            <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
-            <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
-            <NormalRoute path="/notice/:id" component={NoticeDetail} {...{ localization }} />
-            <NormalRoute exact path="/help" component={Help} {...{ localization }} />
-            <NormalRoute path="/help/:id" component={HelpDetail} {...{ localization }} />
+            <Switch>
+              <NormalRoute exact path="/" component={Home} {...{ localization }} />
+              <NormalRoute path="/trade" component={Trade} {...{ localization }} />
+              <NormalRoute path="/signin" component={SignIn} {...{ localization }} />
+              <NormalRoute path="/signup" component={SignUp} {...{ localization }} />
+              <NormalRoute path="/reset" component={Reset} {...{ localization }} />
+              <NormalRoute path="/resetPassword" component={ResetPassword} {...{ localization }} />
+              <PrivateRoute path="/user" component={User} {...{ localization }} />
+              <NormalRoute path="/c2c" component={C2c} {...{ localization }} />
+              <NormalRoute path="/link/:id" component={MyLink} {...{ localization }} />
+              <NormalRoute path="/agreement" component={Agreement} {...{ localization }} />
+              <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
+              <NormalRoute path="/notice/:id" component={NoticeDetail} {...{ localization }} />
+              <NormalRoute exact path="/help" component={Help} {...{ localization }} />
+              <NormalRoute path="/help/:id" component={HelpDetail} {...{ localization }} />
+              <NormalRoute component={NotFound} {...{ localization }} />
+            </Switch>
           </Container>
-          <NormalRoute path="/*" component={NotFound} {...{ localization }} />
         </Switch>
       </Router>
     );

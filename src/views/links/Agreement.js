@@ -9,19 +9,8 @@ class Agreement extends Component {
     };
   }
 
-  container = document.querySelector('.container');
-
-  componentDidMount() {
-    // 给container 添加 html-wrap
-    const classname = this.container.className;
-    this.container.className = classname + ' html-wrap';
-
+  componentWillMount() {
     this.getArgeement();
-  }
-
-  componentWillUnmount() {
-    // 给container 移除 html-wrap
-    this.container.className = 'container';
   }
 
   //获取用户协议

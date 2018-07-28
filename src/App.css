@@ -43,6 +43,10 @@ html, body {
   background-color: #353c4a;
 }
 
+.container.copywriting {
+  background-color: #10162d;
+}
+
 .content-inner {
   display: flex;
   justify-content: space-between;
@@ -55,10 +59,6 @@ html, body {
 
 .content {
   position: relative;
-}
-
-.html-wrap{
-  background-color: #10162d;
 }
 
 .page-loading {
