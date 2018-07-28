@@ -3,15 +3,27 @@ import request from '../../utils/request';
 import './link.css';
 
 class MyLink extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
-    this.state={
-      detail:'<p></p>'
-    }
+    this.state = {
+      detail: '<p></p>'
+    };
   }
 
-  componentDidMount(){
+  container = document.querySelector('.container');
+
+  componentDidMount() {
+    // 给container 添加 link-container
+    const classname = this.container.className;
+    this.container.className = classname + ' link-container';
+
+
     this.getLinkDetail();
+  }
+
+  componentWillUnmount() {
+    // 给container 移除 link-container
+    this.container.className = 'container';
   }
 
   //获取访问的网址
@@ -19,22 +31,17 @@ class MyLink extends Component {
     const id = this.props.match.params.id;
 
     request(`/cms/view/${id}`, {
-        method: 'GET',
+      method: 'GET'
     }).then(json => {
-        if (json.code === 10000000) {
-            this.setState({ detail: json.data.content });
-        } else {
-
-        }
+      if (json.code === 10000000) {
+        this.setState({ detail: json.data.content });
+      } else {
+      }
     });
-  }
-  render(){
+  };
+  render() {
     let { detail } = this.state;
-    return <div>
-      <div id='link_container' dangerouslySetInnerHTML={{ __html: detail }} >
-        
-      </div>
-    </div>
+    return <div dangerouslySetInnerHTML={{ __html: detail }} />;
   }
 }
 export default MyLink;
