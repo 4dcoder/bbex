@@ -3,7 +3,6 @@ import TradingView from './ChartingLibrary';
 import Datafeed from './datafeed';
 
 class TradeviewPage extends PureComponent {
-
   // tradeView准备
   tradingViewGetReady(symbol) {
     const widgetOptions = {
@@ -224,14 +223,21 @@ class TradeviewPage extends PureComponent {
     TradingView.onready(chartReady());
   }
 
+  toggleScrollTarget = e => {
+    const chartMask = document.querySelector('#chartMask');
+    chartMask.hidden = e.target === chartMask;
+  };
+
   componentDidMount() {
     this.tradingViewGetReady(this.props.symbol);
 
     // 切换滚动目标（tradingview 或者是 window）
-    document.addEventListener('click', (e) => {
-      const chartMask = document.querySelector('#chartMask');
-      chartMask.hidden = e.target === chartMask;
-    }, false);
+    document.addEventListener('click', this.toggleScrollTarget, false);
+  }
+
+  componentWillUnmount() {
+    // 取消切换滚动目标（tradingview 或者是 window）
+    document.removeEventListener('click', this.toggleScrollTarget);
   }
 
   render() {
