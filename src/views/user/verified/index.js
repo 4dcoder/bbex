@@ -34,25 +34,22 @@ class Verified extends Component {
   request = window.request;
   account = JSON.parse(sessionStorage.getItem('account'));
 
+  // 显示已上传的图片
   showExample = () => {
     this.setState({ showExampleImage: true });
   };
 
+  // 隐藏已上传的图片
   hideExample = () => {
     this.setState({ showExampleImage: false });
   };
 
+  // 改变认证状态
   handleVerification = () => {
     const current = this.state.current + 1;
     this.setState({ current });
   };
 
-  componentDidMount() {
-    const { current } = this.state;
-    if (current === 2) {
-      this.getReason();
-    }
-  }
   // 获取审核不通过原因
   getReason = () => {
     this.request('/user/findCardStatus').then(json => {
@@ -63,6 +60,7 @@ class Verified extends Component {
       }
     });
   };
+
   //重新认证
   reVerified = () => {
     this.setState({ current: 0, reason: '' });
@@ -97,6 +95,7 @@ class Verified extends Component {
     });
   };
 
+  // 上传图片前钩子，做上传图片大小限制
   beforeUpload = file => {
     const isLt10M = file.size / 1024 / 1024 < 10;
     if (!isLt10M) {
@@ -105,6 +104,7 @@ class Verified extends Component {
     return isLt10M;
   };
 
+  // 检测上传图片状态
   handleChange = ({ file }, type) => {
     if (file.status === 'uploading') {
       this.setState({ [`${type}Loading`]: true });
@@ -120,6 +120,13 @@ class Verified extends Component {
       );
     }
   };
+
+  componentDidMount() {
+    const { current } = this.state;
+    if (current === 2) {
+      this.getReason();
+    }
+  }
 
   render() {
     const {
