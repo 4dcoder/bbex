@@ -57,6 +57,10 @@ html, body {
   position: relative;
 }
 
+.html-wrap{
+  background-color: #10162d;
+}
+
 .page-loading {
   display: flex;
   position: fixed;

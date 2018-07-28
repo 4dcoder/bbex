@@ -9,10 +9,24 @@ class Detail extends Component {
       content: '<p></p>'
     };
   }
+
   request = window.request;
 
+  container = document.querySelector('.container');
+  
   componentWillMount() {
     this.getHelpDetail(this.props.match.params.id);
+  }
+
+  componentDidMount() {
+    // 给container 添加 html-wrap
+    const classname = this.container.className;
+    this.container.className = classname + ' html-wrap';
+  }
+
+  componentWillUnmount() {
+    // 给container 移除 html-wrap
+    this.container.className = 'container';
   }
 
   itemClick = item => {
@@ -33,11 +47,7 @@ class Detail extends Component {
   };
 
   render() {
-    return (
-      <div className="content-inner help-detail">
-        <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
-      </div>
-    );
+    return <div dangerouslySetInnerHTML={{ __html: this.state.content }} />;
   }
 }
 
