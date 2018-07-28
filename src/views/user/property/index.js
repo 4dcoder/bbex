@@ -41,7 +41,7 @@ class Property extends Component {
   tabChange = key => {
     if (key === 'routine') {
       this.getNormalData();
-      this.setState({ currencyName: '' });
+      this.setState({ currencyName: '', checked: false });
     } else if (key === 'c2c') {
       this.getC2cData();
     } else {
