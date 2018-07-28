@@ -3,9 +3,9 @@ import TradingView from './ChartingLibrary';
 import Datafeed from './datafeed';
 
 class TradeviewPage extends PureComponent {
-  componentDidMount() {
-    this.tradingViewGetReady(this.props.symbol);
-  }
+  state = {
+    active: false
+  };
 
   // tradeView准备
   tradingViewGetReady(symbol) {
@@ -226,8 +226,30 @@ class TradeviewPage extends PureComponent {
     );
   }
 
+  handleActive = () => {
+    this.setState({active: true});
+  }
+
+  handleUnactive = () => {
+    this.setState({active: false});
+  }
+
+  componentDidMount() {
+    this.tradingViewGetReady(this.props.symbol);
+  }
+
   render() {
-    return <div id="tv_chart_container" />;
+    const { active } = this.state;
+
+    return (
+      <div
+        id="tv_chart_container"
+        tabIndex="0"
+        className={active ? ' active' : ''}
+        onFocus={this.handleActive}
+        onBlur={this.handleUnactive}
+      />
+    );
   }
 }
 
