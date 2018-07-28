@@ -5,6 +5,7 @@ import request from '../utils/request';
 import Verification from '../components/verification';
 import GooglePopup from '../components/google-popup';
 import ClipboardJS from 'clipboard';
+import classnames from 'classnames';
 
 // 设置全局消息
 message.config({
@@ -224,8 +225,18 @@ class Container extends Component {
       }
     }
 
+    const { pathname } = this.props.history.location;
+    const copywriting =
+      pathname.indexOf('/link/') > -1 ||
+      pathname.indexOf('/agreement') > -1 ||
+      pathname.indexOf('/help/') > -1 ||
+      pathname.indexOf('/notice/') > -1;
+
     return (
-      <div className="container">
+      <div className={classnames({
+        container: true,
+        copywriting: copywriting
+      })}>
         <header className="header">
           <Link className="logo" to="/">
             <img src={logo} alt="logo" width="108" height="68" />
