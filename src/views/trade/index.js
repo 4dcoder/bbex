@@ -359,7 +359,6 @@ class Trade extends PureComponent {
       }
 
       const { orderVo, coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
-      //console.log('======user record: ', JSON.parse(evt.data));
 
       // 当推的数据是挂单，更新用户挂单列表
       if (orderVo) {
@@ -778,7 +777,7 @@ class Trade extends PureComponent {
         title: `${localization['成交量']}(${coinName}/${marketName})`,
         dataIndex: 'successVolume',
         key: 'successVolume',
-        render: (text, record) => `${text}${record.status === 1 ? localization['部分成交'] : ''}`
+        render: (text, record) => `${Number(text).toFixed(8)}(${record.status === 1 ? localization['部分成交'] : ''})`
       },
       {
         title: `${localization['状态']}/${localization['操作']}`,
