@@ -177,6 +177,22 @@
   height: 380px;
 }
 
+#tv_chart_container {
+  outline: none;
+}
+#tv_chart_container::after {
+  content: '';
+  position: absolute;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+}
+#tv_chart_container.active::after {
+  display: none;
+}
+
 .trade-plate-list {
   position: relative;
   height: 937px;
