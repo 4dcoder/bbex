@@ -124,16 +124,16 @@
   margin-left: 5px;
   vertical-align: middle;
 }
-.trade-plate-tit-sorter>.anticon {
+.trade-plate-tit-sorter > .anticon {
   display: block;
   margin: -4px 0;
   font-size: 12px;
   transform: scale(0.66666667);
 }
-.trade-plate-tit-sorter.up>.anticon-caret-up {
+.trade-plate-tit-sorter.up > .anticon-caret-up {
   color: #d4a668;
 }
-.trade-plate-tit-sorter.down>.anticon-caret-down {
+.trade-plate-tit-sorter.down > .anticon-caret-down {
   color: #d4a668;
 }
 
@@ -177,22 +177,6 @@
   height: 380px;
 }
 
-#tv_chart_container {
-  outline: none;
-}
-#tv_chart_container::after {
-  content: '';
-  position: absolute;
-  top: 40px;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: transparent;
-}
-#tv_chart_container.active::after {
-  display: none;
-}
-
 .trade-plate-list {
   position: relative;
   height: 937px;
@@ -201,9 +185,9 @@
   justify-content: space-between;
 }
 
-.trade-plate-container>div>div:nth-child(1),
-.trade-plate-list>div>div:nth-child(1),
-.ant-tabs-tabpane-active>div>div:nth-child(1) {
+.trade-plate-container > div > div:nth-child(1),
+.trade-plate-list > div > div:nth-child(1),
+.ant-tabs-tabpane-active > div > div:nth-child(1) {
   overflow-x: hidden !important;
   padding: 0 0 12px;
 }
@@ -509,7 +493,6 @@
   border-color: #5d5d5d;
 }
 
-
 /* 下拉菜单 */
 
 .content.trade .ant-dropdown {
@@ -528,3 +511,14 @@
 }
 
 /* 下拉菜单 */
+
+/* tradingview 蒙版 */
+.chart-mask {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: transparent;
+}
+/* tradingview 蒙版 */

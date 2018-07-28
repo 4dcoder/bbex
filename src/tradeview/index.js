@@ -3,9 +3,6 @@ import TradingView from './ChartingLibrary';
 import Datafeed from './datafeed';
 
 class TradeviewPage extends PureComponent {
-  state = {
-    active: false
-  };
 
   // tradeView准备
   tradingViewGetReady(symbol) {
@@ -120,136 +117,125 @@ class TradeviewPage extends PureComponent {
       }
     };
 
-    TradingView.onready(
-      (() => {
-        window.tvWidget = new TradingView.widget(widgetOptions);
+    const chartReady = () => {
+      window.tvWidget = new TradingView.widget(widgetOptions);
 
-        window.tvWidget.onChartReady(() => {
-          let buttonArr = [
-            {
-              value: '1',
-              period: '1m',
-              text: '1m'
-            },
-            {
-              value: '5',
-              period: '5m',
-              text: '5m'
-            },
-            {
-              value: '15',
-              period: '15m',
-              text: '15m'
-            },
-            {
-              value: '30',
-              period: '30m',
-              text: '30m'
-            },
-            {
-              value: '60',
-              period: '1h',
-              text: '1h'
-            },
-            {
-              value: '120',
-              period: '2h',
-              text: '2h'
-            },
-            {
-              value: '240',
-              period: '4h',
-              text: '4h'
-            },
-            {
-              value: '480',
-              period: '8h',
-              text: '8h'
-            },
-            {
-              value: '1D',
-              period: '1D',
-              text: '日线'
-            },
-            {
-              value: '1W',
-              period: '1W',
-              text: '周线'
-            },
-            {
-              value: '1M',
-              period: '1M',
-              text: '月线'
+      window.tvWidget.onChartReady(() => {
+        let buttonArr = [
+          {
+            value: '1',
+            period: '1m',
+            text: '1m'
+          },
+          {
+            value: '5',
+            period: '5m',
+            text: '5m'
+          },
+          {
+            value: '15',
+            period: '15m',
+            text: '15m'
+          },
+          {
+            value: '30',
+            period: '30m',
+            text: '30m'
+          },
+          {
+            value: '60',
+            period: '1h',
+            text: '1h'
+          },
+          {
+            value: '120',
+            period: '2h',
+            text: '2h'
+          },
+          {
+            value: '240',
+            period: '4h',
+            text: '4h'
+          },
+          {
+            value: '480',
+            period: '8h',
+            text: '8h'
+          },
+          {
+            value: '1D',
+            period: '1D',
+            text: '日线'
+          },
+          {
+            value: '1W',
+            period: '1W',
+            text: '周线'
+          },
+          {
+            value: '1M',
+            period: '1M',
+            text: '月线'
+          }
+        ];
+
+        const handleClick = (e, value, text) => {
+          // 设置tradingview分辨率
+          window.tvWidget.chart().setResolution(value);
+
+          // 更新选中状态
+          Array.from(e.target.parentNode.parentNode.children).forEach(child => {
+            const currentEl = child.firstChild;
+            const classVal = currentEl.className;
+            child.firstChild.setAttribute('class', classVal.replace('select', ''));
+            if (currentEl.innerHTML === text) {
+              child.firstChild.setAttribute('class', classVal.concat(' select'));
             }
-          ];
-
-          const handleClick = (e, value, text) => {
-            // 设置tradingview分辨率
-            window.tvWidget.chart().setResolution(value);
-
-            // 更新选中状态
-            Array.from(e.target.parentNode.parentNode.children).forEach(child => {
-              const currentEl = child.firstChild;
-              const classVal = currentEl.className;
-              child.firstChild.setAttribute('class', classVal.replace('select', ''));
-              if (currentEl.innerHTML === text) {
-                child.firstChild.setAttribute('class', classVal.concat(' select'));
-              }
-            });
-          };
-
-          buttonArr.forEach((v, i) => {
-            const btn = window.tvWidget
-              .createButton()
-              .addClass(`resolution${v.text === '1m' ? ' select' : ''}`)
-              .on('click', function(e) {
-                handleClick(e, v.value, v.text);
-              });
-
-            btn[0].innerHTML = v.text;
-            btn[0].title = v.text;
           });
-          window.tvWidget
-            .chart()
-            .createStudy('Moving Average', false, false, [5], null, { 'Plot.color': '#965FC4' });
-          window.tvWidget
-            .chart()
-            .createStudy('Moving Average', false, false, [10], null, { 'Plot.color': '#84aad5' });
-          window.tvWidget
-            .chart()
-            .createStudy('Moving Average', false, false, [30], null, { 'Plot.color': '#55b263' });
-          window.tvWidget
-            .chart()
-            .createStudy('Moving Average', false, false, [60], null, { 'Plot.color': '#b7248a' });
+        };
+
+        buttonArr.forEach((v, i) => {
+          const btn = window.tvWidget
+            .createButton()
+            .addClass(`resolution${v.text === '1m' ? ' select' : ''}`)
+            .on('click', function(e) {
+              handleClick(e, v.value, v.text);
+            });
+
+          btn[0].innerHTML = v.text;
+          btn[0].title = v.text;
         });
-      })()
-    );
-  }
 
-  handleActive = () => {
-    this.setState({active: true});
-  }
+        window.tvWidget
+          .chart()
+          .createStudy('Moving Average', false, false, [5], null, { 'Plot.color': '#965FC4' });
+        window.tvWidget
+          .chart()
+          .createStudy('Moving Average', false, false, [10], null, { 'Plot.color': '#84aad5' });
+        window.tvWidget
+          .chart()
+          .createStudy('Moving Average', false, false, [30], null, { 'Plot.color': '#55b263' });
+        window.tvWidget
+          .chart()
+          .createStudy('Moving Average', false, false, [60], null, { 'Plot.color': '#b7248a' });
+      });
+    };
 
-  handleUnactive = () => {
-    this.setState({active: false});
+    TradingView.onready(chartReady());
   }
 
   componentDidMount() {
     this.tradingViewGetReady(this.props.symbol);
+
+    // 切换滚动目标（tradingview 或者是 window）
+    document.addEventListener('click', (e) => {
+      const chartMask = document.querySelector('#chartMask');
+      chartMask.hidden = e.target === chartMask;
+    }, false);
   }
 
   render() {
-    const { active } = this.state;
-
-    return (
-      <div
-        id="tv_chart_container"
-        tabIndex="0"
-        className={active ? ' active' : ''}
-        onFocus={this.handleActive}
-        onBlur={this.handleUnactive}
-      />
-    );
+    return <div id="tv_chart_container" />;
   }
 }
 
