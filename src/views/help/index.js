@@ -55,7 +55,7 @@ class Help extends Component {
     return (
       <div className="help">
         <div className="help-container">
-          <h4>UES帮助中心</h4>
+          <h4>帮助中心</h4>
           <List
             size="large"
             dataSource={helps}

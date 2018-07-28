@@ -162,6 +162,8 @@ class Trade extends PureComponent {
     if (historyExpendKey !== orderNo) {
       this.getOrderDetail(orderNo);
       this.setState({ historyExpendKey: orderNo });
+    } else {
+      this.setState({ historyExpendKey: '' });
     }
   };
 
@@ -698,9 +700,9 @@ class Trade extends PureComponent {
       } else {
         pairList = tradeExpair[market]
           ? Object.keys(tradeExpair[market]).map(key => {
-              tradeExpair[market][key].key = key;
-              return tradeExpair[market][key];
-            })
+            tradeExpair[market][key].key = key;
+            return tradeExpair[market][key];
+          })
           : [];
       }
     }
@@ -903,7 +905,7 @@ class Trade extends PureComponent {
                           <i
                             className={`iconfont icon-shoucang${
                               marketName === market ? '-active' : ''
-                            }`}
+                              }`}
                           />
                         )}{' '}
                         {marketName === 'optional' ? localization['自选'] : marketName}
@@ -968,7 +970,7 @@ class Trade extends PureComponent {
                                     <i
                                       className={`iconfont icon-shoucang${
                                         favoriteCoins.includes(coin.key) ? '-active' : ''
-                                      }`}
+                                        }`}
                                       onClick={this.handleCollect.bind(this, coin)}
                                     />
                                     {coin.coinOther}
@@ -984,11 +986,11 @@ class Trade extends PureComponent {
                       </table>
                     </Scrollbars>
                   ) : (
-                    emptyHandle
-                  )
+                      emptyHandle
+                    )
                 ) : (
-                  loading
-                )}
+                    loading
+                  )}
               </div>
             </div>
             <div className="trade-plate">
@@ -1022,11 +1024,11 @@ class Trade extends PureComponent {
                       </table>
                     </Scrollbars>
                   ) : (
-                    emptyHandle
-                  )
+                      emptyHandle
+                    )
                 ) : (
-                  loading
-                )}
+                    loading
+                  )}
               </div>
             </div>
           </div>
@@ -1197,22 +1199,22 @@ class Trade extends PureComponent {
                   )}
                 </div>
               ) : (
-                <div className="trade-plate-tit list">
-                  <div className="trade-plate-tit-cell">{localization['类型']}</div>
-                  <div className="trade-plate-tit-cell">
-                    {listType === 0 ? localization['买入'] : localization['卖出']}{' '}
-                    {localization['价']}({marketName})
-                  </div>
-                  <div className="trade-plate-tit-cell">
-                    {localization['委单量']}({coinName})
-                  </div>
-                  {false && (
+                  <div className="trade-plate-tit list">
+                    <div className="trade-plate-tit-cell">{localization['类型']}</div>
                     <div className="trade-plate-tit-cell">
-                      {localization['交易额']}({marketName})
+                      {listType === 0 ? localization['买入'] : localization['卖出']}{' '}
+                      {localization['价']}({marketName})
+                  </div>
+                    <div className="trade-plate-tit-cell">
+                      {localization['委单量']}({coinName})
+                  </div>
+                    {false && (
+                      <div className="trade-plate-tit-cell">
+                        {localization['交易额']}({marketName})
                     </div>
-                  )}
-                </div>
-              )}
+                    )}
+                  </div>
+                )}
               {listType === -1 ? (
                 <div className="trade-plate-list">
                   <div className="trade-plate-list-wrap">
@@ -1258,11 +1260,11 @@ class Trade extends PureComponent {
                           </tbody>
                         </table>
                       ) : (
-                        emptyHandle
-                      )
+                          emptyHandle
+                        )
                     ) : (
-                      loading
-                    )}
+                        loading
+                      )}
                   </div>
                   <div className="latest-price">
                     <span>
@@ -1272,8 +1274,8 @@ class Trade extends PureComponent {
                     <span
                       className={
                         streamList &&
-                        streamList.length > 0 &&
-                        streamList[0].price <
+                          streamList.length > 0 &&
+                          streamList[0].price <
                           (streamList[1] ? streamList[1].price : streamList[0].price)
                           ? 'font-color-red'
                           : 'font-color-green'
@@ -1290,12 +1292,12 @@ class Trade extends PureComponent {
                             streamList &&
                             streamList.length > 0 &&
                             streamList[0].price <
-                              (streamList[1] ? streamList[1].price : streamList[0].price),
+                            (streamList[1] ? streamList[1].price : streamList[0].price),
                           'icon-shangsheng':
                             streamList &&
                             streamList.length > 0 &&
                             streamList[0].price >=
-                              (streamList[1] ? streamList[1].price : streamList[0].price)
+                            (streamList[1] ? streamList[1].price : streamList[0].price)
                         })}
                       />
                     </span>
@@ -1341,55 +1343,55 @@ class Trade extends PureComponent {
                           </tbody>
                         </table>
                       ) : (
-                        emptyHandle
-                      )
+                          emptyHandle
+                        )
                     ) : (
-                      loading
-                    )}
+                        loading
+                      )}
                   </div>
                 </div>
               ) : (
-                <div className="trade-plate-list">
-                  {tradeList && (tradeList.sellOrderVOList || tradeList.buyOrderVOList) ? (
-                    (listType === 1 ? tradeList.sellOrderVOList : tradeList.buyOrderVOList).length >
-                    0 ? (
-                      <Scrollbars>
-                        <table>
-                          <tbody>
-                            {(listType === 1
-                              ? tradeList.sellOrderVOList
-                              : tradeList.buyOrderVOList
-                            ).map((record, index) => {
-                              const colorName = listType === 0 ? 'green' : 'red';
-                              const actionName =
-                                listType === 0 ? localization['买入'] : localization['卖出'];
-                              return (
-                                <tr
-                                  key={index}
-                                  onClick={this.handleTradePrice.bind(this, record.price)}
-                                >
-                                  <td className={`font-color-${colorName}`}>
-                                    {actionName} {index + 1}
-                                  </td>
-                                  <td>{Number(record.price).toFixed(8)}</td>
-                                  <td>{Number(record.volume).toFixed(8)}</td>
-                                  {false && (
-                                    <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
-                                  )}
-                                </tr>
-                              );
-                            })}
-                          </tbody>
-                        </table>
-                      </Scrollbars>
+                  <div className="trade-plate-list">
+                    {tradeList && (tradeList.sellOrderVOList || tradeList.buyOrderVOList) ? (
+                      (listType === 1 ? tradeList.sellOrderVOList : tradeList.buyOrderVOList).length >
+                        0 ? (
+                          <Scrollbars>
+                            <table>
+                              <tbody>
+                                {(listType === 1
+                                  ? tradeList.sellOrderVOList
+                                  : tradeList.buyOrderVOList
+                                ).map((record, index) => {
+                                  const colorName = listType === 0 ? 'green' : 'red';
+                                  const actionName =
+                                    listType === 0 ? localization['买入'] : localization['卖出'];
+                                  return (
+                                    <tr
+                                      key={index}
+                                      onClick={this.handleTradePrice.bind(this, record.price)}
+                                    >
+                                      <td className={`font-color-${colorName}`}>
+                                        {actionName} {index + 1}
+                                      </td>
+                                      <td>{Number(record.price).toFixed(8)}</td>
+                                      <td>{Number(record.volume).toFixed(8)}</td>
+                                      {false && (
+                                        <td className={`font-color-${colorName}`}>{record.sumTotal}</td>
+                                      )}
+                                    </tr>
+                                  );
+                                })}
+                              </tbody>
+                            </table>
+                          </Scrollbars>
+                        ) : (
+                          emptyHandle
+                        )
                     ) : (
-                      emptyHandle
-                    )
-                  ) : (
-                    loading
-                  )}
-                </div>
-              )}
+                        loading
+                      )}
+                  </div>
+                )}
             </div>
           </div>
         </div>
@@ -1422,11 +1424,11 @@ class Trade extends PureComponent {
                           {localization['暂无数据']}
                         </span>
                       ) : (
-                        <span>
-                          <Link to="/signin">{localization['登录']}</Link>{' '}
-                          {localization['进行查看']}
-                        </span>
-                      )
+                          <span>
+                            <Link to="/signin">{localization['登录']}</Link>{' '}
+                            {localization['进行查看']}
+                          </span>
+                        )
                     }}
                   />
                 </Scrollbars>
@@ -1446,11 +1448,11 @@ class Trade extends PureComponent {
                           {localization['暂无数据']}
                         </span>
                       ) : (
-                        <span>
-                          <Link to="/signin">{localization['登录']}</Link>{' '}
-                          {localization['进行查看']}
-                        </span>
-                      )
+                          <span>
+                            <Link to="/signin">{localization['登录']}</Link>{' '}
+                            {localization['进行查看']}
+                          </span>
+                        )
                     }}
                     expandedRowKeys={[historyExpendKey]}
                     expandedRowRender={record => {
