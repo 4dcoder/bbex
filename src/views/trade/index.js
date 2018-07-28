@@ -341,24 +341,60 @@ class Trade extends PureComponent {
     };
   };
 
-  // 用户挂单websocket
-  openUserWebsocket = () => {
-    const { id } = JSON.parse(sessionStorage.getItem('account'));
-    this.userWS = new ReconnectingWebSocket(`${WS_PREFIX}/user?${id}`);
 
-    this.userInterval = setInterval(() => {
-      if (this.userWS && this.userWS.readyState === 1) {
+  //用户资产socket
+  openUserVolumeSocket = () =>{
+    const { id } = JSON.parse(sessionStorage.getItem('account'));
+    this.userVolumeWS = new ReconnectingWebSocket(`${WS_PREFIX}/userVolume?${id}`);
+
+    this.userVolumeInterval = setInterval(() => {
+      if (this.userVolumeWS && this.userVolumeWS.readyState === 1) {
         const { marketName, coinName } = this.state;
-        this.userWS.send(`${coinName}_${marketName}_${id}`);
+        this.userVolumeWS.send(`${coinName}_${marketName}_${id}`);
       }
     }, 3000);
 
-    this.userWS.onmessage = evt => {
+    this.userVolumeWS.onmessage = evt => {
       if (evt.data === 'pong') {
         return;
       }
 
-      const { orderVo, coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
+      const { coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
+
+      // 当推的数据是挂单，更新用户挂单列表
+      
+
+      const { mainVolume, coinVolume } = this.state;
+      // 当推的数据有主币而且跟当前不相等，就更新主币资产
+      if (coinMainVolume && coinMainVolume.volume !== mainVolume) {
+        this.setState({ mainVolume: coinMainVolume.volume });
+      }
+
+      // 当推的数据有副币而且跟当前不相等，就更新副币资产
+      if (coinOtherVolume && coinOtherVolume.volume !== coinVolume) {
+        this.setState({ coinVolume: coinOtherVolume.volume });
+      }
+    };
+
+  }
+
+  // 用户挂单websocket
+  openUserOrderWebsocket = () => {
+    const { id } = JSON.parse(sessionStorage.getItem('account'));
+    this.userOrderWS = new ReconnectingWebSocket(`${WS_PREFIX}/userOrder?${id}`);
+
+    this.userOrderInterval = setInterval(() => {
+      if (this.userOrderWS && this.userOrderWS.readyState === 1) {
+        this.userOrderWS.send(`ping`);
+      }
+    }, 10000);
+
+    this.userOrderWS.onmessage = evt => {
+      if (evt.data === 'pong') {
+        return;
+      }
+
+      const { orderVo } = JSON.parse(evt.data);
 
       // 当推的数据是挂单，更新用户挂单列表
       if (orderVo) {
@@ -396,17 +432,6 @@ class Trade extends PureComponent {
         }
 
         this.setState({ pendingOrderList });
-      }
-
-      const { mainVolume, coinVolume } = this.state;
-      // 当推的数据有主币而且跟当前不相等，就更新主币资产
-      if (coinMainVolume && coinMainVolume.volume !== mainVolume) {
-        this.setState({ mainVolume: coinMainVolume.volume });
-      }
-
-      // 当推的数据有副币而且跟当前不相等，就更新副币资产
-      if (coinOtherVolume && coinOtherVolume.volume !== coinVolume) {
-        this.setState({ coinVolume: coinOtherVolume.volume });
       }
     };
   };
@@ -590,7 +615,8 @@ class Trade extends PureComponent {
 
     // 只有登录状态下才打开用户websocket
     if (sessionStorage.getItem('account')) {
-      this.openUserWebsocket();
+      this.openUserOrderWebsocket();
+      this.openUserVolumeSocket();
     }
   }
 
@@ -643,7 +669,8 @@ class Trade extends PureComponent {
     clearInterval(this.reOpenFlowWaterInterval);
     clearInterval(this.streamInterval);
     clearInterval(this.buyandsellInterval);
-    clearInterval(this.userInterval);
+    clearInterval(this.userOrderInterval);
+    clearInterval(this.userVolumeInterval);
     clearInterval(this.marketInterval);
     clearInterval(window.klineInterval);
 
@@ -651,7 +678,8 @@ class Trade extends PureComponent {
     this.marketWS && this.marketWS.close();
     this.streamWS && this.streamWS.close();
     this.buyandsellWS && this.buyandsellWS.close();
-    this.userWS && this.userWS.close();
+    this.userOrderWS && this.userOrderWS.close();
+    this.userVolumeWS && this.userVolumeWS.close();
     window.klineWS && window.klineWS.close();
   }
 
