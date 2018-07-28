@@ -205,7 +205,7 @@
 .trade-plate-list>div>div:nth-child(1),
 .ant-tabs-tabpane-active>div>div:nth-child(1) {
   overflow-x: hidden !important;
-  padding: 5px 0 15px;
+  padding: 0 0 12px;
 }
 
 .trade-plate-container table,
