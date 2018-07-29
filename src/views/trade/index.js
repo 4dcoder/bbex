@@ -341,9 +341,8 @@ class Trade extends PureComponent {
     };
   };
 
-
   //用户资产socket
-  openUserVolumeSocket = () =>{
+  openUserVolumeSocket = () => {
     const { id } = JSON.parse(sessionStorage.getItem('account'));
     this.userVolumeWS = new ReconnectingWebSocket(`${WS_PREFIX}/userVolume?${id}`);
 
@@ -352,7 +351,7 @@ class Trade extends PureComponent {
         const { marketName, coinName } = this.state;
         this.userVolumeWS.send(`${coinName}_${marketName}_${id}`);
       }
-    }, 3000);
+    }, 1000 * 3);
 
     this.userVolumeWS.onmessage = evt => {
       if (evt.data === 'pong') {
@@ -362,7 +361,6 @@ class Trade extends PureComponent {
       const { coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
 
       // 当推的数据是挂单，更新用户挂单列表
-      
 
       const { mainVolume, coinVolume } = this.state;
       // 当推的数据有主币而且跟当前不相等，就更新主币资产
@@ -375,8 +373,7 @@ class Trade extends PureComponent {
         this.setState({ coinVolume: coinOtherVolume.volume });
       }
     };
-
-  }
+  };
 
   // 用户挂单websocket
   openUserOrderWebsocket = () => {
@@ -387,7 +384,7 @@ class Trade extends PureComponent {
       if (this.userOrderWS && this.userOrderWS.readyState === 1) {
         this.userOrderWS.send(`ping`);
       }
-    }, 10000);
+    }, 1000 * 10);
 
     this.userOrderWS.onmessage = evt => {
       if (evt.data === 'pong') {
@@ -805,7 +802,8 @@ class Trade extends PureComponent {
         title: `${localization['成交量']}(${coinName}/${marketName})`,
         dataIndex: 'successVolume',
         key: 'successVolume',
-        render: (text, record) => `${Number(text).toFixed(8)}(${record.status === 1 ? localization['部分成交'] : ''})`
+        render: (text, record) =>
+          `${Number(text).toFixed(8)}(${record.status === 1 ? localization['部分成交'] : ''})`
       },
       {
         title: `${localization['状态']}/${localization['操作']}`,
@@ -1137,7 +1135,7 @@ class Trade extends PureComponent {
               </div>
               <div className="trade-plate-container" style={{ height: 450 }}>
                 {coinName && marketName && <Tradeview symbol={`${coinName}/${marketName}`} />}
-                <div id="chartMask" className="chart-mask"/>
+                <div id="chartMask" className="chart-mask" />
               </div>
             </div>
             <div className="trade-plate">
