@@ -1,9 +1,10 @@
 .help{
   width: 100%;
+  padding: 20px 20px 0;
+  box-sizing: border-box;
 }
 .help .help-container{
-  width: 80%;
-  margin: 30px auto;
+  width: 100%;
   padding: 40px;
   background: #292E3A;
 }
