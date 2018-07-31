@@ -360,8 +360,6 @@ class Trade extends PureComponent {
 
       const { coinMainVolume, coinOtherVolume } = JSON.parse(evt.data);
 
-      // 当推的数据是挂单，更新用户挂单列表
-
       const { mainVolume, coinVolume } = this.state;
       // 当推的数据有主币而且跟当前不相等，就更新主币资产
       if (coinMainVolume && coinMainVolume.volume !== mainVolume) {
