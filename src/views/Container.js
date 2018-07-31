@@ -253,13 +253,13 @@ class Container extends Component {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/help" activeClassName="active">
-                {localization['帮助中心']}
+              <NavLink to="/notice" activeClassName="active">
+                {localization['公告中心']}
               </NavLink>
             </li>
             <li>
-              <NavLink to="/notice" activeClassName="active">
-                {localization['公告中心']}
+              <NavLink to="/help" activeClassName="active">
+                {localization['帮助中心']}
               </NavLink>
             </li>
           </ul>
