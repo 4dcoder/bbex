@@ -1,9 +1,10 @@
 .notice{
   width: 100%;
+  padding: 20px 20px 0;
+  box-sizing: border-box;
 }
 .notice .notice-container{
-  width: 80%;
-  margin: 30px auto 0px;
+  width: 100%;
   padding: 40px;
   background: #292E3A;
 }

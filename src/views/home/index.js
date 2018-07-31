@@ -188,9 +188,9 @@ class Home extends Component {
       } else {
         pairList = tradeExpair[market]
           ? Object.keys(tradeExpair[market]).map(key => {
-              tradeExpair[market][key].key = key;
-              return tradeExpair[market][key];
-            })
+            tradeExpair[market][key].key = key;
+            return tradeExpair[market][key];
+          })
           : [];
       }
     }
@@ -218,7 +218,7 @@ class Home extends Component {
             <i
               className={`iconfont icon-shoucang${
                 favoriteCoins.includes(record.key) ? '-active' : ''
-              }`}
+                }`}
               onClick={this.handleCollect.bind(this, record)}
             />
             {text}/{record.coinMain}
@@ -267,15 +267,18 @@ class Home extends Component {
       <div className="content home">
         <Carousel autoPlay infiniteLoop showArrows={false} showStatus={false} showThumbs={false}>
           {banners.length > 0 &&
-            banners.map(banner => {
-              const props = {
-                target: banner.link && '_blank'
-              };
-              return (
-                <a key={banner.id} href={banner.link || `/link/${banner.id}`} {...props}>
+           banners.map(banner => {
+              if (banner.link) {
+                return (
+                  <a key={banner.id} href={banner.link} target="_blank">
+                    <img key={banner.id} src={banner.image} />
+                  </a>
+                );
+              } else {
+                return <div key={banner.id}>
                   <img key={banner.id} src={banner.image} />
-                </a>
-              );
+                </div>
+              }
             })}
         </Carousel>
         <div className="content-inner">
@@ -304,13 +307,13 @@ class Home extends Component {
                           <i
                             className={`iconfont icon-shoucang${
                               market === 'optional' ? '-active' : ''
-                            }`}
+                              }`}
                           />
                           {localization['自选']}
                         </span>
                       ) : (
-                        `${curMarket} ${localization['市场']}`
-                      )
+                          `${curMarket} ${localization['市场']}`
+                        )
                     }
                     key={curMarket}
                   >
