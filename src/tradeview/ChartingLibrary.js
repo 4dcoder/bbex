@@ -271,7 +271,7 @@ const TradingView = {
             (t[this._id].chartContent = { json: this._options.saved_data });
         var e =
           (this._options.library_path || '') +
-          'static/tv-chart.7580da73a91e1354cb09.html#localserver=1&symbol=' +
+          'static/tv-chart.e816a7a6edc9de3ed709.html#localserver=1&symbol=' +
           encodeURIComponent(this._options.symbol) +
           '&interval=' +
           encodeURIComponent(this._options.interval) +
