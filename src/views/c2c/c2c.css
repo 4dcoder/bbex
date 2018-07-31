@@ -6,7 +6,7 @@
   margin-right: 20px;
   padding-bottom: 40px;
   color: #dadada;
-  background-color: #2e3442;
+  background-color: #292f3d;
 }
 .nav-item .nav-tit {
   padding: 20px;
@@ -58,7 +58,7 @@
 
 .trade-list {
   padding: 30px;
-  background-color: #2e3442;
+  background-color: #292f3d;
 }
 .trade-list .trade-list-header {
   margin-bottom: 20px;
@@ -116,7 +116,7 @@
 
 .trade-record {
   margin-top: 20px;
-  background-color: #2e3442;
+  background-color: #292f3d;
 }
 .trade-record .ant-table-row-expand-icon-cell {
   padding: 0;
