@@ -257,6 +257,11 @@ class Container extends Component {
                 {localization['帮助中心']}
               </NavLink>
             </li>
+            <li>
+              <NavLink to="/notice" activeClassName="active">
+                {localization['公告中心']}
+              </NavLink>
+            </li>
           </ul>
           {!account && (
             <div className="user-status">

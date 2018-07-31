@@ -318,7 +318,7 @@ class Trade extends PureComponent {
     };
   };
 
-  // 打开买卖盘websocket
+  // 买卖盘websocket
   openBuyAndSellWebsocket = () => {
     this.buyandsellWS = new ReconnectingWebSocket(`${WS_PREFIX}/buyAndSell`);
 
@@ -341,7 +341,7 @@ class Trade extends PureComponent {
     };
   };
 
-  //用户资产socket
+  // 用户资产socket
   openUserVolumeSocket = () => {
     const { id } = JSON.parse(sessionStorage.getItem('account'));
     this.userVolumeWS = new ReconnectingWebSocket(`${WS_PREFIX}/userVolume?${id}`);
