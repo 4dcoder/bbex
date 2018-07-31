@@ -40,7 +40,7 @@ class TradeviewPage extends PureComponent {
         'header_saveload',
         'timeframes_toolbar',
         'context_menus',
-        'left_toolbar',
+        // 'left_toolbar',
         'header_indicators', //图表指标
         // 'header_settings', //设置
         'header_resolutions', //时间下拉框
