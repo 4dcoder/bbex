@@ -56,7 +56,7 @@ class Invite extends Component {
     const { currentPage, showCount, totalCount, inviteList, showQRCode } = this.state;
     const { realName, inviteCode } = JSON.parse(sessionStorage.getItem('account'));
     const inviteLink = `${window.location.origin}/signup?inviteCode=${inviteCode}`;
-    const mobileLink = `${window.location.origin}/share.html?realName=${escape(
+    const mobileLink = `${window.location.origin}/share.html?realName=${encodeURI(
       realName ? realName : ''
     )}&inviteCode=${inviteCode}`;
 

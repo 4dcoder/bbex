@@ -41,6 +41,43 @@
       position: relative;
     }
 
+    @font-face {
+      font-family: 'iconfont';
+      /* project id 617853 */
+      src: url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.eot');
+      src: url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.eot?#iefix') format('embedded-opentype'),
+      url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.woff') format('woff'),
+      url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.ttf') format('truetype'),
+      url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.svg#iconfont') format('svg');
+    }
+
+    .wechat:before {
+      z-index: 1;
+      content: '请使用浏览器打开';
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding-top: 70px;
+      text-align: center;
+      color: #fff;
+      font-size: 24px;
+      background-color: rgba(0, 0, 0, .7);
+    }
+
+    .wechat:after {
+      z-index: 2;
+      content: '\e600';
+      position: fixed;
+      top: 0;
+      right: 5%;
+      font-family: iconfont;
+      color: #fff;
+      font-size: 80px;
+      transform: rotate(40deg);
+    }
+
     .share-header {
       width: 100%;
       text-align: center;
@@ -93,7 +130,7 @@
       color: #fff;
     }
   </style>
-  
+
 </head>
 
 <body>
@@ -111,24 +148,42 @@
 </body>
 
 <script>
-    function getQueryString(name) {
-      var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
-      var r = window.location.search.substr(1).match(reg);
-      if (r !== null) return unescape(r[2]);
-      return null;
-    }
-    var realName = getQueryString('realName');
-     
-    if (realName) {
-      document.getElementById('header').innerHTML = realName + '邀请您成为UES交易所的会员';
-      document.getElementById('content').innerHTML = realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
-    } else {
-      document.getElementById('header').innerHTML = '您的朋友邀请您成为UES交易所的会员';
-      document.getElementById('content').innerHTML = '您的朋友邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
-    }
-    var inviteCode = getQueryString('inviteCode');
-    document.getElementById('link').href = "/mobile/signup?inviteCode=" + inviteCode;
+  function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r !== null) return decodeURI(r[2]);
+    return null;
+  }
 
-  </script>
+  //判断是否是微信浏览器的函数
+  function isWeiXin() {
+    //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+    var ua = window.navigator.userAgent.toLowerCase();
+    console.log(ua);
+    //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var realName = getQueryString('realName');
+
+  if (realName) {
+    document.getElementById('header').innerHTML = realName + '邀请您成为UES交易所的会员';
+    document.getElementById('content').innerHTML = realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
+  } else {
+    document.getElementById('header').innerHTML = '您的朋友邀请您成为UES交易所的会员';
+    document.getElementById('content').innerHTML = '您的朋友邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
+  }
+  var inviteCode = getQueryString('inviteCode');
+  document.getElementById('link').href = "/mobile/signup?inviteCode=" + inviteCode;
+
+  if(isWeiXin()) {
+    //如果是微信就添加蒙版引导 
+    document.querySelector('.share').className = 'share wechat';
+  }
+</script>
 
 </html>
