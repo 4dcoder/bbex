@@ -134,19 +134,19 @@
 </head>
 
 <body>
-  <div class="share">
+  <div id="app" v-bind:class="{ share: true, 'wechat': isWechat }">
     <div class="share-header">
-      <h4 id='header'></h4>
+      <h4 id='header'>{{header}}</h4>
     </div>
     <div class="share-content">
-      <div id="content"></div>
+      <div id="content">{{content}}</div>
     </div>
     <div class="share-footer">
-      <a id="link" href="/mobile/signup" target="_blank">马上领取</a>
+      <a id="link" href="/mobile/signup">马上领取</a>
     </div>
   </div>
 </body>
-
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 <script>
   function getQueryString(name) {
     var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -156,7 +156,7 @@
   }
 
   //判断是否是微信浏览器的函数
-  function isWeiXin() {
+  function isWechat() {
     //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
     var ua = window.navigator.userAgent.toLowerCase();
     console.log(ua);
@@ -168,22 +168,16 @@
     }
   }
 
-  var realName = getQueryString('realName');
+  const realName = getQueryString('realName') || '您的朋友';
 
-  if (realName) {
-    document.getElementById('header').innerHTML = realName + '邀请您成为UES交易所的会员';
-    document.getElementById('content').innerHTML = realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
-  } else {
-    document.getElementById('header').innerHTML = '您的朋友邀请您成为UES交易所的会员';
-    document.getElementById('content').innerHTML = '您的朋友邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!';
-  }
-  var inviteCode = getQueryString('inviteCode');
-  document.getElementById('link').href = "/mobile/signup?inviteCode=" + inviteCode;
-
-  if(isWeiXin()) {
-    //如果是微信就添加蒙版引导 
-    document.querySelector('.share').className = 'share wechat';
-  }
+  var app = new Vue({
+    el: '#app',
+    data: {
+      isWechat: isWechat(),
+      header: realName + '邀请您成为UES交易所的会员',
+      content: realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!'
+    }
+  })
 </script>
 
 </html>
