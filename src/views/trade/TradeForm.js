@@ -115,7 +115,7 @@ class TradeForm extends PureComponent {
 
   componentWillReceiveProps(nextProps, nextState) {
     if (nextProps.tradePrice !== this.props.tradePrice) {
-      const tradePrice = nextProps.tradePrice.match(/^(\d+\.\d+)\_/)[1];
+      const tradePrice = /^\d+(\.\d+)?/.exec(nextProps.tradePrice)[0];
       if (tradePrice < 0.000001) {
         this.setState({ price: Number(tradePrice).toFixed(8) });
       } else {
