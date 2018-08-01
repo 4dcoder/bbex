@@ -584,7 +584,7 @@ class Trade extends PureComponent {
   //设置交易价格
   handleTradePrice = (tradePrice, clickTradeType) => {
     if (tradePrice) {
-      this.setState({ tradePrice, clickTradeType });
+      this.setState({ tradePrice: tradePrice + '_' + Math.random(), clickTradeType });
     }
   };
 

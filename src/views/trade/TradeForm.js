@@ -113,14 +113,13 @@ class TradeForm extends PureComponent {
       });
   };
 
-  componentWillUpdate(nextProps, nextState) {
-    if (
-      nextProps.tradePrice !== this.props.tradePrice
-    ) {
-      if (nextProps.tradePrice < 0.000001) {
-        this.setState({ price: Number(nextProps.tradePrice).toFixed(8) });
+  componentWillReceiveProps(nextProps, nextState) {
+    if (nextProps.tradePrice !== this.props.tradePrice) {
+      const tradePrice = nextProps.tradePrice.match(/^(\d+\.\d+)\_/)[1];
+      if (tradePrice < 0.000001) {
+        this.setState({ price: Number(tradePrice).toFixed(8) });
       } else {
-        this.setState({ price: nextProps.tradePrice });
+        this.setState({ price: tradePrice });
       }
     }
 
@@ -152,7 +151,6 @@ class TradeForm extends PureComponent {
     } = this.props;
 
     const { triggerPrice, price, volume, sliderValue, totalPrice, pending } = this.state;
-
     const isLogin = sessionStorage.getItem('account');
 
     const typeToText = {
