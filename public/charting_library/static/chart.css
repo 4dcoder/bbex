@@ -1,4 +1,6 @@
-html {
+html,
+body {
+  color: #dadada !important;
   background: #2a2f3c;
 }
 
@@ -195,9 +197,28 @@ body {
   border-color: #3f4451;
 }
 
-.button.indicators.active svg,
-html.theme-dark .button.indicators.active svg,
-.button.properties.active svg,
-html.theme-dark .button.properties.active svg {
-  fill: #d4a668;
+.js-input-control,
+.tv-dialog,
+.tv-floating-toolbar,
+.tv-grouped-floating-toolbar__popup,
+.tv-grouped-floating-toolbar__widget-wrapper {
+  background-color: #2c3940 !important;
+}
+
+.tv-dialog__title {
+  color: #dadada;
+}
+
+.tv-search-row,
+.tv-dialog__section {
+  border-bottom: 1px solid #565b66;
+}
+
+.feature-no-touch .tv-insert-study-item:hover {
+  color: #dadada;
+  background-color: #222c31;
+}
+
+.tv-dialog__close svg {
+  fill: #dadada;
 }

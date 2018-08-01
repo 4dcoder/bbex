@@ -25,7 +25,7 @@ html, body {
   position: absolute;
   width: 100%;
   min-height: 100%;
-  color: #adadad;
+  color: #dadada;
 }
 
 #root {
@@ -350,7 +350,7 @@ a:hover {
 }
 
 :root .ant-upload {
-  color: #adadad;
+  color: #dadada;
 }
 
 :root .ant-upload.ant-upload-select.ant-upload-select-picture-card {
@@ -358,7 +358,7 @@ a:hover {
 }
 
 :root .ant-confirm-body .ant-confirm-title, :root .ant-confirm-body .ant-confirm-content {
-  color: #adadad;
+  color: #dadada;
 }
 
 :root .ant-checkbox-inner {
@@ -714,7 +714,7 @@ a:hover {
   display: inline-block;
   padding: 0 15px;
   font-weight: bolder;
-  color: #adadad;
+  color: #dadada;
   font-size: 16px;
   border: 1px solid #666;
 }
