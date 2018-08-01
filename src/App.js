@@ -109,7 +109,7 @@ class App extends Component {
               <NormalRoute exact path="/signup" component={SignUp} {...{ localization }} />
               <NormalRoute exact path="/reset" component={Reset} {...{ localization }} />
               <NormalRoute exact path="/resetPassword" component={ResetPassword} {...{ localization }} />
-              <PrivateRoute exact path="/user" component={User} {...{ localization }} />
+              <PrivateRoute path="/user" component={User} {...{ localization }} />
               <NormalRoute exact path="/c2c" component={C2c} {...{ localization }} />
               <NormalRoute exact path="/link/:id" component={MyLink} {...{ localization }} />
               <NormalRoute exact path="/agreement" component={Agreement} {...{ localization }} />
