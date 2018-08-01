@@ -41,13 +41,13 @@ class TradeviewPage extends PureComponent {
         'timeframes_toolbar',
         'context_menus',
         // 'left_toolbar',
-        'header_indicators', //图表指标
+        // 'header_indicators', //图表指标
         // 'header_settings', //设置
         'header_resolutions', //时间下拉框
         // 'header_fullscreen_button' //全屏按钮
         'volume_force_overlay'
       ],
-      enabled_features: ['study_templates', 'hide_last_na_study_output'],
+      enabled_features: ['hide_last_na_study_output', 'keep_left_toolbar_visible_on_small_screens', 'hide_left_toolbar_by_default'],
       charts_storage_url: 'http://saveload.tradingview.com',
       charts_storage_api_version: '1.1',
       client_id: 'tradingview.com',
