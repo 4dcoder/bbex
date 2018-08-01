@@ -115,10 +115,7 @@ class TradeForm extends PureComponent {
 
   componentWillUpdate(nextProps, nextState) {
     if (
-      nextProps.tradePrice !== this.props.tradePrice ||
-      (nextProps.tradePrice === this.props.tradePrice &&
-        nextProps.tradePrice !== this.state.price &&
-        nextState.price === this.state.price)
+      nextProps.tradePrice !== this.props.tradePrice
     ) {
       if (nextProps.tradePrice < 0.000001) {
         this.setState({ price: Number(nextProps.tradePrice).toFixed(8) });
