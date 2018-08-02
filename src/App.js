@@ -47,7 +47,9 @@ const SignUp = asyncComponent(() => import('./views/signup'));
 
 const Reset = asyncComponent(() => import('./views/reset'));
 
-const ResetPassword = asyncComponent(() => import('./views/reset/Password'));
+const ResetMail = asyncComponent(() => import('./views/reset/Mail'));
+
+const ResetMobile = asyncComponent(() => import('./views/reset/Mobile'));
 
 const User = asyncComponent(() => import('./views/user'));
 
@@ -108,7 +110,8 @@ class App extends Component {
               <NormalRoute exact path="/signin" component={SignIn} {...{ localization }} />
               <NormalRoute exact path="/signup" component={SignUp} {...{ localization }} />
               <NormalRoute exact path="/reset" component={Reset} {...{ localization }} />
-              <NormalRoute exact path="/resetPassword" component={ResetPassword} {...{ localization }} />
+              <NormalRoute exact path="/reset/mail" component={ResetMail} {...{ localization }} />
+              <NormalRoute exact path="/reset/mobile" component={ResetMobile} {...{ localization }} />
               <PrivateRoute path="/user" component={User} {...{ localization }} />
               <NormalRoute exact path="/c2c" component={C2c} {...{ localization }} />
               <NormalRoute exact path="/link/:id" component={MyLink} {...{ localization }} />

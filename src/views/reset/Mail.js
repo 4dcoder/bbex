@@ -28,7 +28,7 @@ class SubmitRest extends Component {
             encrypt.setPublicKey(PUBLI_KEY);
             let enPassword = encrypt.encrypt(password);
     
-            this.request('/user/resetPassword', {
+            this.request('/user/mail/resetpwd', {
                 body: {
                     password: enPassword,
                     ptoken: this.state.ptoken

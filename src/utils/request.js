@@ -53,7 +53,7 @@ function request(url, { method = 'POST', headers, body } = {}) {
               msg: '全局错误'
             });
             break;
-          case 403:
+          case -9:
             reject({
               status: response.status,
               msg: '没有权限，需要谷歌验证'
