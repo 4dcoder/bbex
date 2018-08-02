@@ -5,6 +5,11 @@ import { resolutionToTime, resolutionToStamp } from './helpers';
 export default {
   lastBar: {},
 
+  prevBar: {
+    time: 0,
+    volume: 0
+  },
+
   getLastBar(lastBar) {
     this.lastBar = lastBar;
   },
@@ -45,13 +50,6 @@ export default {
             ? this.lastBar.time
             : this.lastBar.time + resolutionToStamp(resolution - 1);
         let bar = {};
-        console.log(
-          '||||||||||||||||||: ',
-          resolution,
-          period,
-          resBar.t * 1,
-          period < resBar.t * 1
-        );
         if (!this.lastBar.time || period < resBar.t * 1) {
           // 新增一条K线
           bar = {
@@ -62,7 +60,28 @@ export default {
             open: resBar.o * 1,
             volume: resBar.v * 1
           };
+
+          // 清空上一分钟的时间和数量
+          // this.prevBar = { 
+          //   time: this.lastBar.time, 
+          //   volume: 0
+          // };
         } else {
+          // 保存上一分钟的时间和数量
+          // if(this.prevBar.time === 0) {
+          //   this.prevBar = { 
+          //     time: this.lastBar.time, 
+          //     volume: 0
+          //   };
+          // }
+          // if (this.prevBar.time < resBar.t * 1) {
+          //   this.prevBar = { 
+          //     time: this.lastBar.time, 
+          //     volume: this.lastBar.volume
+          //   };
+          // }
+
+          // console.log(this.prevBar.volume)
           // 当前实时推送合并到最后一根k线
           bar = {
             time: this.lastBar.time,
@@ -70,7 +89,7 @@ export default {
             high: this.lastBar.high > resBar.h ? this.lastBar.high : resBar.h * 1,
             low: this.lastBar.low < resBar.l ? this.lastBar.low : resBar.l * 1,
             open: this.lastBar.open,
-            volume: resolution === 1 ? resBar.v * 1 : this.lastBar.volume + resBar.v * 1
+            volume: resBar.v * 1
           };
         }
 
