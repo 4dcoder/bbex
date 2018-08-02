@@ -15,7 +15,7 @@ import {
 import { Link } from 'react-router-dom';
 import classnames from 'classnames';
 import Scrollbars from 'react-custom-scrollbars';
-import Spinners from 'react-spinners';
+import { ClipLoader } from 'react-spinners';
 import NoticeBar from '../../components/notice-bar';
 import { stampToDate } from '../../utils';
 import { WS_PREFIX } from '../../utils/constants';
@@ -884,7 +884,7 @@ class Trade extends PureComponent {
 
     const loading = (
       <div className="container-loading">
-        <Spinners.ClipLoader color={'#d4a668'} size={35} />
+        <ClipLoader color={'#d4a668'} size={35} />
       </div>
     );
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
-import Spinners from 'react-spinners';
+import { ScaleLoader } from 'react-spinners';
 import Loadable from 'react-loadable';
 import Container from './views/Container';
 
@@ -16,7 +16,7 @@ const asyncComponent = loader =>
         } else if (pastDelay) {
           return (
             <div className="page-loading">
-              <Spinners.ScaleLoader
+              <ScaleLoader
                 color={'#d4a668'}
                 height={100}
                 width={5}
@@ -111,13 +111,23 @@ class App extends Component {
               <NormalRoute exact path="/signup" component={SignUp} {...{ localization }} />
               <NormalRoute exact path="/reset" component={Reset} {...{ localization }} />
               <NormalRoute exact path="/reset/mail" component={ResetMail} {...{ localization }} />
-              <NormalRoute exact path="/reset/mobile" component={ResetMobile} {...{ localization }} />
+              <NormalRoute
+                exact
+                path="/reset/mobile"
+                component={ResetMobile}
+                {...{ localization }}
+              />
               <PrivateRoute path="/user" component={User} {...{ localization }} />
               <NormalRoute exact path="/c2c" component={C2c} {...{ localization }} />
               <NormalRoute exact path="/link/:id" component={MyLink} {...{ localization }} />
               <NormalRoute exact path="/agreement" component={Agreement} {...{ localization }} />
               <NormalRoute exact path="/notice" component={Notice} {...{ localization }} />
-              <NormalRoute exact path="/notice/:id" component={NoticeDetail} {...{ localization }} />
+              <NormalRoute
+                exact
+                path="/notice/:id"
+                component={NoticeDetail}
+                {...{ localization }}
+              />
               <NormalRoute exact path="/help" component={Help} {...{ localization }} />
               <NormalRoute exact path="/help/:id" component={HelpDetail} {...{ localization }} />
               <NormalRoute component={NotFound} {...{ localization }} />
