@@ -29,13 +29,7 @@ class Container extends Component {
 
               const msg = json.code === -5 ? '用户登录失效' : '用户被挤出';
               message.error(msg);
-            } else {
-              resolve(json);
-            }
-          })
-          .catch(error => {
-            // 需要谷歌验证
-            if (error.status === 403) {
+            } else if (json.code === -9) {
               const { googleAuth } = JSON.parse(sessionStorage.getItem('account'));
               if (googleAuth) {
                 //console.log(22222);
@@ -62,7 +56,13 @@ class Container extends Component {
                   )
                 });
               }
+              resolve(json);
+            } else {
+              resolve(json);
             }
+          })
+          .catch(error => {
+            // 需要谷歌验证
             reject(error);
           });
       });
@@ -198,10 +198,10 @@ class Container extends Component {
 
     // copy 插件设置
     const clipboard = new ClipboardJS('.copy-btn');
-    clipboard.on('success', function(e) {
+    clipboard.on('success', function (e) {
       message.success('复制成功！');
     });
-    clipboard.on('error', function(e) {
+    clipboard.on('error', function (e) {
       message.success('您的浏览器版本较低，请升级浏览器或者使用chrome和firefox等浏览器重试！');
     });
   }
@@ -356,7 +356,7 @@ class Container extends Component {
                             <a
                               href={`tencent://message/?Site=baidu.com&uin=${
                                 item.linkUrl
-                              }&Menu=yes`}
+                                }&Menu=yes`}
                               key={index}
                             >
                               <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />

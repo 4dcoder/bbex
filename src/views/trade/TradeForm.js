@@ -64,8 +64,11 @@ class TradeForm extends PureComponent {
         .then(json => {
           if (json.code === 10000000) {
             this.tradeAction(json.data.orderNo);
+          } else if (json.code === -9) {
+            this.setState({ pending: false });
           } else {
-            message.error(json.msg);
+            message.error(json.msg, 1);
+            this.setState({ pending: false });
           }
         })
         .catch(error => {
@@ -238,7 +241,7 @@ class TradeForm extends PureComponent {
                   placement="top"
                   title={
                     localization[
-                      '当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止'
+                    '当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止'
                     ]
                   }
                 >
@@ -298,7 +301,7 @@ class TradeForm extends PureComponent {
                     placement="top"
                     title={
                       localization[
-                        '当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止'
+                      '当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止'
                       ]
                     }
                   >
@@ -353,11 +356,11 @@ class TradeForm extends PureComponent {
               {`${typeToText[type]} ${coinName}`}
             </Button>
           ) : (
-            <Button type="ghost" size="large">
-              <Link to="/signin">{localization['登录']}</Link> {localization['或']}{' '}
-              <Link to="/signup">{localization['注册']}</Link> {localization['进行交易']}
-            </Button>
-          )}
+              <Button type="ghost" size="large">
+                <Link to="/signin">{localization['登录']}</Link> {localization['或']}{' '}
+                <Link to="/signup">{localization['注册']}</Link> {localization['进行交易']}
+              </Button>
+            )}
         </li>
       </ul>
     );
