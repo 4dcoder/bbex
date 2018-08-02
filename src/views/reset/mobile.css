@@ -1,0 +1,53 @@
+.reset-mobile{
+  width: 100%;
+}
+.reset-mobile .content{
+  background: #272B37;
+  width: 440px;
+  padding: 40px;
+  margin: 120px auto;
+}
+.reset-mobile .title{
+  font-size: 20px;
+  text-align: center;
+  color: #dadada;
+  margin-bottom: 20px;
+}
+.reset-mobile .ant-tabs-bar{
+  border-bottom: none;
+}
+
+.reset-mobile .iconfont{
+  color: #fff;
+}
+.reset-mobile .ant-input-affix-wrapper .ant-input:not(:first-child){
+  padding-left: 40px;
+}
+
+.reset-mobile .mail-code-btn{
+  width: 140px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  
+}
+
+.reset-mobile .code-img{
+  width: 100px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 40px;
+  cursor: pointer;
+}
+.reset-mobile .mail-code .ant-form-item-control{
+  position: relative;
+}
+.reset-mobile .mail-code .ant-form-item-children{
+  position: initial;
+}
+.reset-mobile .submit-btn{
+  display: 'flex';
+  justify-content: 'center';
+  margin-top: 30px;
+}

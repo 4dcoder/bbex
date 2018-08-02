@@ -36,18 +36,7 @@ class VerForm extends Component {
           {getFieldDecorator('idCard', {
             rules: [
               { required: true, message: '请输入身份证号', whitespace: true },
-              {
-                validator: (rule, value, callback) => {
-                  const form = this.props.form;
-                  if (
-                    /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(form.getFieldValue('idCard'))
-                  ) {
-                    callback();
-                  } else {
-                    callback('身份证号为15或18位');
-                  }
-                }
-              }
+              { max: 50, message: '身份证号不能超过50位' }
             ]
           })(<Input size="large" placeholder="请输入身份证号" />)}
         </FormItem>

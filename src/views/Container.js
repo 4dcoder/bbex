@@ -62,8 +62,8 @@ class Container extends Component {
                   )
                 });
               }
-              reject(error);
             }
+            reject(error);
           });
       });
     };
