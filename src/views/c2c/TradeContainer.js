@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Table, Button, Modal, Tabs, message } from 'antd';
 import classnames from 'classnames';
@@ -318,7 +318,7 @@ const ExpandComponent = ({
   );
 };
 
-class TradeContainer extends Component {
+class TradeContainer extends PureComponent {
   state = {
     coinVolume: 0,
     advertList: null,

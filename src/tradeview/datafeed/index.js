@@ -1,9 +1,9 @@
 import historyProvider from './historyProvider';
-import stream from './stream';
+import dataPushProvider from './dataPushProvider';
 
 export default {
-  onReady: callback => {
-    console.log('=====onReady running');
+  onReady(callback) {
+    // console.log('=====onReady running');
     const config = {
       supports_search: true,
       supports_time: true,
@@ -18,12 +18,12 @@ export default {
     }, 0);
   },
 
-  searchSymbols: (userInput, exchange, symbolType, onResultReadyCallback) => {
-    console.log('====searchSymbols running');
+  searchSymbols(userInput, exchange, symbolType, onResultReadyCallback) {
+    // console.log('====searchSymbols running');
   },
 
-  resolveSymbol: (symbolName, onSymbolResolvedCallback, onResolveErrorCallback) => {
-    console.log('====resolveSymbol running');
+  resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
+    // console.log('====resolveSymbol running');
     const symbolInfo = {
       name: symbolName,
       timezone: 'Asia/Shanghai',
@@ -49,23 +49,16 @@ export default {
     }, 0);
   },
 
-  getBars: function(
-    symbolInfo,
-    resolution,
-    from,
-    to,
-    onHistoryCallback,
-    onErrorCallback,
-    firstDataRequest
-  ) {
-    console.log('=====getBars running');
+  getBars(symbolInfo, resolution, from, to, onHistoryCallback, onErrorCallback, firstDataRequest) {
+    // console.log('=====getBars running');
     // console.log('function args',arguments)
     // console.log(`Requesting bars between ${new Date(from * 1000).toISOString()} and ${new Date(to * 1000).toISOString()}`)
     historyProvider
       .getBars(symbolInfo, resolution, from, to, firstDataRequest)
-      .then(bars => {
-        if (bars.length) {
+      .then(({ bars, lastBar }) => {
+        if (bars.length > 0) {
           onHistoryCallback(bars, { noData: false });
+          dataPushProvider.getLastBar(lastBar);
         } else {
           onHistoryCallback(bars, { noData: true });
         }
@@ -76,15 +69,15 @@ export default {
       });
   },
 
-  subscribeBars: (
+  subscribeBars(
     symbolInfo,
     resolution,
     onRealtimeCallback,
     subscribeUID,
     onResetCacheNeededCallback
-  ) => {
-    console.log('=====subscribeBars runnning');
-    stream.subscribeBars(
+  ) {
+    // console.log('=====subscribeBars runnning');
+    dataPushProvider.subscribeBars(
       symbolInfo,
       resolution,
       onRealtimeCallback,
@@ -93,32 +86,29 @@ export default {
     );
   },
 
-  unsubscribeBars: subscriberUID => {
-    console.log('=====unsubscribeBars running');
+  unsubscribeBars(subscriberUID) {
+    // console.log('=====unsubscribeBars running');
 
-    stream.unsubscribeBars(subscriberUID);
+    dataPushProvider.unsubscribeBars(subscriberUID);
   },
 
-  calculateHistoryDepth: (resolution, resolutionBack, intervalBack) => {
-    //optional
-    console.log('=====calculateHistoryDepth running', resolution, resolutionBack, intervalBack);
+  calculateHistoryDepth(resolution, resolutionBack, intervalBack) {
+    // console.log('=====calculateHistoryDepth running', resolution, resolutionBack, intervalBack);
     // while optional, this makes sure we request 24 hours of minute data at a time
     // CryptoCompare's minute data endpoint will throw an error if we request data beyond 7 days in the past, and return no data
     return resolution < 60 ? { resolutionBack: 'D', intervalBack: '1' } : undefined;
   },
 
-  getMarks: (symbolInfo, startDate, endDate, onDataCallback, resolution) => {
-    //optional
-    console.log('=====getMarks running');
+  getMarks(symbolInfo, startDate, endDate, onDataCallback, resolution) {
+    // console.log('=====getMarks running');
   },
 
-  getTimeScaleMarks: (symbolInfo, startDate, endDate, onDataCallback, resolution) => {
-    //optional
-    console.log('=====getTimeScaleMarks running');
+  getTimeScaleMarks(symbolInfo, startDate, endDate, onDataCallback, resolution) {
+    // console.log('=====getTimeScaleMarks running');
   },
 
-  getServerTime: callback => {
-    console.log('=====getServerTime running');
+  getServerTime(callback) {
+    // console.log('=====getServerTime running');
     callback(new Date().getTime());
   }
 };

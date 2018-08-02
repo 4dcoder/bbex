@@ -1032,16 +1032,14 @@ class Trade extends PureComponent {
                       <table>
                         <tbody>
                           {streamList.map((stream, index) => {
-                            if (stream) {
-                              const trend = stream.type == 0 ? 'green' : 'red';
-                              return (
-                                <tr key={stream.date + index} className={`font-color-${trend}`}>
-                                  <td>{stampToDate(Number(stream.date), 'hh:mm:ss')}</td>
-                                  <td>{Number(stream.price).toFixed(8)}</td>
-                                  <td>{Number(stream.volume).toFixed(8)}</td>
-                                </tr>
-                              );
-                            }
+                            const trend = Number(stream.type) === 0 ? 'green' : 'red';
+                            return (
+                              <tr key={stream.date + index} className={`font-color-${trend}`}>
+                                <td>{stampToDate(Number(stream.date), 'hh:mm:ss')}</td>
+                                <td>{Number(stream.price).toFixed(8)}</td>
+                                <td>{Number(stream.volume).toFixed(8)}</td>
+                              </tr>
+                            );
                           })}
                         </tbody>
                       </table>
@@ -1092,9 +1090,9 @@ class Trade extends PureComponent {
                     placeholder
                   </Dropdown>
                 )}
-                <a className="ant-dropdown-link" href="javascript:;">
+                <span className="font-color-primary">
                   {coinName}/{marketName}&nbsp;&nbsp;{false && <Icon type="down" />}
-                </a>
+                </span>
                 <span
                   className="trade-plate-header-price"
                   dangerouslySetInnerHTML={{

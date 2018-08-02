@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Tabs, Input, Table, message } from 'antd';
 import { Carousel } from 'react-responsive-carousel';
 import classnames from 'classnames';
@@ -17,7 +17,7 @@ import partner5 from '../../assets/images/partner/lianwen.png';
 const TabPane = Tabs.TabPane;
 const Search = Input.Search;
 
-class Home extends Component {
+class Home extends PureComponent {
   state = {
     banners: [],
     market: 'USDT',
@@ -271,12 +271,12 @@ class Home extends Component {
               if (banner.link) {
                 return (
                   <a key={banner.id} href={banner.link} target="_blank">
-                    <img key={banner.id} src={banner.image} />
+                    <img key={banner.id} src={banner.image} alt="虚拟资产交易所" />
                   </a>
                 );
               } else {
                 return <div key={banner.id}>
-                  <img key={banner.id} src={banner.image} />
+                  <img key={banner.id} src={banner.image} alt="虚拟资产交易所" />
                 </div>
               }
             })}
