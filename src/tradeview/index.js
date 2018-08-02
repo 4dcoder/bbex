@@ -230,11 +230,13 @@ class TradeviewPage extends PureComponent {
 
     // 切换滚动目标（tradingview 或者是 window）
     document.addEventListener('click', this.toggleScrollTarget, false);
+    document.addEventListener('touchstart', this.toggleScrollTarget, false);
   }
 
   componentWillUnmount() {
     // 取消切换滚动目标（tradingview 或者是 window）
     document.removeEventListener('click', this.toggleScrollTarget);
+    document.removeEventListener('touchstart', this.toggleScrollTarget);
   }
 
   render() {
