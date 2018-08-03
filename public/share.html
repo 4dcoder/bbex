@@ -159,7 +159,6 @@
   function isWechat() {
     //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
     var ua = window.navigator.userAgent.toLowerCase();
-    console.log(ua);
     //通过正则表达式匹配ua中是否含有MicroMessenger字符串
     if (ua.match(/MicroMessenger/i) == 'micromessenger') {
       return true;
@@ -168,12 +167,17 @@
     }
   }
 
-  const realName = getQueryString('realName') || '您的朋友';
+  var realName = getQueryString('realName') || '您的朋友';
+
+  //传递邀请码  手机注册用
+  var inviteCode = getQueryString('inviteCode') || '';
+  document.getElementById("link").href = "/mobile/signup?inviteCode=" + inviteCode;
 
   var app = new Vue({
     el: '#app',
     data: {
       isWechat: isWechat(),
+      inviteCode: inviteCode,
       header: realName + '邀请您成为UES交易所的会员',
       content: realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!'
     }
