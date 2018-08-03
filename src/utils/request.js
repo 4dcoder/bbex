@@ -1,14 +1,15 @@
 /**
  * @author William Cui
  * @description 使用Promise封装接口请求方法
- * @param url {string} 请求地址 【必填】
- * @param method {string} 请求方式 【必填】
- * @param headers {object} 请求头对象 【选填】
- * @param data {object} 请求参数对象 【选填】
+ * @param url {String} 请求地址 【必填】
+ * @param method {String} 请求方式 【选填】 默认POST
+ * @param headers {Object} 请求头对象 【选填】
+ * @param body {Object} 请求参数对象 【选填】
+ * @param timeout {Number} 请求超时时间 【选填】 默认10s
  * @return Promise 对象
  * @date 2017-08-25
  **/
-function request(url, { method = 'POST', headers, body } = {}) {
+function request(url, { method = 'POST', headers, body, timeout = 1000 * 10 } = {}) {
   //键值对转换为字符串
   function params(body) {
     var arr = [];
@@ -18,10 +19,10 @@ function request(url, { method = 'POST', headers, body } = {}) {
     return arr.join('&');
   }
 
-  return new Promise((resolve, reject) => {
+  const requestPromise = new Promise((resolve, reject) => {
     const opts = {
       method,
-      headers: {    
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         ...headers
       }
@@ -44,7 +45,7 @@ function request(url, { method = 'POST', headers, body } = {}) {
     fetch(`/bbex${url}`, opts)
       .then(response => {
         if (response.ok) {
-          return response.status === 200 ? response.json() : { status: response.status }
+          return response.status === 200 ? response.json() : { status: response.status };
         }
         switch (response.status) {
           case -2:
@@ -53,16 +54,10 @@ function request(url, { method = 'POST', headers, body } = {}) {
               msg: '全局错误'
             });
             break;
-          case -9:
+          case 404:
             reject({
               status: response.status,
-              msg: '没有权限，需要谷歌验证'
-            });
-            break;
-          case -5:
-            reject({
-              status: response.status,
-              msg: '没有登录，请先登录'
+              msg: '没有找到相关接口'
             });
             break;
           case 500:
@@ -82,9 +77,17 @@ function request(url, { method = 'POST', headers, body } = {}) {
         resolve(json);
       })
       .catch(error => {
-        console.log('+++++++++: ', error)
-      })
+        console.log('请求错误：', error);
+      });
   });
+
+  const timeoutPromise = new Promise((resolve, reject) => {
+    setTimeout(function() {
+      reject('请求超时!');
+    }, timeout);
+  });
+
+  return Promise.race([requestPromise, timeoutPromise]);
 }
 
 export default request;

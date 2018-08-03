@@ -479,9 +479,12 @@ class Trade extends PureComponent {
         this.setState({ tradeExpair });
       } else {
         this.setState({ tradeExpair: {} });
-        //message.error(json.msg);
+        message.error(json.msg);
       }
-    });
+    }).catch(error => {
+      this.setState({ tradeExpair: {} });
+      message.error(error);
+    })
   };
 
   // 获取交易列表
