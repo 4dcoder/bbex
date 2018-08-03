@@ -334,6 +334,12 @@ class Trade extends PureComponent {
       }
     }, 1000);
 
+    setTimeout(() => {
+      if (Object.keys(this.state.tradeList).length === 0) {
+        this.setState({ tradeList: { buyOrderVOList: [], sellOrderVOList: [] } });
+      }
+    }, 1000 * 5);
+
     this.buyandsellWS.onmessage = evt => {
       if (evt.data) {
         this.setState({ tradeList: JSON.parse(evt.data) });

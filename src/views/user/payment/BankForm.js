@@ -18,7 +18,7 @@ class BankForm extends Component {
         const { bankInfo, setBankInfo } = this.props;
         const { realName, mobile, bankName, branchBankName, cardNo } = values;
 
-        let body = {
+        const body = {
           realName,
           mobile,
           bankName,
@@ -32,23 +32,19 @@ class BankForm extends Component {
 
         this.request(`/offline/bank/bind`, { body }).then(json => {
           if (json.code === 10000000) {
-            setBankInfo(body);
+            setBankInfo();
             message.success(`银行卡绑定成功！`);
           } else {
-            message.success(json.msg);
+            message.error(json.msg);
           }
         });
       }
     });
   };
 
-  handleConfirmBlur = e => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
   compareToFirstCardNo = (rule, value, callback) => {
     const form = this.props.form;
+    this.setState({ confirmDirty: !!value });
     if (value && value !== form.getFieldValue('cardNo')) {
       callback('您输入的两个银行卡号不一致!');
     } else {
@@ -290,11 +286,7 @@ class BankForm extends Component {
         </FormItem>
         <FormItem {...formItemLayout} label="开户银行">
           {getFieldDecorator('bankName', bankOption)(
-            <Select 
-              size="large" 
-              showSearch
-              placeholder="请选择开户银行"
-            >
+            <Select size="large" showSearch placeholder="请选择开户银行">
               {bankList.map(bank => {
                 return (
                   <Option key={bank} value={bank}>
@@ -324,9 +316,10 @@ class BankForm extends Component {
                 whitespace: true
               },
               {
-                validator: this.compareToNextCardNo
+                validator: this.validateToNextCardNo.bind(this)
               }
             ],
+            validateTrigger: 'onBlur',
             initialValue: bankInfo && bankInfo.cardNo
           })(<Input size="large" placeholder="请输入银行卡号!" />)}
         </FormItem>
@@ -341,8 +334,9 @@ class BankForm extends Component {
                 validator: this.compareToFirstCardNo
               }
             ],
+            validateTrigger: 'onBlur',
             initialValue: bankInfo && bankInfo.cardNo
-          })(<Input size="large" onBlur={this.handleConfirmBlur} placeholder="请确认银行卡号!" />)}
+          })(<Input size="large" placeholder="请确认银行卡号!" />)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" size="large" htmlType="submit">

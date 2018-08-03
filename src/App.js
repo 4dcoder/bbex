@@ -33,8 +33,8 @@ const asyncComponent = loader =>
         return null;
       }
     },
-    delay: 100,
-    timeout: 10000
+    delay: 200,
+    timeout: 1000 * 10
   });
 
 const Home = asyncComponent(() => import('./views/home'));
@@ -101,7 +101,7 @@ class App extends Component {
     const { localization } = this.state;
     return (
       <Router>
-        <Switch>
+        <React.Fragment>
           <NormalRoute path="/mobile" component={Mobile} {...{ localization }} />
           <Container {...{ localization }} onGetLocalization={this.handleGetLocalization}>
             <Switch>
@@ -133,7 +133,7 @@ class App extends Component {
               <NormalRoute component={NotFound} {...{ localization }} />
             </Switch>
           </Container>
-        </Switch>
+        </React.Fragment>
       </Router>
     );
   }

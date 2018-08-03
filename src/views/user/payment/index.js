@@ -34,8 +34,7 @@ class Payment extends Component {
         this.setState({ editType: type});
     }
 
-    handleSetBankInfo = (bankInfo) => {
-        // this.setState({ bankInfo });
+    handleSetBankInfo = () => {
         this.getBankInfo();
     }
 
