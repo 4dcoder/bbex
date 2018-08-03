@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import request from '../../utils/request';
 import './link.css';
 
 class MyLink extends Component {
@@ -10,6 +9,8 @@ class MyLink extends Component {
     };
   }
 
+  request = window.request;
+
   componentWillMount() {
     this.getLinkDetail();
   }
@@ -18,7 +19,7 @@ class MyLink extends Component {
   getLinkDetail = () => {
     const id = this.props.match.params.id;
 
-    request(`/cms/view/${id}`, {
+    this.request(`/cms/view/${id}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {

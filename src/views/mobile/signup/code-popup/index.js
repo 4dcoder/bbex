@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { message, Modal, Button, Input } from 'antd';
-import request from '../../../../utils/request';
 import { IMAGES_ADDRESS } from '../../../../utils/constants';
 import './code.css';
 
@@ -14,6 +13,8 @@ class CodePopup extends Component {
       errorTip: ''
     }
   }
+
+  request = window.request;
 
   componentWillMount() {
     this.getValidImg();
@@ -47,7 +48,7 @@ class CodePopup extends Component {
       body = { mobile: mail, type, code }
     }
     if (code) {
-      request(`/${flag}/sendCode`, {
+      this.request(`/${flag}/sendCode`, {
         body
       }).then(json => {
         if (json.code === 10000000) {
@@ -67,7 +68,7 @@ class CodePopup extends Component {
 
   getValidImg = () => {
     const { mail, type } = this.props;
-    request('/valid/createCode', {
+    this.request('/valid/createCode', {
       method: 'GET',
       body: {
         type,

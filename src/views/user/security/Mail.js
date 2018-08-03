@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
-import request from '../../../utils/request';
 import CodePopup from '../../../components/code-popup';
 import { MAIL_REGEX } from '../../../utils/constants'
 
@@ -17,13 +16,15 @@ class Mail extends Component {
     }
   }
 
+  request = window.request;
+
   componentWillUnmount() {
     clearInterval(this.timer);
   }
 
   //绑定邮箱
   mobileBinder = (mail, code) => {
-    request('/user/binderEmail', {
+    this.request('/user/binderEmail', {
       method: 'POST',
       body: {
         mail,

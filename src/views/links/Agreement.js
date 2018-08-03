@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import request from '../../utils/request';
 
 class Agreement extends Component {
   constructor(props) {
@@ -13,9 +12,11 @@ class Agreement extends Component {
     this.getArgeement();
   }
 
+  request = window.request;
+
   //获取用户协议
   getArgeement = () => {
-    request('/cms/service', {
+    this.request('/cms/service', {
       method: 'GET',
       body: {
         language: 'zh_CN'

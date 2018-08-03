@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Button, message } from 'antd';
 import { JSEncrypt } from '../../../utils/jsencrypt.js';
-import request from '../../../utils/request';
 import { PUBLI_KEY, PWD_REGEX } from '../../../utils/constants';
 
-
 const FormItem = Form.Item;
-
-//公钥
 
 class Password extends Component {
     constructor(props) {
@@ -16,6 +12,8 @@ class Password extends Component {
             confirmDirty: false
         };
     }
+
+    request = window.request;
 
     handleSubmit = e => {
         e.preventDefault();
@@ -55,7 +53,7 @@ class Password extends Component {
     };
 
     changePassword = (oldPassword, password) => {
-        request('/user/updatePassword', {
+        this.request('/user/updatePassword', {
             method: 'POST',
             body: {
                 password,

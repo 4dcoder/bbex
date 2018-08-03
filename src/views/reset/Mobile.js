@@ -81,6 +81,9 @@ class Mobile extends Component {
       if (json.code === 10000000) {
         message.success(json.msg, 1);
         this.props.history.push('/signin');
+      } else {
+        message.destroy();
+        message.warn(json.msg, 1);
       }
     });
   }
