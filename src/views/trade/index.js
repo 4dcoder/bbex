@@ -442,54 +442,56 @@ class Trade extends PureComponent {
     this.setState({ tradeExpair: null });
     this.request('/index/allTradeExpair', {
       method: 'GET'
-    }).then(json => {
-      if (json.code === 10000000) {
-        if (this.coinName) {
-          // 如果有保存在localStorage的交易对，就取保存中的
-          this.setState({ coinName: this.coinName });
-        } else {
-          // 如果没有保存的交易对，就取当前市场的第一个币种
-          if (json.data[this.state.market]) {
-            this.setState({
-              coinName: json.data[this.state.market][0].coinOther
-            });
-          } else {
-            this.setState({
-              market: Object.keys(json.data)[0],
-              marketName: Object.keys(json.data)[0],
-              coinName: json.data[Object.keys(json.data)[0]][0].coinOther
-            });
-          }
-        }
-
-        const tradeExpair = {};
-        Object.keys(json.data).forEach(key => {
-          tradeExpair[key] = {};
-          json.data[key].forEach(coin => {
-            const expair = `${coin.coinOther}/${coin.coinMain}`;
-            let rise = '0.00%';
-            if (coin.firstPrice > 0) {
-              rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
-              rise = rise.toFixed(2) + '%';
-            }
-            tradeExpair[key][expair] = {
-              ...coin,
-              rise: rise,
-              latestPrice: (coin.latestPrice || 0).toFixed(8),
-              highestPrice: (coin.highestPrice || 0).toFixed(8),
-              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-              dayCount: (coin.dayCount || 0).toFixed(8)
-            };
-          });
-        });
-        this.setState({ tradeExpair });
-      } else {
-        this.setState({ tradeExpair: {} });
-        message.error(json.msg);
-      }
-    }).catch(error => {
-      this.setState({ tradeExpair: {} });
     })
+      .then(json => {
+        if (json.code === 10000000) {
+          if (this.coinName) {
+            // 如果有保存在localStorage的交易对，就取保存中的
+            this.setState({ coinName: this.coinName });
+          } else {
+            // 如果没有保存的交易对，就取当前市场的第一个币种
+            if (json.data[this.state.market]) {
+              this.setState({
+                coinName: json.data[this.state.market][0].coinOther
+              });
+            } else {
+              this.setState({
+                market: Object.keys(json.data)[0],
+                marketName: Object.keys(json.data)[0],
+                coinName: json.data[Object.keys(json.data)[0]][0].coinOther
+              });
+            }
+          }
+
+          const tradeExpair = {};
+          Object.keys(json.data).forEach(key => {
+            tradeExpair[key] = {};
+            json.data[key].forEach(coin => {
+              const expair = `${coin.coinOther}/${coin.coinMain}`;
+              let rise = '0.00%';
+              if (coin.firstPrice > 0) {
+                rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
+                rise = rise.toFixed(2) + '%';
+              }
+              tradeExpair[key][expair] = {
+                ...coin,
+                rise: rise,
+                latestPrice: (coin.latestPrice || 0).toFixed(8),
+                highestPrice: (coin.highestPrice || 0).toFixed(8),
+                lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+                dayCount: (coin.dayCount || 0).toFixed(8)
+              };
+            });
+          });
+          this.setState({ tradeExpair });
+        } else {
+          this.setState({ tradeExpair: {} });
+          message.error(json.msg);
+        }
+      })
+      .catch(error => {
+        this.setState({ tradeExpair: {} });
+      });
   };
 
   // 获取交易列表
@@ -530,14 +532,18 @@ class Trade extends PureComponent {
     this.request('/index/findMatchStream', {
       method: 'GET',
       body: { coinMain, coinOther }
-    }).then(json => {
-      if (json.code === 10000000) {
-        this.setState({ streamList: json.data || [] });
-      } else {
+    })
+      .then(json => {
+        if (json.code === 10000000) {
+          this.setState({ streamList: json.data || [] });
+        } else {
+          this.setState({ streamList: [] });
+          message.error(json.msg);
+        }
+      })
+      .catch(error => {
         this.setState({ streamList: [] });
-        //message.error(json.msg);
-      }
-    });
+      });
   };
 
   // 切换市场

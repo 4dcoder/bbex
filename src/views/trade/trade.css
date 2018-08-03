@@ -215,6 +215,16 @@
   display: flex;
 }
 
+.trade-plate-container tr.selected {
+  background-color: #1e232e;
+}
+
+.trade-plate-container tr:hover,
+.trade-plate-list tr:hover {
+  background-color: #1a1e27;
+}
+
+
 .trade-plate-container td {
   flex: 1 0 80px;
   line-height: 25px;
@@ -251,11 +261,6 @@
 .trade-plate-list td:nth-child(4),
 .trade-plate-tit.list .trade-plate-tit-cell:nth-child(4) {
   flex: 1 0 90px;
-}
-
-.trade-plate-container.market tr:hover,
-.trade-plate-container.market tr.selected {
-  background-color: #3f4657;
 }
 
 .trade-plate-container .coin-wrap {
