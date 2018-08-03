@@ -101,7 +101,15 @@ a:link, a:visited {
 a:hover {
   color: #fcb962;
 }
-
+/* 加载超时 */
+.page-timeout{
+  color: #dadada;
+  text-align: center;
+  padding: 120px 0;
+  font-size: 50px;
+  font-weight: lighter;
+  line-height: 1;
+}
 /* 全局样式 */
 
 /* 覆盖antd样式 */

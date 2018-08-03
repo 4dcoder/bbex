@@ -12,7 +12,7 @@ const asyncComponent = loader =>
     loading: ({ isLoading, timedOut, pastDelay }) => {
       if (isLoading) {
         if (timedOut) {
-          return <div>Loader timed out!</div>;
+          return <div className='page-timeout'>加载超时, 请刷新界面</div>;
         } else if (pastDelay) {
           return (
             <div className="page-loading">
@@ -82,8 +82,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       sessionStorage.getItem('account') ? (
         <Component {...props} {...rest} />
       ) : (
-        <Redirect to="/signin" />
-      )
+          <Redirect to="/signin" />
+        )
     }
   />
 );
