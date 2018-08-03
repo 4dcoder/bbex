@@ -103,7 +103,7 @@ class App extends Component {
     const { localization } = this.state;
     return (
       <Router>
-        <React.Fragment>
+        <Switch>
           <NormalRoute path="/mobile" component={Mobile} {...{ localization }} />
           <Container {...{ localization }} onGetLocalization={this.handleGetLocalization}>
             <Switch>
@@ -136,7 +136,7 @@ class App extends Component {
               <NormalRoute component={NotFound} {...{ localization }} />
             </Switch>
           </Container>
-        </React.Fragment>
+        </Switch>
       </Router>
     );
   }
