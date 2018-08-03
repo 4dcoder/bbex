@@ -142,7 +142,7 @@
       <div id="content">{{content}}</div>
     </div>
     <div class="share-footer">
-      <a id="link" href="/mobile/signup">马上领取</a>
+      <a :href="inviteLink">马上领取</a>
     </div>
   </div>
 </body>
@@ -171,13 +171,12 @@
 
   //传递邀请码  手机注册用
   var inviteCode = getQueryString('inviteCode') || '';
-  document.getElementById("link").href = "/mobile/signup?inviteCode=" + inviteCode;
 
   var app = new Vue({
     el: '#app',
     data: {
       isWechat: isWechat(),
-      inviteCode: inviteCode,
+      inviteLink: '/mobile/signup?inviteCode=' + inviteCode,
       header: realName + '邀请您成为UES交易所的会员',
       content: realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!'
     }
