@@ -483,7 +483,6 @@ class Trade extends PureComponent {
       }
     }).catch(error => {
       this.setState({ tradeExpair: {} });
-      message.error(error);
     })
   };
 

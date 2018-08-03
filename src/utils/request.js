@@ -78,6 +78,7 @@ function request(url, { method = 'POST', headers, body, timeout = 1000 * 10 } = 
       })
       .catch(error => {
         console.log('请求错误：', error);
+        reject(error);
       });
   });
 

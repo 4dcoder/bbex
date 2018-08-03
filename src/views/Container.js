@@ -29,10 +29,10 @@ class Container extends Component {
 
               const msg = json.code === -5 ? '用户登录失效' : '用户被挤出';
               message.error(msg);
+              reject(msg);
             } else if (json.code === -9) {
               const { googleAuth } = JSON.parse(sessionStorage.getItem('account'));
               if (googleAuth) {
-                //console.log(22222);
                 // 如果已经谷歌绑定了，去输入谷歌验证码
                 this.setState({
                   popup: (
@@ -40,7 +40,6 @@ class Container extends Component {
                   )
                 });
               } else {
-                //console.log(111111)
                 // 去绑定谷歌验证
                 this.setState({
                   popup: (
@@ -56,13 +55,13 @@ class Container extends Component {
                   )
                 });
               }
-              resolve(json);
+              reject('谷歌验证');
             } else {
               resolve(json);
             }
           })
           .catch(error => {
-            // 需要谷歌验证
+            message.error(error);
             reject(error);
           });
       });

@@ -65,14 +65,16 @@ class Home extends PureComponent {
       Object.keys(updateExPair).forEach(key => {
         updateExPair[key].forEach(coin => {
           const expair = `${coin.coinOther}/${coin.coinMain}`;
-          tradeExpair[key][expair] = {
-            ...coin,
-            rise: coin.rise || '0.00%',
-            latestPrice: (coin.latestPrice || 0).toFixed(8),
-            highestPrice: (coin.highestPrice || 0).toFixed(8),
-            lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-            dayCount: (coin.dayCount || 0).toFixed(8)
-          };
+          if (tradeExpair[key] && tradeExpair[key][expair]) {
+            tradeExpair[key][expair] = {
+              ...coin,
+              rise: coin.rise || '0.00%',
+              latestPrice: (coin.latestPrice || 0).toFixed(8),
+              highestPrice: (coin.highestPrice || 0).toFixed(8),
+              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+              dayCount: (coin.dayCount || 0).toFixed(8)
+            };
+          }
         });
       });
     };
@@ -149,9 +151,7 @@ class Home extends PureComponent {
 
   handleSort = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
-    this.setState({
-      sortedInfo: sorter
-    });
+    this.setState({ sortedInfo: sorter });
   };
 
   handleGoToTrade = record => {
@@ -188,9 +188,9 @@ class Home extends PureComponent {
       } else {
         pairList = tradeExpair[market]
           ? Object.keys(tradeExpair[market]).map(key => {
-            tradeExpair[market][key].key = key;
-            return tradeExpair[market][key];
-          })
+              tradeExpair[market][key].key = key;
+              return tradeExpair[market][key];
+            })
           : [];
       }
     }
@@ -218,7 +218,7 @@ class Home extends PureComponent {
             <i
               className={`iconfont icon-shoucang${
                 favoriteCoins.includes(record.key) ? '-active' : ''
-                }`}
+              }`}
               onClick={this.handleCollect.bind(this, record)}
             />
             {text}/{record.coinMain}
@@ -267,7 +267,7 @@ class Home extends PureComponent {
       <div className="content home">
         <Carousel autoPlay infiniteLoop showArrows={false} showStatus={false} showThumbs={false}>
           {banners.length > 0 &&
-           banners.map(banner => {
+            banners.map(banner => {
               if (banner.link) {
                 return (
                   <a key={banner.id} href={banner.link} target="_blank">
@@ -275,9 +275,11 @@ class Home extends PureComponent {
                   </a>
                 );
               } else {
-                return <div key={banner.id}>
-                  <img key={banner.id} src={banner.image} alt="虚拟资产交易所" />
-                </div>
+                return (
+                  <div key={banner.id}>
+                    <img key={banner.id} src={banner.image} alt="虚拟资产交易所" />
+                  </div>
+                );
               }
             })}
         </Carousel>
@@ -307,13 +309,13 @@ class Home extends PureComponent {
                           <i
                             className={`iconfont icon-shoucang${
                               market === 'optional' ? '-active' : ''
-                              }`}
+                            }`}
                           />
                           {localization['自选']}
                         </span>
                       ) : (
-                          `${curMarket} ${localization['市场']}`
-                        )
+                        `${curMarket} ${localization['市场']}`
+                      )
                     }
                     key={curMarket}
                   >
