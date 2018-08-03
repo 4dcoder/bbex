@@ -71,6 +71,8 @@ const HelpDetail = asyncComponent(() => import('./views/help/Detail'));
 
 const Help = asyncComponent(() => import('./views/help'));
 
+const Mine = asyncComponent(() => import('./views/mine'));
+
 const NormalRoute = ({ component: Component, ...rest }) => (
   <Route {...rest} render={props => <Component {...props} {...rest} />} />
 );
@@ -130,6 +132,7 @@ class App extends Component {
               />
               <NormalRoute exact path="/help" component={Help} {...{ localization }} />
               <NormalRoute exact path="/help/:id" component={HelpDetail} {...{ localization }} />
+              <NormalRoute exact path="/mine" component={Mine} {...{ localization }} />
               <NormalRoute component={NotFound} {...{ localization }} />
             </Switch>
           </Container>

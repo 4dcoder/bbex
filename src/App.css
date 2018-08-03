@@ -365,6 +365,10 @@ a:hover {
   background-color: transparent;
 }
 
+:root .ant-progress-inner {
+  border: 1px solid #666;
+}
+
 /* 覆盖antd样式 */
 
 /* 公共样式 */
@@ -633,11 +637,11 @@ a:hover {
 }
 
 .font-color-green {
-  color: #2ba75c !important;
+  color: #2aa76d !important;
 }
 
 .font-color-red {
-  color: #e02a36 !important;
+  color: #df553a !important;
 }
 
 .ant-btn-buy {

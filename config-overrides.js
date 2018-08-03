@@ -10,6 +10,8 @@ module.exports = function override(config, env) {
   config = rewireLess.withLoaderOptions({
     modifyVars: {
       '@primary-color': '#d4a668',
+      '@processing-color': '#d4a668',
+      '@background-color-base': '#292f3d',
       '@border-radius-base': '0',
       '@border-radius-sm': '0',
     }
