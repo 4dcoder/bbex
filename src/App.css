@@ -16,7 +16,6 @@ input:-webkit-autofill {
 ::-webkit-scrollbar-thumb {
   border-radius: 5px;
   background-color: rgb(34, 34, 34);
-  box-shadow: inset 1px 1px 5px rgb(15, 15, 15);
 }
 
 /* 全局样式 */
