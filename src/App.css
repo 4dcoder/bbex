@@ -377,6 +377,11 @@ a:hover {
   border: 1px solid #666;
 }
 
+:root .has-error .ant-input, .has-error .ant-input:hover,
+:root .has-error .ant-form-explain, .has-error .ant-form-split {
+  color: #df553a;
+}
+
 /* 覆盖antd样式 */
 
 /* 公共样式 */
@@ -627,7 +632,7 @@ a:hover {
 /* 注意事项icon */
 
 .icon-zhuyishixiang {
-  color: #d42f2f;
+  color: #df553a;
 }
 
 /* 暂无数据icon */
@@ -654,8 +659,8 @@ a:hover {
 
 .ant-btn-buy {
   color: #fff !important;
-  border-color: #2ba75c !important;
-  background-color: #2ba75c !important;
+  border-color: #2aa76d !important;
+  background-color: #2aa76d !important;
 }
 
 .ant-btn-buy:hover {
@@ -665,8 +670,8 @@ a:hover {
 
 .ant-btn-sell {
   color: #fff !important;
-  border-color: #e02a36 !important;
-  background-color: #e02a36 !important;
+  border-color: #df553a !important;
+  background-color: #df553a !important;
 }
 
 .ant-btn-sell:hover {
@@ -739,7 +744,7 @@ a:hover {
 .error-tip {
   height: 30px;
   margin-top: 5px;
-  color: #d42f2f;
+  color: #df553a;
   font-size: 12px;
   text-align: left;
 }
@@ -774,7 +779,7 @@ a:hover {
 }
 
 .form-list input.error {
-  border-color: #d42f2f;
+  border-color: #df553a;
 }
 
 .form-list input.button {
@@ -1075,13 +1080,13 @@ a:hover {
 
 .verification-popup .icon-icon {
   font-size: 70px;
-  color: #ea0053;
+  color: #df553a;
 }
 
 .verification-popup .message {
   padding: 10px;
   font-size: 16px;
-  color: #ea0053;
+  color: #df553a;
 }
 
 .verification-popup .input-verification:link, .verification-popup .input-verification:visited {
