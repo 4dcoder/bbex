@@ -126,15 +126,23 @@ class Trade extends PureComponent {
 
   // 获取币种详情
   getCoinDetail = coinName => {
-    this.request(`/coin/detail/${coinName}`, {
-      method: 'GET'
-    }).then(json => {
-      if (json.code === 10000000) {
-        this.setState({ coinDetail: json.data });
-      } else {
-        // message.error(json.msg);
-      }
-    });
+    const coinDetailMap = localStorage.getItem('coinDetailMap')
+      ? JSON.parse(localStorage.getItem('coinDetailMap'))
+      : {};
+
+    if (coinDetailMap[coinName]) {
+      this.setState({ coinDetail: coinDetailMap[coinName] });
+    } else {
+      this.request(`/coin/detail/${coinName}`, {
+        method: 'GET'
+      }).then(json => {
+        if (json.code === 10000000) {
+          this.setState({ coinDetail: json.data });
+          coinDetailMap[coinName] = json.data;
+          localStorage.setItem('coinDetailMap', JSON.stringify(coinDetailMap));
+        }
+      });
+    }
   };
 
   // 撤单
@@ -1395,7 +1403,7 @@ class Trade extends PureComponent {
                         <table>
                           <tbody>
                             {(listType === 1
-                              ? tradeList.sellOrderVOList
+                              ? tradeList.sellOrderVOList.reverse()
                               : tradeList.buyOrderVOList
                             ).map((record, index) => {
                               const colorName = listType === 0 ? 'green' : 'red';

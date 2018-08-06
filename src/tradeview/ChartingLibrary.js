@@ -58,7 +58,7 @@ const r = {
 
 const TradingView = {
   version() {
-    return '1.12 (internal id 7580da73 @ 2018-05-14 05:13:04.428607)';
+    return '1.12 (internal id 630b704a @ 2018-06-06 02:16:11.305509)';
   },
 
   onready(t) {
@@ -271,7 +271,7 @@ const TradingView = {
             (t[this._id].chartContent = { json: this._options.saved_data });
         var e =
           (this._options.library_path || '') +
-          'static/tv-chart.e816a7a6edc9de3ed709.html#localserver=1&symbol=' +
+          'static/tv-chart.630b704a2b9d0eaf1593.html#localserver=1&symbol=' +
           encodeURIComponent(this._options.symbol) +
           '&interval=' +
           encodeURIComponent(this._options.interval) +

@@ -213,6 +213,7 @@
 .trade-plate-container tr,
 .trade-plate-list tr {
   display: flex;
+  transition: .2s ease-out;
 }
 
 .trade-plate-container tr.selected {
