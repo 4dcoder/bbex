@@ -21,7 +21,8 @@ input:-webkit-autofill {
 
 /* 全局样式 */
 
-html, body {
+html,
+body {
   position: absolute;
   width: 100%;
   min-height: 100%;
@@ -92,7 +93,8 @@ html, body {
   align-items: center;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
   color: #d4a668;
   outline: none;
   text-decoration: none;
@@ -102,7 +104,7 @@ a:hover {
   color: #fcb962;
 }
 /* 加载超时 */
-.page-timeout{
+.page-timeout {
   color: #dadada;
   text-align: center;
   padding: 120px 0;
@@ -118,21 +120,22 @@ a:hover {
   color: #dadada;
 }
 
-:root .ant-table-thead>tr>th.ant-table-column-sort {
+:root .ant-table-thead > tr > th.ant-table-column-sort {
   background-color: #151a22;
 }
 
-:root .ant-table-column-sorter .anticon-caret-up, :root .ant-table-column-sorter .anticon-caret-down {
+:root .ant-table-column-sorter .anticon-caret-up,
+:root .ant-table-column-sorter .anticon-caret-down {
   color: #dadada;
 }
 
-:root .ant-table-thead>tr>th {
+:root .ant-table-thead > tr > th {
   color: #dadada;
   border-bottom-color: #d4a668;
   background-color: #151a22;
 }
 
-:root .ant-table-tbody>tr>td {
+:root .ant-table-tbody > tr > td {
   border-bottom-color: #5a5959;
   background: #232a36;
 }
@@ -143,7 +146,7 @@ a:hover {
   border-bottom: 0;
 }
 
-:root .ant-table-tbody>tr.ant-table-row:hover>td {
+:root .ant-table-tbody > tr.ant-table-row:hover > td {
   background-color: #1b2029;
 }
 
@@ -172,11 +175,12 @@ a:hover {
   color: #dadada;
 }
 
-:root .ant-table-tbody>tr.ant-table-expanded-row, :root .ant-table-tbody>tr.ant-table-expanded-row>td {
+:root .ant-table-tbody > tr.ant-table-expanded-row,
+:root .ant-table-tbody > tr.ant-table-expanded-row > td {
   background-color: #353c4a;
 }
 
-:root .ant-table-tbody>tr.ant-table-expanded-row:hover>td {
+:root .ant-table-tbody > tr.ant-table-expanded-row:hover > td {
   background-color: #353c4a;
 }
 
@@ -198,7 +202,8 @@ a:hover {
   background: #313643;
 }
 
-:root .ant-pagination-item:hover, :root .ant-pagination-item-active {
+:root .ant-pagination-item:hover,
+:root .ant-pagination-item-active {
   color: #dadada;
   border-color: #d4a668;
   background: #313643;
@@ -212,7 +217,12 @@ a:hover {
   color: #d4a668;
 }
 
-:root .ant-pagination-disabled a.ant-pagination-item-link, :root .ant-pagination-disabled:hover a, :root .ant-pagination-disabled:focus a, :root .ant-pagination-disabled .ant-pagination-item-link, :root .ant-pagination-disabled:hover .ant-pagination-item-link, :root .ant-pagination-disabled:focus .ant-pagination-item-link {
+:root .ant-pagination-disabled a.ant-pagination-item-link,
+:root .ant-pagination-disabled:hover a,
+:root .ant-pagination-disabled:focus a,
+:root .ant-pagination-disabled .ant-pagination-item-link,
+:root .ant-pagination-disabled:hover .ant-pagination-item-link,
+:root .ant-pagination-disabled:focus .ant-pagination-item-link {
   color: #5a5959;
   border-color: #5a5959;
   background: #313643;
@@ -242,7 +252,8 @@ a:hover {
   color: #dadada;
 }
 
-:root .ant-select-open .ant-select-arrow, :root .ant-select:hover .ant-select-arrow {
+:root .ant-select-open .ant-select-arrow,
+:root .ant-select:hover .ant-select-arrow {
   color: #d4a668;
 }
 
@@ -262,7 +273,8 @@ a:hover {
   background-color: #434447;
 }
 
-:root .ant-select-dropdown-menu-item:hover, :root .ant-select-dropdown-menu-item-selected {
+:root .ant-select-dropdown-menu-item:hover,
+:root .ant-select-dropdown-menu-item-selected {
   color: #d4a668;
   background-color: #434447;
 }
@@ -283,7 +295,8 @@ a:hover {
   background-color: #585858;
 }
 
-:root .ant-slider-disabled .ant-slider-handle, :root .ant-slider-disabled .ant-slider-dot {
+:root .ant-slider-disabled .ant-slider-handle,
+:root .ant-slider-disabled .ant-slider-dot {
   background-color: #4f5053 !important;
 }
 
@@ -305,24 +318,49 @@ a:hover {
   color: #dadada;
 }
 
-:root .ant-btn-normal, :root .ant-btn-normal:focus {
+:root .ant-btn,
+:root .ant-btn-normal,
+:root .ant-btn-normal:focus {
   color: #dadada;
-  border-color: #dadada;
+  border-color: #a1a1a1;
   background-color: transparent;
 }
 
+:root .ant-btn:hover,
 :root .ant-btn-normal:hover {
   color: #d4a668;
   border-color: #d4a668;
 }
 
-:root .ant-btn-primary.disabled, :root .ant-btn-primary[disabled], :root .ant-btn-primary.disabled:hover, :root .ant-btn-primary[disabled]:hover, :root .ant-btn-primary.disabled:focus, :root .ant-btn-primary[disabled]:focus, :root .ant-btn-primary.disabled:active, :root .ant-btn-primary[disabled]:active, :root .ant-btn-primary.disabled.active, :root .ant-btn-primary[disabled].active {
+:root .ant-btn-primary {
+  color: #dadada;
+  border-color: #d4a668;
+  background-color: #d4a668;
+}
+
+:root .ant-btn-primary:hover {
+  color: #dadada;
+  border-color: #be9157;
+  background-color: #be9157;
+}
+
+:root .ant-btn-primary.disabled,
+:root .ant-btn-primary[disabled],
+:root .ant-btn-primary.disabled:hover,
+:root .ant-btn-primary[disabled]:hover,
+:root .ant-btn-primary.disabled:focus,
+:root .ant-btn-primary[disabled]:focus,
+:root .ant-btn-primary.disabled:active,
+:root .ant-btn-primary[disabled]:active,
+:root .ant-btn-primary.disabled.active,
+:root .ant-btn-primary[disabled].active {
   color: #666;
   border-color: #666;
   background-color: transparent;
 }
 
-:root .ant-pagination-jump-prev:after, :root .ant-pagination-jump-next:after {
+:root .ant-pagination-jump-prev:after,
+:root .ant-pagination-jump-next:after {
   color: #dadada;
 }
 
@@ -334,7 +372,7 @@ a:hover {
   border-color: #d4a668;
 }
 
-:root .ant-steps-item-finish .ant-steps-item-icon>.ant-steps-icon {
+:root .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
   color: #d4a668;
 }
 
@@ -353,7 +391,7 @@ a:hover {
   background-color: transparent;
 }
 
-:root .ant-steps-item-wait .ant-steps-item-icon>.ant-steps-icon {
+:root .ant-steps-item-wait .ant-steps-item-icon > .ant-steps-icon {
   color: #dadada;
 }
 
@@ -365,7 +403,8 @@ a:hover {
   background-color: transparent;
 }
 
-:root .ant-confirm-body .ant-confirm-title, :root .ant-confirm-body .ant-confirm-content {
+:root .ant-confirm-body .ant-confirm-title,
+:root .ant-confirm-body .ant-confirm-content {
   color: #dadada;
 }
 
@@ -376,7 +415,6 @@ a:hover {
 :root .ant-progress-inner {
   border: 1px solid #666;
 }
-
 /* 覆盖antd样式 */
 
 /* 公共样式 */
@@ -509,7 +547,7 @@ a:hover {
   color: rgb(235, 235, 235);
 }
 
-.select-list li>a {
+.select-list li > a {
   display: block;
   width: 100%;
   height: 100%;
@@ -566,7 +604,7 @@ a:hover {
   align-content: flex-start;
 }
 
-.footer-nav>a {
+.footer-nav > a {
   display: block;
   line-height: 30px;
   margin-left: 50px;
@@ -605,7 +643,7 @@ a:hover {
   color: rgb(153, 153, 153);
 }
 
-.footer-contact li>a {
+.footer-contact li > a {
   padding-right: 20px;
 }
 
@@ -802,7 +840,8 @@ a:hover {
   margin-right: 8px;
 }
 
-.form-list a:link, .form-list a:visited {
+.form-list a:link,
+.form-list a:visited {
   color: #d4a668;
 }
 
@@ -884,7 +923,8 @@ a:hover {
   z-index: 100000 !important;
 }
 
-.graphic-popup .form-list, .graphic-popup .error-tip {
+.graphic-popup .form-list,
+.graphic-popup .error-tip {
   width: 400px;
   margin: 0 auto;
 }
@@ -925,7 +965,8 @@ a:hover {
   margin: 0 110px;
 }
 
-.scroll-notice .notice-more, .scroll-notice a {
+.scroll-notice .notice-more,
+.scroll-notice a {
   display: block;
   line-height: 40px;
   color: #c9d2a6;
@@ -939,13 +980,16 @@ a:hover {
   transform: translateY(-50%);
 }
 
-.scroll-notice .slick-list, .scroll-notice .slick-track, .scroll-notice .slick-slider {
+.scroll-notice .slick-list,
+.scroll-notice .slick-track,
+.scroll-notice .slick-slider {
   height: 40px !important;
 }
 
 /* 广告条 */
 
-.ant-btn-introduction, .ant-btn-introduction:hover {
+.ant-btn-introduction,
+.ant-btn-introduction:hover {
   height: 30px;
   padding: 0 12px;
   border: none;
@@ -1084,7 +1128,8 @@ a:hover {
   color: #ea0053;
 }
 
-.verification-popup .input-verification:link, .verification-popup .input-verification:visited {
+.verification-popup .input-verification:link,
+.verification-popup .input-verification:visited {
   display: block;
   height: 78px;
   margin: 10px 0;
@@ -1187,7 +1232,8 @@ a:hover {
   color: #dadada;
 }
 
-.merge-dropdown .ant-select-dropdown-menu-item:hover, .merge-dropdown .ant-select-dropdown-menu-item-selected {
+.merge-dropdown .ant-select-dropdown-menu-item:hover,
+.merge-dropdown .ant-select-dropdown-menu-item-selected {
   color: #d4a668;
   background-color: #434447;
 }

@@ -7,7 +7,7 @@ class Notice extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            total: '',
+            total: 0,
             notices: [],
             current: 1,
             loading: false
