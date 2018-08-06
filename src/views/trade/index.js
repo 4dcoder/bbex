@@ -1403,7 +1403,7 @@ class Trade extends PureComponent {
                         <table>
                           <tbody>
                             {(listType === 1
-                              ? tradeList.sellOrderVOList
+                              ? tradeList.sellOrderVOList.reverse()
                               : tradeList.buyOrderVOList
                             ).map((record, index) => {
                               const colorName = listType === 0 ? 'green' : 'red';
