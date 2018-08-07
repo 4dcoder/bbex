@@ -268,7 +268,7 @@ class BankForm extends Component {
           {getFieldDecorator('realName', {
             rules: [
               { required: true, message: '请输入姓名!', whitespace: true },
-              { max: 30, message: '姓名不能长度不能超过30' }
+              { max: 30, message: '姓名长度不能超过30' }
             ],
             validateTrigger: 'onBlur',
             initialValue: bankInfo && bankInfo.realName
@@ -301,7 +301,7 @@ class BankForm extends Component {
           {getFieldDecorator('branchBankName', {
             rules: [
               { required: true, message: '请输入开户支行!', whitespace: true },
-              { max: 30, message: '姓名不能长度不能超过30' }
+              { max: 30, message: '长度不能超过30' }
             ],
             validateTrigger: 'onBlur',
             initialValue: bankInfo && bankInfo.branchBankName
@@ -315,6 +315,7 @@ class BankForm extends Component {
                 message: '请输入银行卡号!',
                 whitespace: true
               },
+              { max: 20, message: '卡号长度不能超过20' },
               {
                 validator: this.validateToNextCardNo.bind(this)
               }
