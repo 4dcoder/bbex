@@ -9,32 +9,12 @@ import './App.css';
 const asyncComponent = loader =>
   Loadable({
     loader,
-    loading: ({ isLoading, timedOut, pastDelay }) => {
-      if (isLoading) {
-        if (timedOut) {
-          return <div className='page-timeout'>加载超时, 请刷新界面</div>;
-        } else if (pastDelay) {
-          return (
-            <div className="page-loading">
-              <ScaleLoader
-                color={'#d4a668'}
-                height={100}
-                width={5}
-                margin="5px"
-                radius={5}
-                loading
-              />
-            </div>
-          );
-        } else {
-          return null;
-        }
-      } else {
-        return null;
-      }
-    },
-    delay: 200,
-    timeout: 1000 * 10
+    loading: () => (
+      <div className="page-loading">
+        <ScaleLoader color={'#d4a668'} height={100} width={5} margin="5px" radius={5} loading />
+      </div>
+    ),
+    delay: 200
   });
 
 const Home = asyncComponent(() => import('./views/home'));
@@ -74,18 +54,17 @@ const Help = asyncComponent(() => import('./views/help'));
 const Mine = asyncComponent(() => import('./views/mine'));
 
 const NormalRoute = ({ component: Component, ...rest }) => (
-  <Route {...rest} render={props => <Component {...props} {...rest} />} />
+  <Route render={props => <Component {...props} {...rest} />} />
 );
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
-    {...rest}
     render={props =>
       sessionStorage.getItem('account') ? (
         <Component {...props} {...rest} />
       ) : (
-          <Redirect to="/signin" />
-        )
+        <Redirect to="/signin" />
+      )
     }
   />
 );
@@ -101,6 +80,7 @@ class App extends Component {
 
   render() {
     const { localization } = this.state;
+
     return (
       <Router>
         <Switch>

@@ -26,6 +26,9 @@ body {
   width: 100%;
   min-height: 100%;
   color: #dadada;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 #root {

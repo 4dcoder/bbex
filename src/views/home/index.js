@@ -63,19 +63,21 @@ class Home extends PureComponent {
       const { tradeExpair } = this.state;
       const updateExPair = JSON.parse(evt.data);
       Object.keys(updateExPair).forEach(key => {
-        updateExPair[key].forEach(coin => {
-          const expair = `${coin.coinOther}/${coin.coinMain}`;
-          if (tradeExpair[key] && tradeExpair[key][expair]) {
-            tradeExpair[key][expair] = {
-              ...coin,
-              rise: coin.rise || '0.00%',
-              latestPrice: (coin.latestPrice || 0).toFixed(8),
-              highestPrice: (coin.highestPrice || 0).toFixed(8),
-              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-              dayCount: (coin.dayCount || 0).toFixed(8)
-            };
-          }
-        });
+        if (tradeExpair[key]) {
+          updateExPair[key].forEach(coin => {
+            const expair = `${coin.coinOther}/${coin.coinMain}`;
+            if (tradeExpair[key][expair]) {
+              tradeExpair[key][expair] = {
+                ...coin,
+                rise: coin.rise || '0.00%',
+                latestPrice: (coin.latestPrice || 0).toFixed(8),
+                highestPrice: (coin.highestPrice || 0).toFixed(8),
+                lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+                dayCount: (coin.dayCount || 0).toFixed(8)
+              };
+            }
+          });
+        }
       });
     };
   };
