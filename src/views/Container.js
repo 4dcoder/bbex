@@ -61,7 +61,8 @@ class Container extends Component {
             }
           })
           .catch(error => {
-            message.error(error);
+            console.log(error);
+            // message.error(error);
             reject(error);
           });
       });

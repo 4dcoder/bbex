@@ -54,11 +54,12 @@ const Help = asyncComponent(() => import('./views/help'));
 const Mine = asyncComponent(() => import('./views/mine'));
 
 const NormalRoute = ({ component: Component, ...rest }) => (
-  <Route render={props => <Component {...props} {...rest} />} />
+  <Route {...rest} render={props => <Component {...props} {...rest} />} />
 );
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
+    {...rest}
     render={props =>
       sessionStorage.getItem('account') ? (
         <Component {...props} {...rest} />
