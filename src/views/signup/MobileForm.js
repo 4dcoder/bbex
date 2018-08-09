@@ -147,6 +147,7 @@ class MobileForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="signup-form">
+        <Input style={{ display: 'none' }} type="password" autocomplete="off" />
         <FormItem>
           {getFieldDecorator('mobile', {
             rules: [
@@ -173,6 +174,7 @@ class MobileForm extends Component {
           })(
             <Input
               size="large"
+              autocomplete='off'
               type="password"
               placeholder={localization['密码']}
               prefix={<i className="iconfont icon-suo" />}
@@ -190,6 +192,7 @@ class MobileForm extends Component {
             <Input
               size="large"
               type="password"
+              autocomplete='off'
               placeholder={localization['确认密码']}
               onBlur={this.handleConfirmBlur}
               prefix={<i className="iconfont icon-suo" />}

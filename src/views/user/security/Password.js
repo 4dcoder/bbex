@@ -91,20 +91,21 @@ class Password extends Component {
                 onCancel={this.props.closeModal}
                 footer={null}
             >
-                <Form onSubmit={this.handleSubmit} className="change-password">
+                <Form onSubmit={this.handleSubmit} autocomplete="off" className="change-password">
+                    <Input style={{ display: 'none' }} type="password" autocomplete="off" />
                     <FormItem {...formItemLayout} label="原密码">
                         {getFieldDecorator('oldPassword', {
                             rules: [{ required: true, message: '请输入原密码' }]
-                        })(<Input size='large' type="password" />)}
+                        })(<Input size='large' type="password" autocomplete="off" />)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="新密码">
                         {getFieldDecorator('password', {
                             rules: [
                                 { required: true, message: '请输入新密码' },
-                                { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字，字母'},
+                                { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字，字母' },
                                 { validator: this.validateToNextPassword }
                             ]
-                        })(<Input size='large' type="password" />)}
+                        })(<Input size='large' type="password" autocomplete="off" />)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="确认密码">
                         {getFieldDecorator('confirm', {
@@ -112,7 +113,7 @@ class Password extends Component {
                                 { required: true, message: '请再次输入密码' },
                                 { validator: this.comparePassword }
                             ]
-                        })(<Input size='large' type="password" onBlur={this.handleConfirmBlur} />)}
+                        })(<Input size='large' type="password" autocomplete="off" onBlur={this.handleConfirmBlur} />)}
                     </FormItem>
 
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
@@ -120,7 +121,7 @@ class Password extends Component {
                             type="primary"
                             htmlType="submit"
                             onClick={this.handleSubmit}
-                            style={{ width: 100, height: 36}}
+                            style={{ width: 100, height: 36 }}
                         >
                             确认
                         </Button>
