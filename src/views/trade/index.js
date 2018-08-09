@@ -435,8 +435,6 @@ class Trade extends PureComponent {
           orderVo.successVolume = orderVo.successVolume && orderVo.successVolume.toFixed(8);
           if (pendingOrderList) {
             pendingOrderList.unshift(orderVo);
-            let target = pendingOrderList.slice(0, 50);
-            pendingOrderList = target;
           }
         }
 

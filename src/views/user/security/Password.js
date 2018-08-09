@@ -91,7 +91,7 @@ class Password extends Component {
                 onCancel={this.props.closeModal}
                 footer={null}
             >
-                <Form onSubmit={this.handleSubmit} autocomplete="off" className="change-password">
+                <Form onSubmit={this.handleSubmit} className="change-password">
                     <Input style={{ display: 'none' }} type="password" autocomplete="off" />
                     <FormItem {...formItemLayout} label="原密码">
                         {getFieldDecorator('oldPassword', {
