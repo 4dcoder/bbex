@@ -144,7 +144,8 @@ class Mobile extends Component {
       <div className="reset-mobile">
         <div className='content'>
           <h3 className='title'>重置密码</h3>
-          <Form onSubmit={this.handleSubmit} className="signup-form">
+          <Form onSubmit={this.handleSubmit}>
+            <Input style={{ display: 'none' }} type="password" autocomplete="off" />
             <FormItem>
               {getFieldDecorator('mobile', {
                 initialValue: mobileValue
@@ -194,6 +195,7 @@ class Mobile extends Component {
                 <Input
                   size="large"
                   type="password"
+                  autocomplete='off'
                   placeholder={'密码'}
                   prefix={<i className="iconfont icon-suo" />}
                 />
@@ -210,6 +212,7 @@ class Mobile extends Component {
                 <Input
                   size="large"
                   type="password"
+                  autocomplete='off'
                   placeholder={'确认密码'}
                   onBlur={this.handleConfirmBlur}
                   prefix={<i className="iconfont icon-suo" />}

@@ -27,7 +27,7 @@ class SubmitRest extends Component {
             let encrypt = new JSEncrypt();
             encrypt.setPublicKey(PUBLI_KEY);
             let enPassword = encrypt.encrypt(password);
-    
+
             this.request('/user/mail/resetpwd', {
                 body: {
                     password: enPassword,
@@ -61,51 +61,58 @@ class SubmitRest extends Component {
                         </ul>
                     </div>
                 ) : (
-                    <div className="form-box">
-                        <h1>重置密码</h1>
-                        <p className="error-tip">
-                            {errorTip && (
-                                <i className="iconfont icon-zhuyishixiang" />
-                            )}
-                            {errorTip}
-                        </p>
-                        <ul className="form-list">
-                            <li>
-                                <i className="iconfont icon-youxiang" />
+                        <div className="form-box">
+                            <h1>重置密码</h1>
+                            <p className="error-tip">
+                                {errorTip && (
+                                    <i className="iconfont icon-zhuyishixiang" />
+                                )}
+                                {errorTip}
+                            </p>
+                            <ul className="form-list">
                                 <input
                                     type="password"
-                                    className="text"
-                                    id="password"
-                                    value={password}
-                                    onChange={this.inputValue}
-                                    placeholder="新密码"
+                                    style={{display: 'none'}}
+                                    autocomplete='off'
                                 />
-                            </li>
-                            <li>
-                                <i className="iconfont icon-youxiang" />
-                                <input
-                                    type="password"
-                                    className="text"
-                                    id="repassword"
-                                    value={repassword}
-                                    onChange={this.inputValue}
-                                    placeholder="确认密码"
-                                />
-                            </li>
-                            <li>
-                                <input
-                                    type="submit"
-                                    className={classnames({
-                                        button: true,
-                                        disabled: !ok
-                                    })}
-                                    onClick={this.reset}
-                                    value="确定"
-                                />
-                            </li>
-                        </ul>
-                    </div>
-                )}
+                                <li>
+                                    <i className="iconfont icon-youxiang" />
+                                    <input
+                                        type="password"
+                                        className="text"
+                                        id="password"
+                                        value={password}
+                                        onChange={this.inputValue}
+                                        placeholder="新密码"
+                                        autocomplete='off'
+                                    />
+                                </li>
+                                <li>
+                                    <i className="iconfont icon-youxiang" />
+                                    <input
+                                        type="password"
+                                        className="text"
+                                        id="repassword"
+                                        value={repassword}
+                                        onChange={this.inputValue}
+                                        placeholder="确认密码"
+                                        autocomplete='off'
+                                    />
+                                </li>
+                                <li>
+                                    <input
+                                        type="submit"
+                                        className={classnames({
+                                            button: true,
+                                            disabled: !ok
+                                        })}
+                                        onClick={this.reset}
+                                        value="确定"
+                                    />
+                                </li>
+                            </ul>
+                        </div>
+                    )}
             </div>
         );
     }
