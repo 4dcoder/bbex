@@ -60,9 +60,6 @@ class Container extends Component {
             }
           })
           .catch(error => {
-            if(typeof error === 'string') {
-              message.error(error);
-            }
             console.log(error);
             reject(error);
           });

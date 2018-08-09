@@ -9,7 +9,7 @@
  * @return Promise 对象
  * @date 2017-08-25
  **/
-function request(url, { method = 'POST', headers, body, timeout = 1000 * 10 } = {}) {
+function request(url, { method = 'POST', headers, body, timeout = 1000 * 60 } = {}) {
   //键值对转换为字符串
   function params(body) {
     var arr = [];
