@@ -26,7 +26,6 @@ class Container extends Component {
               //登录失效
               sessionStorage.clear();
               props.history.push('/signin');
-
               const msg = json.code === -5 ? '用户登录失效' : '用户被挤出';
               message.error(msg);
               reject(msg);
@@ -61,8 +60,10 @@ class Container extends Component {
             }
           })
           .catch(error => {
+            if(typeof error === 'string') {
+              message.error(error);
+            }
             console.log(error);
-            // message.error(error);
             reject(error);
           });
       });
