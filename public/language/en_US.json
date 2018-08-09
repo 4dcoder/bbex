@@ -109,7 +109,10 @@
   "确定": "Confirm",
   "取消": "Cancel",
   "为保证交易顺畅，请在交易前绑定银行卡":
-    "In order to ensure smooth trading, please bind the bank before the transaction.卡",
+    "In order to ensure smooth trading, please bind the bank before the transaction.",
+  "为保证交易顺畅，请在交易前绑定手机号":
+  "In order to ensure smooth trading, please bind the mobile before the transaction.",
+  "去绑手机号": "go to bind mobile",
   "去绑卡": "go to bind card",
   "发布广告成功！": "Successfully Publish Ad!",
   "成功": "Successfully",
@@ -208,5 +211,8 @@
   "邮箱格式不正确": "E-mail format is incorrect",
   "请输入邮箱验证码": "Please enter the email verification code",
   "请输入6位邮箱验证码": "Please enter a 6-digit password verification code",
-  "帮助中心": "Help"
+  "帮助中心": "Help",
+  "已发布": "published",
+  "已完成": "Completed",
+  "部分取消": "partial cancellation"
 }

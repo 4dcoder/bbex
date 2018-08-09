@@ -396,6 +396,7 @@ class TradeContainer extends PureComponent {
   }
 
   pageOnChange = (page, pageSize) => {
+    this.setState({current: page})
     this.getAdvertList(page);
   };
 
@@ -478,6 +479,18 @@ class TradeContainer extends PureComponent {
           cancelText: localization['取消'],
           onOk: () => {
             this.props.history.push('/user/payment');
+          }
+        });
+      } else if (json.code === 10005036) {
+        //请先绑定手机
+        Modal.confirm({
+          className: 'v-center-modal',
+          title: localization['发布广告'],
+          content: localization['为保证交易顺畅，请在交易前绑定手机号'],
+          okText: localization['去绑手机号'],
+          cancelText: localization['取消'],
+          onOk: () => {
+            this.props.history.push('/user/security');
           }
         });
       } else {
@@ -1229,22 +1242,16 @@ class TradeContainer extends PureComponent {
           let status = '';
           switch (text) {
             case 0:
-              status = '已挂单';
+              status = '已发布';
               break;
             case 1:
-              status = '已付款';
+              status = '已完成';
               break;
             case 2:
-              status = '已收到款';
+              status = '部分成交';
               break;
             case 3:
-              status = '确认没收到款';
-              break;
-            case 4:
-              status = '申诉';
-              break;
-            case 5:
-              status = '仲裁结束';
+              status = '部分取消';
               break;
             case 9:
               status = '取消';
