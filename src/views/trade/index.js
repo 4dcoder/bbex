@@ -566,14 +566,14 @@ class Trade extends PureComponent {
   handleCollect = (record, event) => {
     event.stopPropagation();
     const { favoriteCoins } = this.state;
+    let newFavoriteCoins;
     if (favoriteCoins.includes(record.key)) {
-      const coinIndex = favoriteCoins.findIndex(n => n === record.key);
-      favoriteCoins.splice(coinIndex, 1);
+      newFavoriteCoins = favoriteCoins.filter(key => key !== record.key);
     } else {
-      favoriteCoins.push(record.key);
+      newFavoriteCoins = [...favoriteCoins, record.key];
     }
-    this.setState({ favoriteCoins });
-    localStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
+    this.setState({ favoriteCoins: newFavoriteCoins });
+    localStorage.setItem('favoriteCoins', JSON.stringify(newFavoriteCoins));
   };
 
   // 选择币种

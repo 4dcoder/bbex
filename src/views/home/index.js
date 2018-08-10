@@ -143,21 +143,23 @@ class Home extends PureComponent {
   handleCollect = (record, event) => {
     event.stopPropagation();
     const { favoriteCoins } = this.state;
+    let newFavoriteCoins;
     if (favoriteCoins.includes(record.key)) {
-      const coinIndex = favoriteCoins.findIndex(n => n === record.key);
-      favoriteCoins.splice(coinIndex, 1);
+      newFavoriteCoins = favoriteCoins.filter(key => key !== record.key);
     } else {
-      favoriteCoins.push(record.key);
+      newFavoriteCoins = [...favoriteCoins, record.key];
     }
-    this.setState({ favoriteCoins });
-    localStorage.setItem('favoriteCoins', JSON.stringify(favoriteCoins));
+    this.setState({ favoriteCoins: newFavoriteCoins });
+    localStorage.setItem('favoriteCoins', JSON.stringify(newFavoriteCoins));
   };
 
+  // 币种排序
   handleSort = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
     this.setState({ sortedInfo: sorter });
   };
 
+  // 跳转到交易中心
   handleGoToTrade = record => {
     localStorage.setItem('tradePair', `${record.coinOther}_${record.coinMain}`);
     this.props.history.push('/trade');

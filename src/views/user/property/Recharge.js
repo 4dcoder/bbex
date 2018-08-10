@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { message } from 'antd';
 import QRCode from 'qrcode.react';
-import { copy } from '../../../utils/index';
 import './recharge.css';
 
 class Recharge extends Component {
