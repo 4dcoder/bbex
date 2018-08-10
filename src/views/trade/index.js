@@ -199,25 +199,29 @@ class Trade extends PureComponent {
       // 如果有推送就更新
       const { tradeExpair } = this.state;
       const updateExPair = JSON.parse(evt.data);
-      if (tradeExpair && Object.keys(tradeExpair).length > 0) {
+      if (tradeExpair) {
         Object.keys(updateExPair).forEach(key => {
-          updateExPair[key].forEach(coin => {
-            const expair = `${coin.coinOther}/${coin.coinMain}`;
-            let rise = '0.00%';
-            if (coin.firstPrice > 0) {
-              rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
-              rise = rise.toFixed(2) + '%';
-            }
-            // console.log('rise', rise);
-            tradeExpair[key][expair] = {
-              ...coin,
-              rise: rise,
-              latestPrice: (coin.latestPrice || 0).toFixed(8),
-              highestPrice: (coin.highestPrice || 0).toFixed(8),
-              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-              dayCount: (coin.dayCount || 0).toFixed(8)
-            };
-          });
+          if (tradeExpair[key]) {
+            updateExPair[key].forEach(coin => {
+              const expair = `${coin.coinOther}/${coin.coinMain}`;
+              let rise = '0.00%';
+              if (coin.firstPrice > 0) {
+                rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
+                rise = rise.toFixed(2) + '%';
+              }
+              // console.log('rise', rise);
+              if (tradeExpair[key][expair]) {
+                tradeExpair[key][expair] = {
+                  ...coin,
+                  rise: rise,
+                  latestPrice: (coin.latestPrice || 0).toFixed(8),
+                  highestPrice: (coin.highestPrice || 0).toFixed(8),
+                  lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+                  dayCount: (coin.dayCount || 0).toFixed(8)
+                };
+              }
+            });
+          }
         });
 
         this.setState({ tradeExpair });
