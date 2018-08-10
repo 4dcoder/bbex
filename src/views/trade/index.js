@@ -32,18 +32,11 @@ class Trade extends PureComponent {
   constructor(props) {
     super(props);
 
-    const tradePair = localStorage.getItem('tradePair');
-    if (tradePair) {
-      const [coinName, marketName] = tradePair.split('_');
-      this.coinName = coinName;
-      this.marketName = marketName;
-    }
-
     this.state = {
-      market: this.marketName || 'USDT',
+      market: '',
       tradeExpair: {},
       searchValue: '',
-      marketName: this.marketName || 'USDT',
+      marketName: '',
       coinName: '',
       mainVolume: 0,
       coinVolume: 0,
@@ -451,45 +444,33 @@ class Trade extends PureComponent {
     })
       .then(json => {
         if (json.code === 10000000) {
-          if (this.coinName) {
-            // 如果有保存在localStorage的交易对，就取保存中的
-            this.setState({ coinName: this.coinName });
-          } else {
-            // 如果没有保存的交易对，就取当前市场的第一个币种
-            if (json.data[this.state.market]) {
-              this.setState({
-                coinName: json.data[this.state.market][0].coinOther
+          const tradeExpair = {};
+          const tradePair = localStorage.getItem('tradePair');
+          let [coinName, marketName] = tradePair ? tradePair.split('_') : ['', ''];
+          if (Object.keys(json.data).length > 0) {
+            marketName = Object.keys(json.data).some(key => key === marketName)
+              ? marketName
+              : Object.keys(json.data)[0]; //如果state市场在返回的数据市场列表中就作为当前市场，否则就是返回的第一个市场作为当前市场
+            coinName = json.data[marketName].some(coin => coin.coinOther === coinName)
+              ? coinName
+              : json.data[marketName][0].coinOther; //如果state币种在返回的数据市场列表中就作为当前币种，否则就是返回的当前市场的第一个币种作为当前币种
+            Object.keys(json.data).forEach(key => {
+              tradeExpair[key] = {};
+              json.data[key].forEach(coin => {
+                const expair = `${coin.coinOther}/${coin.coinMain}`;
+                tradeExpair[key][expair] = {
+                  ...coin,
+                  rise: coin.rise || '0.00%',
+                  latestPrice: (coin.latestPrice || 0).toFixed(8),
+                  highestPrice: (coin.highestPrice || 0).toFixed(8),
+                  lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+                  dayCount: (coin.dayCount || 0).toFixed(8)
+                };
               });
-            } else {
-              this.setState({
-                market: Object.keys(json.data)[0],
-                marketName: Object.keys(json.data)[0],
-                coinName: json.data[Object.keys(json.data)[0]][0].coinOther
-              });
-            }
+            });
           }
 
-          const tradeExpair = {};
-          Object.keys(json.data).forEach(key => {
-            tradeExpair[key] = {};
-            json.data[key].forEach(coin => {
-              const expair = `${coin.coinOther}/${coin.coinMain}`;
-              let rise = '0.00%';
-              if (coin.firstPrice > 0) {
-                rise = ((coin.latestPrice - coin.firstPrice) / coin.firstPrice) * 100;
-                rise = rise.toFixed(2) + '%';
-              }
-              tradeExpair[key][expair] = {
-                ...coin,
-                rise: rise,
-                latestPrice: (coin.latestPrice || 0).toFixed(8),
-                highestPrice: (coin.highestPrice || 0).toFixed(8),
-                lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-                dayCount: (coin.dayCount || 0).toFixed(8)
-              };
-            });
-          });
-          this.setState({ tradeExpair });
+          this.setState({ market: marketName, marketName, coinName, tradeExpair });
         } else {
           this.setState({ tradeExpair: {} });
           message.error(json.msg);
@@ -1111,7 +1092,9 @@ class Trade extends PureComponent {
                   </Dropdown>
                 )}
                 <span className="font-color-primary">
-                  {coinName}/{marketName}&nbsp;&nbsp;{false && <Icon type="down" />}
+                  {coinName}/{marketName}
+                  &nbsp;&nbsp;
+                  {false && <Icon type="down" />}
                 </span>
                 <span
                   className="trade-plate-header-price"

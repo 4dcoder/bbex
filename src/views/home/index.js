@@ -20,7 +20,7 @@ const Search = Input.Search;
 class Home extends PureComponent {
   state = {
     banners: [],
-    market: 'USDT',
+    market: '',
     sortedInfo: null,
     tradeExpair: null,
     searchValue: '',
@@ -114,21 +114,25 @@ class Home extends PureComponent {
     }).then(json => {
       if (json.code === 10000000) {
         const tradeExpair = {};
-        Object.keys(json.data).forEach(key => {
-          tradeExpair[key] = {};
-          json.data[key].forEach(coin => {
-            const expair = `${coin.coinOther}/${coin.coinMain}`;
-            tradeExpair[key][expair] = {
-              ...coin,
-              rise: coin.rise || '0.00%',
-              latestPrice: (coin.latestPrice || 0).toFixed(8),
-              highestPrice: (coin.highestPrice || 0).toFixed(8),
-              lowerPrice: (coin.lowerPrice || 0).toFixed(8),
-              dayCount: (coin.dayCount || 0).toFixed(8)
-            };
+        let market = '';
+        if (Object.keys(json.data).length > 0) {
+          market = Object.keys(json.data)[0];
+          Object.keys(json.data).forEach(key => {
+            tradeExpair[key] = {};
+            json.data[key].forEach(coin => {
+              const expair = `${coin.coinOther}/${coin.coinMain}`;
+              tradeExpair[key][expair] = {
+                ...coin,
+                rise: coin.rise || '0.00%',
+                latestPrice: (coin.latestPrice || 0).toFixed(8),
+                highestPrice: (coin.highestPrice || 0).toFixed(8),
+                lowerPrice: (coin.lowerPrice || 0).toFixed(8),
+                dayCount: (coin.dayCount || 0).toFixed(8)
+              };
+            });
           });
-        });
-        this.setState({ tradeExpair });
+        }
+        this.setState({ market, tradeExpair });
       } else {
         message.error(json.msg);
       }
