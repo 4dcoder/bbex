@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { Input, Button } from 'antd';
 
 class TransactionForm extends Component {
-  componentDidMount(){
-    console.log('props',this.props);
+  componentDidMount() {
+    console.log('props', this.props);
   }
   state = {
-    price: this.props.price||'',
-    volume: this.props.volume|| '',
+    price: this.props.price || '',
+    volume: this.props.volume || '',
     amount: this.props.volume ? (this.props.price * this.props.volume).toFixed(2) : ''
   };
 
@@ -27,29 +27,27 @@ class TransactionForm extends Component {
 
   handlePrice = e => {
     const price = e.target.value;
-    if(/^\d*\.{0,1}\d{0,2}$/.test(price) && price.length<16 ){
+    if (/^\d*\.{0,1}\d{0,2}$/.test(price) && price.length < 16) {
       const amount = (price * this.state.volume).toFixed(2);
       this.setState({ price, amount });
     }
-   
   };
 
   handleVolume = e => {
     const volume = e.target.value;
-    if(/^\d*\.{0,1}\d{0,8}$/.test(volume) && volume.length<16 ){
+    if (/^\d*\.{0,1}\d{0,8}$/.test(volume) && volume.length < 16) {
       const amount = (volume * this.state.price).toFixed(2);
       this.setState({ volume, amount });
     }
-    
   };
 
   handleAmount = e => {
     const amount = e.target.value;
-    if(/^\d*\.{0,1}\d{0,2}$/.test(amount) && amount.length<16 ){
+    if (/^\d*\.{0,1}\d{0,2}$/.test(amount) && amount.length < 16) {
       const volume = (amount / this.state.price).toFixed(8);
-      this.setState({amount });
-      if( this.state.price>0){
-        this.setState({volume})
+      this.setState({ amount });
+      if (this.state.price > 0) {
+        this.setState({ volume });
       }
     }
   };
