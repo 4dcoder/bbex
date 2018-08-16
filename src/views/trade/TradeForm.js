@@ -45,7 +45,7 @@ class TradeForm extends PureComponent {
 
     let volume = (type === 'buy' ? assetVolume / price : assetVolume) * (value / 100);
     const reg = new RegExp(`(\\d{0,8})(\\.\\d{0,${volumePrecision}})?`);
-    volume = String(volume).match()[0];
+    volume = String(volume).match(reg)[0];
     this.setState({ volume, sliderValue: value });
   };
 
