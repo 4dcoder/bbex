@@ -17,10 +17,13 @@ class TradeForm extends PureComponent {
   request = window.request;
 
   handleValue = e => {
+    const { pricePrecision, volumePrecision } = this.props;
     const key = e.target.id;
     const value = e.target.value;
     const curValue = this.state[key];
-    const reg = key === 'volume' ? /^\d{0,8}(\d\.\d{0,4})?$/ : /^\d{0,8}(\d\.\d{0,8})?$/;
+    const reg = new RegExp(
+      `^\\d{0,8}(\\d\\.\\d{0,${key === 'volume' ? volumePrecision : pricePrecision}})?$`
+    );
     if (String(curValue).length < String(value).length) {
       if (reg.test(value)) {
         this.setState({ [key]: value });
@@ -35,12 +38,14 @@ class TradeForm extends PureComponent {
   };
 
   handleSlideInput = value => {
+    const { volumePrecision } = this.props;
     const { type, mainVolume, coinVolume } = this.props;
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
 
     let volume = (type === 'buy' ? assetVolume / price : assetVolume) * (value / 100);
-    volume = String(volume).match(/(\d{0,8})(\.\d{0,4})?/)[0];
+    const reg = new RegExp(`(\\d{0,8})(\\.\\d{0,${volumePrecision}})?`);
+    volume = String(volume).match()[0];
     this.setState({ volume, sliderValue: value });
   };
 

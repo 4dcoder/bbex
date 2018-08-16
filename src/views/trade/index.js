@@ -842,6 +842,17 @@ class Trade extends PureComponent {
       trend: 'green'
     };
 
+    const tradeProps = {
+      marketName,
+      coinName,
+      mainVolume,
+      coinVolume,
+      tradePrice,
+      clickTradeType,
+      pricePrecision: 8,
+      volumePrecision: 4
+    };
+    
     if (tradeExpair && tradeExpair[marketName] && Object.keys(tradeExpair[marketName]).length > 0) {
       Object.keys(tradeExpair[marketName]).forEach(key => {
         const coin = tradeExpair[marketName][key];
@@ -874,18 +885,12 @@ class Trade extends PureComponent {
             lowerPrice: coin.lowerPrice || 0,
             dayCount: coin.dayCount || 0
           };
+
+          tradeProps.pricePrecision = coin.pricePrecision || 8;
+          tradeProps.volumePrecision = coin.volumePrecision || 4;
         }
       });
     }
-
-    const tradeProps = {
-      marketName,
-      coinName,
-      mainVolume,
-      coinVolume,
-      tradePrice,
-      clickTradeType
-    };
 
     const loading = (
       <div className="container-loading">

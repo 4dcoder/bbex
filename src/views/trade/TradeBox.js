@@ -69,30 +69,17 @@ class TradeBox extends PureComponent {
   };
 
   render() {
-    const {
-      tradeType,
-      marketName,
-      coinName,
-      tradePrice,
-      clickTradeType,
-      localization
-    } = this.props;
-    
     const { mainVolume, coinVolume } = this.state;
 
     const tradeProps = {
-      tradeType,
-      marketName,
-      coinName,
+      ...this.props,
       mainVolume,
       coinVolume,
-      tradePrice,
-      clickTradeType
     };
 
     return [
-      <TradeForm key="buy" type="buy" {...tradeProps} {...{ localization }} />,
-      <TradeForm key="sell" type="sell" {...tradeProps} {...{ localization }} />
+      <TradeForm key="buy" type="buy" {...tradeProps} />,
+      <TradeForm key="sell" type="sell" {...tradeProps} />
     ];
   }
 }
