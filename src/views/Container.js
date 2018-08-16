@@ -113,6 +113,7 @@ class Container extends Component {
 
   switchLanguage(language) {
     this.getLanguage(language);
+    window.zE && window.zE.setLocale && window.zE.setLocale(language.value);
     this.setState({ language });
   }
 
@@ -196,10 +197,10 @@ class Container extends Component {
 
     // copy 插件设置
     const clipboard = new ClipboardJS('.copy-btn');
-    clipboard.on('success', function (e) {
+    clipboard.on('success', function(e) {
       message.success('复制成功！');
     });
-    clipboard.on('error', function (e) {
+    clipboard.on('error', function(e) {
       message.success('您的浏览器版本较低，请升级浏览器或者使用chrome和firefox等浏览器重试！');
     });
   }
@@ -231,10 +232,12 @@ class Container extends Component {
       pathname.indexOf('/notice/') > -1;
 
     return (
-      <div className={classnames({
-        container: true,
-        copywriting: copywriting
-      })}>
+      <div
+        className={classnames({
+          container: true,
+          copywriting: copywriting
+        })}
+      >
         <header className="header">
           <Link className="logo" to="/">
             <img src={logo} alt="logo" width="108" height="68" />
@@ -264,8 +267,7 @@ class Container extends Component {
           {!account && (
             <div className="user-status">
               <i className="iconfont icon-yonghu" />
-              <Link to="/signin">{localization['登录']}</Link>
-              /
+              <Link to="/signin">{localization['登录']}</Link>/
               <Link to="/signup">{localization['注册']}</Link>
             </div>
           )}
@@ -354,7 +356,7 @@ class Container extends Component {
                             <a
                               href={`tencent://message/?Site=baidu.com&uin=${
                                 item.linkUrl
-                                }&Menu=yes`}
+                              }&Menu=yes`}
                               key={index}
                             >
                               <i className={`iconfont icon-${item.typeId.split('_')[1]}`} />
