@@ -20,7 +20,7 @@ class TradeForm extends PureComponent {
     const key = e.target.id;
     const value = e.target.value;
     const curValue = this.state[key];
-    const reg = /^\d{0,8}(\d\.\d{0,8})?$/;
+    const reg = key === 'volume' ? /^\d{0,8}(\d\.\d{0,4})?$/ : /^\d{0,8}(\d\.\d{0,8})?$/;
     if (String(curValue).length < String(value).length) {
       if (reg.test(value)) {
         this.setState({ [key]: value });
@@ -39,8 +39,8 @@ class TradeForm extends PureComponent {
     const { price } = this.state;
     const assetVolume = type === 'buy' ? mainVolume : coinVolume;
 
-    const volume = (type === 'buy' ? assetVolume / price : assetVolume) * (value / 100);
-
+    let volume = (type === 'buy' ? assetVolume / price : assetVolume) * (value / 100);
+    volume = String(volume).match(/(\d{0,8})(\.\d{0,4})?/)[0];
     this.setState({ volume, sliderValue: value });
   };
 
@@ -241,7 +241,7 @@ class TradeForm extends PureComponent {
                   placement="top"
                   title={
                     localization[
-                    '当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止'
+                      '当使用市场价卖出时，系统会根据您设置的卖出数量在市场上从高到低扫单，直至数量卖完为止'
                     ]
                   }
                 >
@@ -301,7 +301,7 @@ class TradeForm extends PureComponent {
                     placement="top"
                     title={
                       localization[
-                      '当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止'
+                        '当使用市价买入时，系统会根据您预留的金额在市场上从低到高进行扫单，直至金额用完为止'
                       ]
                     }
                   >
@@ -356,11 +356,11 @@ class TradeForm extends PureComponent {
               {`${typeToText[type]} ${coinName}`}
             </Button>
           ) : (
-              <Button type="ghost" size="large">
-                <Link to="/signin">{localization['登录']}</Link> {localization['或']}{' '}
-                <Link to="/signup">{localization['注册']}</Link> {localization['进行交易']}
-              </Button>
-            )}
+            <Button type="ghost" size="large">
+              <Link to="/signin">{localization['登录']}</Link> {localization['或']}{' '}
+              <Link to="/signup">{localization['注册']}</Link> {localization['进行交易']}
+            </Button>
+          )}
         </li>
       </ul>
     );
