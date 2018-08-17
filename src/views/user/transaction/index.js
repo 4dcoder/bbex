@@ -562,9 +562,9 @@ class Transaction extends Component {
                       size="small"
                       header={
                         <ul className="expent-title">
-                          <li>时间</li>
-                          <li>价格</li>
-                          <li>数量</li>
+                          <li>成交时间</li>
+                          <li>成交价格</li>
+                          <li>成交数量</li>
                           <li>成交额</li>
                           <li>手续费</li>
                         </ul>

@@ -1515,9 +1515,9 @@ class Trade extends PureComponent {
                             size="small"
                             header={
                               <ul className="expent-title">
-                                <li>{localization['时间']}</li>
-                                <li>{localization['价格']}</li>
-                                <li>{localization['数量']}</li>
+                                <li>{localization['成交时间']}</li>
+                                <li>{localization['成交价格']}</li>
+                                <li>{localization['成交数量']}</li>
                                 <li>{localization['成交额']}</li>
                                 <li>{localization['手续费']}</li>
                               </ul>
