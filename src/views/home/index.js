@@ -64,7 +64,7 @@ class Home extends PureComponent {
       const updateExPair = JSON.parse(evt.data);
       if (tradeExpair) {
         Object.keys(updateExPair).forEach(key => {
-          if (tradeExpair[key]) {
+          if (updateExPair[key]) {
             updateExPair[key].forEach(coin => {
               const expair = `${coin.coinOther}/${coin.coinMain}`;
               if (tradeExpair[key][expair]) {

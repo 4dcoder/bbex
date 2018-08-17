@@ -57,6 +57,8 @@ class Trade extends PureComponent {
       historyExpendKey: '',
       btcLastPrice: 0,
       ethLastPrice: 0,
+      cnbBtcLastPrice: 0,
+      cnbEthLastPrice: 0,
       sorter: {}
     };
   }
@@ -69,8 +71,8 @@ class Trade extends PureComponent {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        const { btcLastPrice, ethLastPrice } = json.data;
-        this.setState({ btcLastPrice, ethLastPrice });
+        const { btcLastPrice, ethLastPrice, cnbBtcLastPrice, cnbEthLastPrice } = json.data;
+        this.setState({ btcLastPrice, ethLastPrice, cnbBtcLastPrice, cnbEthLastPrice });
       } else {
         // message.error(json.msg);
       }
@@ -201,7 +203,7 @@ class Trade extends PureComponent {
       const updateExPair = JSON.parse(evt.data);
       if (tradeExpair) {
         Object.keys(updateExPair).forEach(key => {
-          if (tradeExpair[key]) {
+          if (updateExPair[key]) {
             updateExPair[key].forEach(coin => {
               const expair = `${coin.coinOther}/${coin.coinMain}`;
               let rise = '0.00%';
@@ -250,14 +252,26 @@ class Trade extends PureComponent {
         return;
       }
 
-      const { btcLastPrice, ethLastPrice, matchStreamVO } = JSON.parse(evt.data);
+      const {
+        btcLastPrice,
+        ethLastPrice,
+        cnbBtcLastPrice,
+        cnbEthLastPrice,
+        matchStreamVO
+      } = JSON.parse(evt.data);
       const { marketName, coinName, tradeList } = this.state;
 
-      // 更新btc最新价
+      // 更新BTC兑USDT最新价
       if (btcLastPrice) this.setState({ btcLastPrice });
 
-      // 更新eth最新价
+      // 更新ETH兑USDT最新价
       if (ethLastPrice) this.setState({ ethLastPrice });
+
+      // 更新BTC兑人民币最新价
+      if (cnbBtcLastPrice) this.setState({ cnbBtcLastPrice });
+
+      // 更新ETH兑人民币最新价
+      if (cnbEthLastPrice) this.setState({ cnbEthLastPrice });
 
       if (matchStreamVO) {
         // 当流水的交易对跟当前交易对相等时
@@ -701,6 +715,8 @@ class Trade extends PureComponent {
       coinDetail,
       btcLastPrice,
       ethLastPrice,
+      cnbBtcLastPrice,
+      cnbEthLastPrice,
       tradePrice,
       clickTradeType,
       historyDetails,
@@ -852,7 +868,7 @@ class Trade extends PureComponent {
       pricePrecision: 8,
       volumePrecision: 4
     };
-    
+
     if (tradeExpair && tradeExpair[marketName] && Object.keys(tradeExpair[marketName]).length > 0) {
       Object.keys(tradeExpair[marketName]).forEach(key => {
         const coin = tradeExpair[marketName][key];
@@ -862,13 +878,16 @@ class Trade extends PureComponent {
           const latestPrice = Number(coin.latestPrice) || 0; //最新价
 
           let toCNY = 0; //当前最新价的折合人民币
-          const usdtToCnyRate = 6.5;
+          const usdtToCnyRate = 6.8;
+
           switch (marketName) {
             case 'BTC':
-              toCNY = latestPrice * btcLastPrice * usdtToCnyRate;
+              toCNY =
+                latestPrice * (cnbBtcLastPrice ? cnbBtcLastPrice : btcLastPrice * usdtToCnyRate);
               break;
             case 'ETH':
-              toCNY = latestPrice * ethLastPrice * usdtToCnyRate;
+              toCNY =
+                latestPrice * (cnbEthLastPrice ? cnbEthLastPrice : ethLastPrice * usdtToCnyRate);
               break;
             default:
               toCNY = latestPrice * usdtToCnyRate;
