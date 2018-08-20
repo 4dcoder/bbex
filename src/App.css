@@ -25,7 +25,7 @@ body {
   position: absolute;
   width: 100%;
   min-height: 100%;
-  color: #dadada;
+  color: #dadada !important;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

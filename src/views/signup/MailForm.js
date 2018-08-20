@@ -149,7 +149,7 @@ class MailForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="signup-form">
-        <Input style={{ display: 'none' }} type="password" autocomplete="off" />
+        <Input style={{ display: 'none' }} type="password" />
         <FormItem>
           {getFieldDecorator('mail', {
             rules: [
@@ -178,7 +178,6 @@ class MailForm extends Component {
             <Input
               size="large"
               type="password"
-              autocomplete='off'
               placeholder={localization['密码']}
               prefix={<i className="iconfont icon-suo" />}
             />
@@ -195,7 +194,6 @@ class MailForm extends Component {
             <Input
               size="large"
               type="password"
-              autocomplete='off'
               placeholder={localization['确认密码']}
               onBlur={this.handleConfirmBlur}
               prefix={<i className="iconfont icon-suo" />}
