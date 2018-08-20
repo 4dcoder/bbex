@@ -2,6 +2,9 @@ const { injectBabelPlugin } = require('react-app-rewired');
 const rewireLess = require('react-app-rewire-less');
 
 module.exports = function override(config, env) {
+  if (env === 'production') {
+    config.devtool = false
+  }
   config = injectBabelPlugin(
     ['import', { libraryName: 'antd', libraryDirectory: 'es', style: 'css' }],
     config

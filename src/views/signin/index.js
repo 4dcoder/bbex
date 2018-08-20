@@ -44,7 +44,13 @@ class SignIn extends Component {
           this.getValidImg();
           this.setState({ errorTip: json.msg });
         } else if (json.code === 10001000) {
-          this.setState({ errorTip: localization['用户名或密码不正确'] });
+
+          if (json.msg === 'Invalid Credentials') {
+            this.setState({ errorTip: localization['用户名或密码不正确'] });
+          } else {
+            this.setState({ errorTip: json.msg });
+          }
+
         } else {
           this.setState({ errorTip: json.msg });
         }

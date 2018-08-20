@@ -95,7 +95,8 @@ class Password extends Component {
                     <Input style={{ display: 'none' }} type="password" autocomplete="off" />
                     <FormItem {...formItemLayout} label="原密码">
                         {getFieldDecorator('oldPassword', {
-                            rules: [{ required: true, message: '请输入原密码' }]
+                            rules: [{ required: true, message: '请输入原密码' }],
+                            validateTrigger: 'onBlur'
                         })(<Input size='large' type="password" autocomplete="off" />)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="新密码">
@@ -104,7 +105,8 @@ class Password extends Component {
                                 { required: true, message: '请输入新密码' },
                                 { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字，字母' },
                                 { validator: this.validateToNextPassword }
-                            ]
+                            ],
+                            validateTrigger: 'onBlur'
                         })(<Input size='large' type="password" autocomplete="off" />)}
                     </FormItem>
                     <FormItem {...formItemLayout} label="确认密码">
@@ -112,7 +114,8 @@ class Password extends Component {
                             rules: [
                                 { required: true, message: '请再次输入密码' },
                                 { validator: this.comparePassword }
-                            ]
+                            ],
+                            validateTrigger: 'onBlur'
                         })(<Input size='large' type="password" autocomplete="off" onBlur={this.handleConfirmBlur} />)}
                     </FormItem>
 

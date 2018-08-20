@@ -141,7 +141,8 @@ class Mail extends Component {
               rules: [
                 { required: true, message: '请输入邮箱' },
                 { pattern: MAIL_REGEX, message: '邮箱格式不正确' }
-              ]
+              ],
+              validateTrigger: 'onBlur'
             })(<Input size='large'/>)}
             <Button
               onClick={this.getMailCode}
@@ -159,7 +160,8 @@ class Mail extends Component {
               rules: [
                 { required: true, message: '请输入邮箱验证码' },
                 { pattern: /^\d{6}$/, message: '请输入6位数字验证码' }
-              ]
+              ],
+              validateTrigger: 'onBlur'
             })(<Input size='large'/>)}
           </FormItem>
 

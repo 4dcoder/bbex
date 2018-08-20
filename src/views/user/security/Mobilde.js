@@ -133,7 +133,8 @@ class Mobile extends Component {
                             rules: [
                                 { required: true, message: '请输入手机号' },
                                 { pattern: /^1[34578][0-9]{9}$/, message: '手机号不正确' }
-                            ]
+                            ],
+                            validateTrigger: 'onBlur'
                         })(<Input size='large' />)}
                         <Button
                             onClick={this.getMobileCode}
@@ -151,7 +152,8 @@ class Mobile extends Component {
                             rules: [
                                 { required: true, message: '请输入手机验证码' },
                                 { pattern: /^\d{6}$/, message: '请输入6位数字验证码' }
-                            ]
+                            ],
+                            validateTrigger: 'onBlur'
                         })(<Input size='large' />)}
                     </FormItem>
                     <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
