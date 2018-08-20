@@ -10,6 +10,9 @@
 /build
 /build.zip
 /build.rar
+/html
+/html.zip
+/html.rar
 
 # misc
 .DS_Store
