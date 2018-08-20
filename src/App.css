@@ -332,6 +332,7 @@ a:hover {
 :root .ant-btn-normal:hover {
   color: #d4a668;
   border-color: #d4a668;
+  background-color: transparent;
 }
 
 :root .ant-btn-ghost:hover{

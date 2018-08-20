@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>邀请注册</title>
+  <style>
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body,
+    h4,
+    a {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .share {
+      width: 100%;
+      height: 100%;
+      background-image: url('./share_bg.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+    }
+
+    @font-face {
+      font-family: 'iconfont';
+      /* project id 617853 */
+      src: url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.eot');
+      src: url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.eot?#iefix') format('embedded-opentype'),
+      url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.woff') format('woff'),
+      url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.ttf') format('truetype'),
+      url('//at.alicdn.com/t/font_617853_jeuflrb5j6g.svg#iconfont') format('svg');
+    }
+
+    .wechat:before {
+      z-index: 1;
+      content: '请在浏览器打开';
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding-top: 100px;
+      text-align: center;
+      color: #fff;
+      font-size: 24px;
+      background-color: rgba(0, 0, 0, .5);
+    }
+
+    .wechat:after {
+      z-index: 2;
+      content: '\e600';
+      position: fixed;
+      top: 0;
+      right: 2%;
+      font-family: iconfont;
+      color: #fff;
+      font-size: 120px;
+      transform: rotate(35deg);
+    }
+
+    .share-header {
+      width: 100%;
+      text-align: center;
+    }
+
+    .share h4 {
+      color: #0e3e8d;
+      font-size: 20px;
+      width: 60%;
+      margin: 0 auto;
+      padding-top: 9%;
+      line-height: 28px;
+      font-weight: normal;
+      text-align: center;
+    }
+
+    .share-content {
+      width: 100%;
+      position: absolute;
+      bottom: 22%;
+      left: 0;
+    }
+
+    #content {
+      color: #fff;
+      font-size: 16px;
+      width: 64%;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 24px;
+    }
+
+    .share-footer {
+      width: 100%;
+      position: absolute;
+      bottom: 10%;
+      left: 0;
+    }
+
+    .share-footer a {
+      display: block;
+      text-decoration: none;
+      width: 80%;
+      height: 50px;
+      margin: 0 auto;
+      border-radius: 4px;
+      text-align: center;
+      line-height: 50px;
+      background: #4D90ff;
+      color: #fff;
+    }
+  </style>
+
+</head>
+
+<body>
+  <div id="app" v-bind:class="{ share: true, 'wechat': isWechat }">
+    <div class="share-header">
+      <h4 id='header'>{{header}}</h4>
+    </div>
+    <div class="share-content">
+      <div id="content">{{content}}</div>
+    </div>
+    <div class="share-footer">
+      <a :href="inviteLink">马上领取</a>
+    </div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script>
+  function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r !== null) return decodeURI(r[2]);
+    return null;
+  }
+
+  //判断是否是微信浏览器的函数
+  function isWechat() {
+    //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+    var ua = window.navigator.userAgent.toLowerCase();
+    //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+    if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  var realName = getQueryString('realName') || '您的朋友';
+
+  //传递邀请码  手机注册用
+  var inviteCode = getQueryString('inviteCode') || '';
+
+  var app = new Vue({
+    el: '#app',
+    data: {
+      isWechat: isWechat(),
+      inviteLink: '/mobile/signup?inviteCode=' + inviteCode,
+      header: realName + '邀请您成为UES交易所的会员',
+      content: realName + '邀请您注册UES交易所, UES平台币等您来领, 注册即领取, 领完即止，赶快来领取吧!'
+    }
+  })
+</script>
+
+</html>
