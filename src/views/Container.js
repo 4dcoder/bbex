@@ -145,15 +145,7 @@ class Container extends Component {
 
   // 获取logo
   getLogo = () => {
-    const localDev =
-      window.location.origin.indexOf('localhost') !== -1 ||
-      window.location.origin.indexOf('192.168') !== -1;
-    if (localDev) {
-      //本地开发载入react logo
-      import('../logo.svg').then(logo => {
-        this.setState({ logo });
-      });
-    } else {
+    if (process.env.NODE_ENV === 'production') {
       //线上加载相应平台logo
       request('/cms/logo', {
         method: 'GET'
@@ -164,6 +156,11 @@ class Container extends Component {
           message.destroy();
           message.error(json.msg);
         }
+      });
+    } else {
+      //本地开发载入react logo
+      import('../logo.svg').then(logo => {
+        this.setState({ logo });
       });
     }
   };
