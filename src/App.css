@@ -334,6 +334,11 @@ a:hover {
   border-color: #d4a668;
 }
 
+:root .ant-btn-ghost:hover{
+  color: inherit;
+  border-color: inherit;
+}
+
 :root .ant-btn-primary {
   color: #dadada;
   border-color: #d4a668;

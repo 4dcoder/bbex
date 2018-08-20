@@ -124,11 +124,10 @@ class TradeForm extends PureComponent {
   componentWillReceiveProps(nextProps, nextState) {
     if (nextProps.tradePrice !== this.props.tradePrice) {
       const tradePrice = nextProps.tradePrice.split('_')[0];
-      if (tradePrice < 0.000001) {
-        this.setState({ price: Number(tradePrice).toFixed(8) });
-      } else {
-        this.setState({ price: tradePrice });
-      }
+      const { pricePrecision } = this.props;
+      const reg = new RegExp(`(\\d{0,8})(\\.\\d{0,${pricePrecision}})?`);
+      const price = String(tradePrice).match(reg)[0];
+      this.setState({ price });
     }
 
     if (
