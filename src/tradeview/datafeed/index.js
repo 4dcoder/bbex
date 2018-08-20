@@ -24,6 +24,8 @@ export default {
 
   resolveSymbol(symbolName, onSymbolResolvedCallback, onResolveErrorCallback) {
     // console.log('====resolveSymbol running');
+    const pricePrecision = sessionStorage.getItem('pricePrecision') || 8;
+    const volumePrecision = sessionStorage.getItem('volumePrecision') || 4;
     const symbolInfo = {
       name: symbolName,
       timezone: 'Asia/Shanghai',
@@ -38,9 +40,9 @@ export default {
       has_empty_bars: false,
       has_no_volume: false,
       type: 'index',
-      volume_precision: 4,
+      volume_precision: volumePrecision,
       supported_resolutions: ['1', '5', '15', '30', '60', '120', '240', '480', '1D', '1W', '1M'],
-      pricescale: 10 ** 8,
+      pricescale: 10 ** pricePrecision,
       ticker: symbolName
     };
 

@@ -889,6 +889,9 @@ class Trade extends PureComponent {
               toCNY =
                 latestPrice * (cnbEthLastPrice ? cnbEthLastPrice : ethLastPrice * usdtToCnyRate);
               break;
+            case 'CNB':
+              toCNY = latestPrice;
+              break;
             default:
               toCNY = latestPrice * usdtToCnyRate;
           }

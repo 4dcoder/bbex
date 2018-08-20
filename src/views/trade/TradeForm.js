@@ -136,6 +136,13 @@ class TradeForm extends PureComponent {
     ) {
       this.setState({ price: '', volume: '', sliderValue: 0 });
     }
+
+    if (nextProps.pricePrecision !== this.props.pricePrecision) {
+      sessionStorage.setItem('pricePrecision', nextProps.pricePrecision);
+    }
+    if (nextProps.volumePrecision !== this.props.volumePrecision) {
+      sessionStorage.setItem('volumePrecision', nextProps.volumePrecision);
+    }
   }
 
   render() {
