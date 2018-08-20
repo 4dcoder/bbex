@@ -96,15 +96,17 @@ body {
 }
 
 a:link,
-a:visited {
+a:visited,
+a:focus {
   color: #d4a668;
-  outline: none;
-  text-decoration: none;
+  outline: 0;
+  text-decoration: none !important;
 }
 
 a:hover {
   color: #fcb962;
 }
+
 /* 加载超时 */
 .page-timeout {
   color: #dadada;
@@ -335,7 +337,7 @@ a:hover {
   background-color: transparent;
 }
 
-:root .ant-btn-ghost:hover{
+:root .ant-btn-ghost:hover {
   color: inherit;
   border-color: inherit;
 }
@@ -424,8 +426,10 @@ a:hover {
   border: 1px solid #666;
 }
 
-:root .has-error .ant-input, .has-error .ant-input:hover,
-:root .has-error .ant-form-explain, .has-error .ant-form-split {
+:root .has-error .ant-input,
+.has-error .ant-input:hover,
+:root .has-error .ant-form-explain,
+.has-error .ant-form-split {
   color: #df553a;
 }
 
