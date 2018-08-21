@@ -1,0 +1,12 @@
+
+.nc-container .nc_wrapper{
+  margin: 0 auto;
+}
+.nc-container .errloading{
+  margin: 0 auto;
+}
+.nc-container div.nc_scale span {
+  height: 34px;
+  border: 1px solid #ccc;
+  background: #fff url("//g.alicdn.com/sd/ncpc/images/rt.png") no-repeat center;
+}

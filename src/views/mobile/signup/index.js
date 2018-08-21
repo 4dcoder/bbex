@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import { getQueryString } from '../../../utils';
-import request from '../../../utils/request';
-import { JSEncrypt } from '../../../utils/jsencrypt.js';
-import { PUBLI_KEY, PWD_REGEX } from '../../../utils/constants';
-import CodePopup from './code-popup';
-import './signup.css';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import { getQueryString } from "../../../utils";
+import request from "../../../utils/request";
+import { JSEncrypt } from "../../../utils/jsencrypt.js";
+import { PUBLI_KEY, PWD_REGEX } from "../../../utils/constants";
+import CodePopup from "./vapopup";
+import "./signup.css";
 
 const FormItem = Form.Item;
 
@@ -17,9 +17,9 @@ class MobileForm extends Component {
       registerType: 1,
       confirmDirty: false,
       disabled: false,
-      inviteCode: getQueryString('inviteCode') || '',
+      inviteCode: getQueryString("inviteCode") || "",
       number: 59,
-      popup: ''
+      popup: ""
     };
   }
 
@@ -44,19 +44,30 @@ class MobileForm extends Component {
   }
 
   closeModal = () => {
-    this.setState({ popup: '' });
+    this.setState({ popup: "" });
   };
 
   getMobileCode = () => {
     if (!this.state.disabled) {
       const mobile = this.props.form.getFieldsValue().mobile;
       if (/^1[34578][0-9]{9}$/.test(mobile)) {
+        let scene = "nc_register";
+        if (
+          window.navigator.userAgent.match(
+            /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+          )
+        ) {
+          scene = "nc_register_h5";
+        } else {
+          scene = "nc_register";
+        }
         this.setState({
           popup: (
             <CodePopup
               flag="mobile"
-              mail={mobile}
+              username={mobile}
               type="register"
+              scene={scene}
               onCancel={() => {
                 this.closeModal();
               }}
@@ -70,7 +81,7 @@ class MobileForm extends Component {
       } else {
         this.props.form.setFields({
           mobile: {
-            errors: [new Error('请输入正确的手机号')]
+            errors: [new Error("请输入正确的手机号")]
           }
         });
       }
@@ -79,8 +90,8 @@ class MobileForm extends Component {
 
   comparePassword = (rule, value, callback) => {
     const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('两次密码不一致');
+    if (value && value !== form.getFieldValue("password")) {
+      callback("两次密码不一致");
     } else {
       callback();
     }
@@ -93,7 +104,7 @@ class MobileForm extends Component {
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+      form.validateFields(["confirm"], { force: true });
     }
     callback();
   };
@@ -112,14 +123,14 @@ class MobileForm extends Component {
           this.register({ registerType, mobile, enPassword, code, inviteCode });
         } else {
           message.destroy();
-          message.warn('请先同意服务条款');
+          message.warn("请先同意服务条款");
         }
       }
     });
   };
 
   register = ({ registerType, mobile, enPassword, code, inviteCode }) => {
-    request('/user/register', {
+    request("/user/register", {
       body: {
         registerType,
         mobile,
@@ -129,8 +140,8 @@ class MobileForm extends Component {
       }
     }).then(json => {
       if (json.code === 10000000) {
-        message.success('恭喜你，注册成功！');
-        this.props.history.push('/signin');
+        message.success("恭喜你，注册成功！");
+        this.props.history.push("/signin");
       } else {
         message.destroy();
         message.error(json.msg);
@@ -147,12 +158,12 @@ class MobileForm extends Component {
         <h2 className="mobile-signup-tit">注册</h2>
         <Form onSubmit={this.handleSubmit} className="mobile-signup-form">
           <FormItem>
-            {getFieldDecorator('mobile', {
+            {getFieldDecorator("mobile", {
               rules: [
-                { required: true, message: '请输入手机号' },
-                { pattern: /^1[34578][0-9]{9}$/, message: '手机号不正确' }
+                { required: true, message: "请输入手机号" },
+                { pattern: /^1[34578][0-9]{9}$/, message: "手机号不正确" }
               ],
-              validateTrigger: 'onBlur'
+              validateTrigger: "onBlur"
             })(
               <Input
                 size="large"
@@ -162,13 +173,13 @@ class MobileForm extends Component {
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('password', {
+            {getFieldDecorator("password", {
               rules: [
-                { required: true, message: '请输入密码' },
-                { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字,字母' },
+                { required: true, message: "请输入密码" },
+                { pattern: PWD_REGEX, message: "输入8-20位密码 包含数字,字母" },
                 { validator: this.validateToNextPassword }
               ],
-              validateTrigger: 'onBlur'
+              validateTrigger: "onBlur"
             })(
               <Input
                 size="large"
@@ -179,12 +190,12 @@ class MobileForm extends Component {
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('confirm', {
+            {getFieldDecorator("confirm", {
               rules: [
-                { required: true, message: '请输入确认密码' },
+                { required: true, message: "请输入确认密码" },
                 { validator: this.comparePassword }
               ],
-              validateTrigger: 'onBlur'
+              validateTrigger: "onBlur"
             })(
               <Input
                 size="large"
@@ -196,12 +207,12 @@ class MobileForm extends Component {
             )}
           </FormItem>
           <FormItem className="mail-code">
-            {getFieldDecorator('code', {
+            {getFieldDecorator("code", {
               rules: [
-                { required: true, message: '请输入手机验证码' },
-                { pattern: /^\d{6}$/, message: '请输入6位手机验证码' }
+                { required: true, message: "请输入手机验证码" },
+                { pattern: /^\d{6}$/, message: "请输入6位手机验证码" }
               ],
-              validateTrigger: 'onBlur'
+              validateTrigger: "onBlur"
             })(
               <Input
                 size="large"
@@ -212,17 +223,17 @@ class MobileForm extends Component {
             <Button
               size="large"
               onClick={this.getMobileCode}
-              type={disabled ? 'count-down' : 'primary'}
+              type={disabled ? "count-down" : "primary"}
               className="mail-code-btn"
             >
-              {!disabled ? '获取手机验证码' : number + 's'}
+              {!disabled ? "获取手机验证码" : number + "s"}
             </Button>
           </FormItem>
-          <FormItem style={{ display: 'none' }}>
-            {getFieldDecorator('inviteCode', {
+          <FormItem style={{ display: "none" }}>
+            {getFieldDecorator("inviteCode", {
               initialValue: inviteCode,
-              rules: [{ pattern: /^\d+$/, message: '请输入数字邀请码' }],
-              validateTrigger: 'onBlur'
+              rules: [{ pattern: /^\d+$/, message: "请输入数字邀请码" }],
+              validateTrigger: "onBlur"
             })(
               <Input
                 size="large"
@@ -232,15 +243,18 @@ class MobileForm extends Component {
             )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('agreement', {
-              valuePropName: 'checked',
+            {getFieldDecorator("agreement", {
+              valuePropName: "checked",
               initialValue: true
             })(<Checkbox className="agree-text">我已阅读并同意</Checkbox>)}
             <Link to="/agreement" className="link-agree" target="_blank">
               服务条款
             </Link>
           </FormItem>
-          <div className="submit-btn" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            className="submit-btn"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
             <Button
               type="primary"
               htmlType="submit"

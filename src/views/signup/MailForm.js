@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import { getQueryString } from '../../utils';
-import { JSEncrypt } from '../../utils/jsencrypt.js';
-import { PUBLI_KEY, PWD_REGEX, MAIL_REGEX } from '../../utils/constants';
-import CodePopup from '../../components/code-popup';
-import './signup.css';
+import React, { Component } from "react";
+import { withRouter, Link } from "react-router-dom";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import { getQueryString } from "../../utils";
+import { JSEncrypt } from "../../utils/jsencrypt.js";
+import { PUBLI_KEY, PWD_REGEX, MAIL_REGEX } from "../../utils/constants";
+import CodePopup from "../../components/vapopup";
+import "./signup.css";
 
 const FormItem = Form.Item;
 
@@ -16,9 +16,9 @@ class MailForm extends Component {
       registerType: 2,
       confirmDirty: false,
       disabled: false,
-      inviteCode: getQueryString('inviteCode') || '',
+      inviteCode: getQueryString("inviteCode") || "",
       number: 59,
-      popup: ''
+      popup: ""
     };
   }
 
@@ -45,18 +45,29 @@ class MailForm extends Component {
   }
 
   closeModal = () => {
-    this.setState({ popup: '' });
+    this.setState({ popup: "" });
   };
 
   getMailCode = () => {
     const mail = this.props.form.getFieldsValue().mail;
     if (MAIL_REGEX.test(mail)) {
+      let scene = "nc_register";
+      if (
+        window.navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+        )
+      ) {
+        scene= "nc_register_h5";
+      }else{
+        scene= "nc_register";
+      }
       this.setState({
         popup: (
           <CodePopup
             flag="mail"
-            mail={mail}
+            username={mail}
             type="register"
+            scene={scene}
             onCancel={() => {
               this.closeModal();
             }}
@@ -71,7 +82,7 @@ class MailForm extends Component {
       const { localization } = this.props;
       this.props.form.setFields({
         mail: {
-          errors: [new Error(localization['请输入正确的邮箱'])]
+          errors: [new Error(localization["请输入正确的邮箱"])]
         }
       });
     }
@@ -80,8 +91,8 @@ class MailForm extends Component {
   comparePassword = (rule, value, callback) => {
     const { localization } = this.props;
     const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback(localization['两次密码不一致']);
+    if (value && value !== form.getFieldValue("password")) {
+      callback(localization["两次密码不一致"]);
     } else {
       callback();
     }
@@ -94,7 +105,7 @@ class MailForm extends Component {
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+      form.validateFields(["confirm"], { force: true });
     }
     callback();
   };
@@ -111,18 +122,24 @@ class MailForm extends Component {
           encrypt.setPublicKey(PUBLI_KEY);
           const enPassword = encrypt.encrypt(password);
 
-          this.mailRegister({ registerType, mail, enPassword, code, inviteCode });
+          this.mailRegister({
+            registerType,
+            mail,
+            enPassword,
+            code,
+            inviteCode
+          });
         } else {
           const { localization } = this.props;
           message.destroy();
-          message.warn(localization['请先同意服务条款']);
+          message.warn(localization["请先同意服务条款"]);
         }
       }
     });
   };
 
   mailRegister = ({ registerType, mail, enPassword, code, inviteCode }) => {
-    this.request('/user/register', {
+    this.request("/user/register", {
       body: {
         registerType,
         mail,
@@ -133,8 +150,8 @@ class MailForm extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         const { localization } = this.props;
-        message.success(localization['恭喜你，注册成功！']);
-        this.props.history.push('/signin');
+        message.success(localization["恭喜你，注册成功！"]);
+        this.props.history.push("/signin");
       } else {
         message.destroy();
         message.error(json.msg);
@@ -149,68 +166,74 @@ class MailForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit} className="signup-form">
-        <Input style={{ display: 'none' }} type="password" />
+        <Input style={{ display: "none" }} type="password" />
         <FormItem>
-          {getFieldDecorator('mail', {
+          {getFieldDecorator("mail", {
             rules: [
-              { required: true, message: localization['请输入邮箱'] },
-              { pattern: MAIL_REGEX, message: localization['邮箱格式不正确'] }
+              { required: true, message: localization["请输入邮箱"] },
+              { pattern: MAIL_REGEX, message: localization["邮箱格式不正确"] }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
               type="mail"
-              placeholder={localization['邮箱']}
+              placeholder={localization["邮箱"]}
               prefix={<i className="iconfont icon-youxiang" />}
             />
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('password', {
+          {getFieldDecorator("password", {
             rules: [
-              { required: true, message: localization['请输入密码'] },
-              { pattern: PWD_REGEX, message: localization['输入8-20位密码 包含数字,字母'] },
+              { required: true, message: localization["请输入密码"] },
+              {
+                pattern: PWD_REGEX,
+                message: localization["输入8-20位密码 包含数字,字母"]
+              },
               { validator: this.validateToNextPassword }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
               type="password"
-              placeholder={localization['密码']}
+              placeholder={localization["密码"]}
               prefix={<i className="iconfont icon-suo" />}
             />
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('confirm', {
+          {getFieldDecorator("confirm", {
             rules: [
-              { required: true, message: localization['请输入确认密码'] },
+              { required: true, message: localization["请输入确认密码"] },
               { validator: this.comparePassword }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
               type="password"
-              placeholder={localization['确认密码']}
+              placeholder={localization["确认密码"]}
               onBlur={this.handleConfirmBlur}
               prefix={<i className="iconfont icon-suo" />}
             />
           )}
         </FormItem>
         <FormItem className="mail-code">
-          {getFieldDecorator('code', {
+          {getFieldDecorator("code", {
             rules: [
-              { required: true, message: localization['请输入邮箱验证码'] },
-              { pattern: /^\w{6}$/, message: localization['请输入6位邮箱验证码'] }
+              { required: true, message: localization["请输入邮箱验证码"] },
+              {
+                pattern: /^\w{6}$/,
+                message: localization["请输入6位邮箱验证码"]
+              }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
-              placeholder={localization['邮箱验证码']}
+              placeholder={localization["邮箱验证码"]}
               prefix={<i className="iconfont icon-yanzhengma2" />}
             />
           )}
@@ -221,32 +244,41 @@ class MailForm extends Component {
             disabled={disabled}
             className="mail-code-btn"
           >
-            {!disabled ? localization['获取邮箱验证码'] : number + 's'}
+            {!disabled ? localization["获取邮箱验证码"] : number + "s"}
           </Button>
         </FormItem>
         <FormItem>
-          {getFieldDecorator('inviteCode', {
+          {getFieldDecorator("inviteCode", {
             initialValue: inviteCode,
-            rules: [{ pattern: /^\d+$/, message: localization['请输入数字邀请码'] }],
-            validateTrigger: 'onBlur'
+            rules: [
+              { pattern: /^\d+$/, message: localization["请输入数字邀请码"] }
+            ],
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
-              placeholder={localization['邀请码']}
+              placeholder={localization["邀请码"]}
               prefix={<i className="iconfont icon-yaoqingma" />}
             />
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('agreement', {
-            valuePropName: 'checked',
+          {getFieldDecorator("agreement", {
+            valuePropName: "checked",
             initialValue: true
-          })(<Checkbox className="agree-text">{localization['我已阅读并同意']}</Checkbox>)}
+          })(
+            <Checkbox className="agree-text">
+              {localization["我已阅读并同意"]}
+            </Checkbox>
+          )}
           <Link to="/agreement" className="link-agree" target="_blank">
-            {localization['服务条款']}
+            {localization["服务条款"]}
           </Link>
         </FormItem>
-        <div className="submit-btn" style={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          className="submit-btn"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
           <Button
             type="primary"
             htmlType="submit"
@@ -254,7 +286,7 @@ class MailForm extends Component {
             onClick={this.handleSubmit}
             style={{ width: 400 }}
           >
-            {localization['注册']}
+            {localization["注册"]}
           </Button>
         </div>
         {popup}

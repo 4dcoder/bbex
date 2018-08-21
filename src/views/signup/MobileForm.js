@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { getQueryString } from '../../utils';
 import { JSEncrypt } from '../../utils/jsencrypt.js';
 import { PUBLI_KEY, PWD_REGEX } from '../../utils/constants';
-import CodePopup from '../../components/code-popup';
+import CodePopup from '../../components/vapopup';
 import './signup.css';
 
 const FormItem = Form.Item;
@@ -51,12 +51,23 @@ class MobileForm extends Component {
   getMobileCode = () => {
     const mobile = this.props.form.getFieldsValue().mobile;
     if (/^1[34578][0-9]{9}$/.test(mobile)) {
+      let scene = "nc_register";
+      if (
+        window.navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+        )
+      ) {
+        scene= "nc_register_h5";
+      }else{
+        scene= "nc_register";
+      }
       this.setState({
         popup: (
           <CodePopup
             flag="mobile"
-            mail={mobile}
+            username={mobile}
             type="register"
+            scene={scene}
             onCancel={() => {
               this.closeModal();
             }}
