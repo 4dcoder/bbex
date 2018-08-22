@@ -1,28 +1,29 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { message } from 'antd';
-import { IMAGES_ADDRESS } from '../../utils/constants';
-import classnames from 'classnames';
-import { JSEncrypt } from '../../utils/jsencrypt.js';
-import { PUBLI_KEY } from '../../utils/constants';
-import NoCaptcha from '../../components/nc';
+import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import { message } from "antd";
+import classnames from "classnames";
+import { JSEncrypt } from "../../utils/jsencrypt.js";
+import { PUBLI_KEY } from "../../utils/constants";
+import NoCaptcha from "../../components/nc";
+import LoginPopup from "../../components/login-popup";
 
 class SignIn extends Component {
   state = {
-    username: '',
-    password: '',
-    errorTip: '',
-    url: '',
+    username: "",
+    password: "",
+    errorTip: "",
+    url: "",
+    popup: "",
     disabled: false,
     requireCaptcha: false,
-    appKey: '',
-    token: '',
-    ncData: '',
+    appKey: "",
+    token: "",
+    ncData: "",
     scene: window.navigator.userAgent.match(
       /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
     )
-      ? 'nc_register_h5'
-      : 'nc_register',
+      ? "nc_register_h5"
+      : "nc_register",
     nc: null
   };
 
@@ -30,6 +31,9 @@ class SignIn extends Component {
 
   inputValue = e => {
     this.setState({ [e.target.id]: e.target.value });
+  };
+  closeModal = () => {
+    this.setState({ popup: "" });
   };
 
   handleSubmit = () => {
@@ -52,39 +56,57 @@ class SignIn extends Component {
           }
         : {};
 
-      this.request('/user/login', {
+      this.request("/user/login", {
         body: {
           username,
           password: enPassword,
-          source: 'pc',
+          source: "pc",
           ...ncParams
         }
       })
         .then(json => {
           this.setState({ disabled: false });
           if (json.code === 10000000) {
-            sessionStorage.setItem('account', JSON.stringify(json.data));
-            this.props.history.push('/trade');
+            message.success("验证码发送成功", 1);
+            const { tempToken, tempTokenType } = json.data;
+            this.setState({
+              popup: (
+                <LoginPopup
+                  tempToken={tempToken}
+                  tokenType={tempTokenType}
+                  onCancel={this.closeModal}
+                  onOk={account => {
+                    message.success("登录成功", 1);
+                    sessionStorage.setItem("account", JSON.stringify(account));
+                    this.closeModal();
+                    this.props.history.push("/trade");
+                  }}
+                />
+              )
+            });
           } else {
             const { nc } = this.state;
             if (nc) {
               nc.reload();
-              this.setState({ ncData: '' });
+              this.setState({ ncData: "" });
             }
             if (json.code === 10001001) {
               this.setState({ requireCaptcha: true });
-              if (json.msg === 'Invalid Credentials' || json.msg === '用户不存在') {
-                this.setState({ errorTip: localization['用户名或密码不正确'] });
+              if (
+                json.msg === "Invalid Credentials" ||
+                json.msg === "用户不存在"
+              ) {
+                this.setState({ errorTip: localization["用户名或密码不正确"] });
               } else {
                 this.setState({ errorTip: json.msg });
               }
             } else if (json.code === 10001000) {
-              this.setState({ errorTip: localization['用户名或密码不正确'] });
+              this.setState({ errorTip: localization["用户名或密码不正确"] });
             } else if (json.code === 10004007) {
-              this.setState({ errorTip: localization['用户名或密码不正确'] });
+              this.setState({ errorTip: localization["用户名或密码不正确"] });
             } else {
-              if (json.msg === 'Invalid Credentials') {
-                this.setState({ errorTip: localization['用户名或密码不正确'] });
+              if (json.msg === "Invalid Credentials") {
+                this.setState({ errorTip: localization["用户名或密码不正确"] });
               } else {
                 this.setState({ errorTip: json.msg });
               }
@@ -99,8 +121,8 @@ class SignIn extends Component {
 
   //获取访问的网址
   getUrl = () => {
-    this.request('/cms/link', {
-      method: 'GET'
+    this.request("/cms/link", {
+      method: "GET"
     }).then(json => {
       if (json.code === 10000000) {
         this.setState({ url: json.data });
@@ -116,6 +138,7 @@ class SignIn extends Component {
   render() {
     const { localization } = this.props;
     const {
+      popup,
       username,
       password,
       errorTip,
@@ -126,15 +149,17 @@ class SignIn extends Component {
       scene
     } = this.state;
     const ok =
-      this.state.username && this.state.password && (!requireCaptcha || (requireCaptcha && ncData));
+      this.state.username &&
+      this.state.password &&
+      (!requireCaptcha || (requireCaptcha && ncData));
 
     return (
       <div className="content">
         <div className="form-box">
-          <h1>{localization['用户登录']}</h1>
+          <h1>{localization["用户登录"]}</h1>
           <div className="attention">
             <i className="iconfont icon-zhuyishixiang" />
-            {localization['请确认您正在访问']} <strong>{url}</strong>
+            {localization["请确认您正在访问"]} <strong>{url}</strong>
           </div>
           <div className="safety-site">
             <i className="iconfont icon-suo1 font-color-green" />
@@ -153,7 +178,7 @@ class SignIn extends Component {
                 id="username"
                 value={username}
                 onChange={this.inputValue}
-                placeholder={`${localization['手机']}/${localization['邮箱']}`}
+                placeholder={`${localization["手机"]}/${localization["邮箱"]}`}
               />
             </li>
             <li>
@@ -164,7 +189,7 @@ class SignIn extends Component {
                 id="password"
                 value={password}
                 onChange={this.inputValue}
-                placeholder={localization['密码']}
+                placeholder={localization["密码"]}
                 onKeyPress={e => {
                   if (e.which === 13) this.handleSubmit();
                 }}
@@ -179,7 +204,7 @@ class SignIn extends Component {
                       this.setState({ appKey, token, ncData, nc });
                     } else {
                       message.destroy();
-                      message.error('请先进行验证', 1);
+                      message.error("请先进行验证", 1);
                     }
                   }}
                 />
@@ -193,20 +218,21 @@ class SignIn extends Component {
                   disabled: !ok || disabled
                 })}
                 onClick={this.handleSubmit}
-                value={localization['登录']}
+                value={localization["登录"]}
               />
             </li>
             <li className="clear">
               <Link to="/reset" className="pull-left">
-                {localization['忘记密码？']}
-              </Link>{' '}
+                {localization["忘记密码？"]}
+              </Link>{" "}
               <span className="pull-right">
-                {localization['还没账号？']}
-                <Link to="/signup">{localization['立即注册']}</Link>
+                {localization["还没账号？"]}
+                <Link to="/signup">{localization["立即注册"]}</Link>
               </span>
             </li>
           </ul>
         </div>
+        {popup}
       </div>
     );
   }
