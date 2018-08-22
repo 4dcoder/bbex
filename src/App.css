@@ -1305,7 +1305,11 @@ a:hover {
 .v-center-modal .ant-modal-footer {
   border-top: none;
 }
+
 /* 手机端注册 */
-.mobile-register-modal .ant-modal{
-  width: 90% !important;
+@media (max-width: 767px) {
+  .ant-modal {
+    width: 90% !important;
+    margin: 10px;
+  }
 }

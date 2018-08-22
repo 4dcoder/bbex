@@ -46,7 +46,7 @@ export default class NoCaptcha extends Component {
         appkey: appKey,
         scene: scene,
         token: nc_token,
-        customWidth: 300,
+        customWidth: '90%',
         elementID: ["usernameID"],
         is_Opt: 0,
         language: "cn",

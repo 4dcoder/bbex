@@ -5,7 +5,7 @@ import { getQueryString } from "../../../utils";
 import request from "../../../utils/request";
 import { JSEncrypt } from "../../../utils/jsencrypt.js";
 import { PUBLI_KEY, PWD_REGEX } from "../../../utils/constants";
-import CodePopup from "./vapopup";
+import CodePopup from "../../../components/vapopup";
 import "./signup.css";
 
 const FormItem = Form.Item;
