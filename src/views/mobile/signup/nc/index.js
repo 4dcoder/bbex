@@ -106,8 +106,6 @@ export default class NoCaptcha extends Component {
         });
       }, "//g.alicdn.com/sd/ncpc/nc.js?t=2015052012");
     }
-
-    this.loadScript(() => {});
   }
 
   componentWillUnmount() {
