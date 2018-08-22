@@ -55,7 +55,7 @@ class LoginPopup extends Component {
         onCancel={this.handleCancel}
       >
         <div className="google-popup">
-          <p className='show-txt'>请在2分钟内登录</p>
+          <p className='show-txt'>请在2分钟内登录,否则重新登录</p>
           <div className="error-tip">{errorTip}</div>
           <Input
             size="large"
