@@ -5,16 +5,25 @@ import { IMAGES_ADDRESS } from '../../utils/constants';
 import classnames from 'classnames';
 import { JSEncrypt } from '../../utils/jsencrypt.js';
 import { PUBLI_KEY } from '../../utils/constants';
+import NoCaptcha from '../../components/nc';
 
 class SignIn extends Component {
   state = {
     username: '',
     password: '',
-    imgName: '',
     errorTip: '',
-    code: '',
     url: '',
-    disabled: false
+    disabled: false,
+    requireCaptcha: false,
+    appKey: '',
+    token: '',
+    ncData: '',
+    scene: window.navigator.userAgent.match(
+      /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+    )
+      ? 'nc_register_h5'
+      : 'nc_register',
+    nc: null
   };
 
   request = window.request;
@@ -26,17 +35,29 @@ class SignIn extends Component {
   handleSubmit = () => {
     this.setState({ disabled: true });
     const { localization } = this.props;
-    const { username, password, code } = this.state;
+    const { username, password, appKey, token, ncData, scene } = this.state;
+    const { csessionid, sig } = ncData;
     let encrypt = new JSEncrypt();
     encrypt.setPublicKey(PUBLI_KEY);
     let enPassword = encrypt.encrypt(password);
 
     if (username && password) {
+      const ncParams = ncData
+        ? {
+            appKey,
+            sessionId: csessionid,
+            sig,
+            vtoken: token,
+            scene
+          }
+        : {};
+
       this.request('/user/login', {
         body: {
           username,
           password: enPassword,
-          code
+          source: 'pc',
+          ...ncParams
         }
       })
         .then(json => {
@@ -44,22 +65,29 @@ class SignIn extends Component {
           if (json.code === 10000000) {
             sessionStorage.setItem('account', JSON.stringify(json.data));
             this.props.history.push('/trade');
-          } else if (json.code === 10001001) {
-            this.getValidImg();
-            if (json.msg === 'Invalid Credentials') {
-              this.setState({ errorTip: localization['用户名或密码不正确'] });
-            }else {
-              this.setState({ errorTip: json.msg });
-            }
-          } else if (json.code === 10001000) {
-            this.setState({ errorTip: localization['用户名或密码不正确'] });
-          } else if (json.code === 10004007) {
-            this.setState({ errorTip: localization['用户名或密码不正确'] });
           } else {
-            if (json.msg === 'Invalid Credentials') {
+            const { nc } = this.state;
+            if (nc) {
+              nc.reload();
+              this.setState({ ncData: '' });
+            }
+            if (json.code === 10001001) {
+              this.setState({ requireCaptcha: true });
+              if (json.msg === 'Invalid Credentials' || json.msg === '用户不存在') {
+                this.setState({ errorTip: localization['用户名或密码不正确'] });
+              } else {
+                this.setState({ errorTip: json.msg });
+              }
+            } else if (json.code === 10001000) {
               this.setState({ errorTip: localization['用户名或密码不正确'] });
-            }else {
-              this.setState({ errorTip: json.msg });
+            } else if (json.code === 10004007) {
+              this.setState({ errorTip: localization['用户名或密码不正确'] });
+            } else {
+              if (json.msg === 'Invalid Credentials') {
+                this.setState({ errorTip: localization['用户名或密码不正确'] });
+              } else {
+                this.setState({ errorTip: json.msg });
+              }
             }
           }
         })
@@ -67,23 +95,6 @@ class SignIn extends Component {
           this.setState({ disabled: false });
         });
     }
-  };
-
-  getValidImg = () => {
-    const { username } = this.state;
-    this.request('/valid/createCode', {
-      method: 'GET',
-      body: {
-        username,
-        type: 'login'
-      }
-    }).then(json => {
-      if (json.code === 10000000) {
-        this.setState({ imgName: json.data.imageName });
-      } else {
-        message.error(json.msg);
-      }
-    });
   };
 
   //获取访问的网址
@@ -104,8 +115,19 @@ class SignIn extends Component {
 
   render() {
     const { localization } = this.props;
-    const { username, password, errorTip, code, imgName, url, disabled } = this.state;
-    const ok = this.state.username && this.state.password;
+    const {
+      username,
+      password,
+      errorTip,
+      requireCaptcha,
+      url,
+      disabled,
+      ncData,
+      scene
+    } = this.state;
+    const ok =
+      this.state.username && this.state.password && (!requireCaptcha || (requireCaptcha && ncData));
+
     return (
       <div className="content">
         <div className="form-box">
@@ -148,31 +170,21 @@ class SignIn extends Component {
                 }}
               />
             </li>
-            {imgName && [
+            {requireCaptcha && (
               <li key="code">
-                <i className="iconfont icon-yanzhengma2" />
-                <input
-                  type="text"
-                  className="text"
-                  id="code"
-                  value={code}
-                  onChange={this.inputValue}
-                  placeholder={localization['验证码']}
-                  onKeyPress={e => {
-                    if (e.which === 13) this.handleSubmit();
+                <NoCaptcha
+                  scene={scene}
+                  ncCallback={(appKey, token, ncData, nc) => {
+                    if (ncData) {
+                      this.setState({ appKey, token, ncData, nc });
+                    } else {
+                      message.destroy();
+                      message.error('请先进行验证', 1);
+                    }
                   }}
                 />
-                <img
-                  src={`${IMAGES_ADDRESS}/image/view/${imgName}`}
-                  className="inner-graphic"
-                  alt={localization['图片验证码']}
-                  onClick={this.getValidImg}
-                />
-              </li>,
-              <li key="tips" style={{ textAlign: 'right' }}>
-                {localization['点击图片刷新验证码']}
               </li>
-            ]}
+            )}
             <li>
               <input
                 type="submit"
