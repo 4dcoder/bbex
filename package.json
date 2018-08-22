@@ -65,7 +65,7 @@
   },
   "proxy": {
     "/bbex": {
-      "target": "http://www.ecoexc.com",
+      "target": "http://www.uescoin.com",
       "changeOrigin": true,
       "ws": true
     }

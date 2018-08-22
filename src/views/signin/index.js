@@ -13,7 +13,8 @@ class SignIn extends Component {
     imgName: '',
     errorTip: '',
     code: '',
-    url: ''
+    url: '',
+    disabled: false
   };
 
   request = window.request;
@@ -23,6 +24,7 @@ class SignIn extends Component {
   };
 
   handleSubmit = () => {
+    this.setState({ disabled: true });
     const { localization } = this.props;
     const { username, password, code } = this.state;
     let encrypt = new JSEncrypt();
@@ -36,25 +38,34 @@ class SignIn extends Component {
           password: enPassword,
           code
         }
-      }).then(json => {
-        if (json.code === 10000000) {
-          sessionStorage.setItem('account', JSON.stringify(json.data));
-          this.props.history.push('/trade');
-        } else if (json.code === 10001001) {
-          this.getValidImg();
-          this.setState({ errorTip: json.msg });
-        } else if (json.code === 10001000) {
-
-          if (json.msg === 'Invalid Credentials') {
+      })
+        .then(json => {
+          this.setState({ disabled: false });
+          if (json.code === 10000000) {
+            sessionStorage.setItem('account', JSON.stringify(json.data));
+            this.props.history.push('/trade');
+          } else if (json.code === 10001001) {
+            this.getValidImg();
+            if (json.msg === 'Invalid Credentials') {
+              this.setState({ errorTip: localization['用户名或密码不正确'] });
+            }else {
+              this.setState({ errorTip: json.msg });
+            }
+          } else if (json.code === 10001000) {
+            this.setState({ errorTip: localization['用户名或密码不正确'] });
+          } else if (json.code === 10004007) {
             this.setState({ errorTip: localization['用户名或密码不正确'] });
           } else {
-            this.setState({ errorTip: json.msg });
+            if (json.msg === 'Invalid Credentials') {
+              this.setState({ errorTip: localization['用户名或密码不正确'] });
+            }else {
+              this.setState({ errorTip: json.msg });
+            }
           }
-
-        } else {
-          this.setState({ errorTip: json.msg });
-        }
-      });
+        })
+        .catch(error => {
+          this.setState({ disabled: false });
+        });
     }
   };
 
@@ -93,7 +104,7 @@ class SignIn extends Component {
 
   render() {
     const { localization } = this.props;
-    const { username, password, errorTip, code, imgName, url } = this.state;
+    const { username, password, errorTip, code, imgName, url, disabled } = this.state;
     const ok = this.state.username && this.state.password;
     return (
       <div className="content">
@@ -167,7 +178,7 @@ class SignIn extends Component {
                 type="submit"
                 className={classnames({
                   button: true,
-                  disabled: !ok
+                  disabled: !ok || disabled
                 })}
                 onClick={this.handleSubmit}
                 value={localization['登录']}

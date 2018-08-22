@@ -4,7 +4,7 @@ import "./nc.css";
 const appKey = "FFFF0N0000000000690D";
 
 export default class NoCaptcha extends Component {
-  
+
   loadScript = (callback) => {
     var script = document.createElement("script");
     script.type = "text/javascript";
