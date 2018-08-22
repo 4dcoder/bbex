@@ -1,19 +1,18 @@
-import React, { Component } from 'react';
-import { Modal, Form, Input, Button, message } from 'antd';
-import CodePopup from '../../../components/code-popup';
-import { MAIL_REGEX } from '../../../utils/constants'
+import React, { Component } from "react";
+import { Modal, Form, Input, Button, message } from "antd";
+import CodePopup from "../../../components/vapopup";
+import { MAIL_REGEX } from "../../../utils/constants";
 
 const FormItem = Form.Item;
 
 class Mail extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       number: 59,
       disabled: false,
-      popup: ''
-    }
+      popup: ""
+    };
   }
 
   request = window.request;
@@ -24,18 +23,18 @@ class Mail extends Component {
 
   //绑定邮箱
   mobileBinder = (mail, code) => {
-    this.request('/user/binderEmail', {
-      method: 'POST',
+    this.request("/user/binderEmail", {
+      method: "POST",
       body: {
         mail,
-        code,
+        code
       }
     }).then(json => {
       if (json.code === 10000000) {
         message.success(json.msg);
-        let account = JSON.parse(sessionStorage.getItem('account'));
+        let account = JSON.parse(sessionStorage.getItem("account"));
         account.mail = mail;
-        sessionStorage.setItem('account', JSON.stringify(account));
+        sessionStorage.setItem("account", JSON.stringify(account));
 
         this.props.closeModal();
       } else {
@@ -43,7 +42,7 @@ class Mail extends Component {
         message.warn(json.msg, 1);
       }
     });
-  }
+  };
 
   countDown = () => {
     this.setState({
@@ -61,35 +60,48 @@ class Mail extends Component {
         this.setState({ number: number - 1 });
       }
     }, 1000);
-  }
+  };
 
   closePopup = () => {
-    this.setState({popup: ''});
-  }
+    this.setState({ popup: "" });
+  };
 
   // 点击绑定邮箱
   getMailCode = () => {
     const mail = this.props.form.getFieldsValue().mail;
     if (MAIL_REGEX.test(mail)) {
+      let scene = "nc_register";
+      if (
+        window.navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+        )
+      ) {
+        scene = "nc_register_h5";
+      } else {
+        scene = "nc_register";
+      }
       this.setState({
-        popup: <CodePopup
-          flag="mail"
-          mail={mail}
-          type="binder"
-          onCancel={() => {
-            this.closePopup();
-          }}
-          onOk={() => {
-            this.closePopup();
-            this.countDown();
-          }}
-        />
-      })
+        popup: (
+          <CodePopup
+            flag="mail"
+            username={mail}
+            scene={scene}
+            type="binder"
+            onCancel={() => {
+              this.closePopup();
+            }}
+            onOk={() => {
+              this.closePopup();
+              this.countDown();
+            }}
+          />
+        )
+      });
     } else {
       message.destroy();
-      message.info('邮箱格式不正确', 1);
+      message.info("邮箱格式不正确", 1);
     }
-  }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -136,36 +148,36 @@ class Mail extends Component {
         footer={null}
       >
         <Form onSubmit={this.handleSubmit} className="change-password">
-          <FormItem {...formLayoutMobile} label="邮箱" className='code-row'>
-            {getFieldDecorator('mail', {
+          <FormItem {...formLayoutMobile} label="邮箱" className="code-row">
+            {getFieldDecorator("mail", {
               rules: [
-                { required: true, message: '请输入邮箱' },
-                { pattern: MAIL_REGEX, message: '邮箱格式不正确' }
+                { required: true, message: "请输入邮箱" },
+                { pattern: MAIL_REGEX, message: "邮箱格式不正确" }
               ],
-              validateTrigger: 'onBlur'
-            })(<Input size='large'/>)}
+              validateTrigger: "onBlur"
+            })(<Input size="large" />)}
             <Button
               onClick={this.getMailCode}
-              className='get-mobile-code'
+              className="get-mobile-code"
               type="primary"
-              size='large'
+              size="large"
               disabled={disabled}
               style={{ width: 120 }}
             >
-              {!disabled ? '获取验证码' : number + 's'}
+              {!disabled ? "获取验证码" : number + "s"}
             </Button>
           </FormItem>
           <FormItem {...formItemLayout} label="邮箱验证码">
-            {getFieldDecorator('code', {
+            {getFieldDecorator("code", {
               rules: [
-                { required: true, message: '请输入邮箱验证码' },
-                { pattern: /^\d{6}$/, message: '请输入6位数字验证码' }
+                { required: true, message: "请输入邮箱验证码" },
+                { pattern: /^\d{6}$/, message: "请输入6位数字验证码" }
               ],
-              validateTrigger: 'onBlur'
-            })(<Input size='large'/>)}
+              validateTrigger: "onBlur"
+            })(<Input size="large" />)}
           </FormItem>
 
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               type="primary"
               htmlType="submit"

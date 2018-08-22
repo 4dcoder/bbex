@@ -5,7 +5,7 @@ import classnames from "classnames";
 import { JSEncrypt } from "../../utils/jsencrypt.js";
 import { PUBLI_KEY } from "../../utils/constants";
 import NoCaptcha from "../../components/nc";
-import LoginPopup from "../../components/login-popup";
+// import LoginPopup from "../../components/login-popup";
 
 class SignIn extends Component {
   state = {
@@ -67,7 +67,9 @@ class SignIn extends Component {
         .then(json => {
           this.setState({ disabled: false });
           if (json.code === 10000000) {
-            message.success("验证码发送成功", 1);
+            sessionStorage.setItem("account", JSON.stringify(json.data));
+            this.props.history.push("/trade");
+            /*  message.success("验证码发送成功", 1);
             const { tempToken, tempTokenType } = json.data;
             this.setState({
               popup: (
@@ -83,7 +85,7 @@ class SignIn extends Component {
                   }}
                 />
               )
-            });
+            }); */
           } else {
             const { nc } = this.state;
             if (nc) {
