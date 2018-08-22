@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { Form, Input, Button, message } from 'antd'
-import { JSEncrypt } from '../../utils/jsencrypt.js';
-import CodePopup from '../../components/code-popup';
-import { PUBLI_KEY, PWD_REGEX } from '../../utils/constants';
-import './mobile.css';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { Form, Input, Button, message } from "antd";
+import { JSEncrypt } from "../../utils/jsencrypt.js";
+import CodePopup from "../../components/vapopup";
+import { PUBLI_KEY, PWD_REGEX } from "../../utils/constants";
+import "./mobile.css";
 
 const FormItem = Form.Item;
 
@@ -12,11 +12,11 @@ class Mobile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      popup: '',
+      popup: "",
       confirmDirty: false,
       disabled: false,
-      number: 59,
-    }
+      number: 59
+    };
   }
 
   request = window.request;
@@ -43,17 +43,28 @@ class Mobile extends Component {
 
   closeModal = () => {
     this.setState({ popup: "" });
-  }
+  };
 
   //获取手机验证码
   getMobileCode = () => {
     const { mobile } = this.props.form.getFieldsValue();
     if (/^1[34578][0-9]{9}$/.test(mobile)) {
+      let scene = "nc_register";
+      if (
+        window.navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+        )
+      ) {
+        scene = "nc_register_h5";
+      } else {
+        scene = "nc_register";
+      }
       this.setState({
         popup: (
           <CodePopup
             flag="mobile"
-            mail={mobile}
+            username={mobile}
+            scene={scene}
             type="reset"
             onCancel={() => {
               this.closeModal();
@@ -67,28 +78,30 @@ class Mobile extends Component {
       });
     } else {
       message.destroy();
-      message.error('手机号不能为空', 1);
+      message.error("手机号不能为空", 1);
     }
   };
 
   //重置密码
   resetPwd = (mobile, password, code) => {
-    this.request('/user/mobile/resetpwd', {
+    this.request("/user/mobile/resetpwd", {
       body: {
-        mobile, password, code
+        mobile,
+        password,
+        code
       }
     }).then(json => {
       if (json.code === 10000000) {
         message.success(json.msg, 1);
-        this.props.history.push('/signin');
+        this.props.history.push("/signin");
       } else {
         message.destroy();
         message.warn(json.msg, 1);
       }
     });
-  }
+  };
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
@@ -99,20 +112,19 @@ class Mobile extends Component {
         const enPassword = encrypt.encrypt(password);
 
         this.resetPwd(mobile, enPassword, code);
-
       }
     });
-  }
+  };
 
   handlePre = () => {
     const { mobile } = this.props.form.getFieldsValue();
-    this.props.history.push('/reset', { mobile });
-  }
+    this.props.history.push("/reset", { mobile });
+  };
 
   comparePassword = (rule, value, callback) => {
     const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('两次密码不一致');
+    if (value && value !== form.getFieldValue("password")) {
+      callback("两次密码不一致");
     } else {
       callback();
     }
@@ -125,7 +137,7 @@ class Mobile extends Component {
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+      form.validateFields(["confirm"], { force: true });
     }
     callback();
   };
@@ -135,19 +147,23 @@ class Mobile extends Component {
     const { getFieldDecorator } = form;
     const { disabled, number, popup } = this.state;
 
-    let mobileValue = '';
+    let mobileValue = "";
     if (location.search) {
-      mobileValue = location.search.substr(1).split('=')[1];
+      mobileValue = location.search.substr(1).split("=")[1];
     }
 
     return (
       <div className="reset-mobile">
-        <div className='content'>
-          <h3 className='title'>重置密码</h3>
+        <div className="content">
+          <h3 className="title">重置密码</h3>
           <Form onSubmit={this.handleSubmit}>
-            <Input style={{ display: 'none' }} type="password" autocomplete="off" />
+            <Input
+              style={{ display: "none" }}
+              type="password"
+              autocomplete="off"
+            />
             <FormItem>
-              {getFieldDecorator('mobile', {
+              {getFieldDecorator("mobile", {
                 initialValue: mobileValue
               })(
                 <Input
@@ -159,16 +175,16 @@ class Mobile extends Component {
             </FormItem>
 
             <FormItem className="mail-code">
-              {getFieldDecorator('code', {
+              {getFieldDecorator("code", {
                 rules: [
-                  { required: true, message: '请输入手机验证码' },
-                  { pattern: /^\d{6}$/, message: '请输入6位手机验证码' }
+                  { required: true, message: "请输入手机验证码" },
+                  { pattern: /^\d{6}$/, message: "请输入6位手机验证码" }
                 ],
-                validateTrigger: 'onBlur'
+                validateTrigger: "onBlur"
               })(
                 <Input
                   size="large"
-                  placeholder={'手机验证码'}
+                  placeholder={"手机验证码"}
                   prefix={<i className="iconfont icon-yanzhengma2" />}
                 />
               )}
@@ -179,48 +195,54 @@ class Mobile extends Component {
                 disabled={disabled}
                 className="mail-code-btn"
               >
-                {!disabled ? '获取手机验证码' : number + 's'}
+                {!disabled ? "获取手机验证码" : number + "s"}
               </Button>
             </FormItem>
 
             <FormItem>
-              {getFieldDecorator('password', {
+              {getFieldDecorator("password", {
                 rules: [
-                  { required: true, message: '请输入密码' },
-                  { pattern: PWD_REGEX, message: '输入8-20位密码 包含数字,字母' },
+                  { required: true, message: "请输入密码" },
+                  {
+                    pattern: PWD_REGEX,
+                    message: "输入8-20位密码 包含数字,字母"
+                  },
                   { validator: this.validateToNextPassword }
                 ],
-                validateTrigger: 'onBlur'
+                validateTrigger: "onBlur"
               })(
                 <Input
                   size="large"
                   type="password"
-                  autocomplete='off'
-                  placeholder={'密码'}
+                  autocomplete="off"
+                  placeholder={"密码"}
                   prefix={<i className="iconfont icon-suo" />}
                 />
               )}
             </FormItem>
             <FormItem>
-              {getFieldDecorator('confirm', {
+              {getFieldDecorator("confirm", {
                 rules: [
-                  { required: true, message: '请输入确认密码' },
+                  { required: true, message: "请输入确认密码" },
                   { validator: this.comparePassword }
                 ],
-                validateTrigger: 'onBlur'
+                validateTrigger: "onBlur"
               })(
                 <Input
                   size="large"
                   type="password"
-                  autocomplete='off'
-                  placeholder={'确认密码'}
+                  autocomplete="off"
+                  placeholder={"确认密码"}
                   onBlur={this.handleConfirmBlur}
                   prefix={<i className="iconfont icon-suo" />}
                 />
               )}
             </FormItem>
 
-            <div className="submit-btn" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div
+              className="submit-btn"
+              style={{ display: "flex", justifyContent: "center" }}
+            >
               <Button
                 type="primary"
                 size="large"

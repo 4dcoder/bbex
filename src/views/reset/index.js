@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Tabs } from 'antd';
 import { MAIL_REGEX } from '../../utils/constants';
-import CodePopup from '../../components/code-popup';
+import CodePopup from '../../components/vapopup';
 import classnames from 'classnames';
 
 const TabPane = Tabs.TabPane;
@@ -59,11 +59,22 @@ class Reset extends Component {
 
   getMailValidCode = () => {
     if (MAIL_REGEX.test(this.state.mail)) {
+      let scene = "nc_register";
+      if (
+        window.navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+        )
+      ) {
+        scene= "nc_register_h5";
+      }else{
+        scene= "nc_register";
+      }
       this.setState({
         popup: (
           <CodePopup
             flag="mail"
-            mail={this.state.mail}
+            username={this.state.mail}
+            scene={scene}
             type="reset"
             onCancel={() => {
               this.closePopup();
