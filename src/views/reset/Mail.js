@@ -73,7 +73,6 @@ class SubmitRest extends Component {
                                 <input
                                     type="password"
                                     style={{display: 'none'}}
-                                    autocomplete='off'
                                 />
                                 <li>
                                     <i className="iconfont icon-youxiang" />
@@ -84,7 +83,6 @@ class SubmitRest extends Component {
                                         value={password}
                                         onChange={this.inputValue}
                                         placeholder="新密码"
-                                        autocomplete='off'
                                     />
                                 </li>
                                 <li>
@@ -96,7 +94,6 @@ class SubmitRest extends Component {
                                         value={repassword}
                                         onChange={this.inputValue}
                                         placeholder="确认密码"
-                                        autocomplete='off'
                                     />
                                 </li>
                                 <li>
