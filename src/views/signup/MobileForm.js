@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
-import { Form, Input, Button, Checkbox, message } from 'antd';
-import { getQueryString } from '../../utils';
-import { JSEncrypt } from '../../utils/jsencrypt.js';
-import { PUBLI_KEY, PWD_REGEX } from '../../utils/constants';
-import CodePopup from '../../components/vapopup';
-import './signup.css';
+import React, { Component } from "react";
+import { withRouter, Link } from "react-router-dom";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import { getQueryString } from "../../utils";
+import { JSEncrypt } from "../../utils/jsencrypt.js";
+import { PUBLI_KEY, PWD_REGEX } from "../../utils/constants";
+import NoCaptcha from "../../components/nc";
+import "./signup.css";
 
 const FormItem = Form.Item;
 
@@ -16,9 +16,17 @@ class MobileForm extends Component {
       registerType: 1,
       confirmDirty: false,
       disabled: false,
-      inviteCode: getQueryString('inviteCode') || '',
-      number: 59,
-      popup: ''
+      inviteCode: getQueryString("inviteCode") || "",
+      number: 90,
+      appKey: "",
+      token: "",
+      ncData: "",
+      nc: "",
+      scene: window.navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      )
+        ? "nc_register_h5"
+        : "nc_register"
     };
   }
 
@@ -31,7 +39,7 @@ class MobileForm extends Component {
       if (number === 0) {
         clearInterval(this.timer);
         this.setState({
-          number: 59,
+          number: 90,
           disabled: false
         });
       } else {
@@ -44,45 +52,68 @@ class MobileForm extends Component {
     clearInterval(this.timer);
   }
 
-  closeModal = () => {
-    this.setState({ popup: '' });
+  sendMobileCode = () => {
+    const { appKey, token, ncData, scene } = this.state;
+    const { csessionid, sig } = ncData;
+    const mobile = this.props.form.getFieldsValue().mobile;
+    this.request(`/mobile/sendCode`, {
+      body: {
+        mobile,
+        type: "register",
+        source: "pc",
+        appKey,
+        sessionId: csessionid,
+        sig,
+        vtoken: token,
+        scene
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success(json.msg);
+      } else {
+        message.destroy();
+        message.warn(json.msg);
+      }
+    });
   };
 
   getMobileCode = () => {
+    const { ncData, nc, disabled } = this.state;
     const mobile = this.props.form.getFieldsValue().mobile;
     if (/^1[34578][0-9]{9}$/.test(mobile)) {
-      let scene = "nc_register";
-      if (
-        window.navigator.userAgent.match(
-          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-        )
-      ) {
-        scene= "nc_register_h5";
-      }else{
-        scene= "nc_register";
+      if (ncData && !disabled) {
+        this.sendMobileCode();
+        this.countDown();
+        if (nc) {
+          nc.reload();
+          this.setState({ ncData: "" });
+        }
+      } else {
+        if (!disabled) {
+          this.props.form.setFields({
+            noCaptche: {
+              errors: [new Error("请进行滑动验证")]
+            }
+          });
+        }
       }
-      this.setState({
-        popup: (
-          <CodePopup
-            flag="mobile"
-            username={mobile}
-            type="register"
-            scene={scene}
-            onCancel={() => {
-              this.closeModal();
-            }}
-            onOk={() => {
-              this.closeModal();
-              this.countDown();
-            }}
-          />
-        )
-      });
     } else {
       const { localization } = this.props;
       this.props.form.setFields({
         mobile: {
-          errors: [new Error(localization['请输入正确的手机号'])]
+          errors: [new Error(localization["请输入正确的手机号"])]
+        }
+      });
+    }
+  };
+
+  //滑动验证
+  ncLoaded = (appKey, token, ncData, nc) => {
+    if (ncData) {
+      this.setState({ appKey, token, ncData, nc });
+      this.props.form.setFields({
+        noCaptche: {
+          errors: []
         }
       });
     }
@@ -90,8 +121,8 @@ class MobileForm extends Component {
 
   comparePassword = (rule, value, callback) => {
     const { localization, form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback(localization['两次密码不一致']);
+    if (value && value !== form.getFieldValue("password")) {
+      callback(localization["两次密码不一致"]);
     } else {
       callback();
     }
@@ -104,7 +135,7 @@ class MobileForm extends Component {
   validateToNextPassword = (rule, value, callback) => {
     const form = this.props.form;
     if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
+      form.validateFields(["confirm"], { force: true });
     }
     callback();
   };
@@ -124,14 +155,14 @@ class MobileForm extends Component {
         } else {
           const { localization } = this.props;
           message.destroy();
-          message.warn(localization['请先同意服务条款']);
+          message.warn(localization["请先同意服务条款"]);
         }
       }
     });
   };
 
   register = ({ registerType, mobile, enPassword, code, inviteCode }) => {
-    this.request('/user/register', {
+    this.request("/user/register", {
       body: {
         registerType,
         mobile,
@@ -142,8 +173,8 @@ class MobileForm extends Component {
     }).then(json => {
       if (json.code === 10000000) {
         const { localization } = this.props;
-        message.success(localization['恭喜你，注册成功！']);
-        this.props.history.push('/signin');
+        message.success(localization["恭喜你，注册成功！"]);
+        this.props.history.push("/signin");
       } else {
         message.destroy();
         message.error(json.msg);
@@ -154,107 +185,131 @@ class MobileForm extends Component {
   render() {
     const { localization, form } = this.props;
     const { getFieldDecorator } = form;
-    const { disabled, number, popup, inviteCode } = this.state;
+    const { disabled, number, inviteCode, scene } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit} className="signup-form">
-        <Input style={{ display: 'none' }} type="password" />
+        <Input style={{ display: "none" }} type="password" />
         <FormItem>
-          {getFieldDecorator('mobile', {
+          {getFieldDecorator("mobile", {
             rules: [
-              { required: true, message: localization['请输入手机号'] },
-              { pattern: /^1[34578][0-9]{9}$/, message: localization['手机号不正确'] }
+              { required: true, message: localization["请输入手机号"] },
+              {
+                pattern: /^1[34578][0-9]{9}$/,
+                message: localization["手机号不正确"]
+              }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
-              placeholder={localization['手机号']}
+              placeholder={localization["手机号"]}
               prefix={<i className="iconfont icon-shouji54" />}
             />
           )}
         </FormItem>
-        <FormItem>
-          {getFieldDecorator('password', {
+        <FormItem className="mail-code">
+          {getFieldDecorator("noCaptche")(
+            <NoCaptcha
+              domID="nc_register_mobile"
+              scene={scene}
+              ncCallback={(appKey, token, ncData, nc) => {
+                this.ncLoaded(appKey, token, ncData, nc);
+              }}
+            />
+          )}
+        </FormItem>
+        <FormItem className="mail-code">
+          {getFieldDecorator("code", {
             rules: [
-              { required: true, message: localization['请输入密码'] },
-              { pattern: PWD_REGEX, message: localization['输入8-20位密码 包含数字,字母'] },
+              { required: true, message: localization["请输入手机验证码"] },
+              {
+                pattern: /^\d{6}$/,
+                message: localization["请输入6位手机验证码"]
+              }
+            ],
+            validateTrigger: "onBlur"
+          })(
+            <Input
+              size="large"
+              placeholder={localization["手机验证码"]}
+              prefix={<i className="iconfont icon-yanzhengma2" />}
+            />
+          )}
+          <div onClick={this.getMobileCode} className="mail-code-btn">
+            {!disabled ? "获取验证码" : number + "S"}
+          </div>
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator("password", {
+            rules: [
+              { required: true, message: localization["请输入密码"] },
+              {
+                pattern: PWD_REGEX,
+                message: localization["输入8-20位密码 包含数字,字母"]
+              },
               { validator: this.validateToNextPassword }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
               type="password"
-              placeholder={localization['密码']}
+              placeholder={localization["密码"]}
               prefix={<i className="iconfont icon-suo" />}
             />
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('confirm', {
+          {getFieldDecorator("confirm", {
             rules: [
-              { required: true, message: localization['请输入确认密码'] },
+              { required: true, message: localization["请输入确认密码"] },
               { validator: this.comparePassword }
             ],
-            validateTrigger: 'onBlur'
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
               type="password"
-              placeholder={localization['确认密码']}
+              placeholder={localization["确认密码"]}
               onBlur={this.handleConfirmBlur}
               prefix={<i className="iconfont icon-suo" />}
             />
           )}
         </FormItem>
-        <FormItem className="mail-code">
-          {getFieldDecorator('code', {
-            rules: [
-              { required: true, message: localization['请输入手机验证码'] },
-              { pattern: /^\d{6}$/, message: localization['请输入6位手机验证码'] }
-            ],
-            validateTrigger: 'onBlur'
-          })(
-            <Input
-              size="large"
-              placeholder={localization['手机验证码']}
-              prefix={<i className="iconfont icon-yanzhengma2" />}
-            />
-          )}
-          <Button
-            size="large"
-            onClick={this.getMobileCode}
-            type="primary"
-            disabled={disabled}
-            className="mail-code-btn"
-          >
-            {!disabled ? localization['获取手机验证码'] : number + 's'}
-          </Button>
-        </FormItem>
+
         <FormItem>
-          {getFieldDecorator('inviteCode', {
+          {getFieldDecorator("inviteCode", {
             initialValue: inviteCode,
-            rules: [{ pattern: /^\d+$/, message: localization['请输入数字邀请码'] }],
-            validateTrigger: 'onBlur'
+            rules: [
+              { pattern: /^\d+$/, message: localization["请输入数字邀请码"] }
+            ],
+            validateTrigger: "onBlur"
           })(
             <Input
               size="large"
-              placeholder={localization['邀请码']}
+              placeholder={localization["邀请码"]}
               prefix={<i className="iconfont icon-yaoqingma" />}
             />
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('agreement', {
-            valuePropName: 'checked',
+          {getFieldDecorator("agreement", {
+            valuePropName: "checked",
             initialValue: true
-          })(<Checkbox className="agree-text">{localization['我已阅读并同意']}</Checkbox>)}
+          })(
+            <Checkbox className="agree-text">
+              {localization["我已阅读并同意"]}
+            </Checkbox>
+          )}
           <Link to="/agreement" className="link-agree" target="_blank">
-            {localization['服务条款']}
+            {localization["服务条款"]}
           </Link>
         </FormItem>
-        <div className="submit-btn" style={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          className="submit-btn"
+          style={{ display: "flex", justifyContent: "center" }}
+        >
           <Button
             type="primary"
             htmlType="submit"
@@ -262,10 +317,9 @@ class MobileForm extends Component {
             onClick={this.handleSubmit}
             style={{ width: 400 }}
           >
-            {localization['注册']}
+            {localization["注册"]}
           </Button>
         </div>
-        {popup}
       </Form>
     );
   }

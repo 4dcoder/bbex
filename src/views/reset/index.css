@@ -1,0 +1,12 @@
+.reset-mail-form{
+  padding-top: 20px;
+}
+.reset-mail-form .ant-input-affix-wrapper .ant-input:not(:first-child) {
+  padding-left: 40px;
+}
+.reset-mail-form .iconfont {
+  color: #fff;
+}
+.reset-mail-form .ant-form-explain{
+  text-align: left;
+}

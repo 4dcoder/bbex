@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { JSEncrypt } from "../../utils/jsencrypt.js";
-import CodePopup from "../../components/vapopup";
+import NoCaptcha from "../../components/nc";
 import { PUBLI_KEY, PWD_REGEX } from "../../utils/constants";
 import "./mobile.css";
 
@@ -15,7 +15,16 @@ class Mobile extends Component {
       popup: "",
       confirmDirty: false,
       disabled: false,
-      number: 59
+      number: 90,
+      appKey: "",
+      token: "",
+      ncData: "",
+      nc: "",
+      scene: window.navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      )
+        ? "nc_register_h5"
+        : "nc_register"
     };
   }
 
@@ -32,7 +41,7 @@ class Mobile extends Component {
       if (number === 0) {
         clearInterval(this.timer);
         this.setState({
-          number: 59,
+          number: 90,
           disabled: false
         });
       } else {
@@ -45,40 +54,72 @@ class Mobile extends Component {
     this.setState({ popup: "" });
   };
 
+  
+  sendMobileCode = () => {
+    const { appKey, token, ncData, scene } = this.state;
+    const { csessionid, sig } = ncData;
+    const mobile = this.props.form.getFieldsValue().mobile;
+    this.request(`/mobile/sendCode`, {
+      body: {
+        mobile,
+        type: "reset",
+        source: "pc",
+        appKey,
+        sessionId: csessionid,
+        sig,
+        vtoken: token,
+        scene
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success(json.msg);
+      } else {
+        message.destroy();
+        message.warn(json.msg);
+      }
+    });
+  };
+
   //获取手机验证码
   getMobileCode = () => {
     const { mobile } = this.props.form.getFieldsValue();
+    const { ncData, nc, disabled } = this.state;
     if (/^1[34578][0-9]{9}$/.test(mobile)) {
-      let scene = "nc_register";
-      if (
-        window.navigator.userAgent.match(
-          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-        )
-      ) {
-        scene = "nc_register_h5";
+      if (ncData && !disabled) {
+        this.sendMobileCode();
+        this.countDown();
+        if (nc) {
+          nc.reload();
+          this.setState({ ncData: "" });
+        }
       } else {
-        scene = "nc_register";
+        if (!disabled) {
+          this.props.form.setFields({
+            noCaptche: {
+              errors: [new Error("请进行滑动验证")]
+            }
+          });
+        }
       }
-      this.setState({
-        popup: (
-          <CodePopup
-            flag="mobile"
-            username={mobile}
-            scene={scene}
-            type="reset"
-            onCancel={() => {
-              this.closeModal();
-            }}
-            onOk={() => {
-              this.closeModal();
-              this.countDown();
-            }}
-          />
-        )
-      });
     } else {
-      message.destroy();
-      message.error("手机号不能为空", 1);
+      const { localization } = this.props;
+      this.props.form.setFields({
+        mobile: {
+          errors: [new Error(localization["请输入正确的手机号"])]
+        }
+      });
+    }
+  };
+
+  //滑动验证
+  ncLoaded = (appKey, token, ncData, nc) => {
+    if (ncData) {
+      this.setState({ appKey, token, ncData, nc });
+      this.props.form.setFields({
+        noCaptche: {
+          errors: []
+        }
+      });
     }
   };
 
@@ -145,7 +186,7 @@ class Mobile extends Component {
   render() {
     const { form, location } = this.props;
     const { getFieldDecorator } = form;
-    const { disabled, number, popup } = this.state;
+    const { disabled, number, scene } = this.state;
 
     let mobileValue = "";
     if (location.search) {
@@ -173,6 +214,17 @@ class Mobile extends Component {
                 />
               )}
             </FormItem>
+            <FormItem className="mail-code">
+              {getFieldDecorator("noCaptche")(
+                <NoCaptcha
+                  domID="nc_register_mobile"
+                  scene={scene}
+                  ncCallback={(appKey, token, ncData, nc) => {
+                    this.ncLoaded(appKey, token, ncData, nc);
+                  }}
+                />
+              )}
+            </FormItem>
 
             <FormItem className="mail-code">
               {getFieldDecorator("code", {
@@ -188,15 +240,9 @@ class Mobile extends Component {
                   prefix={<i className="iconfont icon-yanzhengma2" />}
                 />
               )}
-              <Button
-                size="large"
-                onClick={this.getMobileCode}
-                type="primary"
-                disabled={disabled}
-                className="mail-code-btn"
-              >
-                {!disabled ? "获取手机验证码" : number + "s"}
-              </Button>
+              <div onClick={this.getMobileCode} className="mail-code-btn">
+                {!disabled ? "获取验证码" : number + "S"}
+              </div>
             </FormItem>
 
             <FormItem>
@@ -263,7 +309,6 @@ class Mobile extends Component {
             </div>
           </Form>
         </div>
-        {popup}
       </div>
     );
   }

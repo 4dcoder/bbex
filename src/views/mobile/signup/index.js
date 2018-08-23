@@ -5,7 +5,7 @@ import { getQueryString } from "../../../utils";
 import request from "../../../utils/request";
 import { JSEncrypt } from "../../../utils/jsencrypt.js";
 import { PUBLI_KEY, PWD_REGEX } from "../../../utils/constants";
-import CodePopup from "../../../components/vapopup";
+import NoCaptcha from "../../../components/nc";
 import "./signup.css";
 
 const FormItem = Form.Item;
@@ -18,8 +18,16 @@ class MobileForm extends Component {
       confirmDirty: false,
       disabled: false,
       inviteCode: getQueryString("inviteCode") || "",
-      number: 59,
-      popup: ""
+      number: 90,
+      appKey: "",
+      token: "",
+      ncData: "",
+      nc: "",
+      scene: window.navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      )
+        ? "nc_register_h5"
+        : "nc_register"
     };
   }
 
@@ -30,7 +38,7 @@ class MobileForm extends Component {
       if (number === 0) {
         clearInterval(this.timer);
         this.setState({
-          number: 59,
+          number: 90,
           disabled: false
         });
       } else {
@@ -43,48 +51,69 @@ class MobileForm extends Component {
     clearInterval(this.timer);
   }
 
-  closeModal = () => {
-    this.setState({ popup: "" });
+  sendMobileCode = () => {
+    const { appKey, token, ncData, scene } = this.state;
+    const { csessionid, sig } = ncData;
+    const mobile = this.props.form.getFieldsValue().mobile;
+    request(`/mobile/sendCode`, {
+      body: {
+        mobile,
+        type: "register",
+        source: "pc",
+        appKey,
+        sessionId: csessionid,
+        sig,
+        vtoken: token,
+        scene
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success(json.msg);
+      } else {
+        message.destroy();
+        message.warn(json.msg);
+      }
+    });
   };
 
   getMobileCode = () => {
-    if (!this.state.disabled) {
-      const mobile = this.props.form.getFieldsValue().mobile;
-      if (/^1[34578][0-9]{9}$/.test(mobile)) {
-        let scene = "nc_register";
-        if (
-          window.navigator.userAgent.match(
-            /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-          )
-        ) {
-          scene = "nc_register_h5";
-        } else {
-          scene = "nc_register";
+    const { ncData, nc, disabled } = this.state;
+    const mobile = this.props.form.getFieldsValue().mobile;
+    if (/^1[34578][0-9]{9}$/.test(mobile)) {
+      if (ncData && !disabled) {
+        this.sendMobileCode();
+        this.countDown();
+        if (nc) {
+          nc.reload();
+          this.setState({ ncData: "" });
         }
-        this.setState({
-          popup: (
-            <CodePopup
-              flag="mobile"
-              username={mobile}
-              type="register"
-              scene={scene}
-              onCancel={() => {
-                this.closeModal();
-              }}
-              onOk={() => {
-                this.closeModal();
-                this.countDown();
-              }}
-            />
-          )
-        });
       } else {
-        this.props.form.setFields({
-          mobile: {
-            errors: [new Error("请输入正确的手机号")]
-          }
-        });
+        if (!disabled) {
+          this.props.form.setFields({
+            noCaptche: {
+              errors: [new Error("请进行滑动验证")]
+            }
+          });
+        }
       }
+    } else {
+      this.props.form.setFields({
+        mobile: {
+          errors: [new Error("请输入正确的手机号")]
+        }
+      });
+    }
+  };
+
+  //滑动验证
+  ncLoaded = (appKey, token, ncData, nc) => {
+    if (ncData) {
+      this.setState({ appKey, token, ncData, nc });
+      this.props.form.setFields({
+        noCaptche: {
+          errors: []
+        }
+      });
     }
   };
 
@@ -151,7 +180,7 @@ class MobileForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { disabled, number, popup, inviteCode } = this.state;
+    const { disabled, number, inviteCode, scene } = this.state;
 
     return (
       <div className="mobile-signin">
@@ -171,6 +200,35 @@ class MobileForm extends Component {
                 prefix={<i className="iconfont icon-shouji54" />}
               />
             )}
+          </FormItem>
+          <FormItem className="mail-code">
+            {getFieldDecorator("noCaptche")(
+              <NoCaptcha
+                domID="nc_register_mobile"
+                scene={scene}
+                ncCallback={(appKey, token, ncData, nc) => {
+                  this.ncLoaded(appKey, token, ncData, nc);
+                }}
+              />
+            )}
+          </FormItem>
+          <FormItem className="mail-code">
+            {getFieldDecorator("code", {
+              rules: [
+                { required: true, message: "请输入手机验证码" },
+                { pattern: /^\d{6}$/, message: "请输入6位手机验证码" }
+              ],
+              validateTrigger: "onBlur"
+            })(
+              <Input
+                size="large"
+                placeholder="手机验证码"
+                prefix={<i className="iconfont icon-yanzhengma2" />}
+              />
+            )}
+            <div onClick={this.getMobileCode} className="mail-code-btn">
+              {!disabled ? "获取验证码" : number + "S"}
+            </div>
           </FormItem>
           <FormItem>
             {getFieldDecorator("password", {
@@ -206,29 +264,7 @@ class MobileForm extends Component {
               />
             )}
           </FormItem>
-          <FormItem className="mail-code">
-            {getFieldDecorator("code", {
-              rules: [
-                { required: true, message: "请输入手机验证码" },
-                { pattern: /^\d{6}$/, message: "请输入6位手机验证码" }
-              ],
-              validateTrigger: "onBlur"
-            })(
-              <Input
-                size="large"
-                placeholder="手机验证码"
-                prefix={<i className="iconfont icon-yanzhengma2" />}
-              />
-            )}
-            <Button
-              size="large"
-              onClick={this.getMobileCode}
-              type={disabled ? "count-down" : "primary"}
-              className="mail-code-btn"
-            >
-              {!disabled ? "获取手机验证码" : number + "s"}
-            </Button>
-          </FormItem>
+
           <FormItem style={{ display: "none" }}>
             {getFieldDecorator("inviteCode", {
               initialValue: inviteCode,
@@ -265,7 +301,6 @@ class MobileForm extends Component {
               注册
             </Button>
           </div>
-          {popup}
         </Form>
       </div>
     );

@@ -4,7 +4,7 @@ import { Form, Input, Button, Checkbox, message } from "antd";
 import { getQueryString } from "../../utils";
 import { JSEncrypt } from "../../utils/jsencrypt.js";
 import { PUBLI_KEY, PWD_REGEX, MAIL_REGEX } from "../../utils/constants";
-import CodePopup from "../../components/vapopup";
+import NoCaptcha from "../../components/nc";
 import "./signup.css";
 
 const FormItem = Form.Item;
@@ -13,16 +13,28 @@ class MailForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      number: 90,
+      disabled: false,
       registerType: 2,
       confirmDirty: false,
-      disabled: false,
       inviteCode: getQueryString("inviteCode") || "",
-      number: 59,
-      popup: ""
+      appKey: "",
+      token: "",
+      ncData: "",
+      nc: "",
+      scene: window.navigator.userAgent.match(
+        /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+      )
+        ? "nc_register_h5"
+        : "nc_register"
     };
   }
 
   request = window.request;
+
+  componentDidMount() {
+    clearInterval(this.timer);
+  }
 
   countDown = () => {
     this.setState({ disabled: true });
@@ -31,7 +43,7 @@ class MailForm extends Component {
       if (number === 0) {
         clearInterval(this.timer);
         this.setState({
-          number: 59,
+          number: 90,
           disabled: false
         });
       } else {
@@ -40,49 +52,70 @@ class MailForm extends Component {
     }, 1000);
   };
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
-  closeModal = () => {
-    this.setState({ popup: "" });
-  };
-
   getMailCode = () => {
+    const { ncData, nc, disabled } = this.state;
     const mail = this.props.form.getFieldsValue().mail;
     if (MAIL_REGEX.test(mail)) {
-      let scene = "nc_register";
-      if (
-        window.navigator.userAgent.match(
-          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
-        )
-      ) {
-        scene= "nc_register_h5";
-      }else{
-        scene= "nc_register";
+      if (ncData && !disabled) {
+        this.sendMailCode();
+        this.countDown();
+        if (nc) {
+          nc.reload();
+          this.setState({ ncData: "" });
+        }
+      } else {
+        if (!disabled) {
+          this.props.form.setFields({
+            noCaptche: {
+              errors: [new Error("请进行滑动验证")]
+            }
+          });
+        }
       }
-      this.setState({
-        popup: (
-          <CodePopup
-            flag="mail"
-            username={mail}
-            type="register"
-            scene={scene}
-            onCancel={() => {
-              this.closeModal();
-            }}
-            onOk={() => {
-              this.closeModal();
-              this.countDown();
-            }}
-          />
-        )
-      });
     } else {
       const { localization } = this.props;
       this.props.form.setFields({
         mail: {
           errors: [new Error(localization["请输入正确的邮箱"])]
+        }
+      });
+    }
+  };
+
+  //发送邮箱验证码
+
+  sendMailCode = () => {
+    const { appKey, token, ncData, scene } = this.state;
+    const { csessionid, sig } = ncData;
+    const mail = this.props.form.getFieldsValue().mail;
+    this.request(`/mail/sendCode`, {
+      body: {
+        mail,
+        type: "register",
+        source: "pc",
+        appKey,
+        sessionId: csessionid,
+        sig,
+        vtoken: token,
+        scene
+      }
+    }).then(json => {
+      if (json.code === 10000000) {
+        message.success(json.msg);
+      } else {
+        message.destroy();
+        message.warn(json.msg);
+      }
+    });
+  };
+
+  //滑动验证
+  ncLoaded = (appKey, token, ncData, nc) => {
+    if (ncData) {
+      this.setState({ appKey, token, ncData, nc });
+      this.props.form.setFields({
+        noCaptche: {
+          errors: []
         }
       });
     }
@@ -162,7 +195,7 @@ class MailForm extends Component {
   render() {
     const { localization, form } = this.props;
     const { getFieldDecorator } = form;
-    const { disabled, number, popup, inviteCode } = this.state;
+    const { inviteCode, scene, disabled, number } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit} className="signup-form">
@@ -182,6 +215,39 @@ class MailForm extends Component {
               prefix={<i className="iconfont icon-youxiang" />}
             />
           )}
+        </FormItem>
+
+        <FormItem className="mail-code">
+          {getFieldDecorator("noCaptche")(
+            <NoCaptcha
+              domID='nc_register_mail'
+              scene={scene}
+              ncCallback={(appKey, token, ncData, nc) => {
+                this.ncLoaded(appKey, token, ncData, nc);
+              }}
+            />
+          )}
+        </FormItem>
+        <FormItem className="mail-code">
+          {getFieldDecorator("code", {
+            rules: [
+              { required: true, message: localization["请输入邮箱验证码"] },
+              {
+                pattern: /^\w{6}$/,
+                message: localization["请输入6位邮箱验证码"]
+              }
+            ],
+            validateTrigger: "onBlur"
+          })(
+            <Input
+              size="large"
+              placeholder={localization["邮箱验证码"]}
+              prefix={<i className="iconfont icon-yanzhengma2" />}
+            />
+          )}
+          <div onClick={this.getMailCode} className="mail-code-btn">
+            {!disabled ? "获取验证码" : number + "S"}
+          </div>
         </FormItem>
         <FormItem>
           {getFieldDecorator("password", {
@@ -220,33 +286,7 @@ class MailForm extends Component {
             />
           )}
         </FormItem>
-        <FormItem className="mail-code">
-          {getFieldDecorator("code", {
-            rules: [
-              { required: true, message: localization["请输入邮箱验证码"] },
-              {
-                pattern: /^\w{6}$/,
-                message: localization["请输入6位邮箱验证码"]
-              }
-            ],
-            validateTrigger: "onBlur"
-          })(
-            <Input
-              size="large"
-              placeholder={localization["邮箱验证码"]}
-              prefix={<i className="iconfont icon-yanzhengma2" />}
-            />
-          )}
-          <Button
-            size="large"
-            onClick={this.getMailCode}
-            type="primary"
-            disabled={disabled}
-            className="mail-code-btn"
-          >
-            {!disabled ? localization["获取邮箱验证码"] : number + "s"}
-          </Button>
-        </FormItem>
+
         <FormItem>
           {getFieldDecorator("inviteCode", {
             initialValue: inviteCode,
@@ -289,7 +329,6 @@ class MailForm extends Component {
             {localization["注册"]}
           </Button>
         </div>
-        {popup}
       </Form>
     );
   }

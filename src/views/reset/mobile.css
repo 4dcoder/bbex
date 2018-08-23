@@ -24,12 +24,21 @@
   padding-left: 40px;
 }
 
+.reset-mobile .mail-code input {
+  width: 240px;
+}
+
 .reset-mobile .mail-code-btn{
-  width: 140px;
+  width: 120px;
+  text-align: center;
   position: absolute;
   top: 0;
   right: 0;
-  
+  border: 1px solid #dadada;
+  border-left: none;
+  height: 40px;
+  cursor: pointer;
+  color: #d4a668;
 }
 
 .reset-mobile .code-img{
