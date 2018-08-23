@@ -201,7 +201,6 @@ class Mobile extends Component {
             <Input
               style={{ display: "none" }}
               type="password"
-              autocomplete="off"
             />
             <FormItem>
               {getFieldDecorator("mobile", {
@@ -260,7 +259,6 @@ class Mobile extends Component {
                 <Input
                   size="large"
                   type="password"
-                  autocomplete="off"
                   placeholder={"密码"}
                   prefix={<i className="iconfont icon-suo" />}
                 />
@@ -277,7 +275,6 @@ class Mobile extends Component {
                 <Input
                   size="large"
                   type="password"
-                  autocomplete="off"
                   placeholder={"确认密码"}
                   onBlur={this.handleConfirmBlur}
                   prefix={<i className="iconfont icon-suo" />}
