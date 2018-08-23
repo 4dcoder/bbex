@@ -19,5 +19,7 @@ const {
     host,
     origin
 } = window.location;
-export const IMAGES_ADDRESS = `${protocol}//${host.indexOf('www')===-1 ? `images.${host}`: host.replace('www', 'images')}`;
+// export const IMAGES_ADDRESS = 'http://192.168.2.186:8082';
+export const IMAGES_ADDRESS = `${protocol}//${host.indexOf('www')===-1 ? `images.${host}`: host.replace('www', 'images')}`; // 图片上传地址
+export const IMAGES_URL = 'https://use-images.oss-cn-shenzhen.aliyuncs.com'; // 图片显示地址
 export const WS_PREFIX = `${origin.replace('http', 'ws')}/bbex/websocket`;
