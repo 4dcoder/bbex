@@ -65,7 +65,7 @@
   },
   "proxy": {
     "/bbex": {
-      "target": "http://192.168.2.184:8089",
+      "target": "http://192.168.2.186:8089",
       "changeOrigin": true,
       "ws": true
     }

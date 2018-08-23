@@ -261,6 +261,7 @@ class BankForm extends Component {
       '农信银清算中心',
       '城市商业银行资金清算中心'
     ];
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <FormItem {...formItemLayout} label="姓名">
