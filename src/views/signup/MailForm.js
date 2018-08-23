@@ -115,7 +115,7 @@ class MailForm extends Component {
       this.setState({ appKey, token, ncData, nc });
       this.props.form.setFields({
         noCaptche: {
-          errors: []
+          errors: null
         }
       });
     }
