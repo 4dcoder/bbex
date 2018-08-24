@@ -59,7 +59,12 @@ class Trade extends PureComponent {
       ethLastPrice: 0,
       cnbBtcLastPrice: 0,
       cnbEthLastPrice: 0,
-      sorter: {}
+      sorter: {},
+      pendingOrderTotal: 0,
+      pendingCurrentPage: 1,
+      completedOrderTotal: 0,
+      completedCurrentPage: 1,
+      showCount: 10
     };
   }
 
@@ -79,42 +84,42 @@ class Trade extends PureComponent {
     });
   };
 
-  // 未完成订单
-  findOrderList = ({ marketName, coinName, status }) => {
+  // 订单列表，status = 0 是我的挂单， status = 1 是成交历史
+  findOrderList = ({ status, currentPage }) => {
     if (status === 0) {
       this.setState({ pendingOrderList: null });
     } else {
       this.setState({ completedOrderList: null });
     }
-
+    const { showCount, marketName, coinName } = this.state;
     const { id } = JSON.parse(sessionStorage.getItem('account'));
     this.request('/order/findOrderProposeList', {
       body: {
         status,
         userId: id,
         coinMain: marketName,
-        coinOther: coinName
+        coinOther: coinName,
+        currentPage,
+        showCount
       }
     }).then(json => {
+      const orderType = status === 0 ? 'pending' : 'completed';
       if (json.code === 10000000) {
-        json.data = json.data.map(order => {
+        const orderList = json.data.list.map(order => {
           order.key = order.orderNo;
           order.price = order.price.toFixed(8);
           order.volume = order.volume.toFixed(8);
           order.successVolume = order.successVolume.toFixed(8);
           return order;
         });
-        if (status === 0) {
-          this.setState({ pendingOrderList: json.data || [] });
-        } else {
-          this.setState({ completedOrderList: json.data || [] });
-        }
+
+        this.setState({
+          [`${orderType}OrderList`]: orderList || [],
+          [`${orderType}OrderTotal`]: json.data.count,
+          [`${orderType}CurrentPage`]: currentPage
+        });
       } else {
-        if (status === 0) {
-          this.setState({ pendingOrderList: [] });
-        } else {
-          this.setState({ completedOrderList: [] });
-        }
+        this.setState({ [`${orderType}OrderList`]: [] });
       }
     });
   };
@@ -142,15 +147,15 @@ class Trade extends PureComponent {
 
   // 撤单
   handleCancelTrade = orderNo => {
+    const { orderStatus, pendingOrderList, pendingCurrentPage } = this.state;
+    const currentPage = pendingOrderList.length === 1 ? pendingCurrentPage - 1 : pendingCurrentPage;
     this.request(`/trade/cancelTrade/${orderNo}`, {
       method: 'GET'
     }).then(json => {
       if (json.code === 10000000) {
-        const { marketName, coinName, orderStatus } = this.state;
         this.findOrderList({
-          marketName,
-          coinName,
-          status: orderStatus
+          status: orderStatus,
+          currentPage: currentPage
         });
         message.success('撤单成功！');
       } else {
@@ -418,7 +423,7 @@ class Trade extends PureComponent {
 
       // 当推的数据是挂单，更新用户挂单列表
       if (orderVo) {
-        let { pendingOrderList } = this.state;
+        let { pendingOrderList, pendingOrderTotal } = this.state;
         let isNewRecord = orderVo.status === 0; // 如果status等于0就是新记录
         pendingOrderList =
           pendingOrderList &&
@@ -447,6 +452,10 @@ class Trade extends PureComponent {
           if (pendingOrderList) {
             pendingOrderList.unshift(orderVo);
           }
+
+          this.setState({
+            pendingOrderTotal: pendingOrderTotal + 1
+          }); //更新我的挂单总数
         }
 
         this.setState({ pendingOrderList });
@@ -658,14 +667,13 @@ class Trade extends PureComponent {
     }
 
     if (this.state.coinName !== prevState.coinName) {
-      const { marketName, coinName, orderStatus } = this.state;
+      const { orderStatus, pendingCurrentPage } = this.state;
 
       // 如果已经登录，获取挂单列表
       if (sessionStorage.getItem('account')) {
         this.findOrderList({
-          marketName,
-          coinName,
-          status: orderStatus
+          status: orderStatus,
+          currentPage: pendingCurrentPage
         });
       }
 
@@ -721,9 +729,16 @@ class Trade extends PureComponent {
       clickTradeType,
       historyDetails,
       historyExpendKey,
-      sorter
+      sorter,
+      pendingOrderTotal,
+      pendingCurrentPage,
+      completedOrderTotal,
+      completedCurrentPage,
+      showCount,
+      orderStatus
     } = this.state;
 
+    console.log('pendingOrderTotal: ', pendingOrderTotal);
     let pairList = [];
     let allTradeMarket = [];
     if (tradeExpair && Object.keys(tradeExpair).length > 0) {
@@ -1451,98 +1466,115 @@ class Trade extends PureComponent {
             </div>
           </div>
         </div>
-        <div className="content-inner">
+        <div className="content-inner order-list">
           <div className="trade-plate">
             <Tabs
               defaultActiveKey="0"
               onChange={status => {
                 if (sessionStorage.getItem('account')) {
+                  const { pendingCurrentPage, completedCurrentPage } = this.state;
+                  const currentPage = status === 0 ? pendingCurrentPage : completedCurrentPage;
                   this.findOrderList({
-                    marketName,
-                    coinName,
-                    status
+                    status,
+                    currentPage
                   });
                 }
                 this.setState({ orderStatus: status });
               }}
             >
               <TabPane tab={localization['我的挂单']} key="0">
-                <Scrollbars>
-                  <Table
-                    columns={orderColumns}
-                    dataSource={pendingOrderList}
-                    loading={!pendingOrderList}
-                    pagination={false}
-                    locale={{
-                      emptyText: isLogin ? (
-                        <span>
-                          <i className="iconfont icon-zanwushuju" />
-                          {localization['暂无数据']}
-                        </span>
-                      ) : (
-                        <span>
-                          <Link to="/signin">{localization['登录']}</Link>{' '}
-                          {localization['进行查看']}
-                        </span>
-                      )
-                    }}
-                  />
-                </Scrollbars>
+                <Table
+                  columns={orderColumns}
+                  dataSource={pendingOrderList}
+                  loading={!pendingOrderList}
+                  locale={{
+                    emptyText: isLogin ? (
+                      <span>
+                        <i className="iconfont icon-zanwushuju" />
+                        {localization['暂无数据']}
+                      </span>
+                    ) : (
+                      <span>
+                        <Link to="/signin">{localization['登录']}</Link> {localization['进行查看']}
+                      </span>
+                    )
+                  }}
+                  pagination={{
+                    defaultCurrent: 1,
+                    total: pendingOrderTotal,
+                    current: pendingCurrentPage,
+                    pageSize: showCount,
+                    onChange: page => {
+                      this.findOrderList({
+                        status: orderStatus,
+                        currentPage: page
+                      });
+                    }
+                  }}
+                />
               </TabPane>
               <TabPane tab={localization['成交历史']} key="1">
-                <Scrollbars>
-                  <Table
-                    className="trade-history"
-                    columns={orderColumns}
-                    dataSource={completedOrderList}
-                    loading={!completedOrderList}
-                    pagination={false}
-                    locale={{
-                      emptyText: isLogin ? (
-                        <span>
-                          <i className="iconfont icon-zanwushuju" />
-                          {localization['暂无数据']}
-                        </span>
-                      ) : (
-                        <span>
-                          <Link to="/signin">{localization['登录']}</Link>{' '}
-                          {localization['进行查看']}
-                        </span>
-                      )
-                    }}
-                    expandedRowKeys={[historyExpendKey]}
-                    expandedRowRender={record => {
-                      return (
-                        <div className="expend-content">
-                          <List
-                            size="small"
-                            header={
-                              <ul className="expent-title">
-                                <li>{localization['成交时间']}</li>
-                                <li>{localization['成交价格']}</li>
-                                <li>{localization['成交数量']}</li>
-                                <li>{localization['成交额']}</li>
-                                <li>{localization['手续费']}</li>
+                <Table
+                  className="trade-history"
+                  columns={orderColumns}
+                  dataSource={completedOrderList}
+                  loading={!completedOrderList}
+                  locale={{
+                    emptyText: isLogin ? (
+                      <span>
+                        <i className="iconfont icon-zanwushuju" />
+                        {localization['暂无数据']}
+                      </span>
+                    ) : (
+                      <span>
+                        <Link to="/signin">{localization['登录']}</Link> {localization['进行查看']}
+                      </span>
+                    )
+                  }}
+                  pagination={{
+                    defaultCurrent: 1,
+                    total: completedOrderTotal,
+                    current: completedCurrentPage,
+                    pageSize: showCount,
+                    onChange: page => {
+                      this.findOrderList({
+                        status: orderStatus,
+                        currentPage: page
+                      });
+                    }
+                  }}
+                  expandedRowKeys={[historyExpendKey]}
+                  expandedRowRender={record => {
+                    return (
+                      <div className="expend-content">
+                        <List
+                          size="small"
+                          header={
+                            <ul className="expent-title">
+                              <li>{localization['成交时间']}</li>
+                              <li>{localization['成交价格']}</li>
+                              <li>{localization['成交数量']}</li>
+                              <li>{localization['成交额']}</li>
+                              <li>{localization['手续费']}</li>
+                            </ul>
+                          }
+                          dataSource={historyDetails}
+                          renderItem={item => (
+                            <List.Item className="list-lis">
+                              <ul className="list-item">
+                                <li>{stampToDate(item.createDate * 1)}</li>
+                                <li>{Number(item.price).toFixed(8)}</li>
+                                <li>{Number(item.successVolume).toFixed(8)}</li>
+                                <li>{Number(item.price * item.successVolume).toFixed(8)}</li>
+                                <li>{Number(item.exFee).toFixed(8)}</li>
                               </ul>
-                            }
-                            dataSource={historyDetails}
-                            renderItem={item => (
-                              <List.Item className="list-lis">
-                                <ul className="list-item">
-                                  <li>{stampToDate(item.createDate * 1)}</li>
-                                  <li>{Number(item.price).toFixed(8)}</li>
-                                  <li>{Number(item.successVolume).toFixed(8)}</li>
-                                  <li>{Number(item.price * item.successVolume).toFixed(8)}</li>
-                                  <li>{Number(item.exFee).toFixed(8)}</li>
-                                </ul>
-                              </List.Item>
-                            )}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                </Scrollbars>
+                            </List.Item>
+                          )}
+                        />
+                      </div>
+                    );
+                  }}
+                />
               </TabPane>
             </Tabs>
           </div>

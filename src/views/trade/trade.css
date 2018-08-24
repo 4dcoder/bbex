@@ -213,7 +213,7 @@
 .trade-plate-container tr,
 .trade-plate-list tr {
   display: flex;
-  transition: .2s ease-out;
+  transition: 0.2s ease-out;
 }
 
 .trade-plate-container tr.selected {
@@ -224,7 +224,6 @@
 .trade-plate-list tr:hover {
   background-color: #1a1e27;
 }
-
 
 .trade-plate-container td {
   flex: 1 0 80px;
@@ -318,6 +317,14 @@
   position: relative;
   height: 423px;
   color: #dadada;
+}
+
+.order-list .trade-plate .ant-tabs-content .ant-tabs-tabpane {
+  height: auto;
+}
+
+.order-list .trade-plate .ant-tabs-content .ant-pagination {
+  margin-right: 30px;
 }
 
 /* 合并select框 */

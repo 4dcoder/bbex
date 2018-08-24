@@ -39,9 +39,9 @@ class Transaction extends Component {
   }
 
   tabChange = value => {
-    if (value == 'current') {
+    if (value === 'current') {
       this.getCurrentTrade(1, '', 'USDT');
-    } else if (value == 'record') {
+    } else if (value === 'record') {
       this.setState({ expendRecordKey: '' });
       this.getRecordTrade(1, '', 'USDT');
     } else {
@@ -163,9 +163,9 @@ class Transaction extends Component {
   coinSelectChange = value => {
     let { currentTab, currency } = this.state;
     this.setState({ coin: value });
-    if (currentTab == 'current') {
+    if (currentTab === 'current') {
       this.getCurrentTrade(1, currency, value);
-    } else if (currentTab == 'record') {
+    } else if (currentTab === 'record') {
       this.setState({ expendRecordKey: '' });
       this.getRecordTrade(1, currency, value);
     } else {
@@ -176,9 +176,9 @@ class Transaction extends Component {
   searchClick = () => {
     let { currentTab, currency, coin } = this.state;
     currency = currency.toUpperCase();
-    if (currentTab == 'current') {
+    if (currentTab === 'current') {
       this.getCurrentTrade(1, currency, coin);
-    } else if (currentTab == 'record') {
+    } else if (currentTab === 'record') {
       this.setState({ expendRecordKey: '' });
       this.getRecordTrade(1, currency, coin);
     } else {
@@ -188,7 +188,7 @@ class Transaction extends Component {
 
   detailClick = record => {
     let { recordAllDetail, expendRecordKey } = this.state;
-    if (recordAllDetail.length > 0 && expendRecordKey == record.id) {
+    if (recordAllDetail.length > 0 && expendRecordKey === record.id) {
       this.setState({ expendRecordKey: '' });
     } else {
       this.setState({ expendRecordKey: record.id });
@@ -243,7 +243,7 @@ class Transaction extends Component {
         dataIndex: 'exType',
         key: 'exType',
         render: text => {
-          if (text == 0) {
+          if (text === 0) {
             return <div className="font-color-green">买入</div>;
           } else {
             return <div className="font-color-red">卖出</div>;
@@ -331,7 +331,7 @@ class Transaction extends Component {
         dataIndex: 'exType',
         key: 'exType',
         render: text => {
-          if (text == 0) {
+          if (text === 0) {
             return <div className="font-color-green">买入</div>;
           } else {
             return <div className="font-color-red">卖出</div>;
@@ -432,7 +432,7 @@ class Transaction extends Component {
         dataIndex: 'exType',
         key: 'exType',
         render: text => {
-          if (text == 0) {
+          if (text === 0) {
             return <div className="font-color-green">买入</div>;
           } else {
             return <div className="font-color-red">卖出</div>;

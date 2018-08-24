@@ -331,7 +331,6 @@ class TradeContainer extends PureComponent {
     myOrderList: null,
     myAdvertList: null,
     previewImage: '',
-    ws: null,
     appealList: null, //我的申诉
     showAppeal: '' //显示申诉弹窗
   };

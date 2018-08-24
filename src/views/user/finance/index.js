@@ -52,8 +52,8 @@ class Finance extends Component {
     };
 
     getRechargeList = (page, coinId, symbol) => {
-        let mSymbol = symbol == '全部' ? '' : symbol;
-        let mCoinId = symbol == '全部' ? '' : coinId;
+        let mSymbol = symbol === '全部' ? '' : symbol;
+        let mCoinId = symbol === '全部' ? '' : coinId;
         this.request('/coin/deposit/list', {
             method: 'POST',
             body: {
@@ -72,8 +72,8 @@ class Finance extends Component {
     };
 
     getWithdrawList = (page, coinId, symbol) => {
-        let mSymbol = symbol == '全部' ? '' : symbol;
-        let mCoinId = symbol == '全部' ? '' : coinId;
+        let mSymbol = symbol === '全部' ? '' : symbol;
+        let mCoinId = symbol === '全部' ? '' : coinId;
         this.request('/coin/withdraw/list ', {
             method: 'POST',
             body: {
@@ -96,8 +96,8 @@ class Finance extends Component {
     };
 
     getTransferList = (page, coinId, symbol) => {
-        let mSymbol = symbol == '全部' ? '' : symbol;
-        let mCoinId = symbol == '全部' ? '' : coinId;
+        let mSymbol = symbol === '全部' ? '' : symbol;
+        let mCoinId = symbol === '全部' ? '' : coinId;
         this.request('/offline/coin/transfer/list', {
             method: 'POST',
             body: {
@@ -121,9 +121,9 @@ class Finance extends Component {
 
     tabChange = value => {
         this.setState({ symbol: '全部', currentTab: value, withdrawPage: 1 });
-        if (value == 'recharge') {
+        if (value === 'recharge') {
             this.getRechargeList(1, '', '');
-        } else if (value == 'withdraw') {
+        } else if (value === 'withdraw') {
             this.getWithdrawList(1, '', '');
         } else {
             this.getTransferList(1, '', '');
@@ -164,7 +164,7 @@ class Finance extends Component {
     coinSelect = value => {
         const { currentTab, coinList } = this.state;
         const coinId = coinList.filter(item => {
-            return item.name == value;
+            return item.name === value;
         })[0].id;
 
         this.setState({ symbol: value, withdrawPage: 1 });
@@ -181,7 +181,7 @@ class Finance extends Component {
     rechargePageChange = page => {
         const { symbol, coinList } = this.state;
         const coinId = coinList.filter(item => {
-            return item.name == symbol;
+            return item.name === symbol;
         })[0].id;
         ///coin/deposit/list
         this.getRechargeList(page, coinId, symbol);
@@ -190,7 +190,7 @@ class Finance extends Component {
     withdrawPageChange = page => {
         const { symbol, coinList } = this.state;
         const coinId = coinList.filter(item => {
-            return item.name == symbol;
+            return item.name === symbol;
         })[0].id;
         this.setState({withdrawPage: page})
         ///coin/deposit/list
@@ -200,7 +200,7 @@ class Finance extends Component {
     transferPageChange = page => {
         const { symbol, coinList } = this.state;
         const coinId = coinList.filter(item => {
-            return item.name == symbol;
+            return item.name === symbol;
         })[0].id;
         ///coin/deposit/list
         this.getTransferList(page, coinId, symbol);
